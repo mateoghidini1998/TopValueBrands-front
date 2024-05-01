@@ -1,4 +1,6 @@
 "use client"
+import { useRouter } from "next/navigation"
+import { FormEvent } from "react"
 
 type FormData = {
     email: string;
@@ -6,6 +8,30 @@ type FormData = {
 }
 
 const LoginForm = () => {
+    const router = useRouter()
+
+    async function handleSubmit(event: FormEvent<HTMLFormElement>){
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+
+        const email = formData.get('email')
+        const password = formData.get('password')
+
+        const response = await fetch('http://localhost:3000/api/v1/auth/login', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        })
+
+        if (response.ok){
+            router.push('/')
+        } else {
+            console.log('Error')
+        }
+    }
+
+
     return (
         <div className="w-[400px] h-[465px] px-8 py-12 flex flex-col rounded-[15px] bg-[#262935] shadow-[0_1px_1px_0px_rgba(18,18,18,0.1)]">
             <div className="flex items-center mb-9">
@@ -20,15 +46,15 @@ const LoginForm = () => {
                 <p className="text-white text-xl font-medium mb-0.5">Log in into your account</p>
                 <span className="text-[#808191]">to continue to Top Value Brands</span>
             </div>
-            <form action="">
+            <form action="" onSubmit={handleSubmit}>
                 <div className="flex flex-col w-full mb-9" >
                     <div className="flex flex-col mb-5">
-                        <label htmlFor="" className="text-[#808191] text-sm mb-2">Email address</label>
-                        <input className="h-8 p-4 bg-[#1F2128] shrink rounded-md" type="text" />
+                        <label htmlFor="email" className="text-[#808191] text-sm mb-2">Email address</label>
+                        <input className="h-8 p-4 bg-[#1F2128] shrink rounded-md" type="text" name="email" />
                     </div>
                     <div className="flex flex-col">
-                        <label htmlFor="" className="text-[#808191] text-sm mb-2">Password</label>
-                        <input className="h-8 p-4 bg-[#1F2128] shrink rounded-md" type="text" />
+                        <label htmlFor="password" className="text-[#808191] text-sm mb-2">Password</label>
+                        <input className="h-8 p-4 bg-[#1F2128] shrink rounded-md" type="text" name="password"/>
                 </div>
                 </div>
                 <button type="submit" className="w-full p-2 rounded-md bg-[#438EF3] text-[12px] text-white">CONTINUE</button>
