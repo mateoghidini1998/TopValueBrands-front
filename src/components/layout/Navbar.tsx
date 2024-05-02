@@ -1,22 +1,22 @@
 "use client"
 import Link from "next/link"
 import Menu from "../menu/Menu"
-import { LuStore } from "react-icons/lu";
-import { FaUsers } from "react-icons/fa";
-import { PiPackageLight } from "react-icons/pi";
-import { TbReportSearch } from "react-icons/tb";
+import Users from "../svgs/Users"
+import Shop from "../svgs/Shop"
+import Search from "../svgs/Search"
+import Package from "../svgs/Package"
 
 const LINKS = [
-    { title: "Inventory Management", href: '/', icon: <TbReportSearch /> },
-    { title: "PO Generator", href: '/pogenerator', icon: <PiPackageLight /> },
-    { title: "Warehouse", href: '/warehouse', icon: <LuStore /> },
-    { title: "Users ", href: '/users', icon: <FaUsers /> },
+    { title: "Inventory Management", href: '/', icon: <Search/> },
+    { title: "PO Generator", href: '/pogenerator', icon: <Package/> },
+    { title: "Warehouse", href: '/warehouse', icon: <Shop/> },
+    { title: "Users ", href: '/users', icon: <Users/> },
 ]
 
 const Navbar = () => {
     return (
-        <nav className="flex flex-col w-[275px] border-r-[1px] border-r-[#262935] text-white">
-            <h1 className="text-lg font-bold px-10 py-8 text-center mb-10">Top Value Brands</h1>
+        <nav className="flex flex-col min-w-[275px] border-r-[1px] border-r-[#262935] text-white box-border">
+            <h1 className="text-lg font-bold px-12 pb-[70px] pt-9 text-center">Top Value Brands</h1>
             {/* Logo */}
 
             {/* Nav Items */} 
