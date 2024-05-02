@@ -1,7 +1,7 @@
 export default function UsersPage() {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <h1>Users Page</h1>
+      <main className="flex w-full min-h-screen flex-col items-center">
+        <h1>POGenerator Page</h1>
       </main>
     );
   }
