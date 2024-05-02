@@ -1,6 +1,13 @@
 "use client"
+import { login } from "@/services/auth/auth.api";
+import { AuthService } from "@/services/auth/auth.service";
 import { useRouter } from "next/navigation"
+import { yupResolver } from "@hookform/resolvers/yup"
 import { FormEvent } from "react"
+import { FormProvider, useForm } from "react-hook-form";
+import SubmitButton from "../form/SubmitButton";
+import LoginScheme from "@/schemes/login.scheme";
+import InputText from "../form/InputText";
 
 type FormData = {
     email: string;
@@ -9,26 +16,22 @@ type FormData = {
 
 const LoginForm = () => {
     const router = useRouter()
+    const methods = useForm<FormData>({
+        resolver: yupResolver(LoginScheme)
+    })
 
-    async function handleSubmit(event: FormEvent<HTMLFormElement>){
-        event.preventDefault();
+    const { handleSubmit } = methods
 
-        const formData = new FormData(event.currentTarget);
-
-        const email = formData.get('email')
-        const password = formData.get('password')
-
-        const response = await fetch('http://localhost:3000/api/v1/auth/login', {
-            method: 'POST',
-            headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        })
-
-        if (response.ok){
+    const onSubmit = async (data: FormData) => {
+        try {
+            const loginResponse = await AuthService.login(data.email, data.password)
+            console.log(loginResponse)
             router.push('/')
-        } else {
-            console.log('Error')
+            router.refresh()
+        } catch (error) {
+            console.error(error)
         }
+        return false;
     }
 
 
@@ -46,19 +49,27 @@ const LoginForm = () => {
                 <p className="text-white text-xl font-medium mb-0.5">Log in into your account</p>
                 <span className="text-[#808191]">to continue to Top Value Brands</span>
             </div>
-            <form action="" onSubmit={handleSubmit}>
-                <div className="flex flex-col w-full mb-9" >
-                    <div className="flex flex-col mb-5">
-                        <label htmlFor="email" className="text-[#808191] text-sm mb-2">Email address</label>
-                        <input className="h-8 p-4 bg-[#1F2128] shrink rounded-md" type="text" name="email" />
+            <FormProvider {...methods}>
+                <form action="" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="flex flex-col w-full mb-9" >
+                        <div className="flex flex-col mb-5">
+                            <InputText 
+                            label={"Email"} 
+                            fieldName={"email"} 
+                            type="text"
+                            />               
+                        </div>
+                        <div className="flex flex-col">
+                            <InputText 
+                            label={"Contraseña"} 
+                            fieldName={"password"} 
+                            type="password"
+                            />
+                        </div>
                     </div>
-                    <div className="flex flex-col">
-                        <label htmlFor="password" className="text-[#808191] text-sm mb-2">Password</label>
-                        <input className="h-8 p-4 bg-[#1F2128] shrink rounded-md" type="text" name="password"/>
-                </div>
-                </div>
-                <button type="submit" className="w-full p-2 rounded-md bg-[#438EF3] text-[12px] text-white">CONTINUE</button>
-            </form>
+                    <SubmitButton label={"CONTINUE"} onSubmit={onSubmit}/>
+                </form>
+            </FormProvider>
         </div>
     )
 }
