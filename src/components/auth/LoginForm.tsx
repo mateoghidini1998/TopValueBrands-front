@@ -1,13 +1,11 @@
 "use client"
-import { login } from "@/services/auth/auth.api";
-import { AuthService } from "@/services/auth/auth.service";
 import { useRouter } from "next/navigation"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { FormEvent } from "react"
 import { FormProvider, useForm } from "react-hook-form";
 import SubmitButton from "../form/SubmitButton";
 import LoginScheme from "@/schemes/login.scheme";
 import InputText from "../form/InputText";
+import useAuthContext from "@/contexts/authContext";
 
 type FormData = {
     email: string;
@@ -19,20 +17,20 @@ const LoginForm = () => {
     const methods = useForm<FormData>({
         resolver: yupResolver(LoginScheme)
     })
-
     const { handleSubmit } = methods
+    const { login } = useAuthContext();
+
 
     const onSubmit = async (data: FormData) => {
         try {
-            const loginResponse = await AuthService.login(data.email, data.password)
-            console.log(loginResponse)
-            router.push('/')
-            router.refresh()
+          await login(data.email, data.password);
+          console.log('Login exitoso');
+          router.push('/');
+          router.refresh();
         } catch (error) {
-            console.error(error)
+          console.error(error);
         }
-        return false;
-    }
+     };
 
 
     return (
