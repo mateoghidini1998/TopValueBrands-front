@@ -1,4 +1,5 @@
 import './globals.css'
+import { AuthProvider } from '@/contexts/authContext';
 
 export default function RootLayout({
   children,
@@ -9,9 +10,11 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={``}>
-      <body className="flex">
-        {children}
-      </body>
-    </html>
+        <body className="flex">
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </body>
+      </html>
   );
 }
