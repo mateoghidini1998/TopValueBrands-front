@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
-import { AuthProvider } from "@/contexts/authContext";
+import IndexPageContainer from "./page.container";
+import SearchInput from "@/components/inventory/SearchInput";
+import UserMenu from "@/components/layout/UserMenu";
+import PageTitle from "@/components/layout/PageTitlte";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,10 +22,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex">
-      <AuthProvider>
+      <IndexPageContainer>
         <Navbar />
-        {children}
-      </AuthProvider>  
+        <div className="w-full">
+          <div className="py-10 px-[46px]  w-full flex justify-between items-center">
+              <PageTitle/>
+              <div className="flex items-center">
+                <SearchInput/>
+                <UserMenu/>
+              </div>
+          </div>
+          {children}
+        </div>
+      </IndexPageContainer>  
       </body>
     </html>
   );
