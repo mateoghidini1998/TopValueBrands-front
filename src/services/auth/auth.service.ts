@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { HttpAPI } from "../common/http.service";
 export class AuthService {
     static async login(email: string, password: string, onUserLoaded: (user: any) => void) {
@@ -11,6 +12,7 @@ export class AuthService {
                 }
             });
             onUserLoaded(userResponse.data);
+            document.cookie = "authenticated=true; path=/";
             return response;
         } catch (error) {
             throw new Error('Error while login in')
@@ -34,5 +36,9 @@ export class AuthService {
 
     static async logout(){
         localStorage.removeItem('access-token');
+        function deleteCookie(name: string) {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+        deleteCookie('authenticated');
     }
 }
