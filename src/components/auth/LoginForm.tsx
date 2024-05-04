@@ -13,6 +13,7 @@ type FormData = {
 }
 
 const LoginForm = () => {
+    const { authToken, user } = useAuthContext();
     const router = useRouter()
     const methods = useForm<FormData>({
         resolver: yupResolver(LoginScheme)
@@ -21,15 +22,23 @@ const LoginForm = () => {
     const { login } = useAuthContext();
 
 
+    if(authToken){
+        router.push('/')
+        router.refresh();
+    }
+
     const onSubmit = async (data: FormData) => {
         try {
-          await login(data.email, data.password);
-          console.log('Login exitoso');
-          router.push('/');
-          router.refresh();
+            await login(data.email, data.password);
+            if (user && user.role === 'admin') {
+                router.push('/');
+            } else if (user && user.role !== 'admin') {
+                router.push('/pogenerator');
+            }
+            console.log(user)
         } catch (error) {
-          console.error(error);
-        }
+            console.error(error)
+        }   
      };
 
 
