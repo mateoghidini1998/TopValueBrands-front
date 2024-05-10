@@ -9,11 +9,15 @@ import useConfirmAlert from "@/hooks/useConfirmAlert";
 const Table: FC = () => {
   const { ConfirmAlert, showConfirmAlert } = useConfirmAlert();
 
+  // TODO  -> Pasar la funcion a table row para actualizar la tabla
   const handleDelete = (seller_sku: string) => {
     showConfirmAlert(
       "Are you sure you want to save changes?",
       () => console.log("Confirmado: " + seller_sku),
-      () => console.log("Cancelado: " + seller_sku)
+      () => console.log("Cancelado: " + seller_sku),
+      "Confirm",
+      "Cancel",
+      () => console.log("onClose")
     );
   };
 
