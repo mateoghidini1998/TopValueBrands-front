@@ -7,7 +7,7 @@ import { InventoryService } from "@/services/inventory/inventory";
 import { useProductContext } from "@/contexts/products.context";
 
 const Table:FC = () => {
-    const { products, handlePreviousPage, handleNextPage, currentPage, totalPages } = useProductContext();
+    const { products, handlePreviousPage, handleNextPage, currentPage, totalPages, setCurrentPage } = useProductContext();
         
     return(
         <>
@@ -29,6 +29,7 @@ const Table:FC = () => {
         <Pagination
           currentPage={currentPage}
           handleNextPage={handleNextPage}
+          setCurrentPage={setCurrentPage}
           handlePreviousPage={handlePreviousPage}
           totalPages={totalPages}
         />

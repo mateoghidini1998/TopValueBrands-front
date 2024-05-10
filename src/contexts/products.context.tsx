@@ -10,10 +10,18 @@ export type ProductState = {
     updateProduct: (updatedProduct: ProductType) => void;
     handleNextPage: () => void;
     handlePreviousPage: () => void;
-
+    setCurrentPage: (page: number) => void;
 }
 
-export const ProductContext = createContext<ProductState | undefined>(undefined);
+export const ProductContext = createContext<ProductState>({
+    products: [],
+    currentPage: 1,
+    totalPages: 0,
+    updateProduct: () => {},
+    handleNextPage: () => {},
+    handlePreviousPage: () => {},
+    setCurrentPage: () => {},
+});
 
 export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChildren) => {
     const [products, setProducts] = useState<ProductType[]>([]);
@@ -52,7 +60,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     }
 
     return (
-        <ProductContext.Provider value={{ products, updateProduct, currentPage, totalPages, handleNextPage, handlePreviousPage }}>
+        <ProductContext.Provider value={{ products, updateProduct, currentPage, totalPages, handleNextPage, handlePreviousPage, setCurrentPage }}>
           {children}
         </ProductContext.Provider>
     );
