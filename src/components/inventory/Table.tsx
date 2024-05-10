@@ -4,35 +4,11 @@ import { FC, useEffect, useState } from "react";
 import TableRow from "./TableRow";
 import Pagination from "./Pagination";
 import { InventoryService } from "@/services/inventory/inventory";
+import { useProductContext } from "@/contexts/products.context";
 
 const Table:FC = () => {
-    const [products, setProducts] = useState([]);
-    const [totalPages, setTotalPages] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
-    const limit = 10;
-
-    useEffect(() => {
-        getProducts(currentPage, limit);
-    }, [currentPage, limit]);
-
-
-    const getProducts = async (page: number, limit: number) => {
-      try {
-          const response = await InventoryService.getProducts(page, limit);
-          setProducts(response.data);
-          setTotalPages(response.pages)
-      } catch (error) {
-          console.error(error);
-      }
-    };
-    const handleNextPage = () => {
-        setCurrentPage(prevPage => prevPage + 1);
-    };
-
-    const handlePreviousPage = () => {
-        setCurrentPage(prevPage => prevPage - 1);
-    };
-    
+    const { products, handlePreviousPage, handleNextPage, currentPage, totalPages } = useProductContext();
+        
     return(
         <>
         <table className="w-full mb-5">
@@ -52,7 +28,6 @@ const Table:FC = () => {
         </table>
         <Pagination
           currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
           handleNextPage={handleNextPage}
           handlePreviousPage={handlePreviousPage}
           totalPages={totalPages}

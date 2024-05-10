@@ -2,9 +2,10 @@
 import { ProductType } from "@/types/product.types";
 import DotsSVG from "../svgs/DotsSVG";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RowActions from "./Actions";
 import { InventoryService } from "@/services/inventory/inventory";
+import { useProductContext } from "@/contexts/products.context";
 
 type TableRowProps = {
   products : ProductType[];
@@ -15,10 +16,12 @@ const TableRow = ({ products }: TableRowProps) => {
   const [editingRow, setEditingRow] = useState<{ [key: string]: boolean }>({});
   const [currentProduct, setCurrentProduct] = useState<{ seller_sku: string } | null>(null);
   const [ editData, setEditData ] = useState({})
+  const [contextProducts, setContextProducts] = useState<ProductType[]>([]);
 
-  // const { product_cost, supplier_name, supplier_item_number, pack_type } = editData;
+    // const { product_cost, supplier_name, supplier_item_number, pack_type } = editData;
 
 
+  const { updateProduct } = useProductContext()
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
     if (isActionsOpen === seller_sku) {
@@ -39,14 +42,17 @@ const TableRow = ({ products }: TableRowProps) => {
   };
 
   const handleSave = async () => {
-    try {
-      const response = await InventoryService.updateProduct({...editData, seller_sku: currentProduct?.seller_sku?? '' })
-    } catch (error) {
-      console.error('Error al actualizar el producto: ', error);
-    }
-    setEditingRow({});
-    setIsActionsOpen(null);
-  };
+  try {
+    await InventoryService.updateProduct({ ...editData, seller_sku: currentProduct?.seller_sku ?? '' });
+    updateProduct({ ...editData, seller_sku: currentProduct?.seller_sku ?? '' });
+  } catch (error) {
+    console.error('Error al actualizar el producto: ', error);
+  }
+  
+  setEditingRow({});
+  setIsActionsOpen(null);
+};
+
 
   const handleDelete = async(seller_sku: string) => {
     try {
