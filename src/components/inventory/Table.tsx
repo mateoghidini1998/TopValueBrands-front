@@ -3,7 +3,6 @@
 import { FC, useEffect, useState } from "react";
 import TableRow from "./TableRow";
 import Pagination from "./Pagination";
-import { InventoryService } from "@/services/inventory/inventory";
 import { useProductContext } from "@/contexts/products.context";
 
 const Table:FC = () => {

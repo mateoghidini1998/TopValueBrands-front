@@ -16,12 +16,8 @@ const TableRow = ({ products }: TableRowProps) => {
   const [editingRow, setEditingRow] = useState<{ [key: string]: boolean }>({});
   const [currentProduct, setCurrentProduct] = useState<{ seller_sku: string } | null>(null);
   const [ editData, setEditData ] = useState({})
-  const [contextProducts, setContextProducts] = useState<ProductType[]>([]);
 
-    // const { product_cost, supplier_name, supplier_item_number, pack_type } = editData;
-
-
-  const { updateProduct } = useProductContext()
+  const { updateProduct, handleDeleteProduct } = useProductContext()
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
     if (isActionsOpen === seller_sku) {
@@ -56,7 +52,8 @@ const TableRow = ({ products }: TableRowProps) => {
 
   const handleDelete = async(seller_sku: string) => {
     try {
-      const response = await InventoryService.deactivateProduct(seller_sku)
+      await InventoryService.deactivateProduct(seller_sku)
+      handleDeleteProduct(seller_sku)
     } catch (error) {
       console.error('Error al desactivar el producto: ', error);
     }
