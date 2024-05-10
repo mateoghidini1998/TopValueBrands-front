@@ -7,6 +7,7 @@ import { useEffect, useState, createContext, FC, PropsWithChildren, useContext }
 export type AuthState = {
     authToken: string | null;
     user: UserType | null;
+    authError: string | null;
     login: (email: string, password: string) => Promise<void>;
     logout: () => void;
 }
@@ -15,6 +16,7 @@ export const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children}: PropsWithChildren) => {
     const [authToken, setAuthToken] = useState<string | null>(null);
+    const [ authError, setAuthError ] = useState(null)
     const [user, setUser] = useState<UserType | null>(null);
 
     useEffect(() => {
@@ -57,11 +59,16 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children}: PropsWithChildr
 
 
     const login = async (email: string, password: string) => {
-        await AuthService.login(email, password, async (userData) => {
-            setUser(userData)
-            const token = await getAuthToken();
-            setAuthToken(token);
-        });
+        try {
+            await AuthService.login(email, password, async (userData) => {
+                setUser(userData)
+                const token = await getAuthToken();
+                setAuthToken(token);
+            });
+        } catch (err) {
+            console.log('Hubo un error')
+            setAuthError(err.message)
+        }
     };
     
 
@@ -72,7 +79,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children}: PropsWithChildr
     };
 
     return (
-        <AuthContext.Provider value={{ authToken, user, login, logout }}>
+        <AuthContext.Provider value={{ authToken, user, login, logout, authError }}>
            {children}
         </AuthContext.Provider>
        );
