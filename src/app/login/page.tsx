@@ -1,4 +1,4 @@
-import LoginForm from "@/components/auth/LoginForm"
+import { LoginContainer } from "@/components/auth/LoginContainer";
 
 const LoginPage = () => {
     
@@ -12,7 +12,7 @@ const LoginPage = () => {
                 </svg>
                 <h2 className="font-bold text-white text-2xl">Top Value Brands</h2>
             </div>
-            <LoginForm/>   
+            <LoginContainer/>
         </div>
     )
 }
