@@ -1,7 +1,7 @@
 "use client"
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useAuthContext from "@/contexts/authContext";
+import useAuthContext from "@/contexts/auth.context";
 
 const Loader = () => <div>Cargando...</div>;
 

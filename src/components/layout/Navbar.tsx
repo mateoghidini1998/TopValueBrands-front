@@ -5,7 +5,7 @@ import Users from "../svgs/Users"
 import Shop from "../svgs/Shop"
 import Search from "../svgs/Search"
 import Package from "../svgs/Package"
-import useAuthContext from "@/contexts/authContext"
+import useAuthContext from "@/contexts/auth.context"
 import { useEffect } from "react"
 
 const LINKS = [

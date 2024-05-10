@@ -1,5 +1,5 @@
 "use client"
-import useAuthContext from "@/contexts/authContext";
+import useAuthContext from "@/contexts/auth.context";
 import { AuthErrorCard } from "./AuthErrorCard";
 import LoginForm from "./LoginForm";
 
