@@ -11,11 +11,11 @@ export default async function middleware(req: NextRequest){
     const isPublicRoute = publicRoutes.includes(path)
     
     if(!verify && isProtectedRoute){
-        return NextResponse.redirect('http://localhost:3001/login')
+        return NextResponse.redirect('http://localhost:3000/login')
     }
 
     if(verify && isPublicRoute){
-        return NextResponse.redirect('http://localhost:3001/')
+        return NextResponse.redirect('http://localhost:3000/')
     }
 
 }
