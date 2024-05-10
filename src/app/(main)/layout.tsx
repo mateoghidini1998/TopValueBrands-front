@@ -5,6 +5,7 @@ import IndexPageContainer from "./page.container";
 import SearchInput from "@/components/inventory/SearchInput";
 import UserMenu from "@/components/layout/UserMenu";
 import PageTitle from "@/components/layout/PageTitlte";
+import { ProductProvider } from "@/contexts/products.context";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -32,7 +33,9 @@ export default function RootLayout({
                 <UserMenu/>
               </div>
           </div>
+          <ProductProvider>
           {children}
+          </ProductProvider>
         </div>
       </IndexPageContainer>  
       </body>

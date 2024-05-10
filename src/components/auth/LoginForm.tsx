@@ -5,7 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import SubmitButton from "../form/SubmitButton";
 import LoginScheme from "@/schemes/login.scheme";
 import InputText from "../form/InputText";
-import useAuthContext from "@/contexts/authContext";
+import useAuthContext from "@/contexts/auth.context";
 
 type FormData = {
     email: string;

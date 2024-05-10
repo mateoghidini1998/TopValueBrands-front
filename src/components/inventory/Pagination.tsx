@@ -37,7 +37,7 @@ const Pagination: FC<PaginationProps> = ({ currentPage, setCurrentPage, totalPag
     const pageButtons = pageNumbers.map(page => (
         <button
             key={page}
-            className={`w-9 h-9 p-1.5 bg-[#262935] text-base rounded-md text-[#438EF3] font-medium border-[#438EF3] border-[1px] border-solid ${currentPage === page ? 'bg-[#438EF3] text-white' : ''}`}
+            className={`w-9 h-9 p-1.5 bg-[#262935] text-base rounded-md  ${currentPage === page ? 'text-[#438EF3] font-medium border-[#438EF3] border-[1px] border-solid' : 'text-white'}`}
             onClick={() => setCurrentPage(page)}
         >
             {page}
@@ -46,9 +46,9 @@ const Pagination: FC<PaginationProps> = ({ currentPage, setCurrentPage, totalPag
 
     return (
         <div className="flex items-center justify-center gap-2">
-            <button className={`w-9 h-9 p-1.5 bg-[#262935] rounded-md ${disabledPrev ? "text-[#393E4F] border-[#393E4F] border-[1px] border-solid" : ""}`} onClick={handlePreviousPage} disabled={disabledPrev}><PrevPage/></button>
+            <button className={`flex items-center justify-center w-9 h-9 p-1.5 bg-[#262935] rounded-md ${disabledPrev ? "text-[#393E4F] border-[#393E4F] border-[1px] border-solid" : "text-white"}`} onClick={handlePreviousPage} disabled={disabledPrev}><PrevPage disabled={disabledPrev}/></button>
             {pageButtons}
-            <button className={`w-9 h-9 p-1.5 bg-[#262935] rounded-md ${disabledNext ? "text-[#393E4F] border-[#393E4F] border-[1px] border-solid" : ""}`} onClick={handleNextPage} disabled={disabledNext}><NextPage/></button>
+            <button className={`flex items-center justify-center w-9 h-9 p-1.5 bg-[#262935] rounded-md ${disabledNext ? "text-[#393E4F] border-[#393E4F] border-[1px] border-solid" : "text-white"}`} onClick={handleNextPage} disabled={disabledNext}><NextPage disabled={disabledNext}/></button>
         </div>
     );
 };
