@@ -19,7 +19,7 @@ const TableRow = ({ products }: TableRowProps) => {
   } | null>(null);
   const [editData, setEditData] = useState({});
   const [savedData, setSavedData] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);  
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
     if (isActionsOpen === seller_sku) {
