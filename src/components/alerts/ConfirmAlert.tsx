@@ -1,4 +1,5 @@
 import Image from "next/image";
+import CloseButton from "../svgs/CloseButton";
 
 export enum AlertOptions{
   CONFIRM = "Yes",
@@ -22,7 +23,7 @@ export const ConfirmAlert = ({ message, onConfirm, onCancel, onClose,confirmText
       
 
       <span onClick={onClose} className="absolute top-2 right-2 cursor-pointer">
-        <Image src="./close_btn.svg" alt="close" width={15} height={15} />
+        <CloseButton/>
       </span>
 
       <p className="text-center">{message}</p>

@@ -17,10 +17,11 @@ const TableRow = ({ products }: TableRowProps) => {
   const [editingRow, setEditingRow] = useState<{ [key: string]: boolean }>({});
   const [savedData, setSavedData] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState<{ seller_sku: string } | null>(null);
-  const [ editData, setEditData ] = useState({})
-  const { updateProduct, handleDeleteProduct } = useProductContext()
-
+  const [currentProduct, setCurrentProduct] = useState<{
+    seller_sku: string;
+  } | null>(null);
+  const [editData, setEditData] = useState({});
+  const { updateProduct, handleDeleteProduct } = useProductContext();
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
     if (isActionsOpen === seller_sku) {
@@ -42,6 +43,7 @@ const TableRow = ({ products }: TableRowProps) => {
         ...editData,
         seller_sku: currentProduct?.seller_sku ?? "",
       });
+      updateProduct({ ...editData, seller_sku: currentProduct?.seller_sku });
       return response;
     } catch (error) {
       console.error("Error al actualizar el producto: ", error);
@@ -64,12 +66,15 @@ const TableRow = ({ products }: TableRowProps) => {
 
   const deleteProduct = async () => {
     try {
-      const response = await InventoryService.deactivateProduct(currentProduct?.seller_sku ?? "");
+      const response = await InventoryService.deactivateProduct(
+        currentProduct?.seller_sku || ""
+      );
+      handleDeleteProduct(currentProduct?.seller_sku || "");
       return response;
     } catch (error) {
       console.error("Error al desactivar el producto: ", error);
     }
-  }
+  };
 
   const onChange = (e) =>
     setEditData({
@@ -88,15 +93,15 @@ const TableRow = ({ products }: TableRowProps) => {
               if (isDeleting) {
                 deleteProduct().then((result) => {
                   console.log(currentProduct);
-                  
+
                   if (result) {
                     setIsDeleting(false);
                     setSavedData(false);
                     setIsActionsOpen(null);
                     setEditingRow({});
                   }
-                })
-              }else{
+                });
+              } else {
                 saveEditedProduct().then((result) => {
                   if (result) {
                     setSavedData(false);
@@ -114,7 +119,6 @@ const TableRow = ({ products }: TableRowProps) => {
             confirmText={AlertOptions.CONFIRM}
             cancelText={AlertOptions.CANCEL}
           />
-          
         </>
       )}
       {Array.isArray(products) &&
