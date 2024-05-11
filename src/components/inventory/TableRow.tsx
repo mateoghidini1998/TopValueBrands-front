@@ -1,11 +1,12 @@
 "use client";
+import { InventoryService } from "@/services/inventory/inventory";
 import { ProductType } from "@/types/product.types";
-import DotsSVG from "../svgs/DotsSVG";
 import Image from "next/image";
 import { useState } from "react";
-import RowActions from "./Actions";
-import { InventoryService } from "@/services/inventory/inventory";
 import { AlertOptions, ConfirmAlert } from "../alerts/ConfirmAlert";
+import DotsSVG from "../svgs/DotsSVG";
+import RowActions from "./Actions";
+import { useProductContext } from "@/contexts/products.context";
 
 type TableRowProps = {
   products: ProductType[];
@@ -14,12 +15,12 @@ type TableRowProps = {
 const TableRow = ({ products }: TableRowProps) => {
   const [isActionsOpen, setIsActionsOpen] = useState<string | null>(null);
   const [editingRow, setEditingRow] = useState<{ [key: string]: boolean }>({});
-  const [currentProduct, setCurrentProduct] = useState<{
-    seller_sku: string;
-  } | null>(null);
-  const [editData, setEditData] = useState({});
   const [savedData, setSavedData] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState<{ seller_sku: string } | null>(null);
+  const [ editData, setEditData ] = useState({})
+  const { updateProduct, handleDeleteProduct } = useProductContext()
+
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
     if (isActionsOpen === seller_sku) {
