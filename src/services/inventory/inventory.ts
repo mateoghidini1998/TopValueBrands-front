@@ -4,17 +4,17 @@ import { getAuthToken } from "@/utils/getAuthToken";
 import { ProductType } from "@/types/product.types";
 
 export class InventoryService {
-  static async getProducts(page: number, limit: number) {
+  static async getProducts(page: number, limit: number, keyword: string = '') {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/products?page=${page}&limit=${limit}`,
+        `http://localhost:5000/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
+      )
       return response;
     } catch (error) {
       throw new Error("Error fetching data");

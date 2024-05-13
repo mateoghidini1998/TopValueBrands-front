@@ -7,6 +7,8 @@ export type ProductState = {
     products: ProductType[];
     currentPage: number;
     totalPages: number;
+    keyword: string;
+    handleSetKeyword: (keyword: string) => void;
     updateProduct: (updatedProduct: ProductType) => void;
     handleDeleteProduct: (seller_sku: string) => void;
     handleNextPage: () => void;
@@ -18,6 +20,8 @@ export const ProductContext = createContext<ProductState>({
     products: [],
     currentPage: 1,
     totalPages: 0,
+    keyword: '',
+    handleSetKeyword: () =>{},
     updateProduct: () => {},
     handleNextPage: () => {},
     handlePreviousPage: () => {},
@@ -29,16 +33,18 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     const [products, setProducts] = useState<ProductType[]>([]);
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [keyword, setKeyword] = useState('');
     const limit = 10;
+    
 
     useEffect(() => {
-        getProducts(currentPage, limit);
-    }, [currentPage, limit]);
+        getProducts(currentPage, limit, keyword);
+    }, [currentPage, limit, keyword]);
 
 
-    const getProducts = async (page: number, limit: number) => {
+    const getProducts = async (page: number, limit: number, keyword?: string) => {
       try {
-          const response = await InventoryService.getProducts(page, limit);
+          const response = await InventoryService.getProducts(page, limit, keyword);
           setProducts(response.data);
           setTotalPages(response.pages)
       } catch (error) {
@@ -50,6 +56,10 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     const handleNextPage = () => {
         setCurrentPage(prevPage => prevPage + 1);
     };
+
+    const handleSetKeyword = (keyword: string) => {
+        setKeyword(keyword);
+    }
 
     const handlePreviousPage = () => {
         setCurrentPage(prevPage => prevPage - 1);
@@ -67,7 +77,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     };
 
     return (
-        <ProductContext.Provider value={{ products, updateProduct, handleDeleteProduct, currentPage, totalPages, handleNextPage, handlePreviousPage, setCurrentPage }}>
+        <ProductContext.Provider value={{ products, updateProduct, handleDeleteProduct, currentPage, totalPages, handleNextPage, handlePreviousPage, setCurrentPage, keyword, handleSetKeyword }}>
           {children}
         </ProductContext.Provider>
     );

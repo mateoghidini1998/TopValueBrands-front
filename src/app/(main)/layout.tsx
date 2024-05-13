@@ -26,6 +26,7 @@ export default function RootLayout({
       <IndexPageContainer>
         <Navbar />
         <div className="w-full">
+          <ProductProvider>
           <div className="py-10 px-[46px]  w-full flex justify-between items-center">
               <PageTitle/>
               <div className="flex items-center">
@@ -33,7 +34,6 @@ export default function RootLayout({
                 <UserMenu/>
               </div>
           </div>
-          <ProductProvider>
           {children}
           </ProductProvider>
         </div>
