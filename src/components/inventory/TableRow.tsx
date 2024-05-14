@@ -2,8 +2,9 @@
 import { InventoryService } from "@/services/inventory/inventory";
 import { ProductType } from "@/types/product.types";
 import Image from "next/image";
-import { useState } from "react";
-import { AlertOptions, ConfirmAlert } from "../alerts/ConfirmAlert";
+import { useRef, useState } from "react";
+import ConfirmAlert from "../alerts/ConfirmAlert";
+import { AlertOptions } from "../alerts/ConfirmAlert";
 import DotsSVG from "../svgs/DotsSVG";
 import RowActions from "./Actions";
 import { useProductContext } from "@/contexts/products.context";
@@ -17,6 +18,7 @@ const TableRow = ({ products }: TableRowProps) => {
   const [editingRow, setEditingRow] = useState<{ [key: string]: boolean }>({});
   const [savedData, setSavedData] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const dialog = useRef();
   const [currentProduct, setCurrentProduct] = useState<{
     seller_sku: string;
   } | null>(null);
@@ -55,6 +57,7 @@ const TableRow = ({ products }: TableRowProps) => {
   const handleSave = async () => {
     if (!savedData) {
       setSavedData(true);
+      dialog.current?.open();
     }
   };
 
@@ -76,7 +79,7 @@ const TableRow = ({ products }: TableRowProps) => {
     }
   };
 
-  const onChange = (e) =>
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setEditData({
       ...editData,
       [e.target.name]: e.target.value,
@@ -88,6 +91,7 @@ const TableRow = ({ products }: TableRowProps) => {
         <>
           <ConfirmAlert
             message="Are you sure you want to save the changes?"
+            ref={dialog}
             onClose={() => setSavedData(false)}
             onConfirm={() => {
               if (isDeleting) {
