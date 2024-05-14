@@ -8,6 +8,7 @@ import { AlertOptions } from "../alerts/ConfirmAlert";
 import DotsSVG from "../svgs/DotsSVG";
 import RowActions from "./Actions";
 import { useProductContext } from "@/contexts/products.context";
+import Link from "next/link";
 
 type TableRowProps = {
   products: ProductType[];
@@ -135,6 +136,7 @@ const TableRow = ({ products }: TableRowProps) => {
               <div className="flex flex-col w-full h-full items-center text-center">
                 <div className="w-8 h-8">
                   {product.product_image ? (
+                    <Link target="a_blank" href={`https://www.amazon.com/dp/${product.ASIN}`}>
                     <Image
                       className="cover rounded-xl w-full h-full"
                       src={product.product_image}
@@ -144,6 +146,7 @@ const TableRow = ({ products }: TableRowProps) => {
                       placeholder="blur"
                       blurDataURL="data:image/jpeg"
                     />
+                    </Link>
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                       <span className="text-gray-500">No image</span>
