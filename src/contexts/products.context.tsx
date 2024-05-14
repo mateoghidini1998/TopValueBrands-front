@@ -1,5 +1,5 @@
 "use client"
-import { FC, PropsWithChildren, useContext, useState, createContext, useEffect } from "react";
+import { FC, PropsWithChildren, useContext, useState, createContext, useEffect, useRef } from "react";
 import { ProductType } from "@/types/product.types";
 import { InventoryService } from "@/services/inventory/inventory";
 
@@ -34,6 +34,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [keyword, setKeyword] = useState('');
+    const [ searchTimeout, setSearchTimeout ] = useState<NodeJS.Timeout | null>(null)
     const limit = 10;
     
 
@@ -58,8 +59,15 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     };
 
     const handleSetKeyword = (keyword: string) => {
-        setKeyword(keyword);
-    }
+        if (searchTimeout) {
+            clearTimeout(searchTimeout);
+        }
+        setSearchTimeout(setTimeout(() => {
+            setKeyword(keyword);
+            getProducts(currentPage, limit, keyword);
+        }, 500));
+    };
+
 
     const handlePreviousPage = () => {
         setCurrentPage(prevPage => prevPage - 1);
