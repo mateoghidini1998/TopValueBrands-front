@@ -9,6 +9,7 @@ import DotsSVG from "../svgs/DotsSVG";
 import RowActions from "./Actions";
 import { useProductContext } from "@/contexts/products.context";
 import Link from "next/link";
+import { Tooltip } from "./Tooltip";
 
 type TableRowProps = {
   products: ProductType[];
@@ -133,19 +134,22 @@ const TableRow = ({ products }: TableRowProps) => {
             className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]"
           >
             <td className="w-[25%] text-xs font-medium text-center">
-              <div className="flex flex-col w-full h-full items-center text-center">
+              <div className="relative flex flex-col w-full h-full items-center text-center">
                 <div className="w-8 h-8">
                   {product.product_image ? (
-                    <Link target="a_blank" href={`https://www.amazon.com/dp/${product.ASIN}`}>
-                    <Image
-                      className="cover rounded-xl w-full h-full"
-                      src={product.product_image}
-                      width={32}
-                      height={32}
-                      alt="product_image"
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg"
-                    />
+                    <Link
+                      target="a_blank"
+                      href={`https://www.amazon.com/dp/${product.ASIN}`}
+                    >
+                      <Image
+                        className="cover rounded-xl w-full h-full"
+                        src={product.product_image}
+                        width={32}
+                        height={32}
+                        alt="product_image"
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg"
+                      />
                     </Link>
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -156,14 +160,17 @@ const TableRow = ({ products }: TableRowProps) => {
                 <span
                   className="text-xs"
                   style={{
+                    cursor:"pointer",
+                    position: "relative",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
-                    width: "250px",
+                    width: "100%",
                   }}
                 >
                   {product.product_name}
                 </span>
+                <Tooltip product_name={product.product_name} />
               </div>
             </td>
             <td className="w-[10%] text-xs font-medium text-center">
