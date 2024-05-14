@@ -1,7 +1,5 @@
-import SearchInput from "@/components/inventory/SearchInput";
 import IndexPageContainer from "./page.container";
 import Table from "@/components/inventory/Table";
-import UserMenu from "@/components/layout/UserMenu";
 
 export default function Home() {
   return (
