@@ -15,12 +15,13 @@ type UserMenuProps = {
 export default function UserMenu() {
     const { user, logout } = useAuthContext();
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const router = useRouter();
+    // const router = useRouter();
 
     const handleLogout = async () => {
         try {
             await logout();
-            router.push('/login');
+            // I comment this out, because now we handle redirects in the logout function
+            // router.push('/login');
         } catch (error) {
             console.error(error);
         }
@@ -37,7 +38,7 @@ export default function UserMenu() {
                         <MdExpandMore className="h-6 w-6 cursor-pointer"/>
                     </button>
                 </div>
-                <div className={`absolute right-[5px] top-[30px] bg-[#262935] border-[1px] border-solid border-[#393E4F]  mt-2 w-[182px] text-white rounded-md shadow-lg box-border shadow-[0_3px_80px_0px_rgba(0,0,0,0.3)] transition-max-h duration-1000 ease-in-out overflow-hidden ${isOpen ? 'p-5 max-h-[300px] ' : 'border-none p-0 max-h-0'}`}>
+                <div className={`absolute right-[5px] top-[30px] bg-[#262935] border-[1px] border-solid border-[#393E4F]  mt-2 w-[182px] text-white rounded-md box-border shadow-[0_3px_80px_0px_rgba(0,0,0,0.3)] transition-max-h duration-1000 ease-in-out overflow-hidden ${isOpen ? 'p-5 max-h-[300px] ' : 'border-none p-0 max-h-0'}`}>
                     <div className="gap-3.5">
                         <div className="flex items-center gap-1">
                             <Profile/>

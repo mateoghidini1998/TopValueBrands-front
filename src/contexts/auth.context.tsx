@@ -26,9 +26,10 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children}: PropsWithChildr
             AuthService.getUserProfile(token).then(userData => {
                 setUser(userData);
             }).catch(error => {
-                console.error('Error al obtener el perfil del usuario:', error);          
+                console.error('Error al obtener el perfil del usuario:', error);
             });
         } else {
+            // logout()
             setAuthToken(null);
             setUser(null);
         }
@@ -60,11 +61,13 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children}: PropsWithChildr
 
     const login = async (email: string, password: string) => {
         try {
-            await AuthService.login(email, password, async (userData) => {
+            const response = await AuthService.login(email, password, async (userData) => {
                 setUser(userData)
                 const token = await getAuthToken();
                 setAuthToken(token);
             });
+
+            return response;
         } catch (err) {
             console.log('Hubo un error')
             setAuthError(err.message)
