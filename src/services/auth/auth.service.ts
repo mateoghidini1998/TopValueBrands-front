@@ -12,7 +12,6 @@ export class AuthService {
             });
             onUserLoaded(userResponse.data);
             document.cookie = "authenticated=true; path=/";
-            console.log("Respondiendo con error")
             return response;
     }
 
