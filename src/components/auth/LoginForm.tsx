@@ -38,7 +38,6 @@ const LoginForm = () => {
       } else if (user && user.role !== "admin") {
         router.push("/pogenerator");
       }
-      console.log(user);
     } catch (error) {
       console.error(error);
     }
