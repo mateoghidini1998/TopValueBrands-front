@@ -5,16 +5,20 @@ import { FC, PropsWithChildren, createContext, useContext, useEffect, useState }
 
 export type UserState = {
     users: UserType[]
-    addUser: (user: UserType) => void;
+    addUser: (user: UserType) => Promise<any>;
+    registerError: string | null
 }
 
 export const UsersContext = createContext<UserState>({
+
     users: [],
-    addUser: () => {},
+    addUser: () => Promise.resolve({}),
+    registerError: null
 })
 
 export const UsersProvider: FC<PropsWithChildren> = ({ children }: PropsWithChildren) => {
     const [ users, setUsers ] = useState<UserType[]>([])
+    const [registerError, setRegisterError] = useState<string | null>(null)
 
     const fetchUsers = async () => {
         try {
@@ -31,7 +35,8 @@ export const UsersProvider: FC<PropsWithChildren> = ({ children }: PropsWithChil
             setUsers([...users, user]);
             return response;
         } catch (error) {
-            throw new Error('Hubo un error')
+            console.log(error);
+            setRegisterError(error.message);
         }
     }
 
@@ -40,7 +45,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({ children }: PropsWithChil
     }, []);
 
     return (
-        <UsersContext.Provider value={{ users, addUser }}>
+        <UsersContext.Provider value={{ users, addUser, registerError }}>
             {children}
         </UsersContext.Provider>
     );
