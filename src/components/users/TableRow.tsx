@@ -8,6 +8,8 @@ type TableRowProps = {
   users: UserType[];
 };
 
+
+
 export default function TableRow({ users }: TableRowProps) {
   // Mantén un estado separado para el indicador de mostrar opciones para cada usuario
   const [showOptionsMap, setShowOptionsMap] = useState<{ [key: string]: boolean }>({});
@@ -16,16 +18,16 @@ export default function TableRow({ users }: TableRowProps) {
   const toggleOptions = (email: string) => {
     // Actualiza el estado para mostrar u ocultar las opciones del usuario específico
     setShowOptionsMap(prevState => ({
-      ...prevState,
       [email]: !prevState[email] // Invierte el valor actual
     }));
   };
+  
 
-  const handleDelete = (id: number) => {
-    console.log('Deleting user with id:', id);
+  const handleDelete = (email: string) => {
+    console.log('Deleting user with id:', email);
     
     try {
-      deleteUser(id);
+      deleteUser(email);
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +58,7 @@ export default function TableRow({ users }: TableRowProps) {
                 {/* Usa la función toggleOptions para cambiar el estado */}
                 <button className="flex" onClick={() => toggleOptions(user.email)}><DotsSVG /></button>
                 {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}
-                {showOptionsMap[user.email] && <TableRowOptions onEdit={handleEdit} onDelete={() => handleDelete(user.id)} />}
+                {showOptionsMap[user.email] && <TableRowOptions onEdit={handleEdit} onDelete={() => handleDelete(user.email)} />}
               </div>
             </td>
           </tr>
