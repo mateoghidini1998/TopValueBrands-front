@@ -19,7 +19,7 @@ const Navbar = () => {
     const { user } = useAuthContext()
 
     const filteredLinks = LINKS.filter(link => {
-        if (!user || (user.role !== 'admin' && (link.title === "Users" || link.title === "Inventory Management"))) {
+        if (!user || (user.role !== 'admin' && (link.title === "Users" || link.title === "Inventory Management" || link.title === "PO Generator"))) {
             return false;
         }
         return true;
