@@ -16,7 +16,7 @@ export const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children}: PropsWithChildren) => {
     const [authToken, setAuthToken] = useState<string | null>(null);
-    const [ authError, setAuthError ] = useState(null)
+    const [ authError, setAuthError ] = useState<string | null>(null)
     const [user, setUser] = useState<UserType | null>(null);
 
     useEffect(() => {
@@ -64,13 +64,14 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children}: PropsWithChildr
             const response = await AuthService.login(email, password, async (userData) => {
                 setUser(userData)
                 const token = await getAuthToken();
-                setAuthToken(token);
+                setAuthToken(token?? null);
             });
 
             return response;
         } catch (err) {
-            console.log('Hubo un error')
-            setAuthError(err.message)
+            if(err instanceof Error) {
+                setAuthError(err.message)
+            }
         }
     };
     
