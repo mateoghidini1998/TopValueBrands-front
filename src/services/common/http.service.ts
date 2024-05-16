@@ -34,5 +34,15 @@ export class HttpAPI {
         });
     }
 
+    public static async delete(url: string, accessToken?: string): Promise<any> {
+        return this.fetch(url, {
+            method: 'DELETE',
+            headers: !accessToken ? { 'Content-Type': 'application/json' } : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+        });
+    }
+
    
 }
