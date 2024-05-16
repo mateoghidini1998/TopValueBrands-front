@@ -1,19 +1,7 @@
 "use client"
-import Link from "next/link"
 import Menu from "../menu/Menu"
-import Users from "../svgs/Users"
-import Shop from "../svgs/Shop"
-import Search from "../svgs/Search"
-import Package from "../svgs/Package"
 import useAuthContext from "@/contexts/auth.context"
-import { useEffect } from "react"
-
-const LINKS = [
-    { title: "Inventory Management", href: '/', icon: <Search/> },
-    { title: "PO Generator", href: '/pogenerator', icon: <Package/> },
-    { title: "Warehouse", href: '/warehouse', icon: <Shop/> },
-    { title: "Users", href: '/users', icon: <Users/> },
-]
+import { LINKS } from '../../constants/links'
 
 const Navbar = () => {
     const { user } = useAuthContext()
