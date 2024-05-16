@@ -10,5 +10,12 @@ export default function PageTitle() {
     
     const currentLink = LINKS.find(link => link.href === pathname)
 
-    return <h4 className="text-white text-base font-bold leading-6">{currentLink?.title}</h4>
+    return (
+        <>
+            <div className="flex items-center gap-2">
+                {currentLink?.icon}
+                <h4 className="text-white text-base font-bold leading-6">{currentLink?.title}</h4>
+            </div>
+        </>
+    )
 }
