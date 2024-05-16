@@ -30,9 +30,13 @@ export class UsersService {
     return response;
   }
 
-  static async deleteUser(id: number) {
+  static async deleteUser(email: string) {
     const token = getAuthToken();
 
+    //get the id of the user with the email from the user context
+    const users = await UsersService.getUsers();
+    const id = users.data.find((user: UserType) => user.email === email)?.id;
+    
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.delete(
@@ -45,10 +49,13 @@ export class UsersService {
   static async updateUser(data: UserType) {
     const token = getAuthToken();
 
+    const users = await UsersService.getUsers();
+    const id = users.data.find((user: UserType) => user.email === data.email)?.id;
+
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.patch(
-      `http://localhost:5000/api/v1/users/${data.id}`,
+      `http://localhost:5000/api/v1/users/${id}`,
       data,
       token
     );

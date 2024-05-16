@@ -7,7 +7,7 @@ export type UserState = {
     users: UserType[];
     addUser: (user: UserType) => Promise<any>;
     registerError: string | null;
-    deleteUser: (id: number) => Promise<any>
+    deleteUser: (email: string) => Promise<any>
 }
 
 export const UsersContext = createContext<UserState>({
@@ -42,10 +42,10 @@ export const UsersProvider: FC<PropsWithChildren> = ({ children }: PropsWithChil
         }
     }
 
-    const deleteUser = async (id: number) => {
+    const deleteUser = async (email: string) => {
         try {
-            const response = await UsersService.deleteUser(id);
-            setUsers(users.filter((user) => user.id !== id));
+            const response = await UsersService.deleteUser(email);
+            setUsers(users.filter((user) => user.email !== email));
             return response;
         } catch (error) {
             console.log(error);
@@ -55,7 +55,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({ children }: PropsWithChil
     const updateUser = async (user: UserType) => {
         try {
             const response = await UsersService.updateUser(user);
-            setUsers(users.map((u) => (u.id === user.id ? user : u)));
+            setUsers(users.map((u) => (u.email === user.email ? user : u)));
             return response;
         } catch (error) {
             console.log(error);
