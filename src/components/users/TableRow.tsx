@@ -13,7 +13,7 @@ type TableRowProps = {
 export default function TableRow({ users }: TableRowProps) {
   // Mantén un estado separado para el indicador de mostrar opciones para cada usuario
   const [showOptionsMap, setShowOptionsMap] = useState<{ [key: string]: boolean }>({});
-  const { deleteUser } = useUsersContext();
+  const { deleteUser, setUpdateFormIsOpen, setEditingUser } = useUsersContext();
 
   const toggleOptions = (email: string) => {
     // Actualiza el estado para mostrar u ocultar las opciones del usuario específico
@@ -21,8 +21,6 @@ export default function TableRow({ users }: TableRowProps) {
       [email]: !prevState[email] // Invierte el valor actual
     }));
   };
-  
-
   const handleDelete = (email: string) => {
     console.log('Deleting user with id:', email);
     
@@ -35,7 +33,10 @@ export default function TableRow({ users }: TableRowProps) {
   
 
   const handleEdit = (email: string) => {
-    // Aquí puedes hacer algo con el correo electrónico del usuario que se quiere editar
+    setUpdateFormIsOpen(true);
+    const user = users.find((user) => user.email === email);
+    if(!user) return
+    setEditingUser(user);
   }
 
   return (
@@ -58,7 +59,7 @@ export default function TableRow({ users }: TableRowProps) {
                 {/* Usa la función toggleOptions para cambiar el estado */}
                 <button className="flex" onClick={() => toggleOptions(user.email)}><DotsSVG /></button>
                 {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}
-                {showOptionsMap[user.email] && <TableRowOptions onEdit={handleEdit} onDelete={() => handleDelete(user.email)} />}
+                {showOptionsMap[user.email] && <TableRowOptions onEdit={() => handleEdit(Object.keys(showOptionsMap)[0])} onDelete={() => handleDelete(user.email)} />}
               </div>
             </td>
           </tr>

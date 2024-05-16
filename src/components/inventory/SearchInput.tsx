@@ -2,14 +2,18 @@
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { useProductContext } from "@/contexts/products.context";
+import { usePathname } from "next/navigation";
 
 const SearchInput = () => {
   const [showPlaceholder, setShowPlaceholder] = useState(true);
   const { keyword, handleSetKeyword } = useProductContext();
-
+  const route = usePathname();
+  const isHome = route === "/";
   const hidePlaceholder = () => setShowPlaceholder(!showPlaceholder);
 
+
   return (
+    isHome &&
     <div
       className="flex justify-center h-[35px]"
       style={{ position: "relative" }}

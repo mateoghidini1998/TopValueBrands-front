@@ -4,14 +4,59 @@ import AddUserBtn from "./AddUserBtn";
 import TableRow from "./TableRow";
 import { useState } from "react";
 import RegisterForm from "../auth/RegisterForm";
+import { UserRole } from "@/types/user.types";
+
+type FormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  role: UserRole;
+};
 
 export default function Table() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { users } = useUsersContext();
+  const [isRegisterFormOpen, setRegisterFormIsOpen] = useState<boolean>(false);
+  const { users, addUser, registerError, updateUser, updateUserError, isUpdateFormOpen, setUpdateFormIsOpen, setEditingUser } = useUsersContext();
 
-  const handleModalOpen = () => {
-    setIsOpen(true);
+  const handleCreateUser = (data: FormData) => {
+    try {
+      addUser(data).then((response) => {
+        if (response.success) {
+          setRegisterFormIsOpen(false);
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const handleUpdateUser = (data: FormData) => {
+    try {
+      updateUser(data).then((response) => {
+        if (response.success) {
+          setUpdateFormIsOpen(false);
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleModalRegisterFormOpen = () => {
+    setRegisterFormIsOpen(true);
+  };
+
+  const handleModalCloseUpdateForm = () => {
+    setUpdateFormIsOpen(false);
+    setEditingUser({
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: UserRole.USER
+    })
+
+  }
 
   return (
     <>
@@ -22,7 +67,7 @@ export default function Table() {
             <th className="w-[15%] text-xs font-medium text-center">Email</th>
             <th className="w-[60%] text-xs font-medium text-center"></th>
             <th className="w-[10%] text-xs font-medium text-center">
-              <AddUserBtn onClick={() => handleModalOpen()} />
+              <AddUserBtn onClick={() => handleModalRegisterFormOpen()} />
             </th>
           </tr>
         </thead>
@@ -30,7 +75,8 @@ export default function Table() {
           <TableRow users={users} />
         </tbody>
       </table>
-      <RegisterForm isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <RegisterForm title={"Create new User"} isOpen={isRegisterFormOpen} onClose={() => setRegisterFormIsOpen(false)} onSubmit={handleCreateUser} errorMessage={registerError} />
+      <RegisterForm title={"Update User"} isOpen={isUpdateFormOpen} onClose={handleModalCloseUpdateForm} onSubmit={handleUpdateUser} errorMessage={updateUserError} />
     </>
   );
 }

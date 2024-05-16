@@ -7,6 +7,7 @@ type InputTextProps = {
   label: string;
   placeholder?: string;
   type: "text" | "password";
+  userValue?: string;
 };
 
 const InputText = ({
@@ -16,11 +17,13 @@ const InputText = ({
   type,
   placeholder,
   isDropdown,
+  userValue,
 }: InputTextProps) => {
   const {
     register,
     formState: { errors },
   } = useFormContext();
+
   return (
     <>
       <label className="text-[#808191] text-sm mb-2" htmlFor="">
@@ -33,10 +36,11 @@ const InputText = ({
           <option className="" value="user">User</option>
         </select>
       ) : (
-        <input
+          <input
           {...register(fieldName)}
           placeholder={placeholder}
-          type={type}
+            type={type}
+            value={userValue}
           className="p-2.5 bg-[#1F2128] shrink rounded-md text-white focus:outline-none"
         />
       )}
