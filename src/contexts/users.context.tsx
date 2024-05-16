@@ -4,16 +4,18 @@ import { UserType } from "@/types/user.types"
 import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
 
 export type UserState = {
-    users: UserType[]
+    users: UserType[];
     addUser: (user: UserType) => Promise<any>;
-    registerError: string | null
+    registerError: string | null;
+    deleteUser: (id: number) => Promise<any>
 }
 
 export const UsersContext = createContext<UserState>({
 
     users: [],
     addUser: () => Promise.resolve({}),
-    registerError: null
+    registerError: null,
+    deleteUser: () => Promise.resolve({})
 })
 
 export const UsersProvider: FC<PropsWithChildren> = ({ children }: PropsWithChildren) => {
@@ -40,12 +42,32 @@ export const UsersProvider: FC<PropsWithChildren> = ({ children }: PropsWithChil
         }
     }
 
+    const deleteUser = async (id: number) => {
+        try {
+            const response = await UsersService.deleteUser(id);
+            setUsers(users.filter((user) => user.id !== id));
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const updateUser = async (user: UserType) => {
+        try {
+            const response = await UsersService.updateUser(user);
+            setUsers(users.map((u) => (u.id === user.id ? user : u)));
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         fetchUsers();
     }, []);
 
     return (
-        <UsersContext.Provider value={{ users, addUser, registerError }}>
+        <UsersContext.Provider value={{ users, addUser, registerError, deleteUser }}>
             {children}
         </UsersContext.Provider>
     );
