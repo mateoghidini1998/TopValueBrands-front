@@ -15,8 +15,9 @@ export class HttpAPI {
     public static async post(url: string, body: object, accessToken?: string): Promise<any> {
         return this.fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
+            headers: !accessToken ? { 'Content-Type': 'application/json' } : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(body),
         });
