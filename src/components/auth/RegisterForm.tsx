@@ -17,13 +17,7 @@ type FormData = {
   role: UserRole;
 };
 
-const RegisterForm = ({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
+const RegisterForm = ({  isOpen, onClose, }: { isOpen: boolean;  onClose: () => void; }) => {
   const { addUser, registerError } = useUsersContext();
 
   const methods = useForm<FormData>({
