@@ -14,11 +14,10 @@ const IndexPageContainer: FC<PropsWithChildren> = ({children}: PropsWithChildren
         if (!authToken) {
             router.push('/login');
         } else if(user && user.role !== 'admin') {
-            router.push('/pogenerator');
+            router.push('/warehouse');
             router.refresh();
-        } else {
-            router.push('/');
         }
+
         setIsLoading(false);
     }, [authToken, user, router]);
 
