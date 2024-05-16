@@ -29,4 +29,30 @@ export class UsersService {
     );
     return response;
   }
+
+  static async deleteUser(id: number) {
+    const token = getAuthToken();
+
+    if (!token) throw new Error("Token not found");
+
+    const response = await HttpAPI.delete(
+      `http://localhost:5000/api/v1/users/${id}`,
+      token
+    );
+    return response;
+  }
+
+  static async updateUser(data: UserType) {
+    const token = getAuthToken();
+
+    if (!token) throw new Error("Token not found");
+
+    const response = await HttpAPI.patch(
+      `http://localhost:5000/api/v1/users/${data.id}`,
+      data,
+      token
+    );
+    return response;
+  }
+
 }
