@@ -26,3 +26,15 @@ body {
     text-wrap: balance;
   }
 }
+
+.main_layout{
+  width: calc(100vw - 290px);
+  margin-left: auto;
+  margin-top: 120px;
+}
+
+.table_header{
+  background-color: #1F2128;
+  width: calc(100vw - 300px);
+  margin-left: auto;
+}
