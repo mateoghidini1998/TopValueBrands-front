@@ -91,8 +91,8 @@ const RegisterForm = ({
               <InputText label="Role" fieldName="role" type="text" isDropdown />
             </div>
 
-            {!editingUser && (
-              <>
+            {/* {!editingUser && (
+              <> */}
                 <div className="flex flex-col mb-5">
                   <InputText
                     label="Password"
@@ -107,8 +107,8 @@ const RegisterForm = ({
                     type="password"
                   />
                 </div>
-              </>
-            )}
+              {/* </>
+            )} */}
             <SubmitButton label="Create" onSubmit={onSubmit} />
           </form>
         </FormProvider>
