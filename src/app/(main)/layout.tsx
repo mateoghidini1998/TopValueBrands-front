@@ -25,11 +25,11 @@ export default function RootLayout({
       <body className="flex">
       <IndexPageContainer>
         <Navbar />
-        <div className="w-full">
+        <div className="main_layout">
           <ProductProvider>
-          <div className="py-10 px-[46px]  w-full flex justify-between items-center">
+          <div className="table_header py-10 px-[46px]  flex justify-between items-center fixed top-0 z-40">
               <PageTitle/>
-              <div className="flex items-center">
+              <div className="flex items-center ">
                 <SearchInput/>
                 <UserMenu/>
               </div>
