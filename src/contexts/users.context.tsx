@@ -20,8 +20,8 @@ export type UserState = {
   //test
   isUpdateFormOpen: boolean;
   setUpdateFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  editingUser: UserType;
-  setEditingUser: React.Dispatch<React.SetStateAction<UserType>>;
+  editingUser: UserType | null;
+  setEditingUser: React.Dispatch<React.SetStateAction<UserType | null>>;
 };
 
 export const UsersContext = createContext<UserState>({
