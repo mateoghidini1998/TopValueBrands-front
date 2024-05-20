@@ -52,6 +52,12 @@ export default function Table() {
       updateUser(data).then((response) => {
         if (response.success) {
           setShowAlert(false);
+          setEditingUser({
+            firstName: "",
+            lastName: "",
+            email: "",
+            role: UserRole.USER
+          })
         }
       });
     } catch (error) {
