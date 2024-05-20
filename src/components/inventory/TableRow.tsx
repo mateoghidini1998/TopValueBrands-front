@@ -15,6 +15,13 @@ type TableRowProps = {
   products: ProductType[];
 };
 
+interface EditData {
+  product_cost?: string;
+  supplier_name?: string;
+  supplier_item_number?: string;
+  pack_type?: string;
+}
+
 const TableRow = ({ products }: TableRowProps) => {
   const [isActionsOpen, setIsActionsOpen] = useState<string | null>(null);
   const [editingRow, setEditingRow] = useState<{ [key: string]: boolean }>({});
@@ -24,7 +31,7 @@ const TableRow = ({ products }: TableRowProps) => {
   const [currentProduct, setCurrentProduct] = useState<{
     seller_sku: string;
   } | null>(null);
-  const [editData, setEditData] = useState({});
+  const [editData, setEditData] = useState<EditData>({});
   const { updateProduct, handleDeleteProduct } = useProductContext();
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
@@ -189,7 +196,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   onChange={(e) => onChange(e)}
                 />
               ) : (
-                product.product_cost
+                `$ ${product.product_cost}` 
               )}
             </td>
             <td className="w-[10%] text-xs font-medium text-center flex justify-center">
@@ -205,7 +212,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 product.supplier_name
               )}
             </td>
-            <td className="w-[10%] text-xs font-medium text-center flex justify-center">
+            <td className="w-[15%] text-xs font-medium text-center flex justify-center">
               {editingRow[product.seller_sku] ? (
                 <input
                   name="supplier_item_number"
@@ -240,7 +247,7 @@ const TableRow = ({ products }: TableRowProps) => {
             <td className="w-[5%] text-xs font-medium text-center">
               {product.Inbound_to_FBA}
             </td>
-            <td className="w-[10%] text-xs font-medium text-center relative">
+            <td className="w-[5%] text-xs font-medium text-center relative">
               {!editingRow[product.seller_sku] ? (
                 <button
                   onClick={() =>
