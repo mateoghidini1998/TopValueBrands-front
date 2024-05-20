@@ -30,12 +30,14 @@ const RegisterForm = ({
   onClose,
   onSubmit,
   errorMessage,
+  buttonName,
 }: {
   title: string;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: FormData) => void;
   errorMessage?: string | null;
+  buttonName: string;
 }) => {
   const methods = useForm<FormData>({
     resolver: yupResolver(RegisterScheme) as unknown as Resolver<FormData>,
@@ -93,23 +95,23 @@ const RegisterForm = ({
 
             {/* {!editingUser && (
               <> */}
-                <div className="flex flex-col mb-5">
-                  <InputText
-                    label="Password"
-                    fieldName="password"
-                    type="password"
-                  />
-                </div>
-                <div className="flex flex-col mb-5">
-                  <InputText
-                    label="Confirm Password"
-                    fieldName="confirmPassword"
-                    type="password"
-                  />
-                </div>
-              {/* </>
+            <div className="flex flex-col mb-5">
+              <InputText
+                label="Password"
+                fieldName="password"
+                type="password"
+              />
+            </div>
+            <div className="flex flex-col mb-5">
+              <InputText
+                label="Confirm Password"
+                fieldName="confirmPassword"
+                type="password"
+              />
+            </div>
+            {/* </>
             )} */}
-            <SubmitButton label="Create" onSubmit={onSubmit} />
+            <SubmitButton label={buttonName} onSubmit={onSubmit} />
           </form>
         </FormProvider>
       </dialog>

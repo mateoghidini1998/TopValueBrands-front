@@ -31,7 +31,7 @@ export default function TableRow({ users }: TableRowProps) {
     try {
       deleteUser(email).then((result) => {
         console.log('Result:', result);
-        if (result) {
+        if (result.success) {
           setShowAlert(false);
         }
       })

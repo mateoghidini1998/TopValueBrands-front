@@ -75,8 +75,8 @@ export default function Table() {
           <TableRow users={users} />
         </tbody>
       </table>
-      <RegisterForm title={"Create new User"} isOpen={isRegisterFormOpen} onClose={() => setRegisterFormIsOpen(false)} onSubmit={handleCreateUser} errorMessage={registerError} />
-      <RegisterForm title={"Update User"} isOpen={isUpdateFormOpen} onClose={handleModalCloseUpdateForm} onSubmit={handleUpdateUser} errorMessage={updateUserError} />
+      <RegisterForm title={"Create new User"} isOpen={isRegisterFormOpen} onClose={() => setRegisterFormIsOpen(false)} onSubmit={handleCreateUser} errorMessage={registerError} buttonName={'Create'} />
+      <RegisterForm title={"Update User"} isOpen={isUpdateFormOpen} onClose={handleModalCloseUpdateForm} onSubmit={handleUpdateUser} errorMessage={updateUserError} buttonName={'Update'} />
     </>
   );
 }
