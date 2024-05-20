@@ -93,8 +93,7 @@ const RegisterForm = ({
               <InputText label="Role" fieldName="role" type="text" isDropdown />
             </div>
 
-            {/* {!editingUser && (
-              <> */}
+            
             <div className="flex flex-col mb-5">
               <InputText
                 label="Password"
