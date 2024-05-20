@@ -30,12 +30,14 @@ const RegisterForm = ({
   onClose,
   onSubmit,
   errorMessage,
+  buttonName,
 }: {
   title: string;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: FormData) => void;
   errorMessage?: string | null;
+  buttonName: string;
 }) => {
   const methods = useForm<FormData>({
     resolver: yupResolver(RegisterScheme) as unknown as Resolver<FormData>,
@@ -45,18 +47,20 @@ const RegisterForm = ({
   const { editingUser } = useUsersContext();
   console.log(editingUser);
 
+  const DEFAULT_ROLE: UserRole = UserRole.USER;
+
   useEffect(() => {
     if (isOpen) {
       reset({
         firstName: editingUser?.firstName || "",
         lastName: editingUser?.lastName || "",
         email: editingUser?.email || "",
-        role: editingUser?.role || "",
+        role: editingUser?.role || DEFAULT_ROLE,
         password: "",
         confirmPassword: "",
       });
     }
-  }, [isOpen, editingUser, reset]);
+  }, [isOpen, editingUser, reset, DEFAULT_ROLE]);
 
   if (!isOpen) return null;
 
@@ -91,25 +95,23 @@ const RegisterForm = ({
               <InputText label="Role" fieldName="role" type="text" isDropdown />
             </div>
 
-            {!editingUser && (
-              <>
-                <div className="flex flex-col mb-5">
-                  <InputText
-                    label="Password"
-                    fieldName="password"
-                    type="password"
-                  />
-                </div>
-                <div className="flex flex-col mb-5">
-                  <InputText
-                    label="Confirm Password"
-                    fieldName="confirmPassword"
-                    type="password"
-                  />
-                </div>
-              </>
-            )}
-            <SubmitButton label="Create" onSubmit={onSubmit} />
+            <div className="flex flex-col mb-5">
+              <InputText
+                label="Password"
+                fieldName="password"
+                type="password"
+              />
+            </div>
+            <div className="flex flex-col mb-5">
+              <InputText
+                label="Confirm Password"
+                fieldName="confirmPassword"
+                type="password"
+              />
+            </div>
+            {/* </>
+            )} */}
+            <SubmitButton label={buttonName} onSubmit={onSubmit} />
           </form>
         </FormProvider>
       </dialog>

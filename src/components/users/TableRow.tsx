@@ -3,6 +3,7 @@ import DotsSVG from "../svgs/DotsSVG";
 import { useState } from "react";
 import TableRowOptions from "../ui/TableRowOptions";
 import { useUsersContext } from "@/contexts/users.context";
+import ConfirmAlert from "../alerts/ConfirmAlert";
 
 type TableRowProps = {
   users: UserType[];
@@ -14,6 +15,7 @@ export default function TableRow({ users }: TableRowProps) {
   // Mantén un estado separado para el indicador de mostrar opciones para cada usuario
   const [showOptionsMap, setShowOptionsMap] = useState<{ [key: string]: boolean }>({});
   const { deleteUser, setUpdateFormIsOpen, setEditingUser } = useUsersContext();
+  const [showAlert, setShowAlert] = useState(false);
 
   const toggleOptions = (email: string) => {
     // Actualiza el estado para mostrar u ocultar las opciones del usuario específico
@@ -23,14 +25,20 @@ export default function TableRow({ users }: TableRowProps) {
   };
   const handleDelete = (email: string) => {
     console.log('Deleting user with id:', email);
-    
+    setShowAlert(true);
+  }
+  const deleteUserHandler = (email: string) => {
     try {
-      deleteUser(email);
+      deleteUser(email).then((result) => {
+        console.log('Result:', result);
+        if (result.success) {
+          setShowAlert(false);
+        }
+      })
     } catch (error) {
       console.log(error);
     }
   }
-  
 
   const handleEdit = (email: string) => {
     setUpdateFormIsOpen(true);
@@ -38,9 +46,18 @@ export default function TableRow({ users }: TableRowProps) {
     if(!user) return
     setEditingUser(user);
   }
+  
 
   return (
     <>
+      {
+        showAlert &&
+        <ConfirmAlert
+        message="Are you sure you want to delete this user?"
+        onConfirm={() => deleteUserHandler(Object.keys(showOptionsMap)[0])}
+        onCancel={() => setShowAlert(false)}
+        onClose={() => setShowAlert(false)}        
+      />}
       {Array.isArray(users) &&
         users.map((user) => (
           <tr key={user.email} className="relative py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]">

@@ -35,7 +35,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     const [currentPage, setCurrentPage] = useState(1);
     const [keyword, setKeyword] = useState('');
     const [ searchTimeout, setSearchTimeout ] = useState<NodeJS.Timeout | null>(null)
-    const limit = 10;
+    const limit = 50;
     
 
     useEffect(() => {
