@@ -25,7 +25,7 @@ const ConfirmAlert = forwardRef(function ConfirmAlert({ message, onConfirm, onCa
 
   return (
     <>
-        <dialog open ref={dialog} className="absolute top-[50%] left-0 translate-y-[-50%] w-[320px] h-[226px] bg-[#262935] z-[2000] flex flex-col items-center justify-center gap-6 px-[2rem] rounded-md">
+        <dialog open ref={dialog} className="fixed top-[50%] left-0 translate-y-[-50%] w-[320px] h-[226px] bg-[#262935] z-[2000] flex flex-col items-center justify-center gap-6 px-[2rem] rounded-md">
           <span onClick={onClose} className="absolute top-2 right-2 cursor-pointer">
             <CloseButton/>
           </span>

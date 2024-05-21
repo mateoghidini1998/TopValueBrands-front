@@ -93,20 +93,19 @@ const TableRow = ({ products }: TableRowProps) => {
       ...editData,
       [e.target.name]: e.target.value,
     });
-
+  
+  
   return (
     <>
       {savedData && (
         <>
           <ConfirmAlert
-            message="Are you sure you want to save the changes?"
+            message={isDeleting ? "Are you sure you want to delete this product?" : "Are you sure you want to save these changes?"}
             ref={dialog}
-            onClose={() => setSavedData(false)}
+            onClose={() => { setSavedData(false); setIsDeleting(false); }}
             onConfirm={() => {
               if (isDeleting) {
                 deleteProduct().then((result) => {
-                  console.log(currentProduct);
-
                   if (result) {
                     setIsDeleting(false);
                     setSavedData(false);
@@ -128,6 +127,7 @@ const TableRow = ({ products }: TableRowProps) => {
               setSavedData(false);
               setIsActionsOpen(null);
               setEditingRow({});
+              setIsDeleting(false);
             }}
             confirmText={AlertOptions.CONFIRM}
             cancelText={AlertOptions.CANCEL}
