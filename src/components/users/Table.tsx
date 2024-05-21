@@ -1,11 +1,12 @@
-"use client"
+"use client";
 import { useUsersContext } from "@/contexts/users.context";
 import AddUserBtn from "./AddUserBtn";
 import TableRow from "./TableRow";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RegisterForm from "../auth/RegisterForm";
 import { UserRole } from "@/types/user.types";
 import ConfirmAlert from "../alerts/ConfirmAlert";
+import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
 
 type FormData = {
   id: string;
@@ -19,7 +20,18 @@ type FormData = {
 
 export default function Table() {
   const [isRegisterFormOpen, setRegisterFormIsOpen] = useState<boolean>(false);
-  const { users, addUser, registerError, updateUser, updateUserError, isUpdateFormOpen, setUpdateFormIsOpen, setEditingUser } = useUsersContext();
+  const {
+    users,
+    addUser,
+    registerError,
+    setRegisterError,
+    updateUser,
+    updateUserError,
+    setUpdateUserError,
+    isUpdateFormOpen,
+    setUpdateFormIsOpen,
+    setEditingUser,
+  } = useUsersContext();
   const [showAlert, setShowAlert] = useState(false);
   const [userToUpdate, setUserToUpdate] = useState<FormData>({
     id: "",
@@ -28,17 +40,56 @@ export default function Table() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: UserRole.USER
+    role: UserRole.USER,
   });
 
-  console.log({userToUpdate});
-  
+  const [customAlertProperties, setCustomAlertProperties] = useState({
+    show: false,
+    type: CustomAlertOptions.SUCCESS,
+    message: "",
+    description: "",
+    visible: false,
+  });
+
+  //Custom Alert
+  const showCustomAlert = (
+    alertType: CustomAlertOptions,
+    message: string,
+    description: string,
+    visible: boolean
+  ) => {
+    setCustomAlertProperties({
+      show: true,
+      type: alertType,
+      message,
+      description,
+      visible,
+    });
+  };
 
   const handleCreateUser = (data: FormData) => {
     try {
-      addUser(data).then((response) => {
-        if (response.success) {
+      addUser(data).then((result) => {
+        if (result.success) {
+          showCustomAlert(
+            CustomAlertOptions.SUCCESS,
+            "User created successfully",
+            "The user has been created successfully.",
+            true
+          );
+          setShowAlert(false);
           setRegisterFormIsOpen(false);
+          setRegisterError(null);
+        } else {
+          setShowAlert(false);
+          showCustomAlert(
+            CustomAlertOptions.ERROR,
+            "Error creating user",
+            "An error occurred while creating the user.",
+            true
+          );
+          setRegisterFormIsOpen(false);
+          setRegisterError(null);
         }
       });
     } catch (error) {
@@ -46,29 +97,67 @@ export default function Table() {
     }
   };
 
-  const handleUpdateUser = (data: FormData) => {    
+  const handleUpdateUser = (data: FormData) => {
     setShowAlert(true);
     setUserToUpdate(data);
     setUpdateFormIsOpen(false);
-  }
-  
+  };
+
   const updateUserHandler = (data: FormData) => {
     try {
-      updateUser(data).then((response) => {
-        if (response.success) {
+      updateUser(data).then((result) => {
+        if (result.success) {
+          showCustomAlert(
+            CustomAlertOptions.SUCCESS,
+            "User updated successfully",
+            "The user has been updated successfully.",
+            true
+          );
+
           setShowAlert(false);
+          setUpdateUserError(null);
           setEditingUser({
+            id: "",
             firstName: "",
             lastName: "",
             email: "",
-            role: UserRole.USER
-          })
+            role: UserRole.USER,
+            password: "",
+            confirmPassword: "",
+          });
+        } else {
+          setShowAlert(false);
+          showCustomAlert(
+            CustomAlertOptions.ERROR,
+            "Error updating user",
+            result.message,
+            true
+          );
+
+          setUpdateUserError(null);
+
+          setEditingUser({
+            id: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            role: UserRole.USER,
+            password: "",
+            confirmPassword: "",
+          });
         }
       });
     } catch (error) {
+      setShowAlert(false);
+      showCustomAlert(
+        CustomAlertOptions.ERROR,
+        "Error updating user",
+        error.message,
+        true
+      );
       console.error(error);
     }
-  }
+  };
 
   const handleModalRegisterFormOpen = () => {
     setRegisterFormIsOpen(true);
@@ -76,6 +165,7 @@ export default function Table() {
 
   const handleModalCloseUpdateForm = () => {
     setUpdateFormIsOpen(false);
+    setShowAlert(false);
     setEditingUser({
       id: "",
       firstName: "",
@@ -84,22 +174,44 @@ export default function Table() {
       role: UserRole.USER,
       password: "",
       confirmPassword: "",
-    })
+    });
+    setUpdateUserError(null);
+    
+  };
 
-  }
+  useEffect(() => {
+    // add 3 seconds delay
+    const timer = setTimeout(() => {
+      setCustomAlertProperties({
+        show: false,
+        type: CustomAlertOptions.SUCCESS,
+        message: "",
+        description: "",
+        visible: false,
+      });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [updateUser, setCustomAlertProperties]);
 
   return (
     <>
-      {showAlert &&
-        
-      <ConfirmAlert
-        message="Are you sure you want to update this user?"
-        onConfirm={() => updateUserHandler(userToUpdate)}
-        onCancel={() => handleModalCloseUpdateForm()}
-        onClose={() => handleModalCloseUpdateForm()}
+      <CustomAlert
+        message={customAlertProperties.message}
+        description={customAlertProperties.description}
+        type={customAlertProperties.type}
+        visible={customAlertProperties.visible}
+        closable={true}
+        showIcon={true}
       />
 
-      } 
+      {showAlert && (
+        <ConfirmAlert
+          message="Are you sure you want to update this user?"
+          onConfirm={() => updateUserHandler(userToUpdate)}
+          onCancel={() => handleModalCloseUpdateForm()}
+          onClose={() => handleModalCloseUpdateForm()}
+        />
+      )}
       <table className="w-full mb-5 rounded-[20px] border-[#393E4F] border-[1px] border-solid">
         <thead>
           <tr className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[60px] w-full text-white bg-[#262935]">
@@ -115,10 +227,22 @@ export default function Table() {
           <TableRow users={users} />
         </tbody>
       </table>
-      <RegisterForm title={"Create new User"} isOpen={isRegisterFormOpen} onClose={() => setRegisterFormIsOpen(false)} onSubmit={handleCreateUser} errorMessage={registerError} buttonName={'Create'} />
-      <RegisterForm title={"Update User"} isOpen={isUpdateFormOpen} onClose={handleModalCloseUpdateForm} onSubmit={handleUpdateUser} errorMessage={updateUserError} buttonName={'Update'} />
+      <RegisterForm
+        title={"Create new User"}
+        isOpen={isRegisterFormOpen}
+        onClose={() => { setRegisterFormIsOpen(false); setRegisterError(null); }}
+        onSubmit={handleCreateUser}
+        errorMessage={registerError}
+        buttonName={"Create"}
+      />
+      <RegisterForm
+        title={"Update User"}
+        isOpen={isUpdateFormOpen}
+        onClose={handleModalCloseUpdateForm}
+        onSubmit={handleUpdateUser}
+        errorMessage={updateUserError}
+        buttonName={"Update"}
+      />
     </>
   );
 }
-
-

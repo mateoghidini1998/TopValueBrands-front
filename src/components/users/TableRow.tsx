@@ -1,9 +1,10 @@
 import { UserType } from "@/types/user.types";
 import DotsSVG from "../svgs/DotsSVG";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TableRowOptions from "../ui/TableRowOptions";
 import { useUsersContext } from "@/contexts/users.context";
 import ConfirmAlert from "../alerts/ConfirmAlert";
+import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
 
 type TableRowProps = {
   users: UserType[];
@@ -16,6 +17,45 @@ export default function TableRow({ users }: TableRowProps) {
   const [showOptionsMap, setShowOptionsMap] = useState<{ [key: string]: boolean }>({});
   const { deleteUser, setUpdateFormIsOpen, setEditingUser } = useUsersContext();
   const [showAlert, setShowAlert] = useState(false);
+
+  const [customAlertProperties, setCustomAlertProperties] = useState({
+    show: false,
+    type: CustomAlertOptions.SUCCESS,
+    message: "",
+    description: "",
+    visible: false,
+  });
+
+  //Custom Alert
+  const showCustomAlert = (
+    alertType: CustomAlertOptions,
+    message: string,
+    description: string,
+    visible: boolean
+  ) => {
+    setCustomAlertProperties({
+      show: true,
+      type: alertType,
+      message,
+      description,
+      visible,
+    });
+  };
+
+  
+  useEffect(() => {
+    // add 3 seconds delay
+    const timer = setTimeout(() => {
+      setCustomAlertProperties({
+        show: false,
+        type: CustomAlertOptions.SUCCESS,
+        message: "",
+        description: "",
+        visible: false,
+      });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [showAlert, setCustomAlertProperties]);
 
   const toggleOptions = (email: string) => {
     // Actualiza el estado para mostrar u ocultar las opciones del usuario específico
@@ -30,12 +70,32 @@ export default function TableRow({ users }: TableRowProps) {
   const deleteUserHandler = (email: string) => {
     try {
       deleteUser(email).then((result) => {
-        console.log('Result:', result);
         if (result.success) {
+          showCustomAlert(
+            CustomAlertOptions.SUCCESS,
+            "User deleted successfully",
+            "The user has been deleted successfully.",
+            true
+          );
+          setShowAlert(false);
+        } else {
+          showCustomAlert(
+            CustomAlertOptions.ERROR,
+            "Error deleting user",
+            result.message,
+            true
+          );
           setShowAlert(false);
         }
       })
     } catch (error) {
+      setShowAlert(false);
+      showCustomAlert(
+        CustomAlertOptions.ERROR,
+        "Error deleting User",
+        "An error occurred while deleting the User.",
+        true
+      );
       console.log(error);
     }
   }
@@ -50,13 +110,21 @@ export default function TableRow({ users }: TableRowProps) {
 
   return (
     <>
+      <CustomAlert
+        message={customAlertProperties.message}
+        description={customAlertProperties.description}
+        type={customAlertProperties.type}
+        visible={customAlertProperties.visible}
+        closable={true}
+        showIcon={true}
+      />
       {
         showAlert &&
         <ConfirmAlert
         message="Are you sure you want to delete this user?"
         onConfirm={() => deleteUserHandler(Object.keys(showOptionsMap)[0])}
         onCancel={() => setShowAlert(false)}
-        onClose={() => setShowAlert(false)}        
+        onClose={() => setShowAlert(false)}
       />}
       {Array.isArray(users) &&
         users.map((user) => (

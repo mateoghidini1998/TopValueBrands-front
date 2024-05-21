@@ -14,7 +14,9 @@ export type UserState = {
   users: UserType[];
   addUser: (user: UserType) => Promise<any>;
   registerError: string | null;
+  setRegisterError: React.Dispatch<React.SetStateAction<string | null>>;
   updateUserError: string | null;
+  setUpdateUserError: React.Dispatch<React.SetStateAction<string | null>>;
   deleteUser: (email: string) => Promise<any>;
   updateUser: (user: UserType) => Promise<any>;
   //test
@@ -28,9 +30,11 @@ export const UsersContext = createContext<UserState>({
   users: [],
   addUser: () => Promise.resolve({}),
   registerError: null,
+  setRegisterError: () => {},
   updateUserError: null,
   deleteUser: () => Promise.resolve({}),
   updateUser: () => Promise.resolve({}),
+  setUpdateUserError: () => {},
   //test
   isUpdateFormOpen: false,
   setUpdateFormIsOpen: () => {},
@@ -83,8 +87,8 @@ export const UsersProvider: FC<PropsWithChildren> = ({
       setUsers(users.filter((user) => user.email !== email));
       return response;
     } catch (error) {
-      alert(error);
       console.log(error);
+      return error;
     }
   };
 
@@ -96,6 +100,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
     } catch (error) {
       console.log(error);
       setUpdateUserError(error.message);
+      return error;
     }
   };
 
@@ -109,9 +114,11 @@ export const UsersProvider: FC<PropsWithChildren> = ({
         users,
         addUser,
         registerError,
+        setRegisterError,
         deleteUser,
         updateUser,
         updateUserError,
+        setUpdateUserError,
         isUpdateFormOpen,
         setUpdateFormIsOpen,
         editingUser,
