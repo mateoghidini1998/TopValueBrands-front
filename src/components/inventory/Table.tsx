@@ -17,7 +17,7 @@ const Table:FC = () => {
             <th className="w-[10%] text-xs font-medium text-center">Amazon SKU</th>
             <th className="w-[5%] text-xs font-medium text-center">Cost</th>
             <th className="w-[10%] text-xs font-medium text-center">Supplier name</th>
-            <th className="w-[10%] text-xs font-medium text-center">Supplier item No</th>
+            <th className="w-[15%] text-xs font-medium text-center">Supplier item No</th>
             <th className="w-[5%] text-xs font-medium text-center">Pack type</th>
             <th className="w-[5%] text-xs font-medium text-center">FBA Stock</th>
             <th className="w-[5%] text-xs font-medium text-center">Reserved quantity</th>
