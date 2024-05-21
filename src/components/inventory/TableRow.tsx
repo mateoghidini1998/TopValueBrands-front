@@ -2,7 +2,7 @@
 import { InventoryService } from "@/services/inventory/inventory";
 import { ProductType } from "@/types/product.types";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ConfirmAlert from "../alerts/ConfirmAlert";
 import { AlertOptions } from "../alerts/ConfirmAlert";
 import DotsSVG from "../svgs/DotsSVG";
@@ -10,6 +10,7 @@ import RowActions from "./Actions";
 import { useProductContext } from "@/contexts/products.context";
 import Link from "next/link";
 import { Tooltip } from "./Tooltip";
+import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
 
 type TableRowProps = {
   products: ProductType[];
@@ -33,6 +34,44 @@ const TableRow = ({ products }: TableRowProps) => {
   } | null>(null);
   const [editData, setEditData] = useState<EditData>({});
   const { updateProduct, handleDeleteProduct } = useProductContext();
+  // CustomAlert
+  const [customAlertProperties, setCustomAlertProperties] = useState({
+    show: false,
+    type: CustomAlertOptions.SUCCESS,
+    message: "",
+    description: "",
+    visible: false,
+  });
+
+  //Custom Alert
+  const showAlert = (
+    alertType: CustomAlertOptions,
+    message: string,
+    description: string,
+    visible: boolean
+  ) => {
+    setCustomAlertProperties({
+      show: true,
+      type: alertType,
+      message,
+      description,
+      visible,
+    });
+  };
+
+  useEffect(() => {
+    // add 3 seconds delay
+    const timer = setTimeout(() => {
+      setCustomAlertProperties({
+        show: false,
+        type: CustomAlertOptions.SUCCESS,
+        message: "",
+        description: "",
+        visible: false,
+      });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [savedData, setCustomAlertProperties]);
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
     if (isActionsOpen === seller_sku) {
@@ -93,32 +132,72 @@ const TableRow = ({ products }: TableRowProps) => {
       ...editData,
       [e.target.name]: e.target.value,
     });
-  
-  
+
   return (
     <>
+      <CustomAlert
+        message={customAlertProperties.message}
+        description={customAlertProperties.description}
+        type={customAlertProperties.type}
+        visible={customAlertProperties.visible}
+        closable={true}
+        showIcon={true}
+      />
       {savedData && (
         <>
           <ConfirmAlert
-            message={isDeleting ? "Are you sure you want to delete this product?" : "Are you sure you want to save these changes?"}
+            message={
+              isDeleting
+                ? "Are you sure you want to delete this product?"
+                : "Are you sure you want to save these changes?"
+            }
             ref={dialog}
-            onClose={() => { setSavedData(false); setIsDeleting(false); }}
+            onClose={() => {
+              setSavedData(false);
+              setIsDeleting(false);
+            }}
             onConfirm={() => {
               if (isDeleting) {
                 deleteProduct().then((result) => {
+                  setIsDeleting(false);
+                  setSavedData(false);
+                  setIsActionsOpen(null);
+                  setEditingRow({});
                   if (result) {
-                    setIsDeleting(false);
-                    setSavedData(false);
-                    setIsActionsOpen(null);
-                    setEditingRow({});
+                    showAlert(
+                      CustomAlertOptions.SUCCESS,
+                      "Product deleted successfully",
+                      "The product has been deleted successfully.",
+                      true
+                    );
+                  } else {
+                    showAlert(
+                      CustomAlertOptions.ERROR,
+                      "Error while deleting product",
+                      "There was an error while deleting the product.",
+                      true
+                    );
                   }
                 });
               } else {
                 saveEditedProduct().then((result) => {
+                  setSavedData(false);
+                  setIsActionsOpen(null);
+                  setEditingRow({});
                   if (result) {
-                    setSavedData(false);
-                    setIsActionsOpen(null);
-                    setEditingRow({});
+                    showAlert(
+                      CustomAlertOptions.SUCCESS,
+                      "Updates saved successfully",
+                      "The updates have been saved successfully.",
+                      true
+                    );
+                  } else {
+                    showAlert(
+                      CustomAlertOptions.ERROR,
+                      "Error while saving changes",
+                      "There was an error while saving the changes.",
+                      true
+                    );
                   }
                 });
               }
@@ -167,7 +246,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 <span
                   className="text-xs"
                   style={{
-                    cursor:"pointer",
+                    cursor: "pointer",
                     position: "relative",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -196,7 +275,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   onChange={(e) => onChange(e)}
                 />
               ) : (
-                `$ ${product.product_cost}` 
+                `$ ${product.product_cost}`
               )}
             </td>
             <td className="w-[10%] text-xs font-medium text-center flex justify-center">
