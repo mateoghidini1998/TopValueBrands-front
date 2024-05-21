@@ -50,12 +50,12 @@ export class UsersService {
     const token = getAuthToken();
 
     const users = await UsersService.getUsers();
-    const id = users.data.find((user: UserType) => user.email === data.email)?.id;
+    const id = users.data.find((user: UserType) => user.id === data.id)?.id;
 
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.patch(
-      `http://localhost:5000/api/v1/users/${id}`,
+      `http://localhost:5000/api/v1/users/update/${id}`,
       data,
       token
     );

@@ -5,8 +5,11 @@ export enum UserRole  {
 }
 
 export type UserType = {
+    id: string,
     firstName: string,
     lastName: string,
     email: string,
+    password: string,
+    confirmPassword: string,
     role: UserRole
 }

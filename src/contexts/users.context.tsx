@@ -35,10 +35,13 @@ export const UsersContext = createContext<UserState>({
   isUpdateFormOpen: false,
   setUpdateFormIsOpen: () => {},
   editingUser: {
+    id: "",
     firstName: "",
     lastName: "",
     email: "",
     role: UserRole.USER,
+    password: "",
+    confirmPassword: "",
   },
   setEditingUser: () => {},
 });
@@ -80,6 +83,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
       setUsers(users.filter((user) => user.email !== email));
       return response;
     } catch (error) {
+      alert(error);
       console.log(error);
     }
   };
@@ -87,7 +91,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
   const updateUser = async (user: UserType) => {
     try {
       const response = await UsersService.updateUser(user);
-      setUsers(users.map((u) => (u.email === user.email ? user : u)));
+      setUsers(users.map((u) => (u.id === user.id ? user : u)));
       return response;
     } catch (error) {
       console.log(error);

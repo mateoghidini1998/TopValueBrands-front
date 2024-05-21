@@ -8,6 +8,7 @@ import { UserRole } from "@/types/user.types";
 import ConfirmAlert from "../alerts/ConfirmAlert";
 
 type FormData = {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -21,6 +22,7 @@ export default function Table() {
   const { users, addUser, registerError, updateUser, updateUserError, isUpdateFormOpen, setUpdateFormIsOpen, setEditingUser } = useUsersContext();
   const [showAlert, setShowAlert] = useState(false);
   const [userToUpdate, setUserToUpdate] = useState<FormData>({
+    id: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -28,6 +30,9 @@ export default function Table() {
     confirmPassword: "",
     role: UserRole.USER
   });
+
+  console.log({userToUpdate});
+  
 
   const handleCreateUser = (data: FormData) => {
     try {
@@ -41,7 +46,7 @@ export default function Table() {
     }
   };
 
-  const handleUpdateUser = (data: FormData) => {
+  const handleUpdateUser = (data: FormData) => {    
     setShowAlert(true);
     setUserToUpdate(data);
     setUpdateFormIsOpen(false);
@@ -72,10 +77,13 @@ export default function Table() {
   const handleModalCloseUpdateForm = () => {
     setUpdateFormIsOpen(false);
     setEditingUser({
+      id: "",
       firstName: "",
       lastName: "",
       email: "",
-      role: UserRole.USER
+      role: UserRole.USER,
+      password: "",
+      confirmPassword: "",
     })
 
   }

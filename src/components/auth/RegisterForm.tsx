@@ -16,6 +16,7 @@ import { RegisterErrorCard } from "./RegisterErrorCard";
 import { useEffect } from "react";
 
 type FormData = {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -43,15 +44,15 @@ const RegisterForm = ({
     resolver: yupResolver(RegisterScheme) as unknown as Resolver<FormData>,
   });
 
-  const { register, handleSubmit, reset } = methods;
+  const { handleSubmit, reset } = methods;
   const { editingUser } = useUsersContext();
-  console.log(editingUser);
 
   const DEFAULT_ROLE: UserRole = UserRole.USER;
 
   useEffect(() => {
     if (isOpen) {
       reset({
+        id: editingUser?.id || "",
         firstName: editingUser?.firstName || "",
         lastName: editingUser?.lastName || "",
         email: editingUser?.email || "",
@@ -109,8 +110,6 @@ const RegisterForm = ({
                 type="password"
               />
             </div>
-            {/* </>
-            )} */}
             <SubmitButton label={buttonName} onSubmit={onSubmit} />
           </form>
         </FormProvider>
