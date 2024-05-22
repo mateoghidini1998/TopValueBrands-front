@@ -16,8 +16,9 @@ type TableRowProps = {
   products: ProductType[];
 };
 
-interface EditData {
-  product_cost?: string;
+export interface EditProductType {
+  seller_sku: string;
+  product_cost?: number;
   supplier_name?: string;
   supplier_item_number?: string;
   pack_type?: string;
@@ -31,8 +32,10 @@ const TableRow = ({ products }: TableRowProps) => {
   const dialog = useRef();
   const [currentProduct, setCurrentProduct] = useState<{
     seller_sku: string;
-  } | null>(null);
-  const [editData, setEditData] = useState<EditData>({});
+  }>({ seller_sku: "" });
+  const [editData, setEditData] = useState<EditProductType>({
+    seller_sku: "",
+  });
   const { updateProduct, handleDeleteProduct } = useProductContext();
   // CustomAlert
   const [customAlertProperties, setCustomAlertProperties] = useState({
@@ -93,7 +96,18 @@ const TableRow = ({ products }: TableRowProps) => {
         ...editData,
         seller_sku: currentProduct?.seller_sku ?? "",
       });
-      updateProduct({ ...editData, seller_sku: currentProduct?.seller_sku });
+
+      updateProduct({
+        ...editData, seller_sku: currentProduct.seller_sku || '',
+        id: 0,
+        ASIN: "",
+        product_image: "",
+        product_name: "",
+        FBA_available_inventory: 0,
+        reserved_quantity: 0,
+        Inbound_to_FBA: 0,
+        is_active: false
+      });
       return response;
     } catch (error) {
       console.error("Error al actualizar el producto: ", error);
@@ -105,14 +119,13 @@ const TableRow = ({ products }: TableRowProps) => {
   const handleSave = async () => {
     if (!savedData) {
       setSavedData(true);
-      dialog.current?.open();
     }
   };
 
   const handleDelete = async (seller_sku: string) => {
     setIsDeleting(true);
     setSavedData(true);
-    setCurrentProduct(seller_sku ? { seller_sku } : null);
+    setCurrentProduct(seller_sku ? { seller_sku } : {seller_sku:""});
   };
 
   const deleteProduct = async () => {

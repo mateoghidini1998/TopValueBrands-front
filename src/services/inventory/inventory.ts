@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { HttpAPI } from "../common/http.service";
 import { getAuthToken } from "@/utils/getAuthToken";
 import { ProductType } from "@/types/product.types";
+import { EditProductType } from "@/components/inventory/TableRow";
 
 export class InventoryService {
   static async getProducts(page: number, limit: number, keyword: string = '') {
@@ -39,7 +40,7 @@ export class InventoryService {
     }
   }
 
-  static async updateProduct(data: any) {
+  static async updateProduct(data: EditProductType) {
     try {
       const token = getAuthToken();
       if (token) {

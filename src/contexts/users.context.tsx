@@ -10,6 +10,10 @@ import {
   useState,
 } from "react";
 
+type Error = {
+  message: string;
+}
+
 export type UserState = {
   users: UserType[];
   addUser: (user: UserType) => Promise<any>;
@@ -77,7 +81,8 @@ export const UsersProvider: FC<PropsWithChildren> = ({
       return response;
     } catch (error) {
       console.log(error);
-      setRegisterError(error.message);
+      setRegisterError((error as Error).message);
+      return error;
     }
   };
 
@@ -99,7 +104,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
       return response;
     } catch (error) {
       console.log(error);
-      setUpdateUserError(error.message);
+      setRegisterError((error as Error).message);
       return error;
     }
   };

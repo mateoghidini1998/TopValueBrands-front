@@ -152,7 +152,7 @@ export default function Table() {
       showCustomAlert(
         CustomAlertOptions.ERROR,
         "Error updating user",
-        error.message,
+        (error as { message: string }).message,
         true
       );
       console.error(error);
@@ -176,7 +176,6 @@ export default function Table() {
       confirmPassword: "",
     });
     setUpdateUserError(null);
-    
   };
 
   useEffect(() => {
@@ -230,7 +229,10 @@ export default function Table() {
       <RegisterForm
         title={"Create new User"}
         isOpen={isRegisterFormOpen}
-        onClose={() => { setRegisterFormIsOpen(false); setRegisterError(null); }}
+        onClose={() => {
+          setRegisterFormIsOpen(false);
+          setRegisterError(null);
+        }}
         onSubmit={handleCreateUser}
         errorMessage={registerError}
         buttonName={"Create"}
