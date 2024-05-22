@@ -10,7 +10,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={``}>
-        <body className="flex">
+        <body className="flex min-h-screen">
           <AuthProvider>
             {children}
           </AuthProvider>
