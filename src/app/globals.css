@@ -17,6 +17,9 @@
 }
 
 body {
+
+  min-height:100vh;
+
   color: rgb(var(--foreground-rgb));
   background: #1F2128;
 }
