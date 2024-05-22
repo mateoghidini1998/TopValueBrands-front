@@ -35,8 +35,7 @@ const SearchInput = () => {
         onChange={(e) => handleSetKeyword(e.target.value)}
         className="p-2.5 flex w-[235px] justify-between items-center rounded bg-[#262935] border border-solid border-[#393E4F]"
         type="text"
-        name=""
-        id=""
+        id="search_product"
         placeholder=""
       />
     </div>

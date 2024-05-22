@@ -26,21 +26,31 @@ const InputText = ({
 
   return (
     <>
-      <label className="text-[#808191] text-sm mb-2" htmlFor="">
+      <label className="text-[#808191] text-sm mb-2" htmlFor={fieldName}>
         {label}:
       </label>
 
       {isDropdown ? (
-        <select {...register(fieldName)} className="p-2.5 bg-[#1F2128] shrink rounded-md text-white focus:outline-none">
-          <option className="" value="admin">Admin</option>
-          <option className="" value="user">User</option>
+        <select
+          id={fieldName}
+          {...register(fieldName)}
+          className="p-2.5 bg-[#1F2128] shrink rounded-md text-white focus:outline-none"
+        >
+          <option className="" value="admin">
+            Admin
+          </option>
+          <option className="" value="user">
+            User
+          </option>
         </select>
       ) : (
-          <input
+        <input
+          autoComplete={"off"}
+          id={fieldName}
           {...register(fieldName)}
           placeholder={placeholder}
-            type={type}
-            value={userValue}
+          type={type}
+          value={userValue}
           className="p-2.5 bg-[#1F2128] shrink rounded-md text-white focus:outline-none"
         />
       )}
