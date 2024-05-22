@@ -110,7 +110,9 @@ export default function TableRow({ users }: TableRowProps) {
 
   return (
     <>
-      <CustomAlert
+      <tr>
+        <td>
+        <CustomAlert
         message={customAlertProperties.message}
         description={customAlertProperties.description}
         type={customAlertProperties.type}
@@ -126,6 +128,8 @@ export default function TableRow({ users }: TableRowProps) {
         onCancel={() => setShowAlert(false)}
         onClose={() => setShowAlert(false)}
       />}
+        </td>
+      </tr>
       {Array.isArray(users) &&
         users.map((user) => (
           <tr key={user.email} className="relative py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]">
