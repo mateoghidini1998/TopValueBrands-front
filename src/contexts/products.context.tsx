@@ -2,6 +2,7 @@
 import { FC, PropsWithChildren, useContext, useState, createContext, useEffect, useRef } from "react";
 import { ProductType } from "@/types/product.types";
 import { InventoryService } from "@/services/inventory/inventory";
+import { EditProductType } from "@/components/inventory/TableRow";
 
 export type ProductState = {
     products: ProductType[];
@@ -73,9 +74,21 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
         setCurrentPage(prevPage => prevPage - 1);
     };
 
-    const updateProduct = (updatedProduct: ProductType) => {
+    const updateProduct = (updatedProduct: EditProductType) => {
+
+        // find the product and then update
+        const productIndex = products.findIndex(product => product.seller_sku === updatedProduct.seller_sku);
+        const newUpdatedProduct = products[productIndex];
+
+        // update the product
+        newUpdatedProduct.supplier_name = updatedProduct.supplier_name || newUpdatedProduct.supplier_name ;
+        newUpdatedProduct.supplier_item_number = updatedProduct.supplier_item_number || newUpdatedProduct.supplier_item_number ;
+        newUpdatedProduct.product_cost = updatedProduct.product_cost || newUpdatedProduct.product_cost;
+        newUpdatedProduct.pack_type = updatedProduct.pack_type || newUpdatedProduct.pack_type;
+
+
         setProducts(products.map(product => 
-            product.seller_sku === updatedProduct.seller_sku? updatedProduct : product
+            product.seller_sku === newUpdatedProduct.seller_sku? newUpdatedProduct : product
         ));
     }
 

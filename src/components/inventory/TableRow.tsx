@@ -295,7 +295,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   <input
                     name="product_cost"
                     type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-[#55597D] bg-[#262935] border-[1px] border-solid border-[#393E4F]"
+                    className="w-2/3 p-1 rounded-lg text-center text-white bg-[#262935] border-[1px] border-solid border-[#393E4F]"
                     value={editData.product_cost || ""}
                     onChange={(e) => onChange(e)}
                   />
@@ -308,7 +308,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   <input
                     name="supplier_name"
                     type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-[#55597D] bg-[#262935] border-[1px] border-solid border-[#393E4F]"
+                    className="w-2/3 p-1 rounded-lg text-center text-white bg-[#262935] border-[1px] border-solid border-[#393E4F]"
                     value={editData.supplier_name || ""}
                     onChange={(e) => onChange(e)}
                   />
@@ -321,7 +321,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   <input
                     name="supplier_item_number"
                     type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-[#55597D] bg-[#262935] border-[1px] border-solid border-[#393E4F]"
+                    className="w-2/3 p-1 rounded-lg text-center text-white bg-[#262935] border-[1px] border-solid border-[#393E4F]"
                     value={editData.supplier_item_number || ""}
                     onChange={(e) => onChange(e)}
                   />
@@ -334,7 +334,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   <input
                     name="pack_type"
                     type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-[#55597D] bg-[#262935] border-[1px] border-solid border-[#393E4F]"
+                    className="w-2/3 p-1 rounded-lg text-center text-white bg-[#262935] border-[1px] border-solid border-[#393E4F]"
                     value={editData.pack_type || ""}
                     onChange={(e) => onChange(e)}
                   />
