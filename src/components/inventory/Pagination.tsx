@@ -45,7 +45,7 @@ const Pagination: FC<PaginationProps> = ({ currentPage, setCurrentPage, totalPag
     ));
 
     return (
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center gap-2 py-10">
             <button className={`flex items-center justify-center w-9 h-9 p-1.5 bg-[#262935] rounded-md ${disabledPrev ? "text-[#393E4F] border-[#393E4F] border-[1px] border-solid" : "text-white"}`} onClick={handlePreviousPage} disabled={disabledPrev}><PrevPage disabled={disabledPrev}/></button>
             {pageButtons}
             <button className={`flex items-center justify-center w-9 h-9 p-1.5 bg-[#262935] rounded-md ${disabledNext ? "text-[#393E4F] border-[#393E4F] border-[1px] border-solid" : "text-white"}`} onClick={handleNextPage} disabled={disabledNext}><NextPage disabled={disabledNext}/></button>
