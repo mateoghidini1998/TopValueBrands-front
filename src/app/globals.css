@@ -33,11 +33,18 @@ body {
 .main_layout{
   width: calc(100vw - 290px);
   margin-left: auto;
-  margin-top: 120px;
+  margin-top: 100px;
 }
 
 .table_header{
   background-color: #1F2128;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 290px);
   margin-left: auto;
+}
+
+.inventory_table_header{
+  position: fixed;
+  width: calc(100vw - 290px);
+  right: 0;
+  z-index: 1000;
 }

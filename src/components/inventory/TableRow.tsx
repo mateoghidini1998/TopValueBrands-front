@@ -11,6 +11,7 @@ import { useProductContext } from "@/contexts/products.context";
 import Link from "next/link";
 import { Tooltip } from "./Tooltip";
 import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
+import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 
 type TableRowProps = {
   products: ProductType[];
@@ -123,6 +124,11 @@ const TableRow = ({ products }: TableRowProps) => {
     }
   };
 
+  const handleCancel = () => {
+    setEditingRow({});
+    setIsActionsOpen(null);
+  };
+
   const handleDelete = async (seller_sku: string) => {
     setIsDeleting(true);
     setSavedData(true);
@@ -149,96 +155,94 @@ const TableRow = ({ products }: TableRowProps) => {
 
   return (
     <>
-      <tbody>
+      <tbody className="mt-[160px]">
         <tr>
           <td>
-
-          
-          <CustomAlert
-            message={customAlertProperties.message}
-            description={customAlertProperties.description}
-            type={customAlertProperties.type}
-            visible={customAlertProperties.visible}
-            closable={true}
-            showIcon={true}
-          />
-          {savedData && (
-            <>
-              <ConfirmAlert
-                message={
-                  isDeleting
-                    ? "Are you sure you want to delete this product?"
-                    : "Are you sure you want to save these changes?"
-                }
-                ref={dialog}
-                onClose={() => {
-                  setSavedData(false);
-                  setIsDeleting(false);
-                }}
-                onConfirm={() => {
-                  if (isDeleting) {
-                    deleteProduct().then((result) => {
-                      setIsDeleting(false);
-                      setSavedData(false);
-                      setIsActionsOpen(null);
-                      setEditingRow({});
-                      if (result) {
-                        showAlert(
-                          CustomAlertOptions.SUCCESS,
-                          "Product deleted successfully",
-                          "The product has been deleted successfully.",
-                          true
-                        );
-                      } else {
-                        showAlert(
-                          CustomAlertOptions.ERROR,
-                          "Error while deleting product",
-                          "There was an error while deleting the product.",
-                          true
-                        );
-                      }
-                    });
-                  } else {
-                    saveEditedProduct().then((result) => {
-                      setSavedData(false);
-                      setIsActionsOpen(null);
-                      setEditingRow({});
-                      if (result) {
-                        showAlert(
-                          CustomAlertOptions.SUCCESS,
-                          "Updates saved successfully",
-                          "The updates have been saved successfully.",
-                          true
-                        );
-                      } else {
-                        showAlert(
-                          CustomAlertOptions.ERROR,
-                          "Error while saving changes",
-                          "There was an error while saving the changes.",
-                          true
-                        );
-                      }
-                    });
+            <CustomAlert
+              message={customAlertProperties.message}
+              description={customAlertProperties.description}
+              type={customAlertProperties.type}
+              visible={customAlertProperties.visible}
+              closable={true}
+              showIcon={true}
+            />
+            {savedData && (
+              <>
+                <ConfirmAlert
+                  message={
+                    isDeleting
+                      ? "Are you sure you want to delete this product?"
+                      : "Are you sure you want to save these changes?"
                   }
-                }}
-                onCancel={() => {
-                  setSavedData(false);
-                  setIsActionsOpen(null);
-                  setEditingRow({});
-                  setIsDeleting(false);
-                }}
-                confirmText={AlertOptions.CONFIRM}
-                cancelText={AlertOptions.CANCEL}
-              />
-            </>
+                  ref={dialog}
+                  onClose={() => {
+                    setSavedData(false);
+                    setIsDeleting(false);
+                  }}
+                  onConfirm={() => {
+                    if (isDeleting) {
+                      deleteProduct().then((result) => {
+                        setIsDeleting(false);
+                        setSavedData(false);
+                        setIsActionsOpen(null);
+                        setEditingRow({});
+                        if (result) {
+                          showAlert(
+                            CustomAlertOptions.SUCCESS,
+                            "Product deleted successfully",
+                            "The product has been deleted successfully.",
+                            true
+                          );
+                        } else {
+                          showAlert(
+                            CustomAlertOptions.ERROR,
+                            "Error while deleting product",
+                            "There was an error while deleting the product.",
+                            true
+                          );
+                        }
+                      });
+                    } else {
+                      saveEditedProduct().then((result) => {
+                        setSavedData(false);
+                        setIsActionsOpen(null);
+                        setEditingRow({});
+                        if (result) {
+                          showAlert(
+                            CustomAlertOptions.SUCCESS,
+                            "Updates saved successfully",
+                            "The updates have been saved successfully.",
+                            true
+                          );
+                        } else {
+                          showAlert(
+                            CustomAlertOptions.ERROR,
+                            "Error while saving changes",
+                            "There was an error while saving the changes.",
+                            true
+                          );
+                        }
+                      });
+                    }
+                  }}
+                  onCancel={() => {
+                    setSavedData(false);
+                    setIsActionsOpen(null);
+                    setEditingRow({});
+                    setIsDeleting(false);
+                  }}
+                  confirmText={AlertOptions.CONFIRM}
+                  cancelText={AlertOptions.CANCEL}
+                />
+              </>
             )}
-            </td>
+          </td>
         </tr>
         {Array.isArray(products) &&
-          products.map((product) => (
+          products.map((product, i) => (
             <tr
               key={product.seller_sku}
-              className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]"
+              className={`${i == 0 ? 'mt-[60px]': ''} py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]`}
             >
               <td className="w-[25%] text-xs font-medium text-center">
                 <div className="relative flex flex-col w-full h-full items-center text-center">
@@ -357,13 +361,26 @@ const TableRow = ({ products }: TableRowProps) => {
                     <DotsSVG />
                   </button>
                 ) : (
-                  <button onClick={() => handleSave()}>Save</button>
+                  <>
+                    <button onClick={() => handleSave()}>
+                      <AiOutlineSave className="w-4 h-4 fill-[#ADB3CC]" />
+                    </button>
+                    <button onClick={() => handleCancel()}>
+                      <AiOutlineDelete className="w-4 h-4 fill-[#ADB3CC]" />
+                    </button>
+                  </>
                 )}
 
                 {isActionsOpen === product.seller_sku && (
                   <RowActions
-                    onEdit={() => handleEdit(product.seller_sku)}
-                    onDelete={() => handleDelete(product.seller_sku)}
+                    onEdit={() => {
+                      handleEdit(product.seller_sku);
+                      setIsActionsOpen(null);
+                    }}
+                    onDelete={() => {
+                      handleDelete(product.seller_sku);
+                      setIsActionsOpen(null);
+                    }}
                   />
                 )}
               </td>

@@ -17,8 +17,8 @@ const Table: FC = () => {
 
   return (
     <>
-      <table className="w-full mb-5">
-        <thead>
+        <table className="w-full">
+          <thead className="inventory_table_header bg-[#262935] text-white">
           <tr className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[60px] w-full text-white bg-[#262935]">
             <th className="w-[25%] text-xs font-medium text-center">Product</th>
             <th className="w-[10%] text-xs font-medium text-center">ASIN</th>
