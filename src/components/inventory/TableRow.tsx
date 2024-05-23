@@ -361,14 +361,14 @@ const TableRow = ({ products }: TableRowProps) => {
                     <DotsSVG />
                   </button>
                 ) : (
-                  <>
+                  <div className="flex items-center justify-center gap-4">
                     <button onClick={() => handleSave()}>
-                      <AiOutlineSave className="w-4 h-4 fill-[#ADB3CC]" />
+                      <AiOutlineSave className="w-5 h-5 fill-[#ADB3CC]" />
                     </button>
                     <button onClick={() => handleCancel()}>
-                      <AiOutlineDelete className="w-4 h-4 fill-[#ADB3CC]" />
+                      <AiOutlineDelete className="w-5 h-5 fill-[#ADB3CC]" />
                     </button>
-                  </>
+                  </div>
                 )}
 
                 {isActionsOpen === product.seller_sku && (
