@@ -77,7 +77,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
   const addUser = async (user: UserType) => {
     try {
       const response = await UsersService.addUser(user);
-      setUsers([...users, user]);
+      setUsers([...users, response.user]);
       return response;
     } catch (error) {
       console.log(error);
