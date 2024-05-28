@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import TableRow from "./TableRow";
 import Pagination from "./Pagination";
 import { useProductContext } from "@/contexts/products.context";
@@ -18,7 +18,7 @@ const Table: FC = () => {
   return (
     <>
         <table className="w-full">
-          <thead className="inventory_table_header bg-[#262935] text-white">
+          <thead className="inventory_table_header bg-[#262935] text-white fixed">
           <tr className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[60px] w-full text-white bg-[#262935]">
             <th className="w-[25%] text-xs font-medium text-center">Product</th>
             <th className="w-[10%] text-xs font-medium text-center">ASIN</th>
