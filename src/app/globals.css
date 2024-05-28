@@ -46,5 +46,6 @@ body {
   position: fixed;
   width: calc(100vw - 290px);
   right: 0;
+  top: 110px;
   z-index: 1000;
 }

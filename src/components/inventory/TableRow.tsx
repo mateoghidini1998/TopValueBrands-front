@@ -12,6 +12,8 @@ import Link from "next/link";
 import { Tooltip } from "./Tooltip";
 import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
 import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
+import SaveButton from "../svgs/SaveButton";
+import CancelButton from "../svgs/CancelButton";
 
 type TableRowProps = {
   products: ProductType[];
@@ -242,7 +244,9 @@ const TableRow = ({ products }: TableRowProps) => {
           products.map((product, i) => (
             <tr
               key={product.seller_sku}
-              className={`${i == 0 ? 'mt-[60px]': ''} py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]`}
+              className={`${
+                i == 0 ? "mt-[60px]" : ""
+              } py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]`}
             >
               <td className="w-[25%] text-xs font-medium text-center">
                 <div className="relative flex flex-col w-full h-full items-center text-center">
@@ -363,10 +367,11 @@ const TableRow = ({ products }: TableRowProps) => {
                 ) : (
                   <div className="flex items-center justify-center gap-4">
                     <button onClick={() => handleSave()}>
-                      <AiOutlineSave className="w-5 h-5 fill-[#ADB3CC]" />
+                      {/* <AiOutlineSave className="w-5 h-5 fill-[#ADB3CC]" /> */}
+                      <SaveButton />
                     </button>
                     <button onClick={() => handleCancel()}>
-                      <AiOutlineDelete className="w-5 h-5 fill-[#ADB3CC]" />
+                      <CancelButton />
                     </button>
                   </div>
                 )}
