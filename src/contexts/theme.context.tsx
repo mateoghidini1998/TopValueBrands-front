@@ -19,16 +19,7 @@ export const ThemeProvider: FC<PropsWithChildren> = ({
   children,
 }: PropsWithChildren) => {
 
-  const getTheme = () => {
-    const theme = localStorage.getItem("theme");
-    if (theme === "dark") {
-      return "dark";
-    } else {
-      return "light";
-    }
-  };
-
-  const [theme, setTheme] = useState(getTheme);
+  const [theme, setTheme] = useState('light');
 
   useEffect(() => {
     const theme = localStorage.getItem("theme");
