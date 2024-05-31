@@ -27,7 +27,7 @@ export default function RootLayout({
         <Navbar />
         <div className="main_layout">
           <ProductProvider>
-          <div className="table_header py-10 px-[46px]  flex justify-between items-center fixed top-0 z-40">
+          <div className="table_header py-10 px-[46px]  flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark">
               <PageTitle/>
               <div className="flex items-center ">
                 <SearchInput/>

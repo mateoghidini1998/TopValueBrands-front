@@ -34,7 +34,7 @@ const InputText = ({
         <select
           id={fieldName}
           {...register(fieldName)}
-          className="p-2.5 bg-[#1F2128] shrink rounded-md text-white focus:outline-none"
+          className="border-2 border-[#808191] p-2.5 bg-white text-[#808191] dark:bg-dark shrink rounded-md  focus:outline-none"
         >
           <option className="" value="admin">
             Admin
@@ -51,7 +51,7 @@ const InputText = ({
           placeholder={placeholder}
           type={type}
           value={userValue}
-          className="p-2.5 bg-[#1F2128] shrink rounded-md text-white focus:outline-none"
+          className="border-2 b-[#808191] p-2.5 dark:text-white bg-white dark:bg-dark shrink rounded-md focus:outline-none"
         />
       )}
       {errors && errors[fieldName] && (

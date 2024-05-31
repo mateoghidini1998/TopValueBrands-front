@@ -69,14 +69,14 @@ const RegisterForm = ({
     <>
       <dialog
         open
-        className="min-w-[400px] max-w-[700px] shadow-[0_0_50px_0_rgba(0,0,0,0.2)] rounded-2xl py-12 px-14 bg-[#262935] fixed z-[2000] inset-0 overflow-y-auto"
+        className="h-[95%] w-[450px] dark:shadow-[0_0_50px_0_rgba(0,0,0,0.2)] rounded-2xl py-12 px-14 dark:bg-dark fixed z-[2000] inset-0 overflow-y-auto bg-[#FFFFFF] shadow-[0_0_50px_0_rgba(0,0,0,0.2)] no-scrollbar"
         aria-labelledby="modal-title"
         role="dialog"
         aria-modal="true"
       >
         {errorMessage && <RegisterErrorCard errorMessage={errorMessage} />}
         <div className="w-full flex items-center justify-between mb-8">
-          <h3 className="text-xl text-white font-medium">{title}</h3>
+          <h3 className="text-xl dark:text-white font-medium">{title}</h3>
           <button onClick={onClose}>
             <CloseButton />
           </button>
@@ -111,10 +111,19 @@ const RegisterForm = ({
               />
             </div>
             <SubmitButton label={buttonName} onSubmit={onSubmit} />
+            <button
+              className="flex justify-center w-full items-center gap-2 px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-3 border-2 border-[#a4a4a4] rounded-md mt-6"
+              onClick={() => {
+                reset();
+                onClose();
+              }}
+            >
+              Cancel
+            </button>
           </form>
         </FormProvider>
       </dialog>
-      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-md flex justify-center items-center z-[1100]"></div>
+      <div className="fixed top-0 right-0 w-full h-full bg-opacity-50 backdrop-filter backdrop-blur-md flex justify-center items-center z-[1100]"></div>
     </>
   );
 };

@@ -2,26 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-
   min-height:100vh;
-
-  color: rgb(var(--foreground-rgb));
-  background: #1F2128;
 }
 
 @layer utilities {
@@ -38,7 +20,7 @@ body {
 }
 
 .table_header{
-  background-color: #1F2128;
+  /* background-color: #1F2128; */
   width: calc(100vw - 290px);
   margin-left: auto;
 }
@@ -49,7 +31,7 @@ body {
   position: fixed;
   right: 0;
   top: 110px;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .navbar-closed{

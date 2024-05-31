@@ -9,7 +9,7 @@ type RowActionsProps = {
 
 export default function RowActions({ onEdit, onDelete }: RowActionsProps) {
   return (
-    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[#262935] ring-1 ring-black ring-opacity-5 z-[1000]">
+    <div className="absolute bg-white border-[#EFF1F3] text-black right-0 mt-2 w-48 rounded-md shadow-lg dark:bg-dark-2  dark:ring-black ring-opacity-5 z-[1000] border-s-2-[#7e7e7e]">
       <div
         className="py-1"
         role="menu"
@@ -18,7 +18,7 @@ export default function RowActions({ onEdit, onDelete }: RowActionsProps) {
       >
         <button
           onClick={onEdit}
-          className="w-full flex flex-start items-center gap-2 px-4 py-2 text-sm text-white hover:bg-[#393E4F] "
+          className="w-full flex flex-start items-center gap-2 px-4 py-2 text-sm dark:text-white dark:hover:bg-dark-3 "
           role="menuitem"
         >
           <EditButton/>
@@ -26,7 +26,7 @@ export default function RowActions({ onEdit, onDelete }: RowActionsProps) {
         </button>
         <button
           onClick={onDelete}
-          className="w-full flex flex-start items-center gap-2 px-4 py-2 text-sm text-white hover:bg-[#393E4F] "
+          className="w-full flex flex-start items-center gap-2 px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-3 "
           role="menuitem"
         >
           <DeleteButton />

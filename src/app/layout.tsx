@@ -10,7 +10,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-        <body className="flex">
+        <body className="flex bg-white dark:bg-dark">
           <AuthProvider>
             {children}
           </AuthProvider>

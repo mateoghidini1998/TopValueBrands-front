@@ -27,7 +27,24 @@ export interface EditProductType {
   pack_type?: string;
 }
 
+enum CustomAlertTheme {
+  LIGHT = "light",
+  DARK = "dark",
+}
+
 const TableRow = ({ products }: TableRowProps) => {
+
+  const isDarkmode = localStorage.getItem("theme") === "dark";
+  const [theme, setTheme] = useState(isDarkmode ? "dark" : "light");
+
+  useEffect(() => {
+    if (theme === "dark") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, [theme]);
+
   const [isActionsOpen, setIsActionsOpen] = useState<string | null>(null);
   const [editingRow, setEditingRow] = useState<{ [key: string]: boolean }>({});
   const [savedData, setSavedData] = useState(false);
@@ -161,6 +178,7 @@ const TableRow = ({ products }: TableRowProps) => {
         <tr>
           <td>
             <CustomAlert
+              theme={CustomAlertTheme.LIGHT}
               message={customAlertProperties.message}
               description={customAlertProperties.description}
               type={customAlertProperties.type}
@@ -246,7 +264,7 @@ const TableRow = ({ products }: TableRowProps) => {
               key={product.seller_sku}
               className={`${
                 i == 0 ? "mt-[60px]" : ""
-              } py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]`}
+              } py-6 stroke-1 stroke-dark-3 flex items-center h-[65px] w-full text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3] px-2`}
             >
               <td className="w-[25%] text-xs font-medium text-center">
                 <div className="relative flex flex-col w-full h-full items-center text-center">
@@ -299,7 +317,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   <input
                     name="product_cost"
                     type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-white bg-[#262935] border-[1px] border-solid border-[#393E4F]"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
                     value={editData.product_cost || ""}
                     onChange={(e) => onChange(e)}
                   />
@@ -312,7 +330,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   <input
                     name="supplier_name"
                     type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-white bg-[#262935] border-[1px] border-solid border-[#393E4F]"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
                     value={editData.supplier_name || ""}
                     onChange={(e) => onChange(e)}
                   />
@@ -325,7 +343,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   <input
                     name="supplier_item_number"
                     type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-white bg-[#262935] border-[1px] border-solid border-[#393E4F]"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
                     value={editData.supplier_item_number || ""}
                     onChange={(e) => onChange(e)}
                   />
@@ -338,7 +356,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   <input
                     name="pack_type"
                     type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-white bg-[#262935] border-[1px] border-solid border-[#393E4F]"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
                     value={editData.pack_type || ""}
                     onChange={(e) => onChange(e)}
                   />
@@ -362,7 +380,7 @@ const TableRow = ({ products }: TableRowProps) => {
                       handleToggleActions(product.seller_sku, product)
                     }
                   >
-                    <DotsSVG />
+                    <DotsSVG stroke="#ADB3CC"/>
                   </button>
                 ) : (
                   <div className="flex items-center justify-center gap-4">

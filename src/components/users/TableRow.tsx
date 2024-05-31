@@ -10,7 +10,10 @@ type TableRowProps = {
   users: UserType[];
 };
 
-
+enum CustomAlertTheme{
+  LIGHT = "light",
+  DARK = "dark",
+}
 
 export default function TableRow({ users }: TableRowProps) {
   // Mantén un estado separado para el indicador de mostrar opciones para cada usuario
@@ -113,6 +116,7 @@ export default function TableRow({ users }: TableRowProps) {
       <tr>
         <td>
         <CustomAlert
+        theme={CustomAlertTheme.LIGHT}
         message={customAlertProperties.message}
         description={customAlertProperties.description}
         type={customAlertProperties.type}
@@ -132,7 +136,7 @@ export default function TableRow({ users }: TableRowProps) {
       </tr>
       {Array.isArray(users) &&
         users.map((user) => (
-          <tr key={user.email} className="relative py-6 stroke-1 stroke-[#393E4F] flex items-center h-[65px] w-full text-white bg-transparent border-b border-b-[#393E4F]">
+          <tr key={user.email} className="dark:bg-dark relative py-6 text-light stroke-1 dark:stroke-[#393E4F] flex items-center h-[65px] w-full dark:text-white bg-transparent border-b dark:border-b-[#393E4F]">
             <td className="w-[15%] text-xs font-medium text-center">
               {user.firstName} {user.lastName}
             </td>
@@ -146,7 +150,7 @@ export default function TableRow({ users }: TableRowProps) {
               <div className="flex items-center justify-between gap-2 px-2">
                 {user.role}
                 {/* Usa la función toggleOptions para cambiar el estado */}
-                <button className="flex" onClick={() => toggleOptions(user.email)}><DotsSVG /></button>
+                <button className="flex" onClick={() => toggleOptions(user.email)}><DotsSVG stroke="#438EF3" /></button>
                 {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}
                 {showOptionsMap[user.email] && <TableRowOptions onEdit={() => handleEdit(Object.keys(showOptionsMap)[0])} onDelete={() => handleDelete(user.email)} />}
               </div>

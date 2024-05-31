@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import { Alert, Space } from "antd";
 import { ConfigProvider } from "antd";
 
@@ -9,6 +10,11 @@ export enum CustomAlertOptions {
   ERROR = "error",
 }
 
+enum CustomAlertTheme {
+  LIGHT = "light",
+  DARK = "dark",
+}
+
 type CustomAlertProps = {
   message: string;
   description: string;
@@ -17,6 +23,7 @@ type CustomAlertProps = {
   showIcon: boolean;
   closabel?: boolean;
   visible?: boolean;
+  theme: CustomAlertTheme;
 };
 
 const CustomAlert = ({
@@ -26,12 +33,24 @@ const CustomAlert = ({
   closable,
   showIcon,
   visible = false,
-}: CustomAlertProps) => (
+  theme,
+}: CustomAlertProps) => {
+  
+  const [isDarkmode, setIsDarkmode] = useState(theme ? "dark" : "light");
+  
+  console.log(isDarkmode);
+  
+
+  useEffect(() => {
+    setIsDarkmode(theme ? "dark" : "light");
+  },[theme])
+  
+  
+  return (
   <ConfigProvider
-    theme={{
+    theme={ isDarkmode === "dark" ? {
       token: {
         colorText: "#fff",
-        
         colorError: "#F5222D",
         colorErrorBorder:"#393E4F",
         colorErrorBg: "#1F2128",
@@ -39,7 +58,21 @@ const CustomAlert = ({
         colorSuccessBg: "#1F2128",
         colorSuccessBorder:"#393E4F",
       },
-    }}
+      } :
+  
+      {
+        token: {
+          colorText: "#000",
+          colorError: "#F5222D",
+          colorErrorBorder:"#c2c2c2",
+          colorErrorBg: "#c2c2c2",
+
+          colorSuccessBg: "#c2c2c2",
+          colorSuccessBorder: "#fff",
+        },
+      }
+  
+    }
   >
     <Space
       direction="vertical"
@@ -61,6 +94,6 @@ const CustomAlert = ({
       />
     </Space>
   </ConfigProvider>
-);
+);}
 
 export default CustomAlert;
