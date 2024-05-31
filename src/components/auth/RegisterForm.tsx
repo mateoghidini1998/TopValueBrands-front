@@ -112,13 +112,13 @@ const RegisterForm = ({
             </div>
             <SubmitButton label={buttonName} onSubmit={onSubmit} />
             <button
-              className="flex justify-center w-full items-center gap-2 px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-3 border-2 border-[#a4a4a4] rounded-md mt-6"
+              className="text-[#61656E] dark:text-[#f8fafc] dark:bg-[#393E4F] bg-[#F8FAFC] border-[#eff1f3] flex justify-center w-full items-center gap-2 px-4 py-2 text-sm dark:hover:bg-dark-3 border-2 dark:border-[#393E4F] rounded-md mt-6"
               onClick={() => {
                 reset();
                 onClose();
               }}
             >
-              Cancel
+              Discard
             </button>
           </form>
         </FormProvider>

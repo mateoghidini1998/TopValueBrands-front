@@ -44,7 +44,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="w-[400px] h-[465px] px-8 py-12 flex flex-col rounded-[15px] bg-white dark:bg-dark-2 shadow-[3px_3px_3px_3px_rgba(18,18,18,0.4)]">
+    <div className="w-[400px] h-[465px] px-8 py-12 flex flex-col rounded-[15px] bg-white dark:bg-dark-2 shadow-[0px_24px_48px_0px_rgba(0,0,0,0.08)] dark:shadow-[0px_1px_1px_0_rgba(18,18,18,0.1)] caret-[#438EF3]">
       <div className="flex items-center mb-9">
         <svg
           xmlns="http://www.w3.org/2000/svg"
