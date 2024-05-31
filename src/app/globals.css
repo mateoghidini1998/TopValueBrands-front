@@ -14,6 +14,7 @@ body {
 
 .main_layout{
   width: calc(100vw - 290px);
+  transition: width .6s ease-in-out;
   /* width: 100%; */
   margin-left: auto;
   margin-top: 100px;
@@ -28,6 +29,8 @@ body {
 
 .inventory_table_header{
   width: calc(100vw - 290px);
+  
+  transition: width .6s ease-in-out;
   position: fixed;
   right: 0;
   top: 110px;
@@ -37,4 +40,5 @@ body {
 .navbar-closed{
   width: calc(100vw - (60px + 30px));
   right: 0;
-}
+  transition: width .6s ease-in-out;
+  }
