@@ -44,7 +44,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="w-[400px] h-[465px] px-8 py-12 flex flex-col rounded-[15px] bg-white dark:bg-dark shadow-[3px_3px_3px_3px_rgba(18,18,18,0.4)]">
+    <div className="w-[400px] h-[465px] px-8 py-12 flex flex-col rounded-[15px] bg-white dark:bg-dark-2 shadow-[3px_3px_3px_3px_rgba(18,18,18,0.4)]">
       <div className="flex items-center mb-9">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +73,7 @@ const LoginForm = () => {
         </h4>
       </div>
       <div className="flex flex-col mb-10">
-        <p className="dark:ltext-white text-xl font-medium mb-0.5">
+        <p className="dark:text-white text-xl font-medium mb-0.5">
           Log in into your account
         </p>
         <span className="text-[#808191]">to continue to Top Value Brands</span>

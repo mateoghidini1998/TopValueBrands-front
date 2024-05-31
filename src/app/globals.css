@@ -37,5 +37,4 @@ body {
 .navbar-closed{
   width: calc(100vw - (60px + 30px));
   right: 0;
-  z-index: 1000;
 }

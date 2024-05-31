@@ -40,16 +40,16 @@ export default function UserMenu() {
           </button>
         </div>
         <div
-          className={`text-black absolute right-[5px] top-[30px] bg-dark-2 border-[1px] border-solid border-dark-3 mt-2 w-[182px] dark:text-white  rounded-md box-border shadow-[0_3px_80px_0px_rgba(0,0,0,0.3)] transition-max-h duration-1000 ease-in-out overflow-hidden ${
+          className={`text-black absolute right-[5px] top-[30px] bg-dark-2 border-[1px] border-solid border-dark-3 mt-2 w-[182px] dark:text-white  rounded-md box-border shadow-[0_3px_80px_0px_rgba(0,0,0,0.3)] transition-max-h duration-1000 ease-in-out overflow-hidden dark:bg-dark-2 ${
             isOpen ? "p-5 max-h-[300px] " : "border-none p-0 max-h-0"
           } bg-white`}
         >
-          <div className="gap-3.5 bg-white">
+          <div className="gap-3.5">
             <div className="flex items-center gap-1">
               <Profile fill="#438EF3" />
               <a
                 href="#"
-                className="text-black block px-4 py-2 text-sm"
+                className="text-black block px-4 py-2 text-sm dark:text-white"
                 role="menuitem"
               >
                 Profile
@@ -59,7 +59,7 @@ export default function UserMenu() {
               <Globe fill="#438EF3" />
               <a
                 href="#"
-                className="text-black block px-4 py-2 text-sm"
+                className="text-black block px-4 py-2 text-sm dark:text-white"
                 role="menuitem"
               >
                 Language
@@ -69,7 +69,7 @@ export default function UserMenu() {
               <Logout fill="#438EF3" />
               <button
                 onClick={handleLogout}
-                className="text-black block px-4 py-2 text-sm"
+                className="text-black block px-4 py-2 text-sm dark:text-white"
                 role="menuitem"
               >
                 Logout
@@ -80,7 +80,7 @@ export default function UserMenu() {
           <div className="flex items-center gap-1 mt-4 justify-between">
             <a
               href="#"
-              className="text-black block py-2 text-sm"
+              className="text-black block py-2 text-sm dark:text-white"
               role="menuitem"
             >
               Interface

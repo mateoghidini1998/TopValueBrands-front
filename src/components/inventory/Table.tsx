@@ -18,8 +18,8 @@ const Table: FC = () => {
   return (
     <>
         <table className="w-full bg-white dark:bg-dark">
-          <thead className="inventory_table_header bg-white text-light fixed dark:bg-dark-2 dark:text-white">
-          <tr className="py-6 stroke-1 stroke-dark-3 flex items-center h-[60px] bg-[#F8FAFC] w-full text-black dark:text-white dark:bg-dark ">
+          <thead className="inventory_table_header bg-white text-light fixed dark:bg-dark-3 dark:text-white">
+          <tr className="py-6 stroke-1 stroke-dark-3 flex items-center h-[60px] bg-[#F8FAFC] w-full text-black dark:text-white dark:bg-dark-2">
             <th className="w-[25%] text-xs font-medium text-center">Product</th>
             <th className="w-[10%] text-xs font-medium text-center">ASIN</th>
             <th className="w-[10%] text-xs font-medium text-center">

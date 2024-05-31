@@ -21,8 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="flex">
+      <main className="flex w-full">
       <IndexPageContainer>
         <Navbar />
         <div className="main_layout">
@@ -38,7 +37,6 @@ export default function RootLayout({
           </ProductProvider>
         </div>
       </IndexPageContainer>  
-      </body>
-    </html>
+      </main>
   );
 }

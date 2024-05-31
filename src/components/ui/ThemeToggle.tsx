@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 type Props = {};
 export const ThemeToggle = ({}: Props) => {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const theme = localStorage.getItem("theme");
