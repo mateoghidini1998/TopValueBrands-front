@@ -24,9 +24,9 @@ export default function RootLayout({
     <main className="flex w-full">
       <IndexPageContainer>
         <Navbar />
-        <div className="main_layout">
+        <div className="main_layout flex justify-end ">
           <ProductProvider>
-            <div className="table_header py-10 px-[46px]  flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark">
+            <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark duration-[0.7s] ease-in-out">
               <PageTitle />
               <div className="flex items-center ">
                 <SearchInput />

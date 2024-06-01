@@ -53,7 +53,7 @@ const Navbar = () => {
         isOpen ? "w-[275px] duration-[0.6s] ease-in-out" : "w-[60px] duration-[0.6s] ease-in-out"
       } min-h-screen flex flex-col border-r-[1px] dark:border-r-dark-2 border-r-[#EFF1F3] text-black box-border fixed`}
     >
-      <div className="text-lg font-bold px-12 pb-[70px] pt-9 text-center h-[110px]">
+      <div className="text-lg font-bold px-12 pb-[30px] mb-[20px] pt-9 text-center h-[110px]">
         <h1 className={` ${!isOpen ? "hidden" : ""}`}>Top Value Brands</h1>
       </div>
       {/* Logo */}
