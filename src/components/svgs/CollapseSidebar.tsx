@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function CollapseSidebar() {
+type Props = {
+  color?: string
+}
+
+export default function CollapseSidebar({color}: Props) {
   return (
     <svg
       width="24"
@@ -11,7 +15,7 @@ export default function CollapseSidebar() {
     >
       <path
         d="M9 6.83423L15 12.8342L9 18.8342"
-        stroke="white"
+        stroke={color}
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"

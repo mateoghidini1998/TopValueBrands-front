@@ -3,10 +3,13 @@ import { FaMoon } from "react-icons/fa";
 import { BsSunFill } from "react-icons/bs";
 
 import { useState, useEffect } from "react";
+import useThemeContext from "@/contexts/theme.context";
 
 type Props = {};
 export const ThemeToggle = ({}: Props) => {
   const [darkMode, setDarkMode] = useState(false);
+  const {theme, toggleTheme} = useThemeContext();
+  
 
   useEffect(() => {
     const theme = localStorage.getItem("theme");
@@ -28,7 +31,7 @@ export const ThemeToggle = ({}: Props) => {
   return (
     <div
       className="relative w-12 h-6 flex items-center dark:bg-gray-900 bg-teal-500 cursor-pointer rounded-full p-1"
-      onClick={() => setDarkMode(!darkMode)}
+      onClick={() => { setDarkMode(!darkMode); toggleTheme() }}
     >
 
       <FaMoon className="text-white" size={18} />

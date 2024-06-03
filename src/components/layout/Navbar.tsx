@@ -4,10 +4,18 @@ import useAuthContext from "@/contexts/auth.context";
 import { LINKS } from "../../constants/links";
 import { useEffect, useState } from "react";
 import CollapseSidebar from "../svgs/CollapseSidebar";
+import useThemeContext from "@/contexts/theme.context";
 
 const Navbar = () => {
   const { user } = useAuthContext();
   const [isOpen, setIsOpen] = useState(true);
+  const { theme } = useThemeContext();
+  const [color, setColor] = useState(theme === "dark" ? "#fff" : "#000");
+
+  useEffect(() => {
+    setColor(theme === "dark" ? "#fff" : "#000");
+  },[theme]);
+  
 
   const filteredLinks = LINKS.filter((link) => {
     if (
@@ -69,8 +77,8 @@ const Navbar = () => {
       <div className={`bottom_buttons absolute w-full h-[100px] bottom-4 flex justify-between px-4 items-center ${!isOpen && "flex-row"}`}>
         {/* <div className="bottom-4 left-4">
         </div> */}
-        <button onClick={() => setIsOpen(!isOpen)} className={`bottom-4 right-4 ${!isOpen ? "rotate-180 duration-800 ease-in-out" : "rotate-[-180] duration-800 ease-in-out"}`}>
-          <CollapseSidebar />
+        <button onClick={() => {setIsOpen(!isOpen)}} className={`bottom-4 right-4 ${!isOpen ? "rotate-180 duration-800 ease-in-out" : "rotate-[-180] duration-800 ease-in-out"}`}>
+          <CollapseSidebar color={color} />
         </button>
       </div>
     </nav>
