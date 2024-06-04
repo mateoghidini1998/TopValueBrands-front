@@ -18,6 +18,11 @@ type FormData = {
   role: UserRole;
 };
 
+enum CustomAlertTheme{
+  LIGHT = "light",
+  DARK = "dark",
+}
+
 export default function Table() {
   const [isRegisterFormOpen, setRegisterFormIsOpen] = useState<boolean>(false);
   const {
@@ -195,6 +200,7 @@ export default function Table() {
   return (
     <>
       <CustomAlert
+        theme={CustomAlertTheme.LIGHT}
         message={customAlertProperties.message}
         description={customAlertProperties.description}
         type={customAlertProperties.type}
@@ -212,8 +218,8 @@ export default function Table() {
         />
       )}
       <table className="w-full mb-5 rounded-[20px] border-[#393E4F] border-[1px] border-solid">
-        <thead>
-          <tr className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[60px] w-full text-white bg-[#262935]">
+        <thead className="">
+          <tr className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[60px] w-full text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935]">
             <th className="w-[15%] text-xs font-medium text-center">Name</th>
             <th className="w-[15%] text-xs font-medium text-center">Email</th>
             <th className="w-[60%] text-xs font-medium text-center"></th>

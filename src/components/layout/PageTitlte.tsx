@@ -14,7 +14,7 @@ export default function PageTitle() {
         <>
             <div className="flex items-center gap-2">
                 {currentLink?.icon}
-                <h4 className="text-white text-base font-bold leading-6">{currentLink?.title}</h4>
+                <h4 className="text-black dark:text-white text-base font-bold leading-6">{currentLink?.title}</h4>
             </div>
         </>
     )

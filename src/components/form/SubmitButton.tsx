@@ -13,7 +13,7 @@ const SubmitButton = <T extends FieldValues,>({ label, styles, onSubmit }: Submi
     return (
             <button 
             onClick={handleSubmit(onSubmit)}
-            className="w-full p-2 rounded-md bg-[#438EF3] text-[12px] text-white">{label}
+            className="w-full p-2 rounded-md bg-[#438EF3] text-[14px] text-white">{label}
             </button>
     )
 }

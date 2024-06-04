@@ -2,26 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-
   min-height:100vh;
-
-  color: rgb(var(--foreground-rgb));
-  background: #1F2128;
 }
 
 @layer utilities {
@@ -31,21 +13,32 @@ body {
 }
 
 .main_layout{
-  width: calc(100vw - 290px);
+  width: calc(100vw - 17rem);
+  transition: width .6s ease-in-out;
+  /* width: 100%; */
   margin-left: auto;
   margin-top: 100px;
 }
 
 .table_header{
-  background-color: #1F2128;
-  width: calc(100vw - 290px);
+  /* background-color: #1F2128; */
+  width: calc(100vw - 17rem);
   margin-left: auto;
 }
 
+
 .inventory_table_header{
+  width: calc(100vw - 17rem);
+  
+  transition: width .6s ease-in-out;
   position: fixed;
-  width: calc(100vw - 290px);
   right: 0;
   top: 110px;
-  z-index: 1000;
+  z-index: 10;
 }
+
+.navbar-closed{
+  width: calc(100vw - (4.75rem));
+  right: 0;
+  transition: width .6s ease-in-out;
+  }
