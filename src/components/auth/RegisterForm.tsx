@@ -13,7 +13,8 @@ import SubmitButton from "../form/SubmitButton";
 import CloseButton from "../svgs/CloseButton";
 import { UserRole } from "@/types/user.types";
 import { RegisterErrorCard } from "./RegisterErrorCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import useThemeContext from "@/contexts/theme.context";
 
 type FormData = {
   id: string;
@@ -43,11 +44,16 @@ const RegisterForm = ({
   const methods = useForm<FormData>({
     resolver: yupResolver(RegisterScheme) as unknown as Resolver<FormData>,
   });
-
+  const { theme } = useThemeContext();
   const { handleSubmit, reset } = methods;
   const { editingUser } = useUsersContext();
-
   const DEFAULT_ROLE: UserRole = UserRole.USER;
+
+  const [color, setColor] = useState(theme === "dark" ? "#ADB3CC" : "#393E4F");
+
+  useEffect(() => {
+    setColor(theme === "dark" ? "#ADB3CC" : "#393E4F");
+  }, [theme]);
 
   useEffect(() => {
     if (isOpen) {
@@ -78,7 +84,7 @@ const RegisterForm = ({
         <div className="w-full flex items-center justify-between mb-8">
           <h3 className="text-xl dark:text-white font-medium">{title}</h3>
           <button onClick={onClose}>
-            <CloseButton />
+            <CloseButton color={color} />
           </button>
         </div>
         <FormProvider {...methods}>

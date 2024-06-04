@@ -152,7 +152,7 @@ export default function TableRow({ users }: TableRowProps) {
                 {/* Usa la función toggleOptions para cambiar el estado */}
                 <button className="flex" onClick={() => toggleOptions(user.email)}><DotsSVG stroke="#438EF3" /></button>
                 {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}
-                {showOptionsMap[user.email] && <TableRowOptions onEdit={() => handleEdit(Object.keys(showOptionsMap)[0])} onDelete={() => handleDelete(user.email)} />}
+                {showOptionsMap[user.email] && <TableRowOptions onClose={() => toggleOptions(user.email)}  onEdit={() => handleEdit(Object.keys(showOptionsMap)[0])} onDelete={() => handleDelete(user.email)} />}
               </div>
             </td>
           </tr>

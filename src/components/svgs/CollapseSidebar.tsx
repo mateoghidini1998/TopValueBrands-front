@@ -16,9 +16,9 @@ export default function CollapseSidebar({color}: Props) {
       <path
         d="M9 6.83423L15 12.8342L9 18.8342"
         stroke={color}
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

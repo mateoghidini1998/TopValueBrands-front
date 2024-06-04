@@ -95,7 +95,7 @@ const TableRow = ({ products }: TableRowProps) => {
       });
     }, 3000);
     return () => clearTimeout(timer);
-  }, [savedData, setCustomAlertProperties]);
+  }, [savedData, setCustomAlertProperties]); 
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
     if (isActionsOpen === seller_sku) {
@@ -173,7 +173,7 @@ const TableRow = ({ products }: TableRowProps) => {
       [e.target.name]: e.target.value,
     });
 
-  const {sidebarOpen, toggleSidebar} = useThemeContext();
+  const {sidebarOpen} = useThemeContext();
   
   return (
     <>
@@ -283,7 +283,7 @@ const TableRow = ({ products }: TableRowProps) => {
                           width={32}
                           height={32}
                           alt="product_image"
-                          placeholder="blur"
+                          // placeholder="blur"
                           blurDataURL="data:image/jpeg"
                         />
                       </Link>
@@ -399,6 +399,7 @@ const TableRow = ({ products }: TableRowProps) => {
 
                 {isActionsOpen === product.seller_sku && (
                   <RowActions
+                    onClose={() => setIsActionsOpen(null)}
                     onEdit={() => {
                       handleEdit(product.seller_sku);
                       setIsActionsOpen(null);
