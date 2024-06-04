@@ -4,6 +4,7 @@ import { FC } from "react";
 import TableRow from "./TableRow";
 import Pagination from "./Pagination";
 import { useProductContext } from "@/contexts/products.context";
+import useThemeContext from "@/contexts/theme.context";
 
 const Table: FC = () => {
   const {
@@ -15,11 +16,16 @@ const Table: FC = () => {
     setCurrentPage,
   } = useProductContext();
 
+  const {sidebarOpen, toggleSidebar} = useThemeContext();
+
+  console.log(sidebarOpen);
+  
+
   return (
     <>
-      <table className="w-full bg-white dark:bg-dark">
+      <table className={`${sidebarOpen ? "w-full" : "w-full"} bg-white dark:bg-dark`}>
         <thead className="inventory_table_header bg-white text-light fixed dark:bg-dark-3 dark:text-white">
-          <tr className="py-6 stroke-1 stroke-dark-3 flex items-center h-[60px] bg-[#F8FAFC] w-full text-black dark:text-white dark:bg-dark-2">
+          <tr className="m-0 w-full py-6 stroke-1 stroke-dark-3 flex items-center h-[60px] bg-[#F8FAFC] text-black dark:text-white dark:bg-dark-2">
             <th className="w-[25%] text-xs font-medium text-center">Product</th>
             <th className="w-[10%] text-xs font-medium text-center">ASIN</th>
             <th className="w-[10%] text-xs font-medium text-center">

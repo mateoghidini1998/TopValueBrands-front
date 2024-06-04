@@ -14,6 +14,7 @@ import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
 import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 import SaveButton from "../svgs/SaveButton";
 import CancelButton from "../svgs/CancelButton";
+import useThemeContext from "@/contexts/theme.context";
 
 type TableRowProps = {
   products: ProductType[];
@@ -172,10 +173,12 @@ const TableRow = ({ products }: TableRowProps) => {
       [e.target.name]: e.target.value,
     });
 
+  const {sidebarOpen, toggleSidebar} = useThemeContext();
+  
   return (
     <>
-      <tbody className="mt-[160px]">
-        <tr>
+      <tbody className={`${sidebarOpen ? "w-[calc(100vw-18rem)]" : "w-full"} mt-[160px flex flex-col items-center justify-start`}>
+        <tr className="">
           <td>
             <CustomAlert
               theme={CustomAlertTheme.LIGHT}
@@ -264,7 +267,7 @@ const TableRow = ({ products }: TableRowProps) => {
               key={product.seller_sku}
               className={`${
                 i == 0 ? "mt-[60px]" : ""
-              } py-6 stroke-1 stroke-dark-3 flex items-center h-[65px] w-full text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3] px-2`}
+              } m-0 w-full py-6 stroke-1 stroke-dark-3 flex items-center h-[65px] ${sidebarOpen ? "w-full" : "w-full"}  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
             >
               <td className="w-[25%] text-xs font-medium text-center">
                 <div className="relative flex flex-col w-full h-full items-center text-center">

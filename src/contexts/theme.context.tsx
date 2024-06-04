@@ -11,6 +11,9 @@ import {
 export type ThemeState = {
   theme: string;
   toggleTheme: () => void;
+  sidebarOpen: boolean;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleSidebar: () => void;
 };
 
 export const ThemeContext = createContext<ThemeState | undefined>(undefined);
@@ -20,8 +23,13 @@ export const ThemeProvider: FC<PropsWithChildren> = ({
 }: PropsWithChildren) => {
 
   const [theme, setTheme] = useState('light');
-  console.log(theme);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+
 
   useEffect(() => {
     const theme = localStorage.getItem("theme");
@@ -45,7 +53,7 @@ export const ThemeProvider: FC<PropsWithChildren> = ({
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, sidebarOpen, toggleSidebar, setSidebarOpen }}>
       {children}
     </ThemeContext.Provider>
   );

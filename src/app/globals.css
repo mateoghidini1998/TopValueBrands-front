@@ -13,7 +13,7 @@ body {
 }
 
 .main_layout{
-  width: calc(100vw - 290px);
+  width: calc(100vw - 17rem);
   transition: width .6s ease-in-out;
   /* width: 100%; */
   margin-left: auto;
@@ -22,13 +22,13 @@ body {
 
 .table_header{
   /* background-color: #1F2128; */
-  width: calc(100vw - 290px);
+  width: calc(100vw - 17rem);
   margin-left: auto;
 }
 
 
 .inventory_table_header{
-  width: calc(100vw - 290px);
+  width: calc(100vw - 17rem);
   
   transition: width .6s ease-in-out;
   position: fixed;
@@ -38,7 +38,7 @@ body {
 }
 
 .navbar-closed{
-  width: calc(100vw - (60px + 30px));
+  width: calc(100vw - (4.75rem));
   right: 0;
   transition: width .6s ease-in-out;
   }
