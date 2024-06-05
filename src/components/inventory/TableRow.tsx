@@ -34,7 +34,6 @@ enum CustomAlertTheme {
 }
 
 const TableRow = ({ products }: TableRowProps) => {
-
   const isDarkmode = localStorage.getItem("theme") === "dark";
   const [theme, setTheme] = useState(isDarkmode ? "dark" : "light");
 
@@ -95,7 +94,7 @@ const TableRow = ({ products }: TableRowProps) => {
       });
     }, 3000);
     return () => clearTimeout(timer);
-  }, [savedData, setCustomAlertProperties]); 
+  }, [savedData, setCustomAlertProperties]);
 
   const handleToggleActions = (seller_sku: string, product: ProductType) => {
     if (isActionsOpen === seller_sku) {
@@ -173,11 +172,15 @@ const TableRow = ({ products }: TableRowProps) => {
       [e.target.name]: e.target.value,
     });
 
-  const {sidebarOpen} = useThemeContext();
-  
+  const { sidebarOpen } = useThemeContext();
+
   return (
     <>
-      <tbody className={`${sidebarOpen ? "w-[calc(100vw-18rem)]" : "w-full"} mt-[160px flex flex-col items-center justify-start`}>
+      <tbody
+        className={`${
+          sidebarOpen ? "w-[calc(100vw-18rem)]" : "w-full"
+        } mt-[160px flex flex-col items-center justify-start`}
+      >
         <tr className="">
           <td>
             <CustomAlert
@@ -267,7 +270,9 @@ const TableRow = ({ products }: TableRowProps) => {
               key={product.seller_sku}
               className={`${
                 i == 0 ? "mt-[60px]" : ""
-              } m-0 w-full py-6 stroke-1 stroke-dark-3 flex items-center h-[65px] ${sidebarOpen ? "w-full" : "w-full"}  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
+              } m-0 w-full py-6 stroke-1 stroke-dark-3 flex items-center h-[65px] ${
+                sidebarOpen ? "w-full" : "w-full"
+              }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
             >
               <td className="w-[25%] text-xs font-medium text-center">
                 <div className="relative flex flex-col w-full h-full items-center text-center">
@@ -383,7 +388,13 @@ const TableRow = ({ products }: TableRowProps) => {
                       handleToggleActions(product.seller_sku, product)
                     }
                   >
-                    {!isActionsOpen ?  <DotsSVG stroke="#ADB3CC"/> : isActionsOpen === product.seller_sku ? <button onClick={() => setIsActionsOpen(null)}>❌</button> : <DotsSVG stroke="#ADB3CC"/>}
+                    {!isActionsOpen ? (
+                      <DotsSVG stroke="#ADB3CC" />
+                    ) : isActionsOpen === product.seller_sku ? (
+                      <button onClick={() => setIsActionsOpen(null)}>❌</button>
+                    ) : (
+                      <DotsSVG stroke="#ADB3CC" />
+                    )}
                   </button>
                 ) : (
                   <div className="flex items-center justify-center gap-4">

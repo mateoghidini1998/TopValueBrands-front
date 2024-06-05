@@ -12,7 +12,11 @@ type RowActionsProps = {
   onClose: () => void; // Añade un handler para cerrar el menú
 };
 
-export default function RowActions({ onEdit, onDelete, onClose }: RowActionsProps) {
+export default function RowActions({
+  onEdit,
+  onDelete,
+  onClose,
+}: RowActionsProps) {
   const ref = useRef(null);
 
   useOnClickOutside(ref, () => {
@@ -20,17 +24,23 @@ export default function RowActions({ onEdit, onDelete, onClose }: RowActionsProp
   });
 
   const { theme } = useThemeContext();
-  const [editColor, setEditColor] = useState(theme === "dark" ? "#ADB3CC" : "#393E4F");
-  const [deleteColor, setDeleteColor] = useState(theme === "dark" ? "#ADB3CC" : "#FF4C3F");
+  const [editColor, setEditColor] = useState(
+    theme === "dark" ? "#ADB3CC" : "#393E4F"
+  );
+  const [deleteColor, setDeleteColor] = useState(
+    theme === "dark" ? "#ADB3CC" : "#FF4C3F"
+  );
 
   useEffect(() => {
     setEditColor(theme === "dark" ? "#ADB3CC" : "#393E4F");
     setDeleteColor(theme === "dark" ? "#ADB3CC" : "#FF4C3F");
-  },[theme]);
-
+  }, [theme]);
 
   return (
-    <div ref={ref} className="absolute bg-white border-[#EFF1F3] text-black right-0 mt-2 w-48 rounded-md shadow-lg dark:bg-dark-2 dark:ring-black ring-opacity-5 z-[5] border-s-2-[#7e7e7e]">
+    <div
+      ref={ref}
+      className="absolute bg-white border-[#EFF1F3] text-black right-0 mt-2 w-48 rounded-md shadow-lg dark:bg-dark-2 dark:ring-black ring-opacity-5 z-[5] border-s-2-[#7e7e7e]"
+    >
       <div
         className="py-1"
         role="menu"
