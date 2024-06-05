@@ -49,10 +49,10 @@ const Pagination: FC<PaginationProps> = ({
   const pageButtons = pageNumbers.map((page) => (
     <button
       key={page}
-      className={`w-9 h-9 p-1.5 dark:bg-[#262935] bg-white text-base rounded-md  ${
+      className={`w-9 h-9 p-1.5 dark:bg-[#262935] text-base rounded-md  ${
         currentPage === page
-          ? "text-[#438EF3] font-medium border-[#438EF3] border-[1px] border-solid bg-[#438EF330]"
-          : "dark:text-white border-[#858EAD] border-[1px] border-solid "
+          ? "text-[#438EF3] font-medium border-[#438EF3] border-[1px] border-solid bg-[#438ff36c]"
+          : "text-[#858EAD] dark:text-white border-[#858EAD] border-[1px] border-solid dark:border-0"
       }`}
       onClick={() => setCurrentPage(page)}
     >
@@ -63,9 +63,9 @@ const Pagination: FC<PaginationProps> = ({
   return (
     <div className="flex items-center justify-center gap-2 py-10">
       <button
-        className={`text-[#393E4F] border-[#393E4F] border-[1px] border-solid flex items-center justify-center w-9 h-9 p-1.5 dark:bg-[#262935] rounded-md ${
+        className={`text-[#393E4F] border-[#858EAD] dark:border-0 border-[1px] border-solid flex items-center justify-center w-9 h-9 p-1.5 dark:bg-[#262935] rounded-md ${
           disabledPrev
-            && "color-[#393E4F] border-[#393E4F] border-[1px] border-solid"
+            && "dark:text-[#393E4F] border-[#D4D4D8] dark:border-[1px] dark:border-[#393E4F] border-[1px] border-solid"
         }`}
         onClick={handlePreviousPage}
         disabled={disabledPrev}
@@ -74,9 +74,9 @@ const Pagination: FC<PaginationProps> = ({
       </button>
       {pageButtons}
       <button
-        className={`text-[#393E4F] border-[#393E4F] border-[1px] border-solid flex items-center justify-center w-9 h-9 p-1.5 dark:bg-[#262935] rounded-md ${
+        className={`text-[#393E4F] dark:border-0 border-[#858EAD] border-[1px] border-solid flex items-center justify-center w-9 h-9 p-1.5 dark:bg-[#262935] rounded-md ${
           disabledNext
-            && "color-[#393E4F] border-[#393E4F] border-[1px] border-solid"
+            && "text-[#393E4F] border-[#D4D4D8] dark:border-[1px] dark:border-[#393E4F] border-[1px] border-solid"
         }`}
         onClick={handleNextPage}
         disabled={disabledNext}

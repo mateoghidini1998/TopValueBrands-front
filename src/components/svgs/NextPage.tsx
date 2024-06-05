@@ -9,8 +9,8 @@ export default function NextPage({ disabled }: NextPageProps) {
 
   const { theme } = useThemeContext();
 
-  const color = theme === "dark" ? "white" : "black";
-  const disabledColor = theme === "dark" ? "#393E4F" : "#858EAD";
+  const color = theme === "dark" ? "white" : "#858EAD";
+  const disabledColor = theme === "dark" ? "#393E4F" : "#D4D4D8";
 
 
   return (
