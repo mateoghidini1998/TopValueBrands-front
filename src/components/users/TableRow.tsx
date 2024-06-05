@@ -156,7 +156,7 @@ export default function TableRow({ users }: TableRowProps) {
           {user.role}
           {/* Usa la función toggleOptions para cambiar el estado */}
           <button className="flex" onClick={() => toggleOptions(user.email)}>
-            <DotsSVG stroke="#438EF3" />
+            {!showOptionsMap[user.email] ? <DotsSVG stroke="#438EF3" /> : <button>❌</button>}
           </button>
           {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}
           {showOptionsMap[user.email] && (
