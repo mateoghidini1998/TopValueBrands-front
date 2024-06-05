@@ -18,7 +18,7 @@ type FormData = {
   role: UserRole;
 };
 
-enum CustomAlertTheme{
+enum CustomAlertTheme {
   LIGHT = "light",
   DARK = "dark",
 }
@@ -217,9 +217,9 @@ export default function Table() {
           onClose={() => handleModalCloseUpdateForm()}
         />
       )}
-      <table className="w-full mb-5 rounded-[20px] border-[#393E4F] border-[1px] border-solid">
+      <table className="w-full mb-5 rounded-[20px] border-[#EFF1F3] dark:border-[#393E4F] border-[1px] border-solid border-separate">
         <thead className="">
-          <tr className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[60px] w-full text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935]">
+          <tr className="py-6 stroke-1 stroke-[#393E4F] flex items-center h-[60px] w-full text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-t rounded-t-[20px] border-transparent">
             <th className="w-[15%] text-xs font-medium text-center">Name</th>
             <th className="w-[15%] text-xs font-medium text-center">Email</th>
             <th className="w-[60%] text-xs font-medium text-center"></th>
@@ -232,6 +232,7 @@ export default function Table() {
           <TableRow users={users} />
         </tbody>
       </table>
+
       <RegisterForm
         title={"Create new User"}
         isOpen={isRegisterFormOpen}

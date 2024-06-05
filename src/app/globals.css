@@ -41,4 +41,8 @@ body {
   width: calc(100vw - (4.75rem));
   right: 0;
   transition: width .6s ease-in-out;
-  }
+}
+
+.last-row {
+  border-radius: 0px 0px 20px 20px;
+}

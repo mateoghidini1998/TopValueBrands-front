@@ -135,28 +135,42 @@ export default function TableRow({ users }: TableRowProps) {
         </td>
       </tr>
       {Array.isArray(users) &&
-        users.map((user) => (
-          <tr key={user.email} className="dark:bg-dark relative py-6 text-light stroke-1 dark:stroke-[#393E4F] flex items-center h-[65px] w-full dark:text-white bg-transparent border-b dark:border-b-[#393E4F]">
-            <td className="w-[15%] text-xs font-medium text-center">
-              {user.firstName} {user.lastName}
-            </td>
-            <td className="w-[15%] text-xs font-medium text-center">
-              {user.email}
-            </td>
-            <td className="w-[60%] text-xs font-medium text-center">
-              {/* Cualquier contenido adicional de la fila */}
-            </td>
-            <td className="w-[10%] text-xs font-medium text-center">
-              <div className="flex items-center justify-between gap-2 px-2">
-                {user.role}
-                {/* Usa la función toggleOptions para cambiar el estado */}
-                <button className="flex" onClick={() => toggleOptions(user.email)}><DotsSVG stroke="#438EF3" /></button>
-                {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}
-                {showOptionsMap[user.email] && <TableRowOptions onClose={() => toggleOptions(user.email)}  onEdit={() => handleEdit(Object.keys(showOptionsMap)[0])} onDelete={() => handleDelete(user.email)} />}
-              </div>
-            </td>
-          </tr>
-        ))}
+  users.map((user, index) => (
+    <tr
+      key={user.email}
+      className={`dark:bg-dark relative py-6 text-light stroke-1 dark:stroke-[#393E4F] flex items-center h-[65px] w-full dark:text-white bg-transparent border-t dark:border-t-[#393E4F] ${
+        index === users.length - 1 ? 'last-row' : ''
+      }`}
+    >
+      <td className="w-[15%] text-xs font-medium text-center">
+        {user.firstName} {user.lastName}
+      </td>
+      <td className="w-[15%] text-xs font-medium text-center">
+        {user.email}
+      </td>
+      <td className="w-[60%] text-xs font-medium text-center">
+        {/* Cualquier contenido adicional de la fila */}
+      </td>
+      <td className="w-[10%] text-xs font-medium text-center">
+        <div className="flex items-center justify-between gap-2 px-2">
+          {user.role}
+          {/* Usa la función toggleOptions para cambiar el estado */}
+          <button className="flex" onClick={() => toggleOptions(user.email)}>
+            <DotsSVG stroke="#438EF3" />
+          </button>
+          {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}
+          {showOptionsMap[user.email] && (
+            <TableRowOptions
+              onClose={() => toggleOptions(user.email)}
+              onEdit={() => handleEdit(Object.keys(showOptionsMap)[0])}
+              onDelete={() => handleDelete(user.email)}
+            />
+          )}
+        </div>
+      </td>
+    </tr>
+  ))}
+
     </>
   );
 }
