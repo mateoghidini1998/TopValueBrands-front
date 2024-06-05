@@ -383,12 +383,11 @@ const TableRow = ({ products }: TableRowProps) => {
                       handleToggleActions(product.seller_sku, product)
                     }
                   >
-                    <DotsSVG stroke="#ADB3CC"/>
+                    {!isActionsOpen ?  <DotsSVG stroke="#ADB3CC"/> : isActionsOpen === product.seller_sku ? <button onClick={() => setIsActionsOpen(null)}>❌</button> : <DotsSVG stroke="#ADB3CC"/>}
                   </button>
                 ) : (
                   <div className="flex items-center justify-center gap-4">
                     <button onClick={() => handleSave()}>
-                      {/* <AiOutlineSave className="w-5 h-5 fill-[#ADB3CC]" /> */}
                       <SaveButton />
                     </button>
                     <button onClick={() => handleCancel()}>
