@@ -142,7 +142,7 @@ export default function TableRow({ users }: TableRowProps) {
             key={user.email}
             className={`dark:bg-dark relative py-6 text-light stroke-1 dark:stroke-[#393E4F] flex items-center h-[65px] w-full dark:text-white bg-transparent border-t dark:border-t-[#393E4F] ${
               index === users.length - 1 ? "last-row" : ""
-            }`}
+            } ${index === 0 && 'border-t-0'}`}
           >
             <td className="w-[15%] text-xs font-medium text-center">
               {user.firstName} {user.lastName}
