@@ -2,7 +2,7 @@
 import { InventoryService } from "@/services/inventory/inventory";
 import { ProductType } from "@/types/product.types";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import ConfirmAlert from "../alerts/ConfirmAlert";
 import { AlertOptions } from "../alerts/ConfirmAlert";
 import DotsSVG from "../svgs/DotsSVG";
@@ -16,6 +16,7 @@ import SaveButton from "../svgs/SaveButton";
 import CancelButton from "../svgs/CancelButton";
 import useThemeContext from "@/contexts/theme.context";
 import { useSupplierContext } from "@/contexts/suppliers.context";
+import { SupplierType } from "@/types/supplier.types";
 
 type TableRowProps = {
   products: ProductType[];
@@ -69,6 +70,48 @@ const TableRow = ({ products }: TableRowProps) => {
 
   // Suppliers
   const { suppliers } = useSupplierContext();
+
+  const [filterText, setFilterText] = useState<string>("");
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [selectedSupplier, setSelectedSupplier] = useState<number | null>(
+    editData.supplier_id || null
+  );
+
+  const inputRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setShowOptions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const filteredSuppliers = suppliers.filter((supplier) =>
+    supplier.supplier_name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilterText(e.target.value);
+    setShowOptions(true);
+  };
+
+  const handleSelectSupplier = (supplier: SupplierType) => {
+    setSelectedSupplier(supplier.id);
+    setFilterText(supplier.supplier_name);
+    setShowOptions(false);
+    onChangeSelect({
+      target: { name: "supplier_id", value: supplier.id },
+    } as unknown as ChangeEvent<HTMLSelectElement>);
+  };
 
   //Custom Alert
   const showAlert = (
@@ -175,14 +218,14 @@ const TableRow = ({ products }: TableRowProps) => {
       ...editData,
       [e.target.name]: e.target.value,
     });
-  
+
   const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setEditData({
       ...editData,
       [e.target.name]: e.target.value,
     });
 
-  const { sidebarOpen } = useThemeContext(); 
+  const { sidebarOpen } = useThemeContext();
 
   return (
     <>
@@ -345,13 +388,33 @@ const TableRow = ({ products }: TableRowProps) => {
               </td>
               <td className="w-[10%] text-xs font-medium text-center flex justify-center">
                 {editingRow[product.seller_sku] ? (
-                  <select value={editData.supplier_id} onChange={(e) => onChangeSelect(e)} name="supplier_id" id="supplier_id" className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]">
-                  {suppliers.map((supplier, index) => (
-                    <option key={index} value={supplier.id}>{supplier.supplier_name}</option>
-                  ))}
-                </select>
+                  <div className="relative w-2/3" ref={inputRef}>
+                    <input
+                      type="text"
+                      value={filterText}
+                      onChange={handleFilterChange}
+                      onClick={() => setShowOptions(true)}
+                      placeholder="Filter suppliers"
+                      className="w-full p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                    />
+                    {showOptions && (
+                      <ul className="absolute z-10 w-full bg-[#F8FAFC] dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3] rounded-lg mt-1 max-h-40 overflow-y-auto">
+                        {filteredSuppliers.map((supplier) => (
+                          <li
+                            key={supplier.id}
+                            onClick={() => handleSelectSupplier(supplier)}
+                            className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+                          >
+                            {supplier.supplier_name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 ) : (
-                  suppliers.find((supplier) => supplier.id == product.supplier_id)?.supplier_name
+                  suppliers.find(
+                    (supplier) => supplier.id === product.supplier_id
+                  )?.supplier_name
                 )}
               </td>
               <td className="w-[15%] text-xs font-medium text-center flex justify-center">
