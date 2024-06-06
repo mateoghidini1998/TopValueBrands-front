@@ -46,3 +46,11 @@ body {
 .last-row {
   border-radius: 0px 0px 20px 20px;
 }
+
+.limited-wrap {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Número de líneas que deseas mostrar */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

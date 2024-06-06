@@ -17,6 +17,7 @@ import CancelButton from "../svgs/CancelButton";
 import useThemeContext from "@/contexts/theme.context";
 import { useSupplierContext } from "@/contexts/suppliers.context";
 import { SupplierType } from "@/types/supplier.types";
+import EmptyImage from "../svgs/EmptyImage";
 
 type TableRowProps = {
   products: ProductType[];
@@ -324,12 +325,12 @@ const TableRow = ({ products }: TableRowProps) => {
               key={product.seller_sku}
               className={`${
                 i == 0 ? "mt-[60px]" : ""
-              } m-0 w-full py-6 stroke-1 stroke-dark-3 flex items-center h-[65px] ${
+              } m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-fit ${
                 sidebarOpen ? "w-full" : "w-full"
               }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
             >
-              <td className="w-[25%] text-xs font-medium text-center">
-                <div className="relative flex flex-col w-full h-full items-center text-center">
+              <td className="w-[25%] text-xs font-medium text-left p-3 h-fit">
+                <div className="relative flex w-full h-full items-center justify-between text-left">
                   <div className="w-8 h-8">
                     {product.product_image ? (
                       <Link
@@ -348,19 +349,20 @@ const TableRow = ({ products }: TableRowProps) => {
                       </Link>
                     ) : (
                       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-500">No image</span>
+                        <EmptyImage/>
                       </div>
+                      //   <span className="text-gray-500">No image</span>
                     )}
                   </div>
                   <span
-                    className="text-xs"
+                    className="text-xs limited-wrap"
                     style={{
                       cursor: "pointer",
                       position: "relative",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      width: "100%",
+                      // overflow: "hidden",
+                      // textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      width: "80%",
                     }}
                   >
                     {product.product_name}
