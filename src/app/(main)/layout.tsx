@@ -1,11 +1,12 @@
+import SearchInput from "@/components/inventory/SearchInput";
+import Navbar from "@/components/layout/Navbar";
+import PageTitle from "@/components/layout/PageTitlte";
+import UserMenu from "@/components/layout/UserMenu";
+import { ProductProvider } from "@/contexts/products.context";
+import { SupplierProvider } from "@/contexts/suppliers.context";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
 import IndexPageContainer from "./page.container";
-import SearchInput from "@/components/inventory/SearchInput";
-import UserMenu from "@/components/layout/UserMenu";
-import PageTitle from "@/components/layout/PageTitlte";
-import { ProductProvider } from "@/contexts/products.context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,24 +22,25 @@ export default function RootLayout({
 }>) {
   return (
     <>
-    <main className="flex w-full">
-      <IndexPageContainer>
-        <Navbar />
-        <div className="main_layout flex justify-end ">
-          <ProductProvider>
-            <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark duration-[0.7s] ease-in-out">
-              <PageTitle />
-              <div className="flex items-center ">
-                <SearchInput />
-                <UserMenu />
-              </div>
-            </div>
-
-            {children}
-          </ProductProvider>
-        </div>
-      </IndexPageContainer>
-    </main>
+      <main className="flex w-full">
+        <IndexPageContainer>
+          <Navbar />
+          <div className="main_layout flex justify-end ">
+            <ProductProvider>
+              <SupplierProvider>
+                <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark duration-[0.7s] ease-in-out">
+                  <PageTitle />
+                  <div className="flex items-center ">
+                    <SearchInput />
+                    <UserMenu />
+                  </div>
+                </div>
+                {children}
+              </SupplierProvider>
+            </ProductProvider>
+          </div>
+        </IndexPageContainer>
+      </main>
     </>
   );
 }
