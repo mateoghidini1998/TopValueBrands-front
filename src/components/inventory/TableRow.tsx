@@ -176,6 +176,7 @@ const TableRow = ({ products }: TableRowProps) => {
         Inbound_to_FBA: 0,
         is_active: false,
       });
+      setFilterText('');
       return response;
     } catch (error) {
       console.error("Error al actualizar el producto: ", error);
@@ -398,7 +399,7 @@ const TableRow = ({ products }: TableRowProps) => {
                       className="w-full p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
                     />
                     {showOptions && (
-                      <ul className="absolute z-10 w-full bg-[#F8FAFC] dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3] rounded-lg mt-1 max-h-40 overflow-y-auto">
+                      <ul className="absolute z-10 w-full bg-[#F8FAFC] dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3] rounded-lg mt-1 max-h-40 overflow-y-auto no-scrollbar">
                         {filteredSuppliers.map((supplier) => (
                           <li
                             key={supplier.id}
