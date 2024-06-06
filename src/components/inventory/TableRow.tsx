@@ -343,7 +343,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 sidebarOpen ? "w-full" : "w-full"
               }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
             >
-              <td className="w-[25%] text-xs font-medium text-left p-3 h-fit">
+              <td className="w-[25%] text-xs font-medium text-left p-3 h-fit relative">
                 <div className="relative flex w-full h-full items-center justify-between text-left">
                   <div className="w-8 h-8">
                     {product.product_image ? (
@@ -379,6 +379,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   >
                     {product.product_name}
                   </span>
+                </div>
                   {
                       tooltipVisible && tooltipText === product.product_name && (
                         <Tooltip
@@ -387,7 +388,6 @@ const TableRow = ({ products }: TableRowProps) => {
                         />
                       )
                     }
-                </div>
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
                 {product.ASIN}
