@@ -357,15 +357,13 @@ const TableRow = ({ products }: TableRowProps) => {
                           width={32}
                           height={32}
                           alt="product_image"
-                          // placeholder="blur"
                           blurDataURL="data:image/jpeg"
                         />
                       </Link>
                     ) : (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <div className="w-full h-full bg-light-2 shadow-sm dark:bg-dark-2 rounded-lg flex items-center justify-center">
                         <EmptyImage />
                       </div>
-                      //   <span className="text-gray-500">No image</span>
                     )}
                   </div>
                   <span
@@ -380,11 +378,6 @@ const TableRow = ({ products }: TableRowProps) => {
                     onMouseLeave={handleMouseLeave}
                   >
                     {product.product_name}
-              
-                    {/* <Tooltip
-                      product_name={product.product_name}
-                      visible={tooltipVisible}
-                    /> */}
                   </span>
                   {
                       tooltipVisible && tooltipText === product.product_name && (
@@ -394,7 +387,6 @@ const TableRow = ({ products }: TableRowProps) => {
                         />
                       )
                     }
-                  {/* <Tooltip product_name={product.product_name} /> */}
                 </div>
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
@@ -416,7 +408,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   `$ ${product.product_cost}`
                 )}
               </td>
-              <td className="w-[10%] text-xs font-medium text-center flex justify-center">
+              <td className="w-[15%] text-xs font-medium text-center flex justify-center">
                 {editingRow[product.seller_sku] ? (
                   <div className="relative w-2/3" ref={inputRef}>
                     <input
@@ -447,7 +439,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   )?.supplier_name
                 )}
               </td>
-              <td className="w-[15%] text-xs font-medium text-center flex justify-center">
+              <td className="w-[10%] text-xs font-medium text-center flex justify-center">
                 {editingRow[product.seller_sku] ? (
                   <input
                     name="supplier_item_number"
@@ -460,7 +452,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   product.supplier_item_number
                 )}
               </td>
-              <td className="w-[5%] text-xs font-medium text-center flex justify-center">
+              <td className="w-[10%] text-xs font-medium text-center flex justify-center">
                 {editingRow[product.seller_sku] ? (
                   <input
                     name="pack_type"
@@ -476,13 +468,13 @@ const TableRow = ({ products }: TableRowProps) => {
               <td className="w-[5%] text-xs font-medium text-center">
                 {product.FBA_available_inventory}
               </td>
-              <td className="w-[5%] text-xs font-medium text-center">
+              <td className="w-[10%] text-xs font-medium text-center">
                 {product.reserved_quantity}
               </td>
-              <td className="w-[5%] text-xs font-medium text-center">
+              <td className="w-[10%] text-xs font-medium text-center">
                 {product.Inbound_to_FBA}
               </td>
-              <td className="w-[5%] text-xs font-medium text-center relative">
+              <td className="w-[5%] text-xs font-medium text-right relative">
                 {!editingRow[product.seller_sku] ? (
                   <button
                     onClick={() =>
