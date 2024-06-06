@@ -15,6 +15,7 @@ import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 import SaveButton from "../svgs/SaveButton";
 import CancelButton from "../svgs/CancelButton";
 import useThemeContext from "@/contexts/theme.context";
+import { useSupplierContext } from "@/contexts/suppliers.context";
 
 type TableRowProps = {
   products: ProductType[];
@@ -23,7 +24,7 @@ type TableRowProps = {
 export interface EditProductType {
   seller_sku: string;
   product_cost?: number;
-  supplier_name?: string;
+  supplier_id?: number;
   supplier_item_number?: string;
   pack_type?: string;
 }
@@ -65,6 +66,9 @@ const TableRow = ({ products }: TableRowProps) => {
     description: "",
     visible: false,
   });
+
+  // Suppliers
+  const { suppliers } = useSupplierContext();
 
   //Custom Alert
   const showAlert = (
@@ -171,8 +175,14 @@ const TableRow = ({ products }: TableRowProps) => {
       ...editData,
       [e.target.name]: e.target.value,
     });
+  
+  const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setEditData({
+      ...editData,
+      [e.target.name]: e.target.value,
+    });
 
-  const { sidebarOpen } = useThemeContext();
+  const { sidebarOpen } = useThemeContext(); 
 
   return (
     <>
@@ -335,15 +345,13 @@ const TableRow = ({ products }: TableRowProps) => {
               </td>
               <td className="w-[10%] text-xs font-medium text-center flex justify-center">
                 {editingRow[product.seller_sku] ? (
-                  <input
-                    name="supplier_name"
-                    type="text"
-                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
-                    value={editData.supplier_name || ""}
-                    onChange={(e) => onChange(e)}
-                  />
+                  <select value={editData.supplier_id} onChange={(e) => onChangeSelect(e)} name="supplier_id" id="supplier_id" className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]">
+                  {suppliers.map((supplier, index) => (
+                    <option key={index} value={supplier.id}>{supplier.supplier_name}</option>
+                  ))}
+                </select>
                 ) : (
-                  product.supplier_name
+                  suppliers.find((supplier) => supplier.id == product.supplier_id)?.supplier_name
                 )}
               </td>
               <td className="w-[15%] text-xs font-medium text-center flex justify-center">
