@@ -81,7 +81,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
         const newUpdatedProduct = products[productIndex];
 
         // update the product
-        newUpdatedProduct.supplier_name = updatedProduct.supplier_name || newUpdatedProduct.supplier_name ;
+        newUpdatedProduct.supplier_id = updatedProduct.supplier_id || newUpdatedProduct.supplier_id ;
         newUpdatedProduct.supplier_item_number = updatedProduct.supplier_item_number || newUpdatedProduct.supplier_item_number ;
         newUpdatedProduct.product_cost = updatedProduct.product_cost || newUpdatedProduct.product_cost;
         newUpdatedProduct.pack_type = updatedProduct.pack_type || newUpdatedProduct.pack_type;
