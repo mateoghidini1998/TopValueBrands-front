@@ -80,6 +80,20 @@ const TableRow = ({ products }: TableRowProps) => {
 
   const inputRef = useRef<HTMLDivElement>(null);
 
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [tooltipText, setTooltipText] = useState<string>("");
+  const spanRef = useRef<HTMLSpanElement>(null);
+
+  const handleMouseEnter = (product_name: string) => {
+    setTooltipText(product_name);
+    setTooltipVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setTooltipText("");
+    setTooltipVisible(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -177,7 +191,7 @@ const TableRow = ({ products }: TableRowProps) => {
         Inbound_to_FBA: 0,
         is_active: false,
       });
-      setFilterText('');
+      setFilterText("");
       return response;
     } catch (error) {
       console.error("Error al actualizar el producto: ", error);
@@ -349,25 +363,38 @@ const TableRow = ({ products }: TableRowProps) => {
                       </Link>
                     ) : (
                       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <EmptyImage/>
+                        <EmptyImage />
                       </div>
                       //   <span className="text-gray-500">No image</span>
                     )}
                   </div>
                   <span
+                    ref={spanRef}
                     className="text-xs limited-wrap"
                     style={{
                       cursor: "pointer",
                       position: "relative",
-                      // overflow: "hidden",
-                      // textOverflow: "ellipsis",
-                      // whiteSpace: "nowrap",
                       width: "80%",
                     }}
+                    onMouseEnter={() => handleMouseEnter(product.product_name)}
+                    onMouseLeave={handleMouseLeave}
                   >
                     {product.product_name}
+              
+                    {/* <Tooltip
+                      product_name={product.product_name}
+                      visible={tooltipVisible}
+                    /> */}
                   </span>
-                  <Tooltip product_name={product.product_name} />
+                  {
+                      tooltipVisible && tooltipText === product.product_name && (
+                        <Tooltip
+                          product_name={product.product_name}
+                          visible={tooltipVisible}
+                        />
+                      )
+                    }
+                  {/* <Tooltip product_name={product.product_name} /> */}
                 </div>
               </td>
               <td className="w-[10%] text-xs font-medium text-center">

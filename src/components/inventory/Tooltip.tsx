@@ -3,24 +3,24 @@ import { useState } from "react";
 
 type TooltipProps = {
   product_name: string;
+  visible: boolean;
 };
 
-export const Tooltip = ({ product_name }: TooltipProps) => {
-  const [isHovered, setIsHovered] = useState(false);
-
+export const Tooltip = ({ product_name, visible }: TooltipProps) => {
   return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="absolute z-50 h-[20px] p-0 hover:p-6 rounded-sm bg-transparent top-[50px] left-5 w-11/12 hover:h-auto hover:bg-white hover:text-[#61656E] dark:hover:bg-[#262935] dark:hover:text-white">
-        {isHovered && (
-          <>
-            <div className="absolute h-0 w-0 border-[10px] border-transparent dark:border-t-[#262935] left-1/2 transform -translate-x-1/2 bg-transparent top-[-16px] rotate-180 border-t-[#61656E]"></div>
-            <p>{product_name}</p>
-          </>
-        )}
-      </div>
+    <div className="">
+      {visible && (
+        <>
+          <div
+            className="shadow-t-md absolute top-[43px] left-1/2 transform -translate-x-1/2 w-[11px] h-[11px] bg-white border-r-white
+border-b-white dark:bg-[#262935] rotate-[45deg] z-[200] border-l dark:border-l-[#393E4F] border-r dark:border-r-[#262935] border-t dark:border-t-[#393E4F] border-b dark:border-b-[#262935]"
+          ></div>
+
+          <h2 className="shadow-md text-light rounded-lg flex flex-wrap overflow-visible w-fit h-fit bg-white absolute top-12 left-0 z-[100] p-4 border-[1px] border-solid dark:border-dark-3 border-light-3 dark:bg-dark-2 dark:text-white">
+            {product_name}
+          </h2>
+        </>
+      )}
     </div>
   );
 };
