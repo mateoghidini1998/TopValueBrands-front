@@ -7,6 +7,7 @@ export type ProductType = {
     FBA_available_inventory: number,
     reserved_quantity: number,
     Inbound_to_FBA: number,
+    supplier_id?: number,
     supplier_name?: string,
     supplier_item_number?: string,
     product_cost?: number,
