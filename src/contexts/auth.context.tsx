@@ -66,7 +66,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children}: PropsWithChildr
                 const token = await getAuthToken();
                 setAuthToken(token?? null);
             });
-
+            setAuthError(null);
             return response;
         } catch (err) {
             if(err instanceof Error) {

@@ -24,8 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/logo_tvb.png" />
-        <script dangerouslySetInnerHTML={{ __html: setInitialThemeScript }} />
-        {/* Puedes agregar más meta tags aquí si es necesario */}
+        {/* <script dangerouslySetInnerHTML={{ __html: setInitialThemeScript }} /> */}
       </head>
       <ThemeProvider>
         <body className="flex bg-white dark:bg-dark">
