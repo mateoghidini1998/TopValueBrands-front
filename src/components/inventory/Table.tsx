@@ -23,10 +23,10 @@ const Table: FC = () => {
   return (
     <>
       <table
-        className={`${sidebarOpen ? "w-full" : "w-full"} bg-white dark:bg-dark`}
+        className={`${sidebarOpen ? "w-full" : "w-full"} bg-white dark:bg-dark transition-colors duration-[0.6s] ease-in-out`}
       >
         <thead className="inventory_table_header bg-white text-light fixed dark:bg-dark-3 dark:text-white">
-          <tr className="m-0 w-full py-6 stroke-1 stroke-dark-3 flex items-center h-[60px] bg-[#F8FAFC] text-black dark:text-white dark:bg-dark-2">
+          <tr className="m-0 w-full py-6 stroke-1 stroke-dark-3 flex items-center h-[60px] bg-[#F8FAFC] text-black dark:text-white dark:bg-dark-2 transition-colors duration-[0.6s] ease-in-out">
             <th className="w-[25%] text-xs font-medium text-center whitespace-nowrap">
               Product
             </th>

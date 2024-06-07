@@ -60,8 +60,8 @@ const Navbar = () => {
       bg-white dark:bg-dark dark:text-white z-[1000]
       ${
         sidebarOpen
-          ? "w-[16rem] duration-[0.6s] ease-in-out"
-          : "w-[3.75rem] duration-[0.6s] ease-in-out"
+          ? "w-[16rem] duration-[0.6s] ease-in-out "
+          : "w-[3.75rem] duration-[0.6s] ease-in-out "
       } min-h-screen flex flex-col border-r-[1px] dark:border-r-dark-2 border-r-[#EFF1F3] text-black box-border fixed`}
     >
       <div className="text-lg font-bold px-12 pb-[30px] mb-[20px] pt-9 text-center h-[110px] text-nowrap">
@@ -94,8 +94,8 @@ const Navbar = () => {
           }}
           className={`bottom-4 right-4 ${
             !sidebarOpen
-              ? "rotate-180 duration-800 ease-in-out"
-              : "rotate-[-180] duration-800 ease-in-out"
+              ? "rotate-180 duration-[0.6s] ease-in-out"
+              : "rotate-[-180] duration-[0.6s] ease-in-out"
           }`}
         >
           <CollapseSidebar color={color} />

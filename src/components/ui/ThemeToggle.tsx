@@ -35,7 +35,7 @@ export const ThemeToggle = ({}: Props) => {
     >
 
       <FaMoon className="text-white" size={18} />
-      <div className="absoulte bg-white dark:bg-medium w-6 h-4 rounded-full shadow-md transform transition-transform duration-300"
+      <div className="absoulte bg-white dark:bg-medium w-6 h-4 rounded-full shadow-md transform transition-transform duration-[0.6s]"
         style={{ transform: darkMode ? "translateX(15px)" : "translateX(-15px)" }}
       ></div>
       <BsSunFill className="text-yellow-400 ml-auto" size={18} />

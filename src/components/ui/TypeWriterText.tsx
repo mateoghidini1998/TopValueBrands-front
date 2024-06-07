@@ -23,7 +23,7 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({ text, className }) => {
       if (index >= text.length) {
         clearInterval(interval);
       }
-    }, 50); // Ajusta la velocidad de la escritura aquí
+    }, 25); // Ajusta la velocidad de la escritura aquí
 
     return interval;
   };
