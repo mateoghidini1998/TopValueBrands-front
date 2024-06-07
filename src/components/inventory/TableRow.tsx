@@ -485,7 +485,7 @@ const TableRow = ({ products }: TableRowProps) => {
                     {!isActionsOpen ? (
                       <DotsSVG stroke="#ADB3CC" />
                     ) : isActionsOpen === product.seller_sku ? (
-                      <button onClick={() => setIsActionsOpen(null)}>❌</button>
+                      <button onClick={() => setIsActionsOpen(null)}><DotsSVG stroke="#ADB3CC" /></button>
                     ) : (
                       <DotsSVG stroke="#ADB3CC" />
                     )}

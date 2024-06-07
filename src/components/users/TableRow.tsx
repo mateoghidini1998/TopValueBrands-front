@@ -164,7 +164,7 @@ export default function TableRow({ users }: TableRowProps) {
                   {!showOptionsMap[user.email] ? (
                     <DotsSVG stroke="#438EF3" />
                   ) : (
-                    <button>❌</button>
+                    <button><DotsSVG stroke="#438EF3" /></button>
                   )}
                 </button>
                 {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}
