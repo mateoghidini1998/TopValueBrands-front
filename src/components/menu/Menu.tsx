@@ -3,6 +3,7 @@ import Link from "next/link"
 import { LinkType } from "@/types/link.types"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
+import TypewriterText from "../ui/TypeWriterText"
 
 type MenuProps = {
     links: LinkType[];
@@ -21,7 +22,7 @@ const Menu = ({isOpen,setIsOpen ,links}: MenuProps) => {
                 <li onClick={() => setIsOpen(true)} key={`${index}`} className="mb-6 w-full flex items-center justify-start h-[40px] text-nowrap">
                     <Link href={link.href} className={`box-border w-full h-[40px] flex items-center px-6 font-semibold transition-colors duration-300 ease-in-out ${pathname === link.href ? 'bg-[#438ef330] border-l-[6px] rounded-[2px] border-l-[#438EF3]' : ''}`}>
                         <svg className={`${!isOpen ? 'absolute' : ''} text-[22px] h-[26px] w-[26px] mr-2.5 text-[#438EF3]`}>{link.icon}</svg>
-                        <span className={`${!isOpen ? 'hidden' : ''}  text-xs` }>{link.title}</span>
+                        <span className={`text-xs`}>{isOpen && <TypewriterText text={link.title} className="" />}</span>
                     </Link>
                 </li>
             ))}
