@@ -209,6 +209,7 @@ const TableRow = ({ products }: TableRowProps) => {
   const handleCancel = () => {
     setEditingRow({});
     setIsActionsOpen(null);
+    setFilterText("");
   };
 
   const handleDelete = async (seller_sku: string) => {
