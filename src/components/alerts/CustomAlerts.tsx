@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from "react";
 import { Alert, Space } from "antd";
 import { ConfigProvider } from "antd";
@@ -10,7 +10,7 @@ export enum CustomAlertOptions {
   ERROR = "error",
 }
 
-enum CustomAlertTheme {
+export enum CustomAlertTheme {
   LIGHT = "light",
   DARK = "dark",
 }
@@ -21,7 +21,6 @@ type CustomAlertProps = {
   type: CustomAlertOptions;
   closable: boolean;
   showIcon: boolean;
-  closabel?: boolean;
   visible?: boolean;
   theme: CustomAlertTheme;
 };
@@ -36,64 +35,55 @@ const CustomAlert = ({
   theme,
 }: CustomAlertProps) => {
   
-  const [isDarkmode, setIsDarkmode] = useState(theme ? "dark" : "light");
-  
-  console.log(isDarkmode);
-  
+  const [isDarkmode, setIsDarkmode] = useState(theme === CustomAlertTheme.DARK ? "dark" : "light");
 
   useEffect(() => {
-    setIsDarkmode(theme ? "dark" : "light");
-  },[theme])
-  
+    setIsDarkmode(theme === CustomAlertTheme.DARK ? "dark" : "light");
+  }, [theme]);
   
   return (
-  <ConfigProvider
-    theme={ isDarkmode === "dark" ? {
-      token: {
-        colorText: "#fff",
-        colorError: "#F5222D",
-        colorErrorBorder:"#393E4F",
-        colorErrorBg: "#1F2128",
-
-        colorSuccessBg: "#1F2128",
-        colorSuccessBorder:"#393E4F",
-      },
-      } :
-  
-      {
+    <ConfigProvider
+      theme={ isDarkmode === "dark" ? {
+        token: {
+          colorText: "#fff",
+          colorError: "#F5222D",
+          colorErrorBorder:"#393E4F",
+          colorErrorBg: "#1F2128",
+          colorSuccessBg: "#1F2128",
+          colorSuccessBorder:"#393E4F",
+        },
+      } : {
         token: {
           colorText: "#000",
           colorError: "#F5222D",
           colorErrorBorder:"#c2c2c2",
           colorErrorBg: "#c2c2c2",
-
           colorSuccessBg: "#c2c2c2",
           colorSuccessBorder: "#fff",
         },
-      }
-  
-    }
-  >
-    <Space
-      direction="vertical"
-      style={{
-        width: "fit-content",
-        visibility: `${visible ? "visible" : "hidden"}`,
-        position: "fixed",
-        top: "20px",
-        right: "20px",
-        zIndex: "1000",
       }}
     >
-      <Alert
-        closable={false}
-        message={message}
-        description={description}
-        type={type}
-        showIcon={showIcon}
-      />
-    </Space>
-  </ConfigProvider>
-);}
+      <Space
+        direction="vertical"
+        style={{
+          width: "fit-content",
+          visibility: visible ? "visible" : "hidden",
+          position: "fixed",
+          top: "20px",
+          right: "20px",
+          zIndex: "1000",
+        }}
+      >
+        <Alert
+          closable={closable}
+          message={message}
+          description={description}
+          type={type}
+          showIcon={showIcon}
+        />
+      </Space>
+    </ConfigProvider>
+  );
+};
 
 export default CustomAlert;

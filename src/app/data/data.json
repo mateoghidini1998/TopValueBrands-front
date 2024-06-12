@@ -1,0 +1,112 @@
+[
+  {
+      "product": "Product name 1",
+      "supplier_name": "Supplier 1",
+      "asin": "B00QCVC1DP",
+      "amazon_sku": "BTSPK-001-BLK-STD",
+      "current_rank": 37347,
+      "30_day_rank": 34563,
+      "90_day_rank": 57347,
+      "units_sold": 1.305,
+      "velocity": 11.78
+  },
+  {
+      "product": "Product name 2",
+      "supplier_name": "Supplier 2",
+      "asin": "B00QCVC2DP",
+      "amazon_sku": "BTSPK-002-BLK-STD",
+      "current_rank": 27347,
+      "30_day_rank": 24563,
+      "90_day_rank": 47347,
+      "units_sold": 2.305,
+      "velocity": 12.78
+  },
+  {
+      "product": "Product name 3",
+      "supplier_name": "Supplier 3",
+      "asin": "B00QCVC3DP",
+      "amazon_sku": "BTSPK-003-BLK-STD",
+      "current_rank": 17347,
+      "30_day_rank": 14563,
+      "90_day_rank": 37347,
+      "units_sold": 3.305,
+      "velocity": 13.78
+  },
+  {
+      "product": "Product name 4",
+      "supplier_name": "Supplier 4",
+      "asin": "B00QCVC4DP",
+      "amazon_sku": "BTSPK-004-BLK-STD",
+      "current_rank": 47347,
+      "30_day_rank": 44563,
+      "90_day_rank": 67347,
+      "units_sold": 4.305,
+      "velocity": 14.78
+  },
+  {
+      "product": "Product name 5",
+      "supplier_name": "Supplier 5",
+      "asin": "B00QCVC5DP",
+      "amazon_sku": "BTSPK-005-BLK-STD",
+      "current_rank": 57347,
+      "30_day_rank": 54563,
+      "90_day_rank": 77347,
+      "units_sold": 5.305,
+      "velocity": 15.78
+  },
+  {
+      "product": "Product name 6",
+      "supplier_name": "Supplier 6",
+      "asin": "B00QCVC6DP",
+      "amazon_sku": "BTSPK-006-BLK-STD",
+      "current_rank": 67347,
+      "30_day_rank": 64563,
+      "90_day_rank": 87347,
+      "units_sold": 6.305,
+      "velocity": 16.78
+  },
+  {
+      "product": "Product name 7",
+      "supplier_name": "Supplier 7",
+      "asin": "B00QCVC7DP",
+      "amazon_sku": "BTSPK-007-BLK-STD",
+      "current_rank": 77347,
+      "30_day_rank": 74563,
+      "90_day_rank": 97347,
+      "units_sold": 7.305,
+      "velocity": 17.78
+  },
+  {
+      "product": "Product name 8",
+      "supplier_name": "Supplier 8",
+      "asin": "B00QCVC8DP",
+      "amazon_sku": "BTSPK-008-BLK-STD",
+      "current_rank": 87347,
+      "30_day_rank": 84563,
+      "90_day_rank": 107347,
+      "units_sold": 8.305,
+      "velocity": 18.78
+  },
+  {
+      "product": "Product name 9",
+      "supplier_name": "Supplier 9",
+      "asin": "B00QCVC9DP",
+      "amazon_sku": "BTSPK-009-BLK-STD",
+      "current_rank": 97347,
+      "30_day_rank": 94563,
+      "90_day_rank": 117347,
+      "units_sold": 9.305,
+      "velocity": 19.78
+  },
+  {
+      "product": "Product name 10",
+      "supplier_name": "Supplier 10",
+      "asin": "B00QCVCA0DP",
+      "amazon_sku": "BTSPK-010-BLK-STD",
+      "current_rank": 107347,
+      "30_day_rank": 104563,
+      "90_day_rank": 127347,
+      "units_sold": 10.305,
+      "velocity": 20.78
+  }
+]

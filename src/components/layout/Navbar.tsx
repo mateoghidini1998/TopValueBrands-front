@@ -9,7 +9,6 @@ import TypewriterText from "../ui/TypeWriterText";
 
 const Navbar = () => {
   const { user } = useAuthContext();
-  // const [sidebarOpen, toggleSidebar] = useState(true);
   const { sidebarOpen, toggleSidebar, setSidebarOpen } = useThemeContext();
   const { theme } = useThemeContext();
   const [color, setColor] = useState(theme === "dark" ? "#fff" : "#000");
