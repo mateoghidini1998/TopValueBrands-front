@@ -1,3 +1,7 @@
-import data from "./data.json";
+import products from "./products.json";
+import orders from './orders.json';
 
-export default data;
+export const data = {
+  products,
+  orders
+}
