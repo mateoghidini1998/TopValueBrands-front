@@ -1,22 +1,23 @@
 import { data } from "../../../data/index";
 import IndexPageContainer from "../../page.container";
+import { OrderActions } from "../components/OrderActions";
 import { TableComponent } from "../components/TableComponent";
 import { OrdersComponent } from "../interfaces/IOrdersComponent";
 import { Column } from "../interfaces/ITableComponent";
 
 const columns: Column[] = [
-  { key: "supplier_name", name: "Supplier Name", width:'10%'},
-  { key: "order_number", name: "Order Number", width:'10%' },
-  { key: "date", name: "Date", width:'10%' },
-  { key: "total", name: "Total", width: '10%' },
-  { key: "actions", name: "", width: '60%' },
+  { key: "supplier_name", name: "Supplier Name", width:'100px'},
+  { key: "order_number", name: "Order Number", width:'100px' },
+  { key: "date", name: "Date", width:'100px' },
+  { key: "total", name: "Total", width: '100px' },
+  // { key: "actions", name: "Actions", width: '200px' },
 ];
 const orders: OrdersComponent[] = data.orders;
 
 export default function OrderPage() {
   return (
     <IndexPageContainer>
-      <TableComponent<OrdersComponent> columns={columns} data={orders} />
+      <TableComponent<OrdersComponent> columns={columns} data={orders} actions={<OrderActions />}/>
     </IndexPageContainer>
   );
 }

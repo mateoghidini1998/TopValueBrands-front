@@ -7,4 +7,5 @@ export interface Column {
 export interface TableComponentProps<T> {
   columns: Column[];
   data: T[];
+  actions?: JSX.Element;
 }
