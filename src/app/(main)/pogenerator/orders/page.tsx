@@ -10,7 +10,6 @@ const columns: Column[] = [
   { key: "order_number", name: "Order Number", width:'100px' },
   { key: "date", name: "Date", width:'100px' },
   { key: "total", name: "Total", width: '100px' },
-  // { key: "actions", name: "Actions", width: '200px' },
 ];
 const orders: OrdersComponent[] = data.orders;
 

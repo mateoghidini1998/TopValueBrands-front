@@ -64,11 +64,6 @@ body::-webkit-scrollbar{
   text-overflow: ellipsis;
 }
 
-/* Scrollbar fot the tables */
-.scroll-container {
-  overflow-x: auto;
-  width: 100%;
-}
 
 /* Personalización del scrollbar para navegadores WebKit (Chrome, Safari, Brave, Edge) */
 .scroll-container::-webkit-scrollbar {
@@ -76,12 +71,15 @@ body::-webkit-scrollbar{
 }
 
 .scroll-container::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Color de fondo de la scrollbar */
+  /* background: #f1f1f1; Color de fondo de la scrollbar */
+  border-radius: 8px;
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
   background: #888; /* Color del pulgar de la scrollbar */
-  border-radius: 4px; /* Bordes redondeados del pulgar */
+  background: #438EF3; /* Color del pulgar de la scrollbar */
+  border-radius: 8px; /* Bordes redondeados del pulgar */
+  border: 2px solid #262935; /* Espacio alrededor del pulgar */
 }
 
 .scroll-container::-webkit-scrollbar-thumb:hover {
@@ -91,5 +89,44 @@ body::-webkit-scrollbar{
 /* Firefox */
 .scroll-container {
   scrollbar-width: thin; /* Grosor de la scrollbar */
-  scrollbar-color: #888 #f1f1f1; /* Color del pulgar y del fondo */
+  scrollbar-color: #438EF3 #262935; /* Color del pulgar y del fondo */
+}
+
+/* Scrollbar fot the tables */
+
+/* Contenedor principal para el desplazamiento */
+.scroll-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Envolver la tabla y habilitar el desplazamiento vertical */
+.table-wrapper {
+  overflow-y: auto;
+  height: 100%; /* Esto permitirá que el contenedor mantenga la altura definida por `tableHeigth` */
+}
+
+/* Personalización del scrollbar para navegadores WebKit */
+.table-wrapper::-webkit-scrollbar {
+  width: 8px; /* Ancho del scrollbar vertical */
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #262935; /* Color de fondo del scrollbar */
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #438EF3; /* Color del pulgar del scrollbar */
+  border-radius: 8px; /* Bordes redondeados del pulgar */
+  border: 2px solid #262935; /* Espacio alrededor del pulgar */
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #3578e5; /* Color del pulgar del scrollbar al pasar el ratón */
+}
+
+/* Firefox */
+.table-wrapper {
+  scrollbar-width: thin; /* Grosor del scrollbar */
+  scrollbar-color: #438EF3 #262935; /* Color del pulgar y del fondo */
 }
