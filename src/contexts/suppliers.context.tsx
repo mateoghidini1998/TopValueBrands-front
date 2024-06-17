@@ -8,7 +8,7 @@ export type SupplierState = {
   getSuppliers: () => void
 };
 
-export const ProductContext = createContext<SupplierState>({
+export const SupplierContext = createContext<SupplierState>({
   suppliers: [],
   getSuppliers: () => {},
 });
@@ -33,7 +33,7 @@ export const SupplierProvider: FC<PropsWithChildren> = ({
   };
 
   return (
-    <ProductContext.Provider value={{ suppliers, getSuppliers }}>{children}</ProductContext.Provider>
+    <SupplierContext.Provider value={{ suppliers, getSuppliers }}>{children}</SupplierContext.Provider>
   );
 };
-export const useSupplierContext = () => useContext(ProductContext);
+export const useSupplierContext = () => useContext(SupplierContext);
