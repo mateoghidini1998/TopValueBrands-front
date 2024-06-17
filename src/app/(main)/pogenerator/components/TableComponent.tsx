@@ -6,6 +6,7 @@ export const TableComponent = <T,>({
   columns,
   data,
   actions,
+  dispatchAction,
   actionsWidth = "600px",
   tableHeigth = "100%",
 }: TableComponentProps<T>) => {
@@ -53,7 +54,7 @@ export const TableComponent = <T,>({
                       key={column.key}
                       className="py-2 px-4 text-right"
                     >
-                      {actions}
+                      {dispatchAction && <button onClick={() => dispatchAction(row)}>{actions}</button>}
                     </td>
                   ) :
                   column.key === "product_name" ? (

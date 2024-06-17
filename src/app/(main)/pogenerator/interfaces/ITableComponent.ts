@@ -8,6 +8,7 @@ export interface TableComponentProps<T> {
   columns: Column[];
   data: T[];
   actions?: JSX.Element;
+  dispatchAction?: (product: T) => void;
   actionsWidth?: string;
   tableHeigth?: string;
 }
