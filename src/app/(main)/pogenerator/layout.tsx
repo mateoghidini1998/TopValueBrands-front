@@ -17,8 +17,10 @@ export default function POGeneratorLayout({
     <>
       <IndexPageContainer>
         <main className="flex w-full h-fit flex-col items-center mt-[56px] relative">
-          <POGeneratorNavbar />
-          <TrackedProductsProvider>{children}</TrackedProductsProvider>
+          <TrackedProductsProvider>
+            <POGeneratorNavbar />
+            {children}
+          </TrackedProductsProvider>
         </main>
       </IndexPageContainer>
     </>
