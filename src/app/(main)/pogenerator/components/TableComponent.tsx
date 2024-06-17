@@ -1,3 +1,5 @@
+'use client';
+import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 import { TableComponentProps } from "../interfaces/ITableComponent";
 
 export const TableComponent = <T,>({
@@ -53,7 +55,11 @@ export const TableComponent = <T,>({
                     >
                       {actions}
                     </td>
-                  ) : (
+                  ) :
+                  column.key === "product_name" ? (
+                    <ProductNameTableData key={column.key} product={row} width={column.width} />
+                  ) :
+                    (
                     <td
                       key={column.key}
                       className="py-2 px-4 text-center"

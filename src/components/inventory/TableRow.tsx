@@ -18,6 +18,7 @@ import useThemeContext from "@/contexts/theme.context";
 import { useSupplierContext } from "@/contexts/suppliers.context";
 import { SupplierType } from "@/types/supplier.types";
 import EmptyImage from "../svgs/EmptyImage";
+import { ProductNameTableData } from "./ProductNameTableData";
 
 type TableRowProps = {
   products: ProductType[];
@@ -335,7 +336,7 @@ const TableRow = ({ products }: TableRowProps) => {
           </td>
         </tr>
         {Array.isArray(products) &&
-          products.map((product, i) => (
+          products.map((product: any, i) => (
             <tr
               key={product.seller_sku}
               className={`${
@@ -344,52 +345,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 sidebarOpen ? "w-full" : "w-full"
               }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
             >
-              <td className="w-[25%] text-xs font-medium text-left p-3 h-fit relative">
-                <div className="relative flex w-full h-full items-center justify-between text-left">
-                  <div className="w-8 h-8">
-                    {product.product_image ? (
-                      <Link
-                        target="a_blank"
-                        href={`https://www.amazon.com/dp/${product.ASIN}`}
-                      >
-                        <Image
-                          className="cover rounded-xl w-full h-full"
-                          src={product.product_image}
-                          width={32}
-                          height={32}
-                          alt="product_image"
-                          blurDataURL="data:image/jpeg"
-                        />
-                      </Link>
-                    ) : (
-                      <div className="w-full h-full bg-light-2 shadow-sm dark:bg-dark-2 rounded-lg flex items-center justify-center">
-                        <EmptyImage />
-                      </div>
-                    )}
-                  </div>
-                  <span
-                    ref={spanRef}
-                    className="text-xs limited-wrap"
-                    style={{
-                      cursor: "pointer",
-                      position: "relative",
-                      width: "80%",
-                    }}
-                    onMouseEnter={() => handleMouseEnter(product.product_name)}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    {product.product_name}
-                  </span>
-                </div>
-                  {
-                      tooltipVisible && tooltipText === product.product_name && (
-                        <Tooltip
-                          product_name={product.product_name}
-                          visible={tooltipVisible}
-                        />
-                      )
-                    }
-              </td>
+              <ProductNameTableData product={product} width={'25%'} />
               <td className="w-[10%] text-xs font-medium text-center">
                 {product.ASIN}
               </td>

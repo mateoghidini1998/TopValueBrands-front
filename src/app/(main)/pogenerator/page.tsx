@@ -7,7 +7,7 @@ import { Column } from "./interfaces/ITableComponent";
 import { TrackedProductType } from "@/types/trackedProducts.types";
 
 const columns: Column[] = [
-  { key: "product_name", name: "Product", width: "300px" },
+  { key: "product_name", name: "Product", width: "20%" },
   { key: "ASIN", name: "ASIN", width: "150px" },
   { key: "seller_sku", name: "Amazon SKU", width: "150px" },
   { key: "supplier_name", name: "Supplier Name", width: "150px" },
