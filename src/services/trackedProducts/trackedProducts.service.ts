@@ -4,11 +4,11 @@ import { HttpAPI } from "../common/http.service";
 export class TrackedProductsService {
   
 
-  static async getTrackedProducts() {
+  static async getTrackedProducts(supplier_id?: string) {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/trackedproducts`,
+        `http://localhost:5000/api/v1/trackedproducts?supplier_id=${supplier_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
