@@ -11,7 +11,6 @@ const columns: Column[] = [
   { key: "ASIN", name: "ASIN", width: "150px" },
   { key: "seller_sku", name: "Amazon SKU", width: "150px" },
   { key: "supplier_name", name: "Supplier Name", width: "150px" },
-  // { key: "current_rank", name: "Current Rank", width: "150px" },
   { key: "thirty_days_rank", name: "30 Day Rank", width: "150px" },
   { key: "ninety_days_rank", name: "90 Day Rank", width: "150px" },
   { key: "units_sold", name: "Units Sold", width: "150px" },
@@ -21,11 +20,6 @@ const columns: Column[] = [
   { key: "product_cost", name: "Product Cost", width: "150px" },
   { key: "profit", name: "Profit", width: "150px" },
 ];
-
-/*Here we should call all the tracked products*/
-// const products: TrackedProducts[] = data.products;
-
-
 
 export default function POGeneratorPage() {
 
