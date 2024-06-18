@@ -9,6 +9,7 @@ export const TableComponent = <T,>({
   dispatchAction,
   actionsWidth = "600px",
   tableHeigth = "100%",
+  tableMaxHeight = "100%",
 }: TableComponentProps<T>) => {
   const TABLE_COLUMNS = columns;
   const TABLE_ROWS = data;
@@ -24,9 +25,9 @@ export const TableComponent = <T,>({
 
   return (
     <div className="scroll-container mt-8">
-      <div className={`table-wrapper`} style={{ height: tableHeigth }}>
+      <div className={`table-wrapper`} style={{ height: tableHeigth , maxHeight: tableMaxHeight}}>
         <table
-          className={`${tableHeigth} w-full bg-white dark:bg-dark transition-colors duration-[0.6s] ease-in-out`}
+          className={`${tableHeigth} max-h-[${tableMaxHeight}] w-full bg-white dark:bg-dark transition-colors duration-[0.6s] ease-in-out`}
         >
           <thead className="pogenerator_table_header right-0 bg-white text-light dark:bg-dark-3 dark:text-white">
             <tr className="m-0 py-6 stroke-1 stroke-dark-3 h-[60px] bg-[#F8FAFC] text-black dark:text-white dark:bg-dark-2 transition-colors duration-[0.6s] ease-in-out flex items-center justify-between">

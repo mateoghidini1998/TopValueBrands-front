@@ -1,0 +1,49 @@
+type OrderProductType = {
+  orderProducts: any[];
+};
+
+const getTotalPrice = (orderProducts: any) => {
+  let totalPrice = 0;
+  orderProducts.map((item: any, i:number) => {
+    totalPrice += item.quantity * item.unit_price;
+  });
+  return totalPrice;
+};
+
+export const OrderSummary = ({ orderProducts }: OrderProductType) => {
+  return (
+    <div className="w-full border-solid border-[1px] rounded-lg border-gray-300 p-4 h-fit dark:text-white space-y-4 mb-12">
+      <h6 className="font-bold">Order Summary</h6>
+      <div className="flex justify-between items-center">
+        <p>Order Number:</p>
+        <p>#</p>
+      </div>
+      <div className="flex justify-between items-center">
+        <p>Supplier:</p>
+        <p>{orderProducts[0]?.supplier_name || "Error"}</p>
+      </div>
+      <div className="flex justify-between items-center">
+        <p>Date:</p>
+        <p>{new Date().toLocaleDateString()}</p>
+      </div>
+      <div className="flex justify-between items-center ">
+        <p className="font-bold">Total:</p>
+        <p>{`$ ${getTotalPrice(orderProducts)}`}</p>
+      </div>
+
+      <div className="flex justify-between items-end">
+        <div className="flex flex-col gap-2 min-w-[300px] w-auto">
+          <p>Notes</p>
+          <textarea
+            className="bg-dark w-full h-[100px] border-solid border-[1px] rounded-lg border-gray-300 p-4 dark:text-white"
+            placeholder="Order Notes"
+          />
+        </div>
+        <div className="flex gap-2 w-fit items-center justify-between">
+          <button className="bg-[#438EF3] text-white rounded-lg p-2 w-[130px]">Submit Order</button>
+          <button className="bg-[#393E4F] text-white rounded-lg p-2 w-[107px]">Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+};

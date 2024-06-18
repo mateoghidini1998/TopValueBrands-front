@@ -30,19 +30,18 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   children,
 }: PropsWithChildren) => {
   const [trackedProducts, setTrackedProducts] = useState([]);
-  const [supplierId, setSupplierId] = useState('');
+  const [supplierId, setSupplierId] = useState("");
   const [trackedProductsAddedToOrder, setTrackedProductsAddedToOrder] =
     useState([]);
-
-  console.log(supplierId);
 
   useEffect(() => {
     getFilteredTrackedProducts(supplierId);
   }, [supplierId]);
 
-  const getFilteredTrackedProducts = async (supplier_id:string = '') => {
+  const getFilteredTrackedProducts = async (supplier_id: string = "") => {
     try {
-      const response = await TrackedProductsService.getTrackedProducts(supplier_id);
+      const response =
+        await TrackedProductsService.getTrackedProducts(supplier_id);
       setTrackedProducts(response.data);
     } catch (error) {
       console.error(error);
@@ -50,6 +49,32 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   };
 
   const addTrackedProductToOrder = (data: any) => {
+    const hasTheSameSupplierId = trackedProductsAddedToOrder.some(
+      (item: any) => item.supplier_id === data.supplier_id
+    )
+
+    // Check that the products are from the same supplier
+    if (trackedProductsAddedToOrder.length > 0) {    
+      const supplier_id = trackedProductsAddedToOrder[0]?.supplier_id;
+      if (!hasTheSameSupplierId || supplier_id !== data.supplier_id) {
+        alert("Products must be from the same supplier");
+        return;
+      }
+      
+    }
+
+    // Check that the product is not already in the order
+    if (trackedProductsAddedToOrder.some((item: any) => item.id === data.id)) {
+      alert("Product already added to order");
+      return;
+    }
+    // Check that the product has a supplier
+    if (!data.supplier_id) {
+      alert("Please assign a supplier to the product before");
+      return;
+    }
+    
+
     setTrackedProductsAddedToOrder((prevState) => [...prevState, data]);
   };
 

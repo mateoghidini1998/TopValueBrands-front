@@ -11,4 +11,5 @@ export interface TableComponentProps<T> {
   dispatchAction?: (product: T) => void;
   actionsWidth?: string;
   tableHeigth?: string;
+  tableMaxHeight?: string;
 }
