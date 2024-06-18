@@ -130,3 +130,48 @@ body::-webkit-scrollbar{
   scrollbar-width: thin; /* Grosor del scrollbar */
   scrollbar-color: #438EF3 #262935; /* Color del pulgar y del fondo */
 }
+
+
+/* Input Type Number */
+
+/* Estilos globales */
+/* Ocultar los controles predeterminados */
+/* input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 10px;
+} */
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Estilos personalizados para los botones de incremento y decremento */
+input[type="number"] {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  border: 1px solid #3578e5;
+  /* border-radius: 4px; */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  width: 20px;
+  height: 20px;
+  background: #3578e5; /* Color de fondo */
+  /* border-radius: 50%; */
+}
+
+input[type="number"]::-webkit-inner-spin-button:hover,
+input[type="number"]::-webkit-outer-spin-button:hover {
+  background: #3578e5; /* Color de fondo al pasar el mouse */
+}
+
+input[type="number"]::-webkit-inner-spin-button:active,
+input[type="number"]::-webkit-outer-spin-button:active {
+  background: #555; /* Color de fondo al hacer clic */
+}
+

@@ -1,6 +1,6 @@
 "use client";
 import DeleteIcon from "@/components/svgs/DeleteIcon";
-import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
+import { ProductInOrder, useTrackedProductContext } from "@/contexts/trackedProducts.context";
 import { TrackedProductType } from "@/types/trackedProducts.types";
 import IndexPageContainer from "../../page.container";
 import { InputOrderAction } from "../components/InputOrderAction";
@@ -68,7 +68,7 @@ export default function CreatePage() {
         actionsWidth="60px"
       />
       <div className="w-full h-fit space-y-4">
-        <TableComponent<TrackedProductType>
+        <TableComponent<ProductInOrder>
           columns={orderProductsCol}
           data={trackedProductsAddedToOrder}
           actions={<DeleteIcon />}

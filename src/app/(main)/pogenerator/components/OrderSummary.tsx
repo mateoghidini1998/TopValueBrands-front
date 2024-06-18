@@ -1,3 +1,5 @@
+import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
+
 type OrderProductType = {
   orderProducts: any[];
 };
@@ -10,7 +12,18 @@ const getTotalPrice = (orderProducts: any) => {
   return totalPrice;
 };
 
+const handleCreateOrder = () => { };
+
+
 export const OrderSummary = ({ orderProducts }: OrderProductType) => {
+
+  const { setTrackedProductsAddedToOrder } = useTrackedProductContext();
+
+  const handleCleanOrder = () => {
+    // Set the trackedProductsAddedToOrder to empty array
+    setTrackedProductsAddedToOrder([]);
+  };
+
   return (
     <div className="w-full border-solid border-[1px] rounded-lg border-gray-300 p-4 h-fit dark:text-white space-y-4 mb-12">
       <h6 className="font-bold">Order Summary</h6>
@@ -40,8 +53,8 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
           />
         </div>
         <div className="flex gap-2 w-fit items-center justify-between">
-          <button className="bg-[#438EF3] text-white rounded-lg p-2 w-[130px]">Submit Order</button>
-          <button className="bg-[#393E4F] text-white rounded-lg p-2 w-[107px]">Cancel</button>
+          <button onClick={handleCreateOrder} className="bg-[#438EF3] text-white rounded-lg p-2 w-[130px]">Submit Order</button>
+          <button onClick={handleCleanOrder} className="bg-[#393E4F] text-white rounded-lg p-2 w-[107px]">Cancel</button>
         </div>
       </div>
     </div>

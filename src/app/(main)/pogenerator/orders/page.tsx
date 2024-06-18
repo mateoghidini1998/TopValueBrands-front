@@ -13,10 +13,6 @@ const columns: Column[] = [
 ];
 const orders: OrdersComponent[] = data.orders;
 
-const handleAction = () => {
-  console.log('hola');
-}
-
 export default function OrderPage() {
   return (
     <IndexPageContainer>

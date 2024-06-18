@@ -1,7 +1,7 @@
 'use client';
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 import { TableComponentProps } from "../interfaces/ITableComponent";
-
+import { NumberInput } from "./QuantityInput";
 export const TableComponent = <T,>({
   columns,
   data,
@@ -44,6 +44,7 @@ export const TableComponent = <T,>({
           </thead>
           <tbody>
             {TABLE_ROWS.map((row, rowIndex) => (
+              
               <tr
                 key={rowIndex}
                 className="text-white h-[60px] bg-dark text-xs font-medium flex items-center justify-between border-b border-[#393E4F]"
@@ -60,7 +61,33 @@ export const TableComponent = <T,>({
                   ) :
                   column.key === "product_name" ? (
                     <ProductNameTableData key={column.key} product={row} width={column.width} />
-                  ) :
+                    ) :
+                      
+                      column.key === 'quantity' || column.key === 'unit_price' ? (
+                        <td
+                      key={column.key}
+                      className="py-2 px-4 text-center flex items-center justify-center gap-4"
+                      style={{ width: column.width }}
+                        >
+                          {`$`}
+                      <NumberInput
+                        value={(row as any)[column.key]}
+                            onChange={(newValue) => {
+                          (row as any)[column.key] = newValue
+                        }}
+                      />
+                    </td>
+                      )
+                        :
+                        column.key === 'total_amount' ? (
+                          <td
+                            key={column.key}
+                            className="py-2 px-4 text-center"
+                            style={{ width: column.width }}
+                          >
+                            {(row as any)[column.key]}
+                          </td>
+                        ) :
                     (
                     <td
                       key={column.key}
