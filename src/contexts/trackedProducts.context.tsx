@@ -16,6 +16,7 @@ interface TrackedProductInOrder {
 }
 
 export type ProductInOrder = {
+  id: string;
   product_id: string;
   supplier_id: string;
   product_name: string;
@@ -107,19 +108,20 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     }
   
     // Transform data to the new object structure
-    // const newProductInOrder: ProductInOrder = {
-    //   product_id: data.id,
-    //   supplier_id: data.supplier_id,
-    //   product_name: data.product_name,
-    //   ASIN: data.ASIN,
-    //   supplier_name: data.supplier_name,
-    //   quantity: 0,
-    //   unit_price: 0,
-    //   total_amount: 0,
-    //   units_sold: data.units_sold,
-    // };
+    const newProductInOrder: ProductInOrder = {
+      id: data.id,
+      product_id: data.id,
+      supplier_id: data.supplier_id,
+      product_name: data.product_name,
+      ASIN: data.ASIN,
+      supplier_name: data.supplier_name,
+      quantity: 0,
+      unit_price: 0,
+      total_amount: 0,
+      units_sold: data.units_sold,
+    };
   
-    setTrackedProductsAddedToOrder((prevState) => [...prevState, data]);
+    setTrackedProductsAddedToOrder((prevState) => [...prevState, newProductInOrder]);
   };
 
   const removeTrackedProductFromOrder = (data: any) => {
