@@ -1,7 +1,9 @@
 "use client";
 import { useProductContext } from "@/contexts/products.context";
 import useThemeContext from "@/contexts/theme.context";
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import CancelButton from "../svgs/CancelButton";
+import SaveButton from "../svgs/SaveButton";
 
 export interface NewProductType {
   product_name: string;
@@ -65,7 +67,7 @@ const NewTableRow = () => {
 
   return (
     <tbody
-      className={`inventory_new_product_tr ${sidebarOpen ? "inventory_new_product" : ""}`}
+      className={` ${sidebarOpen ? "inventory_new_product" : "inventory_new_product_tr"}`}
     >
       <tr
         className={`${
@@ -175,17 +177,18 @@ const NewTableRow = () => {
             // defaultValue={formData.ASIN}
           />
         </td>
-        <td className="w-[5%] text-xs font-medium text-center">
-          <button
-            className=""
-            onClick={() => handleCreateProduct(formData)}
+        <td className="w-[5%] text-xs font-medium text-center flex gap-2">
+          <div className="cursor-pointer"  onClick={() => handleCreateProduct(formData)}>
+            <SaveButton/>
+          </div>
+          <div className="cursor-pointer"
+            onClick={() => {
+              setAddingProduct(false);
+              setFormData(exampleProduct);
+            }}
           >
-            ✅
-          </button>
-          <button onClick={() => {
-            setAddingProduct(false);
-            setFormData(exampleProduct);
-          }}>❌</button>
+            <CancelButton />
+          </div>
         </td>
       </tr>
     </tbody>

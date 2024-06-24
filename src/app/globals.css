@@ -43,9 +43,15 @@ body::-webkit-scrollbar{
 .inventory_new_product{
   width: calc(100vw - 17rem);
   transition: width .6s ease-in-out;
+  transition: width .6s ease-in-out;
+  position: fixed;
+  right: 0;
+  top: 110px;
+  z-index: 10;
 }
 
 .inventory_new_product_tr{
+  width: calc(100vw - (4.75rem));
   transition: width .6s ease-in-out;
   position: fixed;
   right: 0;
