@@ -25,11 +25,17 @@ type TableRowProps = {
 };
 
 export interface EditProductType {
+  product_name?: string;
+  ASIN?: string;
+  product_image: string;
   seller_sku: string;
   product_cost?: number;
   supplier_id?: number;
   supplier_item_number?: string;
   pack_type?: string;
+  FBA_available_inventory?: number;
+  reserved_quantity?: number;
+  Inbound_to_FBA?: number;
 }
 
 enum CustomAlertTheme {
@@ -58,6 +64,9 @@ const TableRow = ({ products }: TableRowProps) => {
     seller_sku: string;
   }>({ seller_sku: "" });
   const [editData, setEditData] = useState<EditProductType>({
+    product_name: "",
+    ASIN: "",
+    product_image: "",
     seller_sku: "",
   });
   const { updateProduct, handleDeleteProduct } = useProductContext();
@@ -345,9 +354,76 @@ const TableRow = ({ products }: TableRowProps) => {
                 sidebarOpen ? "w-full" : "w-full"
               }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
             >
-              <ProductNameTableData product={product} width={'25%'} />
+              {/* Product Image and Product Name */}
+              <td
+                style={{ width: "25%" }}
+                className={` text-xs font-medium text-left p-3 h-fit relative`}
+              >
+                <div className="relative flex w-full h-full items-center justify-between text-left">
+                  <div className="w-8 h-8">
+                    {product?.product_image ? (
+                      <Link
+                        target="a_blank"
+                        href={`https://www.amazon.com/dp/${product?.ASIN}`}
+                      >
+                        <Image
+                          className="cover rounded-xl w-full h-full"
+                          src={product?.product_image}
+                          width={32}
+                          height={32}
+                          alt="product_image"
+                          blurDataURL="data:image/jpeg"
+                        />
+                      </Link>
+                    ) : (
+                      <div className="w-full h-full bg-light-2 shadow-sm dark:bg-dark-2 rounded-lg flex items-center justify-center">
+                        <EmptyImage />
+                      </div>
+                    )}
+                  </div>
+                  <span
+                    ref={spanRef}
+                    className="text-xs limited-wrap"
+                    style={{
+                      cursor: "pointer",
+                      position: "relative",
+                      width: "80%",
+                    }}
+                    onMouseEnter={() => handleMouseEnter(product?.product_name)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {editingRow[product?.seller_sku] ? (
+                      <input
+                        name="product_name"
+                        type="text"
+                        className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                        value={editData.product_name || ""}
+                        onChange={(e) => onChange(e)}
+                      />
+                    ) : (
+                      product?.product_name
+                    )}
+                  </span>
+                </div>
+                {tooltipVisible && tooltipText === product?.product_name && (
+                  <Tooltip
+                    product_name={product?.product_name}
+                    visible={tooltipVisible}
+                  />
+                )}
+              </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {product?.ASIN}
+                {editingRow[product?.seller_sku] ? (
+                  <input
+                    name="ASIN"
+                    type="text"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                    value={editData.ASIN || ""}
+                    onChange={(e) => onChange(e)}
+                  />
+                ) : (
+                  product?.ASIN
+                )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
                 {product?.seller_sku}
@@ -423,13 +499,49 @@ const TableRow = ({ products }: TableRowProps) => {
                 )}
               </td>
               <td className="w-[5%] text-xs font-medium text-center">
-                {product?.FBA_available_inventory}
+                {/* {product?.FBA_available_inventory} */}
+
+                {editingRow[product?.seller_sku] ? (
+                  <input
+                    name="FBA_available_inventory"
+                    type="text"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                    value={editData.FBA_available_inventory || ""}
+                    onChange={(e) => onChange(e)}
+                  />
+                ) : (
+                  product?.FBA_available_inventory
+                )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {product?.reserved_quantity}
+                {/* {product?.reserved_quantity} */}
+
+                {editingRow[product?.seller_sku] ? (
+                  <input
+                    name="reserved_quantity"
+                    type="text"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                    value={editData.reserved_quantity || ""}
+                    onChange={(e) => onChange(e)}
+                  />
+                ) : (
+                  product?.reserved_quantity
+                )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {product?.Inbound_to_FBA}
+                {/* {product?.Inbound_to_FBA} */}
+
+                {editingRow[product?.seller_sku] ? (
+                  <input
+                    name="Inbound_to_FBA"
+                    type="text"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                    value={editData.Inbound_to_FBA || ""}
+                    onChange={(e) => onChange(e)}
+                  />
+                ) : (
+                  product?.Inbound_to_FBA
+                )}
               </td>
               <td className="w-[5%] text-xs font-medium text-right relative">
                 {!editingRow[product?.seller_sku] ? (
@@ -441,7 +553,9 @@ const TableRow = ({ products }: TableRowProps) => {
                     {!isActionsOpen ? (
                       <DotsSVG stroke="#ADB3CC" />
                     ) : isActionsOpen === product?.seller_sku ? (
-                      <button onClick={() => setIsActionsOpen(null)}><DotsSVG stroke="#ADB3CC" /></button>
+                      <button onClick={() => setIsActionsOpen(null)}>
+                        <DotsSVG stroke="#ADB3CC" />
+                      </button>
                     ) : (
                       <DotsSVG stroke="#ADB3CC" />
                     )}
