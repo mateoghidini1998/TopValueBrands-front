@@ -57,6 +57,10 @@ export default function CreatePage() {
     removeTrackedProductFromOrder(product);
   };
 
+  const handleEditTrackedProduct = (product: ProductInOrder) => {
+
+  }
+
   return (
     <IndexPageContainer>
       <TableComponent<TrackedProductType>

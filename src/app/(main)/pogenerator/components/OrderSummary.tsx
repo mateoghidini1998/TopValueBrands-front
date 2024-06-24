@@ -4,20 +4,10 @@ type OrderProductType = {
   orderProducts: any[];
 };
 
-const getTotalPrice = (orderProducts: any) => {
-  let totalPrice = 0;
-  orderProducts.map((item: any, i:number) => {
-    totalPrice += item.quantity * item.unit_price;
-  });
-  return totalPrice;
-};
-
-const handleCreateOrder = () => { };
 
 
 export const OrderSummary = ({ orderProducts }: OrderProductType) => {
-
-  const { setTrackedProductsAddedToOrder } = useTrackedProductContext();
+  const { setTrackedProductsAddedToOrder, handleCreateOrder, getTotalPrice } = useTrackedProductContext();
 
   const handleCleanOrder = () => {
     // Set the trackedProductsAddedToOrder to empty array
@@ -53,7 +43,7 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
           />
         </div>
         <div className="flex gap-2 w-fit items-center justify-between">
-          <button onClick={handleCreateOrder} className="bg-[#438EF3] text-white rounded-lg p-2 w-[130px]">Submit Order</button>
+          <button onClick={() => handleCreateOrder(orderProducts)} className="bg-[#438EF3] text-white rounded-lg p-2 w-[130px]">Submit Order</button>
           <button onClick={handleCleanOrder} className="bg-[#393E4F] text-white rounded-lg p-2 w-[107px]">Cancel</button>
         </div>
       </div>

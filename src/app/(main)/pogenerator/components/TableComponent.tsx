@@ -2,7 +2,7 @@
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 import { TableComponentProps } from "../interfaces/ITableComponent";
 import { NumberInput } from "./QuantityInput";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { ProductInOrder, useTrackedProductContext } from "@/contexts/trackedProducts.context";
 export const TableComponent = <T,>({
   columns,
@@ -24,6 +24,18 @@ export const TableComponent = <T,>({
       width: actionsWidth,
     });
   }
+
+  const { trackedProducts, trackedProductsAddedToOrder, addTrackedProductToOrder, removeTrackedProductFromOrder, updateTrackedProductInOrder } = useTrackedProductContext();
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>, row: ProductInOrder, key: string) => {
+    const newValue = parseFloat(event.target.value);
+    const updatedRow = {
+      ...row,
+      [key]: newValue,
+    };
+    updatedRow.total_amount = updatedRow.quantity * updatedRow.unit_price;
+    updateTrackedProductInOrder(updatedRow);
+  };
 
   return (
     <div className="scroll-container mt-8">
@@ -49,63 +61,63 @@ export const TableComponent = <T,>({
           </thead>
           <tbody>
             {TABLE_ROWS.map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className="text-white h-[60px] bg-dark text-xs font-medium flex items-center justify-between border-b border-[#393E4F]"
-              >
-                {TABLE_COLUMNS.map((column) =>
-                  column.key === "actions" ? (
-                    <td
-                      width={column.width}
-                      key={column.key}
-                      className="py-2 px-4 text-right"
-                    >
-                      {dispatchAction && (
-                        <button onClick={() => dispatchAction(row)}>
-                          {actions}
-                        </button>
-                      )}
-                    </td>
-                  ) : column.key === "product_name" ? (
-                    <ProductNameTableData
-                      key={column.key}
-                      product={row}
-                      width={column.width}
-                    />
-                  ) : column.key === "quantity" ||
-                    column.key === "unit_price" ? (
-                    <td
-                      key={column.key}
-                      className="py-2 px-4 text-center flex items-center justify-center gap-4"
-                      style={{ width: column.width }}
-                    >
-                      {column.key === "unit_price" && "$"}
-                      <NumberInput
-                        value={(row as any)[column.key]}
-                        onChange={(newValue) => {
-                          (row as any)[column.key] = newValue;
-                        }}
-                      />
-                    </td>
-                  ) : column.key === "total_amount" ? (
-                    <td
-                      key={column.key}
-                      className="py-2 px-4 text-center"
-                      style={{ width: column.width }}
-                    >
-                      {(row as any)[column.key]}
-                    </td>
-                  ) : (
-                    <td
-                      key={column.key}
-                      className="py-2 px-4 text-center"
-                      style={{ width: column.width }}
-                    >
-                      {(row as any)[column.key]}
-                    </td>
-                  )
-                )}
-              </tr>
+               <tr
+               key={rowIndex}
+               className="text-white h-[60px] bg-dark text-xs font-medium flex items-center justify-between border-b border-[#393E4F]"
+             >
+               {columns.map((column) => {
+                 const cellValue = (row as any)[column.key];
+                 return column.key === "actions" ? (
+                   <td
+                     width={column.width}
+                     key={column.key}
+                     className="py-2 px-4 text-right"
+                   >
+                     {dispatchAction && (
+                       <button onClick={() => dispatchAction(row)}>
+                         {actions}
+                       </button>
+                     )}
+                   </td>
+                 ) : column.key === "product_name" ? (
+                   <ProductNameTableData
+                     key={column.key}
+                     product={row}
+                     width={column.width}
+                   />
+                 ) : column.key === "quantity" || column.key === "unit_price" ? (
+                   <td
+                     key={column.key}
+                     className="py-2 px-4 text-center flex items-center justify-center gap-4"
+                     style={{ width: column.width }}
+                   >
+                     {column.key === "unit_price" && "$"}
+                     <input
+                       type="number"
+                       value={cellValue}
+                       onChange={(event) => handleInputChange(event, row, column.key)}
+                       className="w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                     />
+                   </td>
+                 ) : column.key === "total_amount" ? (
+                   <td
+                     key={column.key}
+                     className="py-2 px-4 text-center"
+                     style={{ width: column.width }}
+                   >
+                     {row.quantity * row.unit_price}
+                   </td>
+                 ) : (
+                   <td
+                     key={column.key}
+                     className="py-2 px-4 text-center"
+                     style={{ width: column.width }}
+                   >
+                     {cellValue}
+                   </td>
+                 );
+               })}
+             </tr>
             ))}
           </tbody>
         </table>
