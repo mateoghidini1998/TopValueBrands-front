@@ -15,9 +15,9 @@ export default function CancelButton() {
         height="24.421"
         rx="4.57894"
         fill="#FF4C3F"
-        fill-opacity="0.2"
+        fillOpacity="0.2"
       />
-      <g clip-path="url(#clip0_528_6589)">
+      <g clipPath="url(#clip0_528_6589)">
         <path
           d="M17.1492 8.72895L16.271 7.8508L12.7896 11.3323L9.30808 7.8508L8.42993 8.72895L11.9114 12.2104L8.42993 15.6919L9.30808 16.57L12.7896 13.0886L16.271 16.57L17.1492 15.6919L13.6677 12.2104L17.1492 8.72895Z"
           fill="white"

@@ -1,3 +1,4 @@
+
 export interface Column {
   key: string;
   name: string;
@@ -6,8 +7,8 @@ export interface Column {
 
 export interface TableComponentProps<T> {
   columns: Column[];
-  data: T[];
-  actions?: JSX.Element;
+  data: T[] | any[];
+  actions?: JSX.Element[];
   dispatchAction?: (product: T) => void;
   actionsWidth?: string;
   tableHeigth?: string;

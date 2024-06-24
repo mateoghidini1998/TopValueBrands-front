@@ -3,20 +3,35 @@ import { ProductNameTableData } from "@/components/inventory/ProductNameTableDat
 import { TableComponentProps } from "../interfaces/ITableComponent";
 import { NumberInput } from "./QuantityInput";
 import { ChangeEvent, useState } from "react";
-import { ProductInOrder, useTrackedProductContext } from "@/contexts/trackedProducts.context";
+import {
+  ProductInOrder,
+  useTrackedProductContext,
+} from "@/contexts/trackedProducts.context";
+
+type ActionType = 'add' | 'remove' | 'edit';
+
+type ActionHandler<T> = (item: T) => void;
+
+type Actions<T> = {
+  add?: ActionHandler<T>;
+  remove?: ActionHandler<T>;
+  edit?: ActionHandler<T>;
+};
+
+
 export const TableComponent = <T,>({
   columns,
   data,
   actions,
-  dispatchAction,
+  actionHandlers,
   actionsWidth = "600px",
   tableHeigth = "100%",
   tableMaxHeight = "100%",
-}: TableComponentProps<T>) => {
+}: TableComponentProps<T> & { actionHandlers?: Actions<T> }) => {
   const TABLE_COLUMNS = columns;
   const TABLE_ROWS = data;
 
-  // check if actions exists on  the TABLE_COLUMNS
+  // check if actions exists on the TABLE_COLUMNS
   if (actions && !TABLE_COLUMNS.find((column) => column.key === "actions")) {
     TABLE_COLUMNS.push({
       key: "actions",
@@ -24,10 +39,13 @@ export const TableComponent = <T,>({
       width: actionsWidth,
     });
   }
+  const { updateTrackedProductInOrder } = useTrackedProductContext();
 
-  const { trackedProducts, trackedProductsAddedToOrder, addTrackedProductToOrder, removeTrackedProductFromOrder, updateTrackedProductInOrder } = useTrackedProductContext();
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>, row: ProductInOrder, key: string) => {
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    row: ProductInOrder,
+    key: string
+  ) => {
     const newValue = parseFloat(event.target.value);
     const updatedRow = {
       ...row,
@@ -61,63 +79,74 @@ export const TableComponent = <T,>({
           </thead>
           <tbody>
             {TABLE_ROWS.map((row, rowIndex) => (
-               <tr
-               key={rowIndex}
-               className="text-white h-[60px] bg-dark text-xs font-medium flex items-center justify-between border-b border-[#393E4F]"
-             >
-               {columns.map((column) => {
-                 const cellValue = (row as any)[column.key];
-                 return column.key === "actions" ? (
-                   <td
-                     width={column.width}
-                     key={column.key}
-                     className="py-2 px-4 text-right"
-                   >
-                     {dispatchAction && (
-                       <button onClick={() => dispatchAction(row)}>
-                         {actions}
-                       </button>
-                     )}
-                   </td>
-                 ) : column.key === "product_name" ? (
-                   <ProductNameTableData
-                     key={column.key}
-                     product={row}
-                     width={column.width}
-                   />
-                 ) : column.key === "quantity" || column.key === "unit_price" ? (
-                   <td
-                     key={column.key}
-                     className="py-2 px-4 text-center flex items-center justify-center gap-4"
-                     style={{ width: column.width }}
-                   >
-                     {column.key === "unit_price" && "$"}
-                     <input
-                       type="number"
-                       value={cellValue}
-                       onChange={(event) => handleInputChange(event, row, column.key)}
-                       className="w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
-                     />
-                   </td>
-                 ) : column.key === "total_amount" ? (
-                   <td
-                     key={column.key}
-                     className="py-2 px-4 text-center"
-                     style={{ width: column.width }}
-                   >
-                     {row.quantity * row.unit_price}
-                   </td>
-                 ) : (
-                   <td
-                     key={column.key}
-                     className="py-2 px-4 text-center"
-                     style={{ width: column.width }}
-                   >
-                     {cellValue}
-                   </td>
-                 );
-               })}
-             </tr>
+              <tr
+                key={rowIndex}
+                className="text-white h-[60px] bg-dark text-xs font-medium flex items-center justify-between border-b border-[#393E4F]"
+              >
+                {columns.map((column) => {
+                  const cellValue = (row as any)[column.key];
+                  return column.key === "actions" ? (
+                    <td
+                      width={column.width}
+                      key={column.key}
+                      className="py-2 px-4 text-right"
+                    >
+                      {actions && actionHandlers && (
+                        <div className="flex items-center justify-end gap-2">
+                          {actionHandlers.add && (
+                            <button onClick={() => actionHandlers.add!(row)}>{actions[0]}</button>
+                          )}
+                          {actionHandlers.remove && (
+                            <button onClick={() => actionHandlers.remove!(row)}>{actions[1]}</button>
+                          )}
+                          {actionHandlers.edit && (
+                            <button onClick={() => actionHandlers.edit!(row)}>{actions[2]}</button>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                  ) : column.key === "product_name" ? (
+                    <ProductNameTableData
+                      key={column.key}
+                      product={row}
+                      width={column.width}
+                    />
+                  ) : column.key === "quantity" ||
+                    column.key === "unit_price" ? (
+                    <td
+                      key={column.key}
+                      className="py-2 px-4 text-center flex items-center justify-center gap-4"
+                      style={{ width: column.width }}
+                    >
+                      {column.key === "unit_price" && "$"}
+                      <input
+                        type="number"
+                        value={cellValue}
+                        onChange={(event) =>
+                          handleInputChange(event, row, column.key)
+                        }
+                        className="w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                      />
+                    </td>
+                  ) : column.key === "total_amount" ? (
+                    <td
+                      key={column.key}
+                      className="py-2 px-4 text-center"
+                      style={{ width: column.width }}
+                    >
+                      {row.quantity * row.unit_price}
+                    </td>
+                  ) : (
+                    <td
+                      key={column.key}
+                      className="py-2 px-4 text-center"
+                      style={{ width: column.width }}
+                    >
+                      {cellValue}
+                    </td>
+                  );
+                })}
+              </tr>
             ))}
           </tbody>
         </table>

@@ -1,6 +1,9 @@
 "use client";
 import DeleteIcon from "@/components/svgs/DeleteIcon";
-import { ProductInOrder, useTrackedProductContext } from "@/contexts/trackedProducts.context";
+import {
+  ProductInOrder,
+  useTrackedProductContext,
+} from "@/contexts/trackedProducts.context";
 import { TrackedProductType } from "@/types/trackedProducts.types";
 import IndexPageContainer from "../../page.container";
 import { InputOrderAction } from "../components/InputOrderAction";
@@ -31,43 +34,30 @@ const orderProductsCol: Column[] = [
   { key: "unit_price", name: "Unit Price", width: "12%" },
   { key: "total_amount", name: "Total Amount", width: "12%" },
   { key: "units_sold", name: "Units Sold", width: "5%" },
-  // { key: "seller_sku", name: "Amazon SKU", width: "100px" },
-  // { key: "thirty_days_rank", name: "30 Day Rank", width: "150px" },
-  // { key: "ninety_days_rank", name: "90 Day Rank", width: "150px" },
-  // { key: "product_velocity", name: "Velocity", width: "150px" },
-  // { key: "lowest_fba_price", name: "Lowest FBA Price ", width: "150px" },
-  // { key: "fees", name: "Fees", width: "150px" },
-  // { key: "product_cost", name: "Product Cost", width: "150px" },
-  // { key: "profit", name: "Profit", width: "150px" },
 ];
 
-export default function CreatePage() {
+export default function Page() {
   const {
     trackedProducts,
     trackedProductsAddedToOrder,
     addTrackedProductToOrder,
     removeTrackedProductFromOrder,
+    updateTrackedProductInOrder,
   } = useTrackedProductContext();
 
-  const handleAddTrackedProduct = (product: TrackedProductType) => {
-    addTrackedProductToOrder(product);
+  const actionHandlers = {
+    add: addTrackedProductToOrder,
+    remove: removeTrackedProductFromOrder,
+    edit: updateTrackedProductInOrder,
   };
-
-  const handleRemoveTrackedProduct = (product: TrackedProductType) => {
-    removeTrackedProductFromOrder(product);
-  };
-
-  const handleEditTrackedProduct = (product: ProductInOrder) => {
-
-  }
 
   return (
     <IndexPageContainer>
       <TableComponent<TrackedProductType>
         columns={trackedProductsCol}
         data={trackedProducts}
-        actions={<InputOrderAction />}
-        dispatchAction={(item: any) => handleAddTrackedProduct(item)}
+        actions={[<InputOrderAction key={"actions"} />]}
+        actionHandlers={{ add: actionHandlers.add }}
         tableHeigth="300px"
         actionsWidth="60px"
       />
@@ -75,14 +65,18 @@ export default function CreatePage() {
         <TableComponent<ProductInOrder>
           columns={orderProductsCol}
           data={trackedProductsAddedToOrder}
-          actions={<DeleteIcon />}
-          dispatchAction={(item: any) => handleRemoveTrackedProduct(item)}
+          actions={[<></>, <DeleteIcon key={"actions"} />]}
+          actionHandlers={{
+            remove: actionHandlers.remove,
+            // edit: actionHandlers.edit,
+          }}
           tableHeigth="300px"
           actionsWidth="60px"
           tableMaxHeight="300px"
         />
-        {/* Order Summary Component */}
-        {trackedProductsAddedToOrder.length > 0 && <OrderSummary orderProducts={trackedProductsAddedToOrder} />}
+        {trackedProductsAddedToOrder.length > 0 && (
+          <OrderSummary orderProducts={trackedProductsAddedToOrder} />
+        )}
       </div>
     </IndexPageContainer>
   );
