@@ -9,7 +9,7 @@ import ConfirmButton from "@/components/svgs/ConfirmButton";
 import CancelButton from "@/components/svgs/CancelButton";
 
 const columns: Column[] = [
-  { key: "supplier_name", name: "Supplier Name", width: "100px" },
+  { key: "supplier_id", name: "Supplier ID", width: "100px" },
   { key: "order_number", name: "Order Number", width: "100px" },
   { key: "createdAt", name: "Date", width: "100px" },
   { key: "total_price", name: "Total", width: "100px" },

@@ -245,6 +245,11 @@ const TableRow = ({ products }: TableRowProps) => {
       ...editData,
       [e.target.name]: e.target.value,
     });
+  const onChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setEditData({
+      ...editData,
+      [e.target.name]: e.target.value,
+    });
 
   const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setEditData({
@@ -393,12 +398,12 @@ const TableRow = ({ products }: TableRowProps) => {
                     onMouseLeave={handleMouseLeave}
                   >
                     {editingRow[product?.seller_sku] ? (
-                      <input
+                      <textarea
                         name="product_name"
-                        type="text"
-                        className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                        // type="text"
+                        className="w-full p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
                         value={editData.product_name || ""}
-                        onChange={(e) => onChange(e)}
+                        onChange={(e) => onChangeTextArea(e)}
                       />
                     ) : (
                       product?.product_name
@@ -553,9 +558,9 @@ const TableRow = ({ products }: TableRowProps) => {
                     {!isActionsOpen ? (
                       <DotsSVG stroke="#ADB3CC" />
                     ) : isActionsOpen === product?.seller_sku ? (
-                      <button onClick={() => setIsActionsOpen(null)}>
+                      <div onClick={() => setIsActionsOpen(null)}>
                         <DotsSVG stroke="#ADB3CC" />
-                      </button>
+                      </div>
                     ) : (
                       <DotsSVG stroke="#ADB3CC" />
                     )}

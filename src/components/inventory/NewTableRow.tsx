@@ -56,14 +56,17 @@ const NewTableRow = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleChangeTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleCreateProduct = (newProduct: NewProductType) => {
     console.log(newProduct);
     createProduct(newProduct);
     setAddingProduct(false);
     setFormData(exampleProduct);
   };
-
-  console.log(formData);
 
   return (
     <tbody
@@ -72,18 +75,18 @@ const NewTableRow = () => {
       <tr
         className={`${
           true ? "mt-[60px]" : ""
-        } m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-[80px] ${
+        } m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center min-h-[80px] h-fit ${
           sidebarOpen ? "w-full" : "w-full"
         }  text-light bg-dark  border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
       >
         {/* <ProductNameTableData product={product} width={"25%"} /> */}
         <td className="w-[25%] text-xs font-medium text-center">
-          <input
+          <textarea
             name="product_name"
-            type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            // type="text"
+            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid flex items-center text-left pt-[.35rem]"
             placeholder="product name"
-            onChange={handleChange}
+            onChange={handleChangeTextArea}
             // defaultValue={formData.product_name}
           />
         </td>
@@ -104,14 +107,13 @@ const NewTableRow = () => {
             placeholder="seller sku"
             name="seller_sku"
             onChange={handleChange}
-            // defaultValue={formData.ASIN}
           />
         </td>
         <td className="w-[5%] text-xs font-medium text-center">
           <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
-            placeholder="cost"
+            placeholder="0"
             name="product_cost"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
@@ -131,7 +133,7 @@ const NewTableRow = () => {
           <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
-            placeholder="supplier item number"
+            placeholder="0"
             onChange={handleChange}
             name="supplier_item_number"
             // defaultValue={formData.ASIN}
@@ -151,7 +153,7 @@ const NewTableRow = () => {
           <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
-            placeholder="FBA available inventory"
+            placeholder="0"
             name="FBA_available_inventory"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
@@ -161,7 +163,7 @@ const NewTableRow = () => {
           <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
-            placeholder="reserved quantity"
+            placeholder="0"
             name="reserved_quantity"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
@@ -171,7 +173,7 @@ const NewTableRow = () => {
           <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
-            placeholder="Inbound to FBA"
+            placeholder="0"
             name="Inbound_to_FBA"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
