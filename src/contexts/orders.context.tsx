@@ -1,0 +1,74 @@
+"use client";
+import { FC, PropsWithChildren, useContext, useState, createContext, useEffect, ReactNode } from "react";
+
+export type OrderProductType = {
+  id: number;
+  purchase_order_id: number;
+  product_id: number;
+  unit_price: number;
+  total_amount: number;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type OrderType = {
+  id: number;
+  order_number: string;
+  supplier_id: number;
+  supplier_name?: string;
+  status: string | null;
+  total_price: number;
+  createdAt: string;
+  updatedAt: string;
+  purchaseOrderProducts: OrderProductType[];
+};
+
+type OrdersContextType = {
+  orders: OrderType[];
+  loading: boolean;
+  error: Error | null;
+};
+
+const OrdersContext = createContext<OrdersContextType | undefined>(undefined);
+
+export const useOrdersContext = (): OrdersContextType => {
+  const context = useContext(OrdersContext);
+  if (!context) {
+    throw new Error("useOrdersContext must be used within an OrdersProvider");
+  }
+  return context;
+};
+
+type OrdersProviderProps = PropsWithChildren;
+
+export const OrdersProvider: FC<OrdersProviderProps> = ({ children }: OrdersProviderProps) => {
+  const [orders, setOrders] = useState<OrderType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/v1/purchaseorders");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setOrders(data.data); // Assuming the orders are in the `data` property
+      } catch (error: any) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  return (
+    <OrdersContext.Provider value={{ orders, loading, error }}>
+      {children}
+    </OrdersContext.Provider>
+  );
+};

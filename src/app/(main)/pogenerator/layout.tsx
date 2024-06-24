@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { TrackedProductsProvider } from "../../../contexts/trackedProducts.context";
 import IndexPageContainer from "../page.container";
 import { POGeneratorNavbar } from "./components/POGeneratorNavbar";
-import { TrackedProductsProvider } from "../../../contexts/trackedProducts.context";
+import { OrdersProvider } from "@/contexts/orders.context";
 
 export const metadata: Metadata = {
   title: "Top Values Brand",
@@ -16,12 +17,14 @@ export default function POGeneratorLayout({
   return (
     <>
       <IndexPageContainer>
-        <main className="flex w-full h-fit flex-col items-center mt-[56px] relative">
-          <TrackedProductsProvider>
-            <POGeneratorNavbar />
-            {children}
-          </TrackedProductsProvider>
-        </main>
+        <OrdersProvider>
+          <main className="flex w-full h-fit flex-col items-center mt-[56px] relative">
+            <TrackedProductsProvider>
+              <POGeneratorNavbar />
+              {children}
+            </TrackedProductsProvider>
+          </main>
+        </OrdersProvider>
       </IndexPageContainer>
     </>
   );
