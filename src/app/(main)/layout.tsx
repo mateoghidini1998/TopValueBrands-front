@@ -7,6 +7,7 @@ import { SupplierProvider } from "@/contexts/suppliers.context";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import IndexPageContainer from "./page.container";
+import AddProductBtn from "@/components/inventory/AddProductBtn";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,8 @@ export default function RootLayout({
               <SupplierProvider>
                 <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark transition-colors duration-[0.6s] ease-in-out h-[115px]">
                   <PageTitle />
-                  <div className="flex items-center ">
+                  <div className="flex items-center gap-4">
+                    <AddProductBtn/>
                     <SearchInput />
                     <UserMenu />
                   </div>

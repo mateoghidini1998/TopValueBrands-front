@@ -3,6 +3,7 @@ import { HttpAPI } from "../common/http.service";
 import { getAuthToken } from "@/utils/getAuthToken";
 import { ProductType } from "@/types/product.types";
 import { EditProductType } from "@/components/inventory/TableRow";
+import { NewProductType } from "@/components/inventory/NewTableRow";
 
 export class InventoryService {
   static async getProducts(page: number, limit: number, keyword: string = '') {
@@ -19,6 +20,24 @@ export class InventoryService {
       return response;
     } catch (error) {
       throw new Error("Error fetching data");
+    }
+  }
+
+  static async createProduct(data: NewProductType) {
+    try {
+      const token = getAuthToken();
+      if (token) {
+        const response = await HttpAPI.post(
+          `http://localhost:5000/api/v1/products/add`,
+          data,
+          token
+        );
+        return response;
+      } else {
+        throw new Error("Token not found");
+      }
+    } catch (error) {
+      throw new Error("Error creating product");
     }
   }
 

@@ -40,6 +40,19 @@ body::-webkit-scrollbar{
   z-index: 10;
 }
 
+.inventory_new_product{
+  width: calc(100vw - 17rem);
+  transition: width .6s ease-in-out;
+}
+
+.inventory_new_product_tr{
+  transition: width .6s ease-in-out;
+  position: fixed;
+  right: 0;
+  top: 110px;
+  z-index: 10;
+}
+
 .pogenerator_table_header{
   width: calc(100vw - 17rem);
   transition: width .6s ease-in-out;

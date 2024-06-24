@@ -182,7 +182,7 @@ const TableRow = ({ products }: TableRowProps) => {
 
       updateProduct({
         ...editData,
-        seller_sku: currentProduct.seller_sku || "",
+        seller_sku: currentProduct?.seller_sku || "",
         id: 0,
         ASIN: "",
         product_image: "",
@@ -294,7 +294,7 @@ const TableRow = ({ products }: TableRowProps) => {
                           showAlert(
                             CustomAlertOptions.ERROR,
                             "Error while deleting product",
-                            "There was an error while deleting the product.",
+                            "There was an error while deleting the product?.",
                             true
                           );
                         }
@@ -338,7 +338,7 @@ const TableRow = ({ products }: TableRowProps) => {
         {Array.isArray(products) &&
           products.map((product: any, i) => (
             <tr
-              key={product.seller_sku}
+              key={product?.seller_sku}
               className={`${
                 i == 0 ? "mt-[60px]" : ""
               } m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-fit ${
@@ -347,13 +347,13 @@ const TableRow = ({ products }: TableRowProps) => {
             >
               <ProductNameTableData product={product} width={'25%'} />
               <td className="w-[10%] text-xs font-medium text-center">
-                {product.ASIN}
+                {product?.ASIN}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {product.seller_sku}
+                {product?.seller_sku}
               </td>
               <td className="w-[5%] text-xs font-medium text-center flex justify-center">
-                {editingRow[product.seller_sku] ? (
+                {editingRow[product?.seller_sku] ? (
                   <input
                     name="product_cost"
                     type="text"
@@ -362,11 +362,11 @@ const TableRow = ({ products }: TableRowProps) => {
                     onChange={(e) => onChange(e)}
                   />
                 ) : (
-                  `$ ${product.product_cost}`
+                  `$ ${product?.product_cost}`
                 )}
               </td>
               <td className="w-[15%] text-xs font-medium text-center flex justify-center">
-                {editingRow[product.seller_sku] ? (
+                {editingRow[product?.seller_sku] ? (
                   <div className="relative w-2/3" ref={inputRef}>
                     <input
                       type="text"
@@ -392,12 +392,12 @@ const TableRow = ({ products }: TableRowProps) => {
                   </div>
                 ) : (
                   suppliers.find(
-                    (supplier) => supplier.id === product.supplier_id
+                    (supplier) => supplier.id === product?.supplier_id
                   )?.supplier_name
                 )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center flex justify-center">
-                {editingRow[product.seller_sku] ? (
+                {editingRow[product?.seller_sku] ? (
                   <input
                     name="supplier_item_number"
                     type="text"
@@ -406,11 +406,11 @@ const TableRow = ({ products }: TableRowProps) => {
                     onChange={(e) => onChange(e)}
                   />
                 ) : (
-                  product.supplier_item_number
+                  product?.supplier_item_number
                 )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center flex justify-center">
-                {editingRow[product.seller_sku] ? (
+                {editingRow[product?.seller_sku] ? (
                   <input
                     name="pack_type"
                     type="text"
@@ -419,28 +419,28 @@ const TableRow = ({ products }: TableRowProps) => {
                     onChange={(e) => onChange(e)}
                   />
                 ) : (
-                  product.pack_type
+                  product?.pack_type
                 )}
               </td>
               <td className="w-[5%] text-xs font-medium text-center">
-                {product.FBA_available_inventory}
+                {product?.FBA_available_inventory}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {product.reserved_quantity}
+                {product?.reserved_quantity}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {product.Inbound_to_FBA}
+                {product?.Inbound_to_FBA}
               </td>
               <td className="w-[5%] text-xs font-medium text-right relative">
-                {!editingRow[product.seller_sku] ? (
+                {!editingRow[product?.seller_sku] ? (
                   <button
                     onClick={() =>
-                      handleToggleActions(product.seller_sku, product)
+                      handleToggleActions(product?.seller_sku, product)
                     }
                   >
                     {!isActionsOpen ? (
                       <DotsSVG stroke="#ADB3CC" />
-                    ) : isActionsOpen === product.seller_sku ? (
+                    ) : isActionsOpen === product?.seller_sku ? (
                       <button onClick={() => setIsActionsOpen(null)}><DotsSVG stroke="#ADB3CC" /></button>
                     ) : (
                       <DotsSVG stroke="#ADB3CC" />
@@ -457,15 +457,15 @@ const TableRow = ({ products }: TableRowProps) => {
                   </div>
                 )}
 
-                {isActionsOpen === product.seller_sku && (
+                {isActionsOpen === product?.seller_sku && (
                   <RowActions
                     onClose={() => setIsActionsOpen(null)}
                     onEdit={() => {
-                      handleEdit(product.seller_sku);
+                      handleEdit(product?.seller_sku);
                       setIsActionsOpen(null);
                     }}
                     onDelete={() => {
-                      handleDelete(product.seller_sku);
+                      handleDelete(product?.seller_sku);
                       setIsActionsOpen(null);
                     }}
                   />

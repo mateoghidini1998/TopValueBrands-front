@@ -3,8 +3,11 @@ import { FC, PropsWithChildren, useContext, useState, createContext, useEffect, 
 import { ProductType } from "@/types/product.types";
 import { InventoryService } from "@/services/inventory/inventory";
 import { EditProductType } from "@/components/inventory/TableRow";
+import { NewProductType } from "@/components/inventory/NewTableRow";
 
 export type ProductState = {
+    addingProduct: boolean;
+    setAddingProduct: React.Dispatch<React.SetStateAction<boolean>>;
     products: ProductType[];
     currentPage: number;
     totalPages: number;
@@ -15,9 +18,12 @@ export type ProductState = {
     handleNextPage: () => void;
     handlePreviousPage: () => void;
     setCurrentPage: (page: number) => void;
+    createProduct: (newProduct: NewProductType) => void;
 }
 
 export const ProductContext = createContext<ProductState>({
+    addingProduct: false,
+    setAddingProduct: () => { },
     products: [],
     currentPage: 1,
     totalPages: 0,
@@ -27,11 +33,13 @@ export const ProductContext = createContext<ProductState>({
     handleNextPage: () => {},
     handlePreviousPage: () => {},
     setCurrentPage: () => {},
-    handleDeleteProduct: () => {}
+    handleDeleteProduct: () => { },
+    createProduct: () => {},
 });
 
 export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChildren) => {
     const [products, setProducts] = useState<ProductType[]>([]);
+    const [addingProduct, setAddingProduct] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [keyword, setKeyword] = useState('');
@@ -54,6 +62,15 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
       }
     };
 
+    const createProduct = async (data: NewProductType) => {
+        console.log(data);
+        try {
+            const response = await InventoryService.createProduct(data);
+            setProducts([...products, response.data]);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const handleNextPage = () => {
         setCurrentPage(prevPage => prevPage + 1);
@@ -98,7 +115,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     };
 
     return (
-        <ProductContext.Provider value={{ products, updateProduct, handleDeleteProduct, currentPage, totalPages, handleNextPage, handlePreviousPage, setCurrentPage, keyword, handleSetKeyword }}>
+        <ProductContext.Provider value={{ createProduct, addingProduct, setAddingProduct, products, updateProduct, handleDeleteProduct, currentPage, totalPages, handleNextPage, handlePreviousPage, setCurrentPage, keyword, handleSetKeyword }}>
           {children}
         </ProductContext.Provider>
     );

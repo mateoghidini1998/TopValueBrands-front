@@ -25,20 +25,20 @@ export const ProductNameTableData = ({product, width}: ProductNameTableDataProps
     setTooltipVisible(false);
   };
 
-  // console.log(product.product.product_name);
+  // console.log(product?.product?.product_name);
 
   return (
     <td style={{width:width}} className={` text-xs font-medium text-left p-3 h-fit relative`}>
       <div className="relative flex w-full h-full items-center justify-between text-left">
         <div className="w-8 h-8">
-          {product.product_image ? (
+          {product?.product_image ? (
             <Link
               target="a_blank"
-              href={`https://www.amazon.com/dp/${product.ASIN}`}
+              href={`https://www.amazon.com/dp/${product?.ASIN}`}
             >
               <Image
                 className="cover rounded-xl w-full h-full"
-                src={product.product_image}
+                src={product?.product_image}
                 width={32}
                 height={32}
                 alt="product_image"
@@ -59,14 +59,14 @@ export const ProductNameTableData = ({product, width}: ProductNameTableDataProps
             position: "relative",
             width: "80%",
           }}
-          onMouseEnter={() => handleMouseEnter(product.product_name)}
+          onMouseEnter={() => handleMouseEnter(product?.product_name)}
           onMouseLeave={handleMouseLeave}
         >
-          {product.product_name}
+          {product?.product_name}
         </span>
       </div>
-      {tooltipVisible && tooltipText === product.product_name && (
-        <Tooltip product_name={product.product_name} visible={tooltipVisible} />
+      {tooltipVisible && tooltipText === product?.product_name && (
+        <Tooltip product_name={product?.product_name} visible={tooltipVisible} />
       )}
     </td>
   );

@@ -5,6 +5,7 @@ import TableRow from "./TableRow";
 import Pagination from "./Pagination";
 import { useProductContext } from "@/contexts/products.context";
 import useThemeContext from "@/contexts/theme.context";
+import NewTableRow from "./NewTableRow";
 
 const Table: FC = () => {
   const {
@@ -14,11 +15,20 @@ const Table: FC = () => {
     currentPage,
     totalPages,
     setCurrentPage,
+    addingProduct,
   } = useProductContext();
 
-  const { sidebarOpen, toggleSidebar } = useThemeContext();
+  const { sidebarOpen } = useThemeContext();
 
-  console.log(sidebarOpen);
+  const exampleProduct = {
+    ASIN: "ASIN",
+    seller_sku: "seller_sku",
+    product_cost: 0,
+    supplier_id: 0,
+    supplier_item_number: "supplier_item_number",
+    pack_type: "pack_type",
+  };
+  
 
   return (
     <>
@@ -62,14 +72,15 @@ const Table: FC = () => {
             </th>
           </tr>
         </thead>
-
+        
         {/* Table Body */}
+        {addingProduct && <NewTableRow /> }
         <TableRow products={products} />
       </table>
       {totalPages > 0 && (
         <Pagination
-          currentPage={currentPage}
-          handleNextPage={handleNextPage}
+        currentPage={currentPage}
+        handleNextPage={handleNextPage}
           setCurrentPage={setCurrentPage}
           handlePreviousPage={handlePreviousPage}
           totalPages={totalPages}
