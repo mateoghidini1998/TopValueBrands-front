@@ -46,9 +46,15 @@ export default function Page() {
   } = useTrackedProductContext();
 
   const actionHandlers = {
-    add: addTrackedProductToOrder,
-    remove: removeTrackedProductFromOrder,
-    edit: updateTrackedProductInOrder,
+    async add(data: any): Promise<void> {
+      addTrackedProductToOrder(data);
+    },
+    async remove(data: any): Promise<void> {
+      removeTrackedProductFromOrder(data);
+    },
+    async edit(data: any): Promise<void> {
+      updateTrackedProductInOrder(data);
+    },
   };
 
   return (
@@ -56,7 +62,7 @@ export default function Page() {
       <TableComponent<TrackedProductType>
         columns={trackedProductsCol}
         data={trackedProducts}
-        actions={[<InputOrderAction key={"actions"} />]}
+        actions={[<></>,<InputOrderAction key={"actions"} /> ,<></> , <></>]}
         actionHandlers={{ add: actionHandlers.add }}
         tableHeigth="300px"
         actionsWidth="60px"
@@ -65,7 +71,13 @@ export default function Page() {
         <TableComponent<ProductInOrder>
           columns={orderProductsCol}
           data={trackedProductsAddedToOrder}
-          actions={[<></>, <DeleteIcon key={"actions"} />]}
+          actions={
+            [
+              <></>,
+              <></>,
+              <></>,
+              <DeleteIcon key={"actions"} />,
+              ]}
           actionHandlers={{
             remove: actionHandlers.remove,
             // edit: actionHandlers.edit,

@@ -37,6 +37,7 @@ export const ProductNameTableData = ({product, width}: ProductNameTableDataProps
               href={`https://www.amazon.com/dp/${product?.ASIN}`}
             >
               <Image
+                loading="lazy"
                 className="cover rounded-xl w-full h-full"
                 src={product?.product_image}
                 width={32}

@@ -1,23 +1,22 @@
 "use client";
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
-import { TableComponentProps } from "../interfaces/ITableComponent";
-import { NumberInput } from "./QuantityInput";
-import { ChangeEvent, useState } from "react";
 import {
   ProductInOrder,
   useTrackedProductContext,
 } from "@/contexts/trackedProducts.context";
+import { ChangeEvent } from "react";
+import { TableComponentProps } from "../interfaces/ITableComponent";
 
-type ActionType = 'add' | 'remove' | 'edit';
+type ActionType = "add" | "remove" | "edit" | "download";
 
-type ActionHandler<T> = (item: T) => void;
+type ActionHandler<T> = (arg1: T, arg2?: any) => Promise<void>;
 
 type Actions<T> = {
   add?: ActionHandler<T>;
   remove?: ActionHandler<T>;
   edit?: ActionHandler<T>;
+  download?: ActionHandler<T>;
 };
-
 
 export const TableComponent = <T,>({
   columns,
@@ -78,76 +77,115 @@ export const TableComponent = <T,>({
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className="text-white h-[60px] bg-dark text-xs font-medium flex items-center justify-between border-b border-[#393E4F]"
-              >
-                {columns.map((column) => {
-                  const cellValue = (row as any)[column.key];
-                  return column.key === "actions" ? (
-                    <td
-                      width={column.width}
-                      key={column.key}
-                      className="py-2 px-4 text-right"
-                    >
-                      {actions && actionHandlers && (
-                        <div className="flex items-center justify-end gap-2">
-                          {actionHandlers.add && (
-                            <button onClick={() => actionHandlers.add!(row)}>{actions[0]}</button>
-                          )}
-                          {actionHandlers.remove && (
-                            <button onClick={() => actionHandlers.remove!(row)}>{actions[1]}</button>
-                          )}
-                          {actionHandlers.edit && (
-                            <button onClick={() => actionHandlers.edit!(row)}>{actions[2]}</button>
-                          )}
-                        </div>
-                      )}
-                    </td>
-                  ) : column.key === "product_name" ? (
-                    <ProductNameTableData
-                      key={column.key}
-                      product={row}
-                      width={column.width}
-                    />
-                  ) : column.key === "quantity" ||
-                    column.key === "unit_price" ? (
-                    <td
-                      key={column.key}
-                      className="py-2 px-4 text-center flex items-center justify-center gap-4"
-                      style={{ width: column.width }}
-                    >
-                      {column.key === "unit_price" && "$"}
-                      <input
-                        type="number"
-                        value={cellValue}
-                        onChange={(event) =>
-                          handleInputChange(event, row, column.key)
-                        }
-                        className="w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+            {TABLE_ROWS.map((row, rowIndex) => {
+              return (
+                <tr
+                  key={rowIndex}
+                  className="text-white h-[60px] bg-dark text-xs font-medium flex items-center justify-between border-b border-[#393E4F]"
+                >
+                  {columns.map((column) => {
+                    const cellValue = (row as any)[column.key];
+                    return column.key === "actions" ? (
+                      <td
+                        width={column.width}
+                        key={column.key}
+                        className="py-2 px-4 text-right"
+                      >
+                        {actions && actionHandlers && (
+                          <div className="flex items-center justify-end gap-2">
+                            {actionHandlers.edit && (
+                              <button
+                              className={`${(row?.status === 'Approved') ? 'hidden' : ''}`}
+                                onClick={() => actionHandlers.edit!(row as any)}
+                              >
+                                {actions[0]}
+                              </button>
+                            )}
+                            {actionHandlers.add && (
+                              <button
+                                onClick={() => actionHandlers.add!(row as any)}
+                              >
+                                {actions[1]}
+                              </button>
+                            )}
+                            {actionHandlers.download && (
+                              <button className={`${!(row?.status === 'Approved') ? 'hidden' : ''}`}
+                                onClick={() =>
+                                  actionHandlers.download!(row as any)
+                                }
+                              >
+                                {actions[2]}
+                              </button>
+                            )}
+                            {actionHandlers.remove && (
+                              <button
+                                onClick={() =>
+                                  actionHandlers.remove!(row as any)
+                                }
+                              >
+                                {actions[3]}
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </td>
+                    ) : column.key === "product_name" ? (
+                      <ProductNameTableData
+                        key={column.key}
+                        product={row}
+                        width={column.width}
                       />
-                    </td>
-                  ) : column.key === "total_amount" ? (
-                    <td
-                      key={column.key}
-                      className="py-2 px-4 text-center"
-                      style={{ width: column.width }}
-                    >
-                      {row.quantity * row.unit_price}
-                    </td>
-                  ) : (
-                    <td
-                      key={column.key}
-                      className="py-2 px-4 text-center"
-                      style={{ width: column.width }}
-                    >
-                      {cellValue}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
+                    ) : column.key === "quantity" ||
+                      column.key === "unit_price" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center flex items-center justify-center gap-4"
+                        style={{ width: column.width }}
+                      >
+                        {column.key === "unit_price" && "$"}
+                        <input
+                          type="number"
+                          value={cellValue}
+                          onChange={(event) =>
+                            handleInputChange(event, row, column.key)
+                          }
+                          className="w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                        />
+                      </td>
+                    ) : column.key === "total_amount" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center"
+                        style={{ width: column.width }}
+                      >
+                        {row.quantity * row.unit_price}
+                      </td>
+                    ) : column.key === "status" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center"
+                        style={{ width: column.width }}
+                      >
+                        <div className="rounded-full flex items-center justify-between">
+                          <div
+                            className={`w-3 h-3 rounded-full ${cellValue === "Approved" ? "bg-green-500" : cellValue === "Rejected" ? "bg-red-500" : "bg-yellow-500"}`}
+                          ></div>
+                          <p className="w-[70%] text-left">{cellValue}</p>
+                        </div>
+                      </td>
+                    ) : (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center"
+                        style={{ width: column.width }}
+                      >
+                        {cellValue}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

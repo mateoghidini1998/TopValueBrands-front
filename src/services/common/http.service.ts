@@ -23,7 +23,7 @@ export class HttpAPI {
         });
     }
     
-    public static async patch(url: string, body: object, accessToken?: string): Promise<any> {
+    public static async patch(url: string, body?: object, accessToken?: string): Promise<any> {
         return this.fetch(url, {
             method: 'PATCH',
             headers: !accessToken ? { 'Content-Type': 'application/json' } : {
