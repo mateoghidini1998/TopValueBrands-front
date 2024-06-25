@@ -6,12 +6,12 @@ import CancelButton from "../svgs/CancelButton";
 import SaveButton from "../svgs/SaveButton";
 
 export interface NewProductType {
-  product_name: string;
+  product_name?: string;
   ASIN: string;
-  seller_sku: string;
-  product_cost?: number;
-  supplier_id?: number;
-  supplier_item_number?: string;
+  seller_sku?: string;
+  product_cost: number;
+  supplier_id: number;
+  supplier_item_number: string;
   pack_type?: string;
 }
 
@@ -39,17 +39,20 @@ const NewTableRow = () => {
     pack_type: "",
   };
 
-  const { addingProduct, setAddingProduct, createProduct } =
+  const { setAddingProduct, createProduct } =
     useProductContext();
+  
   const [formData, setFormData] = useState<NewProductType>({
-    product_name: exampleProduct.product_name,
     ASIN: exampleProduct.ASIN,
-    seller_sku: exampleProduct.seller_sku,
     product_cost: exampleProduct.product_cost,
     supplier_id: exampleProduct.supplier_id,
     supplier_item_number: exampleProduct.supplier_item_number,
-    pack_type: exampleProduct.pack_type,
+    // product_name: exampleProduct.product_name,
+    // seller_sku: exampleProduct.seller_sku,
+    // pack_type: exampleProduct.pack_type,
   });
+
+  console.log(formData);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,6 +65,16 @@ const NewTableRow = () => {
   };
 
   const handleCreateProduct = (newProduct: NewProductType) => {
+    const requiredFields = ["supplier_id", 'supplier_item_number', "ASIN", "product_cost"];
+    console.log(Object.keys(newProduct));
+
+
+    for (const field of requiredFields) {
+      if (!(newProduct[field as keyof NewProductType])) {
+        alert(`Product ${field} is required`);
+        return;
+      }
+    }
     console.log(newProduct);
     createProduct(newProduct);
     setAddingProduct(false);
@@ -84,8 +97,9 @@ const NewTableRow = () => {
           <textarea
             name="product_name"
             // type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid flex items-center text-left pt-[.35rem]"
-            placeholder="product name"
+            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid flex items-center text-left pt-[.35rem] disabled:border-red-400" 
+            placeholder="Automated product name"
+            disabled
             onChange={handleChangeTextArea}
             // defaultValue={formData.product_name}
           />
@@ -140,44 +154,51 @@ const NewTableRow = () => {
           />
         </td>
         <td className="w-[10%] text-xs font-medium text-center">
-          <input
+          {/* <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
             placeholder="pack type"
             name="pack_type"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
-          />
+          /> */}
+          {'N/A'}
         </td>
         <td className="w-[5%] text-xs font-medium text-center">
-          <input
+          {/* <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
             placeholder="0"
             name="FBA_available_inventory"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
-          />
+          /> */}
+
+          {'N/A'}
         </td>
         <td className="w-[10%] text-xs font-medium text-center">
-          <input
+          {/* <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
             placeholder="0"
             name="reserved_quantity"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
-          />
+          /> */}
+
+          {'N/A'}
         </td>
         <td className="w-[10%] text-xs font-medium text-center">
-          <input
+          {/* <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
             placeholder="0"
             name="Inbound_to_FBA"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
-          />
+          /> */}
+
+          {'N/A'}
         </td>
         <td className="w-[5%] text-xs font-medium text-center flex gap-2">
           <div className="cursor-pointer"  onClick={() => handleCreateProduct(formData)}>
