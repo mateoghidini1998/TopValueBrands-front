@@ -4,10 +4,9 @@ type OrderProductType = {
   orderProducts: any[];
 };
 
-
-
 export const OrderSummary = ({ orderProducts }: OrderProductType) => {
-  const { setTrackedProductsAddedToOrder, handleCreateOrder, getTotalPrice } = useTrackedProductContext();
+  const { setTrackedProductsAddedToOrder, handleCreateOrder, getTotalPrice } =
+    useTrackedProductContext();
 
   const handleCleanOrder = () => {
     // Set the trackedProductsAddedToOrder to empty array
@@ -19,7 +18,7 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
       <h6 className="font-bold">Order Summary</h6>
       <div className="flex justify-between items-center">
         <p>Order Number:</p>
-        <p>#</p>
+        <p>The order number would be automatically generated</p>
       </div>
       <div className="flex justify-between items-center">
         <p>Supplier:</p>
@@ -43,8 +42,20 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
           />
         </div>
         <div className="flex gap-2 w-fit items-center justify-between">
-          <button onClick={() => handleCreateOrder(orderProducts)} className="bg-[#438EF3] text-white rounded-lg p-2 w-[130px]">Submit Order</button>
-          <button onClick={handleCleanOrder} className="bg-[#393E4F] text-white rounded-lg p-2 w-[107px]">Cancel</button>
+          <button
+            onClick={() => {
+              handleCreateOrder(orderProducts);
+            }}
+            className="bg-[#438EF3] text-white rounded-lg p-2 w-[130px]"
+          >
+            Submit Order
+          </button>
+          <button
+            onClick={handleCleanOrder}
+            className="bg-[#393E4F] text-white rounded-lg p-2 w-[107px]"
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </div>

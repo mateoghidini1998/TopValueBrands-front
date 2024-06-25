@@ -31,6 +31,7 @@ type OrdersContextType = {
   acceptOrder: (id: number) => Promise<void>;
   rejectOrder: (id: number) => Promise<void>;
   downloadOrder: (id: number) => Promise<void>;
+  fetchOrders: () => Promise<void>;
 };
 
 const OrdersContext = createContext<OrdersContextType | undefined>(undefined);
@@ -51,23 +52,23 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({ children }: OrdersProv
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/v1/purchaseorders");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setOrders(data.data); // Assuming the orders are in the `data` property
-      } catch (error: any) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrders();
   }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/purchaseorders");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setOrders(data.data); // Assuming the orders are in the `data` property
+    } catch (error: any) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const acceptOrder = async (orderId: number) => {
     // try {
@@ -133,7 +134,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({ children }: OrdersProv
   };
 
   return (
-    <OrdersContext.Provider value={{ acceptOrder, rejectOrder, downloadOrder, orders, loading, error }}>
+    <OrdersContext.Provider value={{ acceptOrder, rejectOrder, downloadOrder, orders, loading, error, fetchOrders }}>
       {children}
     </OrdersContext.Provider>
   );

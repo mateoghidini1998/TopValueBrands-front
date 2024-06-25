@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useOrdersContext } from "./orders.context";
 
 interface TrackedProductInOrder {
   id: string;
@@ -63,6 +64,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [trackedProductsAddedToOrder, setTrackedProductsAddedToOrder] =
   useState<ProductInOrder[]>([]);
 
+  const { fetchOrders } = useOrdersContext();
 
   console.log(trackedProductsAddedToOrder);
 
@@ -104,9 +106,16 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       unit_price: product.unit_price,
       quantity: product.quantity,
     }));
+
+    // Concatenar los IDs de los productos
+    const productIds = orderProducts.map((product: any) => product.product_id).join('');
+    // Obtener el supplier_id
+    const supplierId = orderProducts[0].supplier_id;
+    // Generar un ID de pedido
+    const PO_ID = new Date().getTime();
   
     const orderPayload = {
-      order_number: "ABC202111", // Puede ser dinámico o generado automáticamente
+      order_number: `PO#${productIds}-${supplierId}-${PO_ID}`, // Puede ser dinámico o generado automáticamente
       supplier_id: orderProducts[0].supplier_id, // Asumiendo que todos los productos tienen el mismo supplier_id
       products: transformedProducts,
     };
@@ -122,6 +131,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   
       if (!response.ok) {
         throw new Error("Network response was not ok");
+      } else {
+        fetchOrders();
       }
   
       const responseData = await response.json();
