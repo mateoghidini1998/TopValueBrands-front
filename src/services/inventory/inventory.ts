@@ -41,13 +41,13 @@ export class InventoryService {
     }
   }
 
-  static async deactivateProduct(seller_sku: string) {
+  static async deactivateProduct(id: string) {
     try {
       const token = getAuthToken();
       if (token) {
         const response = await HttpAPI.patch(
           `http://localhost:5000/api/v1/products/disable`,
-          { seller_sku: seller_sku },
+          { id: id },
           token
         );
         return response;
@@ -60,11 +60,12 @@ export class InventoryService {
   }
 
   static async updateProduct(data: EditProductType) {
+    console.log(data)
     try {
       const token = getAuthToken();
       if (token) {
-        if (!data.seller_sku) {
-          throw new Error("seller_sku is required");
+        if (!data.id) {
+          throw new Error("id is required");
         }
         const response = await HttpAPI.patch(
           `http://localhost:5000/api/v1/products/addExtraInfoToProduct`,

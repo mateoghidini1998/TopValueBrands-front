@@ -106,7 +106,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     }));
   
     const orderPayload = {
-      order_number: "ABF202126", // Puede ser dinámico o generado automáticamente
+      order_number: "ABC202111", // Puede ser dinámico o generado automáticamente
       supplier_id: orderProducts[0].supplier_id, // Asumiendo que todos los productos tienen el mismo supplier_id
       products: transformedProducts,
     };

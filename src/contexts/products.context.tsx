@@ -14,7 +14,7 @@ export type ProductState = {
     keyword: string;
     handleSetKeyword: (keyword: string) => void;
     updateProduct: (updatedProduct: ProductType) => void;
-    handleDeleteProduct: (seller_sku: string) => void;
+    handleDeleteProduct: (id: string) => void;
     handleNextPage: () => void;
     handlePreviousPage: () => void;
     setCurrentPage: (page: number) => void;
@@ -94,7 +94,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
     const updateProduct = (updatedProduct: EditProductType) => {
 
         // find the product and then update
-        const productIndex = products.findIndex(product => product.seller_sku === updatedProduct.seller_sku);
+        const productIndex = products.findIndex(product => product.id === updatedProduct.id);
         const newUpdatedProduct = products[productIndex];
 
         // update the product
@@ -105,13 +105,13 @@ export const ProductProvider: FC<PropsWithChildren> = ({children}: PropsWithChil
 
 
         setProducts(products.map(product => 
-            product.seller_sku === newUpdatedProduct.seller_sku? newUpdatedProduct : product
+            product.id === newUpdatedProduct.id? newUpdatedProduct : product
         ));
     }
 
 
-    const handleDeleteProduct = (seller_sku: string) => {
-        setProducts(prevProducts => prevProducts.filter(product => product.seller_sku !== seller_sku));
+    const handleDeleteProduct = (id: string) => {
+        setProducts(prevProducts => prevProducts.filter(product => product.id !== id));
     };
 
     return (

@@ -25,6 +25,7 @@ type TableRowProps = {
 };
 
 export interface EditProductType {
+  id: string;
   product_name?: string;
   ASIN?: string;
   product_image: string;
@@ -61,9 +62,10 @@ const TableRow = ({ products }: TableRowProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const dialog = useRef();
   const [currentProduct, setCurrentProduct] = useState<{
-    seller_sku: string;
-  }>({ seller_sku: "" });
+    id: string;
+  }>({ id: "" });
   const [editData, setEditData] = useState<EditProductType>({
+    id: "",
     product_name: "",
     ASIN: "",
     product_image: "",
@@ -168,31 +170,31 @@ const TableRow = ({ products }: TableRowProps) => {
     return () => clearTimeout(timer);
   }, [savedData, setCustomAlertProperties]);
 
-  const handleToggleActions = (seller_sku: string, product: ProductType) => {
-    if (isActionsOpen === seller_sku) {
+  const handleToggleActions = (id: string, product: ProductType) => {
+    if (isActionsOpen === id) {
       setIsActionsOpen(null);
     } else {
-      setIsActionsOpen(seller_sku);
+      setIsActionsOpen(id);
     }
     setEditData(product);
   };
 
-  const handleEdit = (seller_sku: string) => {
-    setCurrentProduct({ seller_sku });
-    setEditingRow({ [seller_sku]: true });
+  const handleEdit = (id: string) => {
+    setCurrentProduct({ id });
+    setEditingRow({ [id]: true });
   };
 
   const saveEditedProduct = async () => {
     try {
       const response = await InventoryService.updateProduct({
         ...editData,
-        seller_sku: currentProduct?.seller_sku ?? "",
+        id: currentProduct?.id,
       });
 
       updateProduct({
         ...editData,
-        seller_sku: currentProduct?.seller_sku || "",
-        id: 0,
+        id: currentProduct?.id || "",
+        seller_sku: "",
         ASIN: "",
         product_image: "",
         product_name: "",
@@ -222,18 +224,18 @@ const TableRow = ({ products }: TableRowProps) => {
     setFilterText("");
   };
 
-  const handleDelete = async (seller_sku: string) => {
+  const handleDelete = async (id: string) => {
     setIsDeleting(true);
     setSavedData(true);
-    setCurrentProduct(seller_sku ? { seller_sku } : { seller_sku: "" });
+    setCurrentProduct(id ? { id } : { id: "" });
   };
 
   const deleteProduct = async () => {
     try {
       const response = await InventoryService.deactivateProduct(
-        currentProduct?.seller_sku || ""
+        currentProduct?.id || ""
       );
-      handleDeleteProduct(currentProduct?.seller_sku || "");
+      handleDeleteProduct(currentProduct?.id || "");
       return response;
     } catch (error) {
       console.error("Error al desactivar el producto: ", error);
@@ -352,12 +354,14 @@ const TableRow = ({ products }: TableRowProps) => {
         {Array.isArray(products) &&
           products.map((product: any, i) => (
             <tr
-              key={product?.seller_sku}
+              key={product?.id}
               className={`${
                 i == 0 ? "mt-[60px]" : ""
               } m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-fit ${
                 sidebarOpen ? "w-full" : "w-full"
-              }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
+                }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]
+              ${!product?.in_seller_account ? "bg-gray-500" : ""}
+                `}
             >
               {/* Product Image and Product Name */}
               <td
@@ -394,10 +398,12 @@ const TableRow = ({ products }: TableRowProps) => {
                       position: "relative",
                       width: "80%",
                     }}
-                    onMouseEnter={() => handleMouseEnter(product?.product_name)}
+                    onMouseEnter={() => {
+                      !editingRow[product?.id] && handleMouseEnter(product?.product_name);
+                    }}
                     onMouseLeave={handleMouseLeave}
                   >
-                    {editingRow[product?.seller_sku] ? (
+                    {editingRow[product?.id] ? (
                       <textarea
                         name="product_name"
                         // type="text"
@@ -418,7 +424,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {editingRow[product?.seller_sku] ? (
+                {editingRow[product?.id] ? (
                   <input
                     name="ASIN"
                     type="text"
@@ -434,7 +440,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 {product?.seller_sku}
               </td>
               <td className="w-[5%] text-xs font-medium text-center flex justify-center">
-                {editingRow[product?.seller_sku] ? (
+                {editingRow[product?.id] ? (
                   <input
                     name="product_cost"
                     type="text"
@@ -447,7 +453,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 )}
               </td>
               <td className="w-[15%] text-xs font-medium text-center flex justify-center">
-                {editingRow[product?.seller_sku] ? (
+                {editingRow[product?.id] ? (
                   <div className="relative w-2/3" ref={inputRef}>
                     <input
                       type="text"
@@ -478,7 +484,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center flex justify-center">
-                {editingRow[product?.seller_sku] ? (
+                {editingRow[product?.id] ? (
                   <input
                     name="supplier_item_number"
                     type="text"
@@ -491,7 +497,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center flex justify-center">
-                {editingRow[product?.seller_sku] ? (
+                {editingRow[product?.id] ? (
                   <input
                     name="pack_type"
                     type="text"
@@ -506,7 +512,7 @@ const TableRow = ({ products }: TableRowProps) => {
               <td className="w-[5%] text-xs font-medium text-center">
                 {/* {product?.FBA_available_inventory} */}
 
-                {editingRow[product?.seller_sku] ? (
+                {editingRow[product?.id] ? (
                   <input
                     name="FBA_available_inventory"
                     type="text"
@@ -521,7 +527,7 @@ const TableRow = ({ products }: TableRowProps) => {
               <td className="w-[10%] text-xs font-medium text-center">
                 {/* {product?.reserved_quantity} */}
 
-                {editingRow[product?.seller_sku] ? (
+                {editingRow[product?.id] ? (
                   <input
                     name="reserved_quantity"
                     type="text"
@@ -536,7 +542,7 @@ const TableRow = ({ products }: TableRowProps) => {
               <td className="w-[10%] text-xs font-medium text-center">
                 {/* {product?.Inbound_to_FBA} */}
 
-                {editingRow[product?.seller_sku] ? (
+                {editingRow[product?.id] ? (
                   <input
                     name="Inbound_to_FBA"
                     type="text"
@@ -549,15 +555,15 @@ const TableRow = ({ products }: TableRowProps) => {
                 )}
               </td>
               <td className="w-[5%] text-xs font-medium text-right relative">
-                {!editingRow[product?.seller_sku] ? (
+                {!editingRow[product?.id] ? (
                   <button
                     onClick={() =>
-                      handleToggleActions(product?.seller_sku, product)
+                      handleToggleActions(product?.id, product)
                     }
                   >
                     {!isActionsOpen ? (
                       <DotsSVG stroke="#ADB3CC" />
-                    ) : isActionsOpen === product?.seller_sku ? (
+                    ) : isActionsOpen === product?.id ? (
                       <div onClick={() => setIsActionsOpen(null)}>
                         <DotsSVG stroke="#ADB3CC" />
                       </div>
@@ -576,15 +582,15 @@ const TableRow = ({ products }: TableRowProps) => {
                   </div>
                 )}
 
-                {isActionsOpen === product?.seller_sku && (
+                {isActionsOpen === product?.id && (
                   <RowActions
                     onClose={() => setIsActionsOpen(null)}
                     onEdit={() => {
-                      handleEdit(product?.seller_sku);
+                      handleEdit(product?.id);
                       setIsActionsOpen(null);
                     }}
                     onDelete={() => {
-                      handleDelete(product?.seller_sku);
+                      handleDelete(product?.id);
                       setIsActionsOpen(null);
                     }}
                   />
