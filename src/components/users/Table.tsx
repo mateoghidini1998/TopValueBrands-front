@@ -7,6 +7,7 @@ import RegisterForm from "../auth/RegisterForm";
 import { UserRole } from "@/types/user.types";
 import ConfirmAlert from "../alerts/ConfirmAlert";
 import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
+import useThemeContext from "@/contexts/theme.context";
 
 type FormData = {
   id: string;
@@ -38,6 +39,7 @@ export default function Table() {
     setEditingUser,
   } = useUsersContext();
   const [showAlert, setShowAlert] = useState(false);
+  const { theme } = useThemeContext();
   const [userToUpdate, setUserToUpdate] = useState<FormData>({
     id: "",
     firstName: "",
@@ -200,7 +202,7 @@ export default function Table() {
   return (
     <>
       <CustomAlert
-        theme={CustomAlertTheme.LIGHT}
+        theme={theme}
         message={customAlertProperties.message}
         description={customAlertProperties.description}
         type={customAlertProperties.type}

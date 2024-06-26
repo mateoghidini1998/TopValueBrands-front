@@ -1,10 +1,11 @@
-import { UserType } from "@/types/user.types";
-import DotsSVG from "../svgs/DotsSVG";
-import { useEffect, useState } from "react";
-import TableRowOptions from "../ui/TableRowOptions";
+import useThemeContext from "@/contexts/theme.context";
 import { useUsersContext } from "@/contexts/users.context";
+import { UserType } from "@/types/user.types";
+import { useEffect, useState } from "react";
 import ConfirmAlert from "../alerts/ConfirmAlert";
 import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
+import DotsSVG from "../svgs/DotsSVG";
+import TableRowOptions from "../ui/TableRowOptions";
 
 type TableRowProps = {
   users: UserType[];
@@ -23,6 +24,7 @@ export default function TableRow({ users }: TableRowProps) {
   const { deleteUser, setUpdateFormIsOpen, setEditingUser } = useUsersContext();
   const [showAlert, setShowAlert] = useState(false);
 
+  const { theme } = useThemeContext();
   const [customAlertProperties, setCustomAlertProperties] = useState({
     show: false,
     type: CustomAlertOptions.SUCCESS,
@@ -116,7 +118,7 @@ export default function TableRow({ users }: TableRowProps) {
       <tr>
         <td>
           <CustomAlert
-            theme={CustomAlertTheme.LIGHT}
+            theme={theme}
             message={customAlertProperties.message}
             description={customAlertProperties.description}
             type={customAlertProperties.type}
@@ -142,7 +144,7 @@ export default function TableRow({ users }: TableRowProps) {
             key={user.email}
             className={`dark:bg-dark relative py-6 text-light stroke-1 dark:stroke-[#393E4F] flex items-center h-[65px] w-full dark:text-white bg-transparent border-t dark:border-t-[#393E4F] ${
               index === users.length - 1 ? "last-row" : ""
-            } ${index === 0 && 'border-t-0'}`}
+            } ${index === 0 && "border-t-0"}`}
           >
             <td className="w-[15%] text-xs font-medium text-center">
               {user.firstName} {user.lastName}
@@ -164,7 +166,9 @@ export default function TableRow({ users }: TableRowProps) {
                   {!showOptionsMap[user.email] ? (
                     <DotsSVG stroke="#438EF3" />
                   ) : (
-                    <button><DotsSVG stroke="#438EF3" /></button>
+                    <button>
+                      <DotsSVG stroke="#438EF3" />
+                    </button>
                   )}
                 </button>
                 {/* Muestra las opciones solo si showOptionsMap[user.email] es true */}

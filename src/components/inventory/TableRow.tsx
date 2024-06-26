@@ -240,7 +240,7 @@ const TableRow = ({ products }: TableRowProps) => {
       [e.target.name]: e.target.value,
     });
 
-  const { sidebarOpen } = useThemeContext();
+  const { sidebarOpen, theme } = useThemeContext();
 
   return (
     <>
@@ -252,7 +252,7 @@ const TableRow = ({ products }: TableRowProps) => {
         <tr className="">
           <td>
             <CustomAlert
-              theme={CustomAlertTheme.LIGHT}
+              theme={theme}
               message={customAlertProperties.message}
               description={customAlertProperties.description}
               type={customAlertProperties.type}

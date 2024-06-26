@@ -22,7 +22,7 @@ type CustomAlertProps = {
   closable: boolean;
   showIcon: boolean;
   visible?: boolean;
-  theme: CustomAlertTheme;
+  theme: CustomAlertTheme | string;
 };
 
 const CustomAlert = ({
@@ -35,11 +35,11 @@ const CustomAlert = ({
   theme,
 }: CustomAlertProps) => {
   const [isDarkmode, setIsDarkmode] = useState(
-    !(theme === CustomAlertTheme.DARK) ? "dark" : "light"
+    (theme === CustomAlertTheme.DARK) ? "dark" : "light"
   );
 
   useEffect(() => {
-    setIsDarkmode(!(theme === CustomAlertTheme.DARK) ? "dark" : "light");
+    setIsDarkmode((theme === CustomAlertTheme.DARK) ? "dark" : "light");
   }, [theme]);
 
   return (
