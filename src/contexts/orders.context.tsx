@@ -14,6 +14,7 @@ export type OrderProductType = {
   id: number;
   purchase_order_id: number;
   product_id: number;
+  product_name: string;
   unit_price: number;
   total_amount: number;
   quantity: number;
@@ -23,6 +24,7 @@ export type OrderProductType = {
 
 export type OrderType = {
   id: number;
+  notes: string;
   order_number: string;
   supplier_id: number;
   supplier_name?: string;
@@ -73,8 +75,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   useEffect(() => {
     fetchOrders();
   }, []);
-  
-  
+
   const fetchOrders = async () => {
     setLoading(true);
     setError(null);
@@ -93,13 +94,13 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       setLoading(false);
     }
   };
-  
+
   const acceptOrder = async (orderId: number) => {
     try {
       await PurchaseOrdersService.approveOrderStatus(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: 'Approved' } : order
+          order.id === orderId ? { ...order, status: "Approved" } : order
         )
       );
       console.log("Order accepted:", orderId);
@@ -107,13 +108,13 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       setError(error);
     }
   };
-  
+
   const rejectOrder = async (orderId: number) => {
     try {
       await PurchaseOrdersService.rejectOrderStatus(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: 'Rejected' } : order
+          order.id === orderId ? { ...order, status: "Rejected" } : order
         )
       );
       console.log("Order rejected:", orderId);

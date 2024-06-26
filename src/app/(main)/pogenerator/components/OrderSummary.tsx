@@ -1,4 +1,5 @@
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
+import { useState } from "react";
 
 type OrderProductType = {
   orderProducts: any[];
@@ -7,10 +8,15 @@ type OrderProductType = {
 export const OrderSummary = ({ orderProducts }: OrderProductType) => {
   const { setTrackedProductsAddedToOrder, handleCreateOrder, getTotalPrice } =
     useTrackedProductContext();
+  const [notes, setNotes] = useState("");
 
   const handleCleanOrder = () => {
     // Set the trackedProductsAddedToOrder to empty array
     setTrackedProductsAddedToOrder([]);
+  };
+
+  const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNotes(event.target.value);
   };
 
   return (
@@ -37,6 +43,7 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
         <div className="flex flex-col gap-2 min-w-[300px] w-auto">
           <p>Notes</p>
           <textarea
+            onChange={(e) => handleNotesChange(e)}
             className="bg-dark w-full h-[100px] border-solid border-[1px] rounded-lg border-gray-300 p-4 dark:text-white"
             placeholder="Order Notes"
           />
@@ -44,7 +51,7 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
         <div className="flex gap-2 w-fit items-center justify-between">
           <button
             onClick={() => {
-              handleCreateOrder(orderProducts);
+              handleCreateOrder(orderProducts, notes);
             }}
             className="bg-[#438EF3] text-white rounded-lg p-2 w-[130px]"
           >

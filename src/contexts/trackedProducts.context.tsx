@@ -29,7 +29,6 @@ export type ProductInOrder = {
   units_sold: number;
 };
 
-
 export type TrackedProductsState = {
   trackedProducts: TrackedProductType[];
   supplierId: string;
@@ -39,21 +38,21 @@ export type TrackedProductsState = {
   addTrackedProductToOrder: (data: any) => void;
   removeTrackedProductFromOrder: (data: any) => void;
   updateTrackedProductInOrder: (data: any) => void;
-  handleCreateOrder: (data: any) => void;
+  handleCreateOrder: (data: any, notes: string) => void;
   getTotalPrice: (data: any) => void;
 };
 
 export const TrackedProductContext = createContext<TrackedProductsState>({
   trackedProducts: [],
   supplierId: "",
-  setSupplierId: () => { },
+  setSupplierId: () => {},
   setTrackedProductsAddedToOrder: () => {},
   trackedProductsAddedToOrder: [],
   addTrackedProductToOrder: () => {},
-  removeTrackedProductFromOrder: () => { },
-  updateTrackedProductInOrder: () => { },
-  handleCreateOrder: (data: ProductInOrder[]) => { },
-  getTotalPrice: (data: ProductInOrder[]) => { },
+  removeTrackedProductFromOrder: () => {},
+  updateTrackedProductInOrder: () => {},
+  handleCreateOrder: (data: ProductInOrder[], notes: string) => {},
+  getTotalPrice: (data: ProductInOrder[]) => {},
 });
 
 export const TrackedProductsProvider: FC<PropsWithChildren> = ({
@@ -62,12 +61,11 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [trackedProducts, setTrackedProducts] = useState([]);
   const [supplierId, setSupplierId] = useState("");
   const [trackedProductsAddedToOrder, setTrackedProductsAddedToOrder] =
-  useState<ProductInOrder[]>([]);
+    useState<ProductInOrder[]>([]);
 
   const { fetchOrders } = useOrdersContext();
 
   console.log(trackedProductsAddedToOrder);
-
 
   useEffect(() => {
     getFilteredTrackedProducts(supplierId);
@@ -84,14 +82,15 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   };
 
   const updateTrackedProductInOrder = (updatedProduct: ProductInOrder) => {
-    updatedProduct.total_amount = updatedProduct.quantity * updatedProduct.unit_price;
+    updatedProduct.total_amount =
+      updatedProduct.quantity * updatedProduct.unit_price;
     setTrackedProductsAddedToOrder((prevState) =>
       prevState.map((product) =>
         product.id === updatedProduct.id ? updatedProduct : product
       )
     );
   };
-  
+
   const getTotalPrice = (orderProducts: any) => {
     let totalPrice = 0;
     orderProducts.map((item: any, i: number) => {
@@ -99,8 +98,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     });
     return totalPrice;
   };
-  
-  const handleCreateOrder = async (orderProducts: any) => {
+
+  const handleCreateOrder = async (orderProducts: any, notes: string) => {
     const transformedProducts = orderProducts.map((product: any) => ({
       product_id: product.product_id,
       unit_price: product.unit_price,
@@ -108,36 +107,42 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     }));
 
     // Concatenar los IDs de los productos
-    const productIds = orderProducts.map((product: any) => product.product_id).join('');
+    const productIds = orderProducts
+      .map((product: any) => product.product_id)
+      .join("");
     // Obtener el supplier_id
     const supplierId = orderProducts[0].supplier_id;
     // Generar un ID de pedido
     const PO_ID = new Date().getTime();
-  
+
     const orderPayload = {
+      notes: notes,
       order_number: `PO#${productIds}-${supplierId}-${PO_ID}`, // Puede ser dinámico o generado automáticamente
       supplier_id: orderProducts[0].supplier_id, // Asumiendo que todos los productos tienen el mismo supplier_id
       products: transformedProducts,
     };
-  
+
     try {
-      const response = await fetch("http://localhost:5000/api/v1/purchaseorders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderPayload),
-      });
-  
+      const response = await fetch(
+        "http://localhost:5000/api/v1/purchaseorders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderPayload),
+        }
+      );
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       } else {
         fetchOrders();
       }
-  
+
       const responseData = await response.json();
       console.log("Order created successfully:", responseData);
-  
+
       // Aquí puedes manejar la respuesta, mostrar un mensaje de éxito, etc.
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
@@ -153,11 +158,11 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     } else {
       setSupplierId("");
     }
-  
+
     const hasTheSameSupplierId = trackedProductsAddedToOrder.some(
       (item: any) => item.supplier_id === data.supplier_id
     );
-  
+
     // Check that the products are from the same supplier
     if (trackedProductsAddedToOrder.length > 0) {
       const supplier_id = trackedProductsAddedToOrder[0]?.supplier_id;
@@ -166,19 +171,19 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         return;
       }
     }
-  
+
     // Check that the product is not already in the order
     if (trackedProductsAddedToOrder.some((item: any) => item.id === data.id)) {
       alert("Product already added to order");
       return;
     }
-  
+
     // Check that the product has a supplier
     if (!data.supplier_id) {
       alert("Please assign a supplier to the product before");
       return;
     }
-  
+
     // Transform data to the new object structure
     const newProductInOrder: ProductInOrder = {
       id: data.id,
@@ -192,8 +197,11 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       total_amount: 0,
       units_sold: data.units_sold,
     };
-  
-    setTrackedProductsAddedToOrder((prevState) => [...prevState, newProductInOrder]);
+
+    setTrackedProductsAddedToOrder((prevState) => [
+      ...prevState,
+      newProductInOrder,
+    ]);
   };
 
   const removeTrackedProductFromOrder = (data: any) => {
@@ -214,7 +222,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         removeTrackedProductFromOrder,
         updateTrackedProductInOrder,
         handleCreateOrder,
-        getTotalPrice
+        getTotalPrice,
       }}
     >
       {children}

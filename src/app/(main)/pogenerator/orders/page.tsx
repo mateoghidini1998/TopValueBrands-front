@@ -15,6 +15,7 @@ const columns: Column[] = [
   { key: "order_number", name: "Order Number", width: "100px" },
   { key: "createdAt", name: "Date", width: "100px" },
   { key: "total_price", name: "Total", width: "100px" },
+  { key: "notes", name: "Notes", width: "150px" },
   { key: "status", name: "Status", width: "150px" },
 ];
 
@@ -39,7 +40,7 @@ export default function OrderPage() {
 
   const actionHandlers = {
     add: (data: any) => {
-      console.log(data);
+      // console.log(data);
       acceptOrder(data.id);
     },
     remove: (data: any) => {
@@ -56,14 +57,15 @@ export default function OrderPage() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-
   return (
     <IndexPageContainer>
       <TableComponent
         columns={columns}
         data={orders || []}
         actions={[
-          <div key={"actions"}><EditButton key={"actions"} color="#fff"/></div>,
+          <div key={"actions"}>
+            <EditButton key={"actions"} color="#fff" />
+          </div>,
           <ConfirmButton key={"actions"} />,
           <div
             key={"actions"}
