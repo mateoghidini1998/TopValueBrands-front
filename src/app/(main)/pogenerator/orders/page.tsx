@@ -19,13 +19,6 @@ const columns: Column[] = [
   { key: "status", name: "Status", width: "150px" },
 ];
 
-const mapOrdersData = (orders: OrderType[]) => {
-  return orders?.map((order) => ({
-    ...order,
-    supplier_name: order.supplier_name || "Unknown", // Ajusta según sea necesario
-  }));
-};
-
 export default function OrderPage() {
   const {
     orders,
@@ -40,17 +33,28 @@ export default function OrderPage() {
 
   const actionHandlers = {
     add: (data: any) => {
-      // console.log(data);
-      acceptOrder(data.id);
+      return new Promise<void>((resolve) => {
+        acceptOrder(data.id);
+        resolve();
+      });
     },
     remove: (data: any) => {
-      rejectOrder(data.id);
+      return new Promise<void>((resolve) => {
+        rejectOrder(data.id);
+        resolve();
+      });
     },
     edit: (data: any) => {
-      openEditModal(data);
+      return new Promise<void>((resolve) => {
+        openEditModal(data);
+        resolve();
+      });
     },
     download: (data: any) => {
-      downloadOrder(data.id);
+      return new Promise<void>((resolve) => {
+        downloadOrder(data.id);
+        resolve();
+      });
     },
   };
 
