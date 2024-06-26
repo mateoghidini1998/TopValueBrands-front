@@ -11,14 +11,12 @@ import { useProductContext } from "@/contexts/products.context";
 import Link from "next/link";
 import { Tooltip } from "./Tooltip";
 import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
-import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 import SaveButton from "../svgs/SaveButton";
 import CancelButton from "../svgs/CancelButton";
 import useThemeContext from "@/contexts/theme.context";
 import { useSupplierContext } from "@/contexts/suppliers.context";
 import { SupplierType } from "@/types/supplier.types";
 import EmptyImage from "../svgs/EmptyImage";
-import { ProductNameTableData } from "./ProductNameTableData";
 
 type TableRowProps = {
   products: ProductType[];
@@ -45,17 +43,6 @@ enum CustomAlertTheme {
 }
 
 const TableRow = ({ products }: TableRowProps) => {
-  const isDarkmode = localStorage.getItem("theme") === "dark";
-  const [theme, setTheme] = useState(isDarkmode ? "dark" : "light");
-
-  useEffect(() => {
-    if (theme === "dark") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, [theme]);
-
   const [isActionsOpen, setIsActionsOpen] = useState<string | null>(null);
   const [editingRow, setEditingRow] = useState<{ [key: string]: boolean }>({});
   const [savedData, setSavedData] = useState(false);
@@ -64,12 +51,20 @@ const TableRow = ({ products }: TableRowProps) => {
   const [currentProduct, setCurrentProduct] = useState<{
     id: string;
   }>({ id: "" });
-  const [editData, setEditData] = useState<EditProductType>({
+  const [editData, setEditData] = useState<ProductType>({
     id: "",
     product_name: "",
     ASIN: "",
     product_image: "",
     seller_sku: "",
+    is_active: true,
+    product_cost: 0,
+    supplier_id: 0,
+    supplier_item_number: "",
+    pack_type: "",
+    FBA_available_inventory: 0,
+    reserved_quantity: 0,
+    Inbound_to_FBA: 0,
   });
   const { updateProduct, handleDeleteProduct } = useProductContext();
   // CustomAlert
@@ -184,32 +179,18 @@ const TableRow = ({ products }: TableRowProps) => {
     setEditingRow({ [id]: true });
   };
 
-  const saveEditedProduct = async () => {
+  const handleEditProduct = async () => {
     try {
-      const response = await InventoryService.updateProduct({
-        ...editData,
-        id: currentProduct?.id,
-      });
-
-      updateProduct({
-        ...editData,
-        id: currentProduct?.id || "",
-        seller_sku: "",
-        ASIN: "",
-        product_image: "",
-        product_name: "",
-        FBA_available_inventory: 0,
-        reserved_quantity: 0,
-        Inbound_to_FBA: 0,
-        is_active: false,
-      });
+      const response = await updateProduct(editData);
       setFilterText("");
       return response;
     } catch (error) {
       console.error("Error al actualizar el producto: ", error);
     }
-    setEditingRow({});
     setIsActionsOpen(null);
+    setEditingRow({});
+
+    return null;
   };
 
   const handleSave = async () => {
@@ -316,7 +297,7 @@ const TableRow = ({ products }: TableRowProps) => {
                         }
                       });
                     } else {
-                      saveEditedProduct().then((result) => {
+                      handleEditProduct().then((result) => {
                         setSavedData(false);
                         setIsActionsOpen(null);
                         setEditingRow({});
@@ -359,7 +340,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 i == 0 ? "mt-[60px]" : ""
               } m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-fit ${
                 sidebarOpen ? "w-full" : "w-full"
-                }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]
+              }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]
               ${!product?.in_seller_account ? "bg-gray-500" : ""}
                 `}
             >
@@ -400,7 +381,8 @@ const TableRow = ({ products }: TableRowProps) => {
                       width: "80%",
                     }}
                     onMouseEnter={() => {
-                      !editingRow[product?.id] && handleMouseEnter(product?.product_name);
+                      !editingRow[product?.id] &&
+                        handleMouseEnter(product?.product_name);
                     }}
                     onMouseLeave={handleMouseLeave}
                   >
@@ -438,7 +420,17 @@ const TableRow = ({ products }: TableRowProps) => {
                 )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {product?.seller_sku}
+                {editingRow[product?.id] ? (
+                  <input
+                    name="seller_sku"
+                    type="text"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                    value={editData.seller_sku || ""}
+                    onChange={(e) => onChange(e)}
+                  />
+                ) : (
+                  `${product?.seller_sku}`
+                )}
               </td>
               <td className="w-[5%] text-xs font-medium text-center flex justify-center">
                 {editingRow[product?.id] ? (
@@ -558,9 +550,7 @@ const TableRow = ({ products }: TableRowProps) => {
               <td className="w-[5%] text-xs font-medium text-right relative">
                 {!editingRow[product?.id] ? (
                   <button
-                    onClick={() =>
-                      handleToggleActions(product?.id, product)
-                    }
+                    onClick={() => handleToggleActions(product?.id, product)}
                   >
                     {!isActionsOpen ? (
                       <DotsSVG stroke="#ADB3CC" />

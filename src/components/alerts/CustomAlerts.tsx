@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
 import { Alert, Space } from "antd";
 import { ConfigProvider } from "antd";
@@ -34,34 +34,39 @@ const CustomAlert = ({
   visible = false,
   theme,
 }: CustomAlertProps) => {
-  
-  const [isDarkmode, setIsDarkmode] = useState(theme === CustomAlertTheme.DARK ? "dark" : "light");
+  const [isDarkmode, setIsDarkmode] = useState(
+    !(theme === CustomAlertTheme.DARK) ? "dark" : "light"
+  );
 
   useEffect(() => {
-    setIsDarkmode(theme === CustomAlertTheme.DARK ? "dark" : "light");
+    setIsDarkmode(!(theme === CustomAlertTheme.DARK) ? "dark" : "light");
   }, [theme]);
-  
+
   return (
     <ConfigProvider
-      theme={ isDarkmode === "dark" ? {
-        token: {
-          colorText: "#fff",
-          colorError: "#F5222D",
-          colorErrorBorder:"#393E4F",
-          colorErrorBg: "#1F2128",
-          colorSuccessBg: "#1F2128",
-          colorSuccessBorder:"#393E4F",
-        },
-      } : {
-        token: {
-          colorText: "#000",
-          colorError: "#F5222D",
-          colorErrorBorder:"#c2c2c2",
-          colorErrorBg: "#c2c2c2",
-          colorSuccessBg: "#c2c2c2",
-          colorSuccessBorder: "#fff",
-        },
-      }}
+      theme={
+        isDarkmode === "dark"
+          ? {
+              token: {
+                colorText: "#fff",
+                colorError: "#F5222D",
+                colorErrorBorder: "#393E4F",
+                colorErrorBg: "#1F2128",
+                colorSuccessBg: "#1F2128",
+                colorSuccessBorder: "#393E4F",
+              },
+            }
+          : {
+              token: {
+                colorText: "#000",
+                colorError: "#F5222D",
+                colorErrorBorder: "#c2c2c2",
+                colorErrorBg: "#c2c2c2",
+                colorSuccessBg: "#c2c2c2",
+                colorSuccessBorder: "#fff",
+              },
+            }
+      }
     >
       <Space
         direction="vertical"

@@ -6,7 +6,7 @@ import { EditProductType } from "@/components/inventory/TableRow";
 import { NewProductType } from "@/components/inventory/NewTableRow";
 
 export class InventoryService {
-  static async getProducts(page: number, limit: number, keyword: string = '') {
+  static async getProducts(page: number, limit: number, keyword: string = "") {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
@@ -16,7 +16,7 @@ export class InventoryService {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
+      );
       return response;
     } catch (error) {
       throw new Error("Error fetching data");
@@ -59,8 +59,8 @@ export class InventoryService {
     }
   }
 
-  static async updateProduct(data: EditProductType) {
-    console.log(data)
+  static async updateProduct(data: ProductType) {
+    // console.log(data)
     try {
       const token = getAuthToken();
       if (token) {
@@ -80,5 +80,4 @@ export class InventoryService {
       throw new Error("Error updating product");
     }
   }
-
 }

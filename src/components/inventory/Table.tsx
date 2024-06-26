@@ -19,17 +19,6 @@ const Table: FC = () => {
   } = useProductContext();
 
   const { sidebarOpen } = useThemeContext();
-
-  const exampleProduct = {
-    ASIN: "ASIN",
-    seller_sku: "seller_sku",
-    product_cost: 0,
-    supplier_id: 0,
-    supplier_item_number: "supplier_item_number",
-    pack_type: "pack_type",
-  };
-  
-
   return (
     <>
       <table
@@ -72,15 +61,15 @@ const Table: FC = () => {
             </th>
           </tr>
         </thead>
-        
+
         {/* Table Body */}
-        {addingProduct && <NewTableRow /> }
+        {addingProduct && <NewTableRow />}
         <TableRow products={products} />
       </table>
       {totalPages > 0 && (
         <Pagination
-        currentPage={currentPage}
-        handleNextPage={handleNextPage}
+          currentPage={currentPage}
+          handleNextPage={handleNextPage}
           setCurrentPage={setCurrentPage}
           handlePreviousPage={handlePreviousPage}
           totalPages={totalPages}
