@@ -17,7 +17,7 @@ export const FilterSupplier = () => {
   };
 
   return (
-    <select onChange={handleSupplierChange} value={supplierId} className="w-[150px] bg-dark border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:text-white">
+    <select onChange={handleSupplierChange} value={supplierId} className="w-fit bg-dark border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:text-white">
       <option value={''}>All Suppliers</option>
       {suppliers.map((supplier: SupplierType) => (
         <option

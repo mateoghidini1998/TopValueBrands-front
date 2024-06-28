@@ -95,7 +95,7 @@ export const TableComponent = <T,>({
                           <div className="flex items-center justify-end gap-2">
                             {actionHandlers.edit && (
                               <button
-                              className={`${(row?.status === 'Approved') ? 'hidden' : ''}`}
+                                className={`${row?.status === "Approved" ? "hidden" : ""}`}
                                 onClick={() => actionHandlers.edit!(row as any)}
                               >
                                 {actions[0]}
@@ -109,7 +109,8 @@ export const TableComponent = <T,>({
                               </button>
                             )}
                             {actionHandlers.download && (
-                              <button className={`${!(row?.status === 'Approved') ? 'hidden' : ''}`}
+                              <button
+                                className={`${!(row?.status === "Approved") ? "hidden" : ""}`}
                                 onClick={() =>
                                   actionHandlers.download!(row as any)
                                 }
@@ -172,6 +173,17 @@ export const TableComponent = <T,>({
                           ></div>
                           <p className="w-[70%] text-left">{cellValue}</p>
                         </div>
+                      </td>
+                    ) : column.key === "notes" ? (
+                      <td
+                        onClick={() => {
+                          alert( cellValue );
+                        }}
+                        key={column.key}
+                        className="py-2 px-4 text-center text-nowrap overflow-hidden cursor-pointer"
+                        style={{ width: column.width }}
+                      >
+                        {cellValue}
                       </td>
                     ) : (
                       <td
