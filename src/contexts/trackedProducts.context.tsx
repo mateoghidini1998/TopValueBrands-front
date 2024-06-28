@@ -38,7 +38,7 @@ export type TrackedProductsState = {
   addTrackedProductToOrder: (data: any) => void;
   removeTrackedProductFromOrder: (data: any) => void;
   updateTrackedProductInOrder: (data: any) => void;
-  handleCreateOrder: (data: any, notes: string) => void;
+  handleCreateOrder: (data: any, notes: string) => any;
   getTotalPrice: (data: any) => void;
 };
 
@@ -105,19 +105,22 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       unit_price: product.unit_price,
       quantity: product.quantity,
     }));
+    // Generar un ID de pedido unico con el timestamp de 6 dígitos
+    const PO_ID = new Date().getTime().toString().slice(-6);
+    
+    const supplier_name = orderProducts[0].supplier_name;
+    // Obtener las iniciales del suppliername
+    const supplierInitials = supplier_name
+      .split(" ")
+      .map((word:string) => word.charAt(0))
+      .join("")
+      .toUpperCase();
 
-    // Concatenar los IDs de los productos
-    const productIds = orderProducts
-      .map((product: any) => product.product_id)
-      .join("");
-    // Obtener el supplier_id
-    const supplierId = orderProducts[0].supplier_id;
-    // Generar un ID de pedido
-    const PO_ID = new Date().getTime();
 
     const orderPayload = {
       notes: notes,
-      order_number: `PO#${productIds}-${supplierId}-${PO_ID}`, // Puede ser dinámico o generado automáticamente
+      order_number: `${supplierInitials}#${PO_ID}`, // Puede ser dinámico o generado automáticamente
+      // order_number: `PO#1-1-1719429064277`, // Para testear con un order_number que ya existe
       supplier_id: orderProducts[0].supplier_id, // Asumiendo que todos los productos tienen el mismo supplier_id
       products: transformedProducts,
     };
@@ -141,6 +144,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       }
 
       const responseData = await response.json();
+      return responseData;
       console.log("Order created successfully:", responseData);
 
       // Aquí puedes manejar la respuesta, mostrar un mensaje de éxito, etc.
