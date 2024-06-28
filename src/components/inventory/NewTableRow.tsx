@@ -4,6 +4,8 @@ import useThemeContext from "@/contexts/theme.context";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import CancelButton from "../svgs/CancelButton";
 import SaveButton from "../svgs/SaveButton";
+import { SupplierType } from "@/types/supplier.types";
+import { useSupplierContext } from "@/contexts/suppliers.context";
 
 export interface NewProductType {
   product_name?: string;
@@ -16,6 +18,7 @@ export interface NewProductType {
 }
 
 const NewTableRow = () => {
+  const { suppliers } = useSupplierContext();
   const isDarkmode = localStorage.getItem("theme") === "dark";
   const [theme, setTheme] = useState(isDarkmode ? "dark" : "light");
 
@@ -39,18 +42,44 @@ const NewTableRow = () => {
     pack_type: "",
   };
 
-  const { setAddingProduct, createProduct } =
-    useProductContext();
-  
+  const { setAddingProduct, createProduct } = useProductContext();
+
   const [formData, setFormData] = useState<NewProductType>({
     ASIN: exampleProduct.ASIN,
     product_cost: exampleProduct.product_cost,
     supplier_id: exampleProduct.supplier_id,
     supplier_item_number: exampleProduct.supplier_item_number,
-    // product_name: exampleProduct.product_name,
-    // seller_sku: exampleProduct.seller_sku,
-    // pack_type: exampleProduct.pack_type,
   });
+
+  const [filterText, setFilterText] = useState<string>("");
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [selectedSupplier, setSelectedSupplier] = useState<number | null>(
+    formData.supplier_id || null
+  );
+
+  const filteredSuppliers = suppliers.filter((supplier) =>
+    supplier.supplier_name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilterText(e.target.value);
+    setShowOptions(true);
+  };
+
+  const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+
+  const handleSelectSupplier = (supplier: SupplierType) => {
+    setSelectedSupplier(supplier.id);
+    setFilterText(supplier.supplier_name);
+    setShowOptions(false);
+    onChangeSelect({
+      target: { name: "supplier_id", value: supplier.id },
+    } as unknown as ChangeEvent<HTMLSelectElement>);
+  };
 
   console.log(formData);
 
@@ -65,12 +94,16 @@ const NewTableRow = () => {
   };
 
   const handleCreateProduct = (newProduct: NewProductType) => {
-    const requiredFields = ["supplier_id", 'supplier_item_number', "ASIN", "product_cost"];
+    const requiredFields = [
+      "supplier_id",
+      "supplier_item_number",
+      "ASIN",
+      "product_cost",
+    ];
     console.log(Object.keys(newProduct));
 
-
     for (const field of requiredFields) {
-      if (!(newProduct[field as keyof NewProductType])) {
+      if (!newProduct[field as keyof NewProductType]) {
         alert(`Product ${field} is required`);
         return;
       }
@@ -97,7 +130,7 @@ const NewTableRow = () => {
           <textarea
             name="product_name"
             // type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid flex items-center text-left pt-[.35rem] disabled:border-red-400" 
+            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid flex items-center text-left pt-[.35rem] disabled:border-red-400"
             placeholder="Automated product name"
             disabled
             onChange={handleChangeTextArea}
@@ -134,14 +167,29 @@ const NewTableRow = () => {
           />
         </td>
         <td className="w-[15%] text-xs font-medium text-center">
-          <input
-            type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
-            placeholder="supplier name"
-            name="supplier_id"
-            onChange={handleChange}
-            // defaultValue={formData.supplier_id}
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={filterText}
+              onChange={handleFilterChange}
+              onClick={() => setShowOptions(true)}
+              placeholder="Filter suppliers"
+              className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid"
+            />
+            {showOptions && (
+              <ul className="absolute z-10 w-full bg-[#F8FAFC] dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3] rounded-lg mt-1 max-h-40 overflow-y-auto no-scrollbar">
+                {filteredSuppliers.map((supplier: SupplierType) => (
+                  <li
+                    key={supplier.id}
+                    onClick={() => handleSelectSupplier(supplier)}
+                    className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+                  >
+                    {supplier.supplier_name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </td>
         <td className="w-[10%] text-xs font-medium text-center">
           <input
@@ -162,7 +210,7 @@ const NewTableRow = () => {
             onChange={handleChange}
             // defaultValue={formData.ASIN}
           /> */}
-          {'N/A'}
+          {"N/A"}
         </td>
         <td className="w-[5%] text-xs font-medium text-center">
           {/* <input
@@ -174,7 +222,7 @@ const NewTableRow = () => {
             // defaultValue={formData.ASIN}
           /> */}
 
-          {'N/A'}
+          {"N/A"}
         </td>
         <td className="w-[10%] text-xs font-medium text-center">
           {/* <input
@@ -186,7 +234,7 @@ const NewTableRow = () => {
             // defaultValue={formData.ASIN}
           /> */}
 
-          {'N/A'}
+          {"N/A"}
         </td>
         <td className="w-[10%] text-xs font-medium text-center">
           {/* <input
@@ -198,13 +246,17 @@ const NewTableRow = () => {
             // defaultValue={formData.ASIN}
           /> */}
 
-          {'N/A'}
+          {"N/A"}
         </td>
         <td className="w-[5%] text-xs font-medium text-center flex gap-2">
-          <div className="cursor-pointer"  onClick={() => handleCreateProduct(formData)}>
-            <SaveButton/>
+          <div
+            className="cursor-pointer"
+            onClick={() => handleCreateProduct(formData)}
+          >
+            <SaveButton />
           </div>
-          <div className="cursor-pointer"
+          <div
+            className="cursor-pointer"
             onClick={() => {
               setAddingProduct(false);
               setFormData(exampleProduct);
