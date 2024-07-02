@@ -1,3 +1,5 @@
+import "./EditOrderModal.css";
+import classNames from "classnames";
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Button, Select, Divider } from "antd";
 import { OrderProductType, useOrdersContext } from "@/contexts/orders.context";
@@ -5,7 +7,7 @@ import { useSupplierContext } from "@/contexts/suppliers.context";
 import { ProductType } from "@/types/product.types";
 const { Option } = Select;
 
-const EditOrderModal = () => {
+const EditOrderModal = ({ isDarkMode }: any) => {
   const { isEditModalOpen, closeEditModal, orderToEdit, editOrder } =
     useOrdersContext();
   const { suppliers } = useSupplierContext();
@@ -78,6 +80,7 @@ const EditOrderModal = () => {
           Save
         </Button>,
       ]}
+      className={classNames({ "dark-mode": isDarkMode })}
     >
       <Form
         form={form}

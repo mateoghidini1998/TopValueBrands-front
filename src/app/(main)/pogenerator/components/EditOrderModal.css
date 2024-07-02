@@ -1,0 +1,46 @@
+/* styles.css */
+.dark-mode .ant-modal-content {
+  background-color: #1f1f1f;
+  color: #ffffff;
+}
+
+.dark-mode .ant-modal-header {
+  background-color: #1f1f1f;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.dark-mode .ant-modal-header .ant-modal-title {
+  color: #ffffff;
+}
+
+.dark-mode .ant-form-item-label>label {
+  color: #ffffff;
+}
+
+.dark-mode .ant-input,
+.dark-mode .ant-select-selection-item,
+.dark-mode .ant-input-number {
+  background-color: #333333;
+  color: #ffffff;
+  border-color: #4a4a4a;
+}
+
+.dark-mode .ant-select-selector {
+  background-color: #333333;
+  color: #ffffff;
+  border-color: #4a4a4a;
+}
+
+.ant-select-selector {
+  background: transparent !important;
+}
+
+.dark-mode .ant-divider {
+  background-color: #4a4a4a;
+}
+
+.dark-mode .ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  color: #ffffff;
+}

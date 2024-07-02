@@ -8,6 +8,8 @@ import IndexPageContainer from "../../page.container";
 import EditOrderModal from "../components/EditModalOrder";
 import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
+import useThemeContext from "@/contexts/theme.context";
+import { useEffect } from "react";
 
 const columns: Column[] = [
   { key: "supplier_name", name: "Supplier Name", width: "100px" },
@@ -29,6 +31,8 @@ export default function OrderPage() {
     editOrder,
     openEditModal,
   } = useOrdersContext();
+
+  const { theme } = useThemeContext();
 
   const actionHandlers = {
     add: (data: any) => {
@@ -86,7 +90,7 @@ export default function OrderPage() {
           remove: actionHandlers.remove,
         }}
       />
-      <EditOrderModal />;
+      <EditOrderModal isDarkMode={theme === "light" ? false : true} />;
     </IndexPageContainer>
   );
 }
