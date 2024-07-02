@@ -118,8 +118,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
     const orderPayload = {
       notes: notes,
-      // order_number: `${supplierInitials}#${PO_ID}`, // Puede ser dinámico o generado automáticamente
-      order_number: `PO#1-1-1719429064277`, // Para testear con un order_number que ya existe
+      order_number: `${supplierInitials}#${PO_ID}`, // Puede ser dinámico o generado automáticamente
+      // order_number: `PO#1-1-1719429064277`, // Para testear con un order_number que ya existe
       supplier_id: orderProducts[0].supplier_id, // Asumiendo que todos los productos tienen el mismo supplier_id
       products: transformedProducts,
     };
