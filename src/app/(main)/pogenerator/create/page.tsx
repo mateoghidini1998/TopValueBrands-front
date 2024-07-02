@@ -10,6 +10,11 @@ import { InputOrderAction } from "../components/InputOrderAction";
 import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
 import { OrderSummary } from "../components/OrderSummary";
+import CustomAlert, {
+  CustomAlertOptions,
+} from "@/components/alerts/CustomAlerts";
+import useThemeContext from "@/contexts/theme.context";
+import { useEffect, useState } from "react";
 
 const trackedProductsCol: Column[] = [
   { key: "product_name", name: "Product", width: "300px" },
@@ -45,9 +50,59 @@ export default function Page() {
     updateTrackedProductInOrder,
   } = useTrackedProductContext();
 
+  const { theme } = useThemeContext();
+
+  const [customAlertProperties, setCustomAlertProperties] = useState({
+    show: false,
+    type: CustomAlertOptions.ERROR,
+    message: "",
+    description: "",
+    visible: false,
+  });
+
+  const [showAlert, setShowAlert] = useState(false);
+
+  const showCustomAlert = (
+    alertType: CustomAlertOptions,
+    message: string,
+    description: string,
+    visible: boolean
+  ) => {
+    setCustomAlertProperties({
+      show: true,
+      type: alertType,
+      message,
+      description,
+      visible,
+    });
+  };
+
+  useEffect(() => {
+    console.log(showAlert);
+    if (showAlert) {
+      setTimeout(() => {
+        setShowAlert(false);
+        setCustomAlertProperties({ ...customAlertProperties, show: false });
+      }, 3000);
+    }
+  }, [customAlertProperties, showAlert]);
+
   const actionHandlers = {
     async add(data: any): Promise<void> {
-      addTrackedProductToOrder(data);
+      let newProd = addTrackedProductToOrder(data);
+
+      if (typeof newProd === "string") {
+        console.log(newProd);
+        setShowAlert(true);
+        showCustomAlert(
+          CustomAlertOptions.ERROR,
+          "Error adding the product",
+          newProd,
+          true
+        );
+      } else {
+        setShowAlert(false);
+      }
     },
     async remove(data: any): Promise<void> {
       removeTrackedProductFromOrder(data);
@@ -58,31 +113,44 @@ export default function Page() {
   };
 
   return (
-    <IndexPageContainer>
-      <TableComponent<TrackedProductType>
-        columns={trackedProductsCol}
-        data={trackedProducts}
-        actions={[<></>, <InputOrderAction key={"actions"} />, <></>, <></>]}
-        actionHandlers={{ add: actionHandlers.add }}
-        tableHeigth="300px"
-        actionsWidth="60px"
-      />
-      <div className="w-full h-fit space-y-4">
-        <TableComponent<ProductInOrder>
-          columns={orderProductsCol}
-          data={trackedProductsAddedToOrder}
-          actions={[<></>, <></>, <></>, <DeleteIcon key={"actions"} />]}
-          actionHandlers={{
-            remove: actionHandlers.remove,
-            // edit: actionHandlers.edit,
-          }}
+    <>
+      {showAlert && (
+        <CustomAlert
+          theme={theme}
+          message={customAlertProperties.message}
+          description={customAlertProperties.description}
+          type={customAlertProperties.type}
+          visible={customAlertProperties.visible}
+          closable={true}
+          showIcon={true}
+        />
+      )}
+      <IndexPageContainer>
+        <TableComponent<TrackedProductType>
+          columns={trackedProductsCol}
+          data={trackedProducts}
+          actions={[<></>, <InputOrderAction key={"actions"} />, <></>, <></>]}
+          actionHandlers={{ add: actionHandlers.add }}
           tableHeigth="300px"
           actionsWidth="60px"
-          tableMaxHeight="300px"
         />
+        <div className="w-full h-fit space-y-4">
+          <TableComponent<ProductInOrder>
+            columns={orderProductsCol}
+            data={trackedProductsAddedToOrder}
+            actions={[<></>, <></>, <></>, <DeleteIcon key={"actions"} />]}
+            actionHandlers={{
+              remove: actionHandlers.remove,
+              // edit: actionHandlers.edit,
+            }}
+            tableHeigth="300px"
+            actionsWidth="60px"
+            tableMaxHeight="300px"
+          />
 
-        <OrderSummary orderProducts={trackedProductsAddedToOrder} />
-      </div>
-    </IndexPageContainer>
+          <OrderSummary orderProducts={trackedProductsAddedToOrder} />
+        </div>
+      </IndexPageContainer>
+    </>
   );
 }

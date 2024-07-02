@@ -35,7 +35,7 @@ export type TrackedProductsState = {
   setSupplierId: (supplier_id: string) => void;
   trackedProductsAddedToOrder: any;
   setTrackedProductsAddedToOrder: (data: any) => void;
-  addTrackedProductToOrder: (data: any) => void;
+  addTrackedProductToOrder: (data: any) => any;
   removeTrackedProductFromOrder: (data: any) => void;
   updateTrackedProductInOrder: (data: any) => void;
   handleCreateOrder: (data: any, notes: string) => any;
@@ -170,21 +170,21 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     if (trackedProductsAddedToOrder.length > 0) {
       const supplier_id = trackedProductsAddedToOrder[0]?.supplier_id;
       if (!hasTheSameSupplierId || supplier_id !== data.supplier_id) {
-        alert("Products must be from the same supplier");
-        return;
+        // alert("Products must be from the same supplier");
+        return "Products must be from the same supplier";
       }
     }
 
     // Check that the product is not already in the order
     if (trackedProductsAddedToOrder.some((item: any) => item.id === data.id)) {
-      alert("Product already added to order");
-      return;
+      // alert("Product already added to order");
+      return "Product already added to order";
     }
 
     // Check that the product has a supplier
     if (!data.supplier_id) {
-      alert("Please assign a supplier to the product before");
-      return;
+      // alert("Please assign a supplier to the product before");
+      return "Please assign a supplier to the product before";
     }
 
     // Transform data to the new object structure
@@ -205,6 +205,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       ...prevState,
       newProductInOrder,
     ]);
+
+    return newProductInOrder;
   };
 
   const removeTrackedProductFromOrder = (data: any) => {

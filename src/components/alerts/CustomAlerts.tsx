@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Alert, Space } from "antd";
-import { ConfigProvider } from "antd";
+import { Alert, Space, ConfigProvider } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 
 export enum CustomAlertOptions {
   SUCCESS = "success",
@@ -18,7 +18,7 @@ export enum CustomAlertTheme {
 type CustomAlertProps = {
   message: string;
   description: string;
-  type: CustomAlertOptions;
+  type?: CustomAlertOptions;
   closable: boolean;
   showIcon: boolean;
   visible?: boolean;
@@ -28,18 +28,18 @@ type CustomAlertProps = {
 const CustomAlert = ({
   message,
   description,
-  type,
+  type = CustomAlertOptions.INFO,
   closable,
   showIcon,
   visible = false,
   theme,
 }: CustomAlertProps) => {
   const [isDarkmode, setIsDarkmode] = useState(
-    (theme === CustomAlertTheme.DARK) ? "dark" : "light"
+    theme === CustomAlertTheme.DARK ? "dark" : "light"
   );
 
   useEffect(() => {
-    setIsDarkmode((theme === CustomAlertTheme.DARK) ? "dark" : "light");
+    setIsDarkmode(theme === CustomAlertTheme.DARK ? "dark" : "light");
   }, [theme]);
 
   return (
@@ -85,6 +85,11 @@ const CustomAlert = ({
           description={description}
           type={type}
           showIcon={showIcon}
+          closeIcon={
+            <CloseOutlined
+              style={{ color: `${isDarkmode === "dark" ? "#fff" : "#000"}` }}
+            />
+          }
         />
       </Space>
     </ConfigProvider>
