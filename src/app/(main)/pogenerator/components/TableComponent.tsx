@@ -169,10 +169,6 @@ export const TableComponent = <T,>({
                         style={{ width: column.width }}
                       >
                         <div className="rounded-full flex items-center justify-between">
-                          {/* <div
-                            className={`w-3 h-3 rounded-full ${cellValue === "Approved" ? "bg-green-500" : cellValue === "Rejected" ? "bg-red-500" : "bg-yellow-500"}`}
-                          ></div>
-                          <p className="w-[70%] text-left">{cellValue}</p> */}
                           <OrderTags status={cellValue} />
                         </div>
                       </td>

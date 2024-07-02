@@ -30,7 +30,9 @@ export const OrderTags = ({ status }: OrderTagsProps) => {
   const textColorClass = colorClasses[1];
 
   return (
-    <div className={`w-fit px-2 py-2 bg-opacity-10 rounded  ${bgColorClass}`}>
+    <div
+      className={`w-fit mx-auto px-2 py-2 bg-opacity-10 rounded  ${bgColorClass}`}
+    >
       <p className={`font-bold bg-transparent ${textColorClass}`}>{status}</p>
     </div>
   );

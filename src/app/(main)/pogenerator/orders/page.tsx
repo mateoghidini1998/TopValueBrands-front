@@ -9,6 +9,7 @@ import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
 import EditOrderModal from "../components/EditModalOrder";
 import { EditButton } from "@/components/svgs/EditButton";
+import { Tooltip } from "@/components/inventory/Tooltip";
 
 const columns: Column[] = [
   { key: "supplier_name", name: "Supplier Name", width: "100px" },
@@ -67,25 +68,27 @@ export default function OrderPage() {
         columns={columns}
         data={orders || []}
         actions={[
-          <div key={"actions"}>
-            <EditButton key={"actions"} color="#fff" />
-          </div>,
-          <ConfirmButton key={"actions"} />,
-          <div
-            key={"actions"}
-            className="flex items-center gap-2 justify-between bg-[#393E4F] py-1 px-2 rounded-lg"
-          >
-            Download PDF
-            <DownloadIcon />
-          </div>,
-          <CancelButton key={"actions"} />,
+          <></>,
+          <></>,
+          // <div key={"actions"}>
+          //   <EditButton key={"actions"} color="#fff" />
+          // </div>,
+          // <ConfirmButton key={"actions"} />,
+          // <div
+          //   key={"actions"}
+          //   className="flex items-center gap-2 justify-between bg-[#393E4F] py-1 px-2 rounded-lg"
+          // >
+          //   Download PDF
+          //   <DownloadIcon />
+          // </div>,
+          // <CancelButton key={"actions"} />,
         ]}
-        actionHandlers={{
-          edit: actionHandlers.edit,
-          add: actionHandlers.add,
-          download: actionHandlers.download,
-          remove: actionHandlers.remove,
-        }}
+        // actionHandlers={{
+        //   edit: actionHandlers.edit,
+        //   add: actionHandlers.add,
+        //   download: actionHandlers.download,
+        //   remove: actionHandlers.remove,
+        // }}
       />
       <EditOrderModal />
     </IndexPageContainer>
