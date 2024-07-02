@@ -6,6 +6,7 @@ import {
 } from "@/contexts/trackedProducts.context";
 import { ChangeEvent } from "react";
 import { TableComponentProps } from "../interfaces/ITableComponent";
+import { OrderTags } from "@/components/ui/OrderTags";
 
 type ActionType = "add" | "remove" | "edit" | "download";
 
@@ -168,16 +169,17 @@ export const TableComponent = <T,>({
                         style={{ width: column.width }}
                       >
                         <div className="rounded-full flex items-center justify-between">
-                          <div
+                          {/* <div
                             className={`w-3 h-3 rounded-full ${cellValue === "Approved" ? "bg-green-500" : cellValue === "Rejected" ? "bg-red-500" : "bg-yellow-500"}`}
                           ></div>
-                          <p className="w-[70%] text-left">{cellValue}</p>
+                          <p className="w-[70%] text-left">{cellValue}</p> */}
+                          <OrderTags status={cellValue} />
                         </div>
                       </td>
                     ) : column.key === "notes" ? (
                       <td
                         onClick={() => {
-                          alert( cellValue );
+                          alert(cellValue);
                         }}
                         key={column.key}
                         className="py-2 px-4 text-center text-nowrap overflow-hidden cursor-pointer"
