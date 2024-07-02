@@ -82,7 +82,7 @@ export const TableComponent = <T,>({
               return (
                 <tr
                   key={rowIndex}
-                  className="text-white h-[60px] bg-dark text-xs font-medium flex items-center justify-between border-b border-[#393E4F]"
+                  className="dark:text-white h-[60px] dark:bg-dark text-xs font-medium flex items-center justify-between border-b  dark:border-[#393E4F] text-light"
                 >
                   {columns.map((column) => {
                     const cellValue = (row as any)[column.key];

@@ -71,12 +71,15 @@ export default function OrderPage() {
         data={orders || []}
         actions={[
           <div key={"actions"}>
-            <EditButton key={"actions"} color="#fff" />
+            <EditButton
+              key={"actions"}
+              color={!(theme === "light") ? "#fff" : "#000"}
+            />
           </div>,
           <ConfirmButton key={"actions"} />,
           <div
             key={"actions"}
-            className="flex items-center gap-2 justify-between bg-[#393E4F] py-1 px-2 rounded-lg"
+            className="flex items-center border-solid border-[1px] border-light gap-2 justify-between dark:bg-[#393E4F] dark:text-white py-1 px-2 rounded-lg"
           >
             Download PDF
             <DownloadIcon />

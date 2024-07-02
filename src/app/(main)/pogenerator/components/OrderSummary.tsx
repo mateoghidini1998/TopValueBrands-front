@@ -81,10 +81,6 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
     setNotes(event.target.value);
   };
 
-  // useEffect(() => {
-  //   console.log("should render the order summary");
-  // }, [setTrackedProductsAddedToOrder]);
-
   return (
     <>
       <CustomAlert
@@ -122,7 +118,7 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
               <p>Notes</p>
               <textarea
                 onChange={(e) => handleNotesChange(e)}
-                className="bg-dark w-full h-[100px] border-solid border-[1px] rounded-lg border-gray-300 p-4 dark:text-white"
+                className="dark:bg-dark w-full h-[100px] border-solid border-[1px] rounded-lg border-gray-300 p-4 dark:text-white"
                 placeholder="Order Notes"
               />
             </div>

@@ -1,7 +1,8 @@
 type Props = {
   color: string;
 };
-export const EditButton = ({color}: Props) => {
+
+export const EditButton = ({ color }: Props) => {
   return (
     <svg
       width="14"
