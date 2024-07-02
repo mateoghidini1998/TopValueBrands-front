@@ -4,7 +4,6 @@ import { EditButton } from "../svgs/EditButton";
 import { DeleteButton } from "../svgs/DeleteButton";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import useThemeContext from "@/contexts/theme.context";
-import { set } from "react-hook-form";
 
 type RowActionsProps = {
   onEdit: () => void;
