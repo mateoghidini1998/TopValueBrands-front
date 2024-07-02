@@ -107,20 +107,19 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     }));
     // Generar un ID de pedido unico con el timestamp de 6 dígitos
     const PO_ID = new Date().getTime().toString().slice(-6);
-    
+
     const supplier_name = orderProducts[0].supplier_name;
     // Obtener las iniciales del suppliername
     const supplierInitials = supplier_name
       .split(" ")
-      .map((word:string) => word.charAt(0))
+      .map((word: string) => word.charAt(0))
       .join("")
       .toUpperCase();
 
-
     const orderPayload = {
       notes: notes,
-      order_number: `${supplierInitials}#${PO_ID}`, // Puede ser dinámico o generado automáticamente
-      // order_number: `PO#1-1-1719429064277`, // Para testear con un order_number que ya existe
+      // order_number: `${supplierInitials}#${PO_ID}`, // Puede ser dinámico o generado automáticamente
+      order_number: `PO#1-1-1719429064277`, // Para testear con un order_number que ya existe
       supplier_id: orderProducts[0].supplier_id, // Asumiendo que todos los productos tienen el mismo supplier_id
       products: transformedProducts,
     };
@@ -144,8 +143,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       }
 
       const responseData = await response.json();
+      // console.log("Order created successfully:", responseData);
       return responseData;
-      console.log("Order created successfully:", responseData);
 
       // Aquí puedes manejar la respuesta, mostrar un mensaje de éxito, etc.
     } catch (error) {

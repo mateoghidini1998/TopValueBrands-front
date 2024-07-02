@@ -62,7 +62,7 @@ export default function Page() {
       <TableComponent<TrackedProductType>
         columns={trackedProductsCol}
         data={trackedProducts}
-        actions={[<></>,<InputOrderAction key={"actions"} /> ,<></> , <></>]}
+        actions={[<></>, <InputOrderAction key={"actions"} />, <></>, <></>]}
         actionHandlers={{ add: actionHandlers.add }}
         tableHeigth="300px"
         actionsWidth="60px"
@@ -71,13 +71,7 @@ export default function Page() {
         <TableComponent<ProductInOrder>
           columns={orderProductsCol}
           data={trackedProductsAddedToOrder}
-          actions={
-            [
-              <></>,
-              <></>,
-              <></>,
-              <DeleteIcon key={"actions"} />,
-              ]}
+          actions={[<></>, <></>, <></>, <DeleteIcon key={"actions"} />]}
           actionHandlers={{
             remove: actionHandlers.remove,
             // edit: actionHandlers.edit,
@@ -86,9 +80,8 @@ export default function Page() {
           actionsWidth="60px"
           tableMaxHeight="300px"
         />
-        {trackedProductsAddedToOrder.length > 0 && (
-          <OrderSummary orderProducts={trackedProductsAddedToOrder} />
-        )}
+
+        <OrderSummary orderProducts={trackedProductsAddedToOrder} />
       </div>
     </IndexPageContainer>
   );
