@@ -81,8 +81,6 @@ const NewTableRow = () => {
     } as unknown as ChangeEvent<HTMLSelectElement>);
   };
 
-  console.log(formData);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -123,14 +121,14 @@ const NewTableRow = () => {
           true ? "mt-[60px]" : ""
         } m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center min-h-[80px] h-fit ${
           sidebarOpen ? "w-full" : "w-full"
-        }  text-light bg-dark  border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
+        }  text-light bg-white dark:bg-dark  border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
       >
         {/* <ProductNameTableData product={product} width={"25%"} /> */}
         <td className="w-[25%] text-xs font-medium text-center">
           <textarea
             name="product_name"
             // type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid flex items-center text-left pt-[.35rem] disabled:border-red-400"
+            className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid flex items-center text-left pt-[.35rem] disabled:border-red-400"
             placeholder="Automated product name"
             disabled
             onChange={handleChangeTextArea}
@@ -141,7 +139,7 @@ const NewTableRow = () => {
           <input
             name="ASIN"
             type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="ASIN"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
@@ -150,7 +148,7 @@ const NewTableRow = () => {
         <td className="w-[10%] text-xs font-medium text-center">
           <input
             type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="seller sku"
             name="seller_sku"
             onChange={handleChange}
@@ -159,7 +157,7 @@ const NewTableRow = () => {
         <td className="w-[5%] text-xs font-medium text-center">
           <input
             type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="0"
             name="product_cost"
             onChange={handleChange}
@@ -174,7 +172,7 @@ const NewTableRow = () => {
               onChange={handleFilterChange}
               onClick={() => setShowOptions(true)}
               placeholder="Filter suppliers"
-              className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid"
+              className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid"
             />
             {showOptions && (
               <ul className="absolute z-10 w-full bg-[#F8FAFC] dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3] rounded-lg mt-1 max-h-40 overflow-y-auto no-scrollbar">
@@ -194,7 +192,7 @@ const NewTableRow = () => {
         <td className="w-[10%] text-xs font-medium text-center">
           <input
             type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            className="w-[90%] mx-auto h-[30px] text-xs dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="0"
             onChange={handleChange}
             name="supplier_item_number"
@@ -204,7 +202,7 @@ const NewTableRow = () => {
         <td className="w-[10%] text-xs font-medium text-center">
           {/* <input
             type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="pack type"
             name="pack_type"
             onChange={handleChange}
@@ -215,7 +213,7 @@ const NewTableRow = () => {
         <td className="w-[5%] text-xs font-medium text-center">
           {/* <input
             type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="0"
             name="FBA_available_inventory"
             onChange={handleChange}
@@ -227,7 +225,7 @@ const NewTableRow = () => {
         <td className="w-[10%] text-xs font-medium text-center">
           {/* <input
             type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="0"
             name="reserved_quantity"
             onChange={handleChange}
@@ -239,7 +237,7 @@ const NewTableRow = () => {
         <td className="w-[10%] text-xs font-medium text-center">
           {/* <input
             type="text"
-            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 text-white border-light border-solid  "
+            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="0"
             name="Inbound_to_FBA"
             onChange={handleChange}
