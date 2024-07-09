@@ -12,11 +12,11 @@ export default async function middleware(req: NextRequest) {
 
   if (!verify && isProtectedRoute) {
     return NextResponse.redirect(
-      "https://topvaluesbrand.azurewebsites.net/login"
+      "https://top-value-brands-front.vercel.app/login"
     );
   }
 
   if (verify && isPublicRoute) {
-    return NextResponse.redirect("https://topvaluesbrand.azurewebsites.net/");
+    return NextResponse.redirect("https://top-value-brands-front.vercel.app/");
   }
 }
