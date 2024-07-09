@@ -1,5 +1,5 @@
-'use client';
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
 
 interface TypewriterTextProps {
   text: string;
@@ -7,11 +7,11 @@ interface TypewriterTextProps {
 }
 
 const TypewriterText: React.FC<TypewriterTextProps> = ({ text, className }) => {
-  const [displayedText, setDisplayedText] = useState('');
+  const [displayedText, setDisplayedText] = useState("");
 
   // Función para actualizar el texto mostrado
   const updateText = (index: number) => {
-    setDisplayedText((prev) => prev + (text[index] || ''));
+    setDisplayedText((prev) => prev + (text[index] || ""));
   };
 
   // Función para inicializar el intervalo de la animación
@@ -29,15 +29,14 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({ text, className }) => {
   };
 
   useEffect(() => {
-    setDisplayedText(''); // Resetea el texto mostrado al cambiar el texto de entrada
+    setDisplayedText(""); // Resetea el texto mostrado al cambiar el texto de entrada
     const interval = startTypewriterEffect();
 
     return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente o cambiar el texto
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text]);
 
-  return (
-    <h1 className={className}>{displayedText}</h1>
-  );
+  return <h1 className={className}>{displayedText}</h1>;
 };
 
 export default TypewriterText;
