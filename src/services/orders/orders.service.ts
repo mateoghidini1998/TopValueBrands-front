@@ -6,7 +6,7 @@ export class PurchaseOrdersService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/trackedproducts?supplier_id=${supplier_id}`,
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/trackedproducts?supplier_id=${supplier_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -24,7 +24,7 @@ export class PurchaseOrdersService {
     try {
       // const token = getAuthToken();
       const response = await HttpAPI.patch(
-        `http://localhost:5000/api/v1/purchaseorders/reject/${orderId}`,
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders/reject/${orderId}`
         // { status }
         // { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -38,7 +38,7 @@ export class PurchaseOrdersService {
     try {
       // const token = getAuthToken();
       const response = await HttpAPI.patch(
-        `http://localhost:5000/api/v1/purchaseorders/approve/${orderId}`,
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders/approve/${orderId}`
         // { status }
         // { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -51,11 +51,14 @@ export class PurchaseOrdersService {
   static async downloadOrder(orderId: number) {
     try {
       const token = getAuthToken();
-      const response = await fetch(`http://localhost:5000/api/v1/purchaseorders/download/${orderId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders/download/${orderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Error fetching data");
@@ -63,7 +66,7 @@ export class PurchaseOrdersService {
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = `purchase-order-${orderId}.pdf`;
       document.body.appendChild(a);
@@ -74,17 +77,20 @@ export class PurchaseOrdersService {
       throw new Error("Error fetching data");
     }
   }
-  
+
   static async editOrder(orderId: number, orderData: any) {
     const token = getAuthToken();
-    const response = await fetch(`http://localhost:5000/api/v1/purchaseorders/${orderId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(orderData),
-    });
+    const response = await fetch(
+      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders/${orderId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(orderData),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Error updating order");
@@ -92,6 +98,4 @@ export class PurchaseOrdersService {
 
     return await response.json();
   }
-
-
 }

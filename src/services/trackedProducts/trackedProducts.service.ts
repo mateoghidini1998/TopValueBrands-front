@@ -2,13 +2,11 @@ import { getAuthToken } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
 
 export class TrackedProductsService {
-  
-
   static async getTrackedProducts(supplier_id?: string) {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/trackedproducts?supplier_id=${supplier_id}`,
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/trackedproducts?supplier_id=${supplier_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
