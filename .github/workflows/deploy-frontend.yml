@@ -2,7 +2,7 @@ name: Deploy Frontend to Azure App Service
 
 on:
   push:
-    branches: [feature/TVB_23]
+    branches: [feature/TVB_24]
   # pull_request:
   #   branches: [main]
 
