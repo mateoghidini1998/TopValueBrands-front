@@ -3,8 +3,6 @@ name: Deploy Frontend to Azure App Service
 on:
   push:
     branches: [feature/TVB_24]
-  # pull_request:
-  #   branches: [main]
 
 jobs:
   build-and-deploy:
@@ -22,8 +20,14 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Verify Dependencies
+        run: ls -la node_modules/.bin
+
       - name: Build Project
         run: npm run build
+
+      - name: Verify Build Output
+        run: ls -la .next
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
