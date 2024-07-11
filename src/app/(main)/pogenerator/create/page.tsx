@@ -78,7 +78,7 @@ export default function Page() {
   };
 
   useEffect(() => {
-    console.log(showAlert);
+    // console.log(showAlert);
     if (showAlert) {
       setTimeout(() => {
         setShowAlert(false);

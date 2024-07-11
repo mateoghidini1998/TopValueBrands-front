@@ -1,13 +1,5 @@
-'use client';
-// import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
-
-// type InputOrderActionProps = {
-//   setTrackedProductsAddedToOrder: any;
-// };
+import AddButton from "@/components/svgs/AddButton";
 
 export const InputOrderAction = () => {
-
-  return (
-    <span>+</span>
-  ); 
-}
+  return <AddButton />;
+};
