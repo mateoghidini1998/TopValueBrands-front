@@ -6,14 +6,11 @@ export class UsersService {
   static async getUsers() {
     try {
       const token = getAuthToken();
-      const response = await HttpAPI.get(
-        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await HttpAPI.get(`http://localhost:5000/api/v1/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response;
     } catch (error) {
       throw new Error("Error fetching data");
@@ -26,7 +23,7 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.post(
-      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/auth/register`,
+      `http://localhost:5000/api/v1/auth/register`,
       data,
       token
     );
@@ -43,7 +40,7 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.delete(
-      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users/${id}`,
+      `http://localhost:5000/api/v1/users/${id}`,
       token
     );
     return response;
@@ -58,7 +55,7 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.patch(
-      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users/update/${id}`,
+      `http://localhost:5000/api/v1/users/update/${id}`,
       data,
       token
     );
