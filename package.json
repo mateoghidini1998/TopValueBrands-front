@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@vercel/kv": "^2.0.0",
     "antd": "^5.17.3",
+    "dotenv": "^16.4.5",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
