@@ -11,10 +11,10 @@ export default async function middleware(req: NextRequest) {
   const isPublicRoute = publicRoutes.includes(path);
 
   if (!verify && isProtectedRoute) {
-    return NextResponse.redirect("http://localhost:3000/login");
+    return NextResponse.redirect("https://top-value-brands-front.vercel.app/login");
   }
 
   if (verify && isPublicRoute) {
-    return NextResponse.redirect("http://localhost:3000/");
+    return NextResponse.redirect("https://top-value-brands-front.vercel.app/");
   }
 }
