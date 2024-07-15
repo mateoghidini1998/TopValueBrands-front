@@ -10,7 +10,7 @@ export class InventoryService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}`,
+        `http://localhost:5000/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -28,7 +28,7 @@ export class InventoryService {
       const token = getAuthToken();
       if (token) {
         const response = await HttpAPI.post(
-          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products/add`,
+          `http://localhost:5000/api/v1/products/add`,
           data,
           token
         );
@@ -46,7 +46,7 @@ export class InventoryService {
       const token = getAuthToken();
       if (token) {
         const response = await HttpAPI.patch(
-          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products/disable`,
+          `http://localhost:5000/api/v1/products/disable`,
           { id: id },
           token
         );
@@ -68,7 +68,7 @@ export class InventoryService {
           throw new Error("id is required");
         }
         const response = await HttpAPI.patch(
-          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products/addExtraInfoToProduct`,
+          `http://localhost:5000/api/v1/products/addExtraInfoToProduct`,
           data,
           token
         );
