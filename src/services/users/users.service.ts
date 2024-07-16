@@ -1,16 +1,10 @@
 import { getAuthToken } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
 import { UserType } from "@/types/user.types";
-import kv from '../../utils/kvClient'
 
 export class UsersService {
   static async getUsers() {
     try {
-      const cachedUsers = await kv.get('users') as any;
-      if (cachedUsers) {
-        return JSON.parse(Buffer.from(cachedUsers, 'base64').toString('utf-8'));
-      }
-
       const token = getAuthToken();
       const response = await HttpAPI.get(`https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users`, {
         headers: {
@@ -18,7 +12,7 @@ export class UsersService {
         },
       });
 
-      await kv.set('users', JSON.stringify(response.data), { ex: 3600 }); // Cache for 1 hour
+
       return response.data;
     } catch (error) {
       throw new Error("Error fetching data");
@@ -34,8 +28,6 @@ export class UsersService {
       data,
       token
     );
-
-    await kv.del('users'); 
     return response;
   }
 
@@ -53,7 +45,7 @@ export class UsersService {
       token
     );
 
-    await kv.del('users'); // Invalidate cache
+    
     return response;
   }
 
@@ -72,7 +64,7 @@ export class UsersService {
       token
     );
 
-    await kv.del('users'); // Invalidate cache
+    
     return response;
   }
 }
