@@ -1,7 +1,7 @@
 import { createClient } from '@vercel/kv';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: './.env' });
+dotenv.config({ path: './.env.development.local' });
 
 const kvUrl = process.env.KV_URL;
 const kvToken = process.env.KV_REST_API_TOKEN;
