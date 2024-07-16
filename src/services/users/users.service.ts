@@ -6,37 +6,30 @@ import kv from '../../utils/kvClient'
 export class UsersService {
   static async getUsers() {
     try {
-      const cachedUsers = await kv.get('users') as any;
+      let users: UserType[] = [];
+      
+      const cachedUsers = await kv.get('users') as string;
       if (cachedUsers) {
-        return JSON.parse(cachedUsers);
+        // Decodificamos la cadena Base64 y parseamos a un objeto JavaScript
+        const decodedUsers = Buffer.from(cachedUsers, 'base64').toString('utf8');
+        users = JSON.parse(decodedUsers);
+      } else {
+        const token = getAuthToken();
+        const response = await HttpAPI.get(`https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Guardamos los usuarios en Upstash KV después de decodificar y parsear
+        await kv.set('users', JSON.stringify(response.data), { ex: 3600 }); // Cache for 1 hour
+        users = response.data;
       }
-
-      const token = getAuthToken();
-      const response = await HttpAPI.get(`https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      await kv.set('users', JSON.stringify(response.data), { ex: 3600 }); // Cache for 1 hour
-      return response.data;
+      
+      return users;
     } catch (error) {
       throw new Error("Error fetching data");
     }
-  }
-
-  static async addUser(data: UserType) {
-    const token = getAuthToken();
-    if (!token) throw new Error("Token not found");
-
-    const response = await HttpAPI.post(
-      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/auth/register`,
-      data,
-      token
-    );
-
-    await kv.del('users'); 
-    return response;
   }
 
   static async deleteUser(email: string) {
