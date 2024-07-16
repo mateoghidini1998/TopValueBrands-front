@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: './.env.development.local' });
 
-const kvUrl = process.env.KV_URL;
+const kvUrl = process.env.KV_REST_API_URL;
 const kvToken = process.env.KV_REST_API_TOKEN;
 
 if (!kvUrl || !kvToken) {
