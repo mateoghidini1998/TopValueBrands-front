@@ -8,7 +8,7 @@ export class UsersService {
     try {
       const cachedUsers = await kv.get('users') as any;
       if (cachedUsers) {
-        return JSON.parse(cachedUsers);
+        return JSON.parse(Buffer.from(cachedUsers, 'base64').toString('utf-8'));
       }
 
       const token = getAuthToken();
