@@ -503,9 +503,9 @@ const TableRow = ({ products }: TableRowProps) => {
                 )}
               </td>
               <td className="w-[5%] text-xs font-medium text-center">
-                {/* {product?.FBA_available_inventory} */}
+                {product?.FBA_available_inventory}
 
-                {editingRow[product?.id] ? (
+                {/* {editingRow[product?.id] ? (
                   <input
                     name="FBA_available_inventory"
                     type="text"
@@ -515,12 +515,12 @@ const TableRow = ({ products }: TableRowProps) => {
                   />
                 ) : (
                   product?.FBA_available_inventory
-                )}
+                )} */}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {/* {product?.reserved_quantity} */}
+                {product?.reserved_quantity}
 
-                {editingRow[product?.id] ? (
+                {/* {editingRow[product?.id] ? (
                   <input
                     name="reserved_quantity"
                     type="text"
@@ -530,12 +530,12 @@ const TableRow = ({ products }: TableRowProps) => {
                   />
                 ) : (
                   product?.reserved_quantity
-                )}
+                )} */}
               </td>
               <td className="w-[10%] text-xs font-medium text-center">
-                {/* {product?.Inbound_to_FBA} */}
+                {product?.Inbound_to_FBA}
 
-                {editingRow[product?.id] ? (
+                {/* {editingRow[product?.id] ? (
                   <input
                     name="Inbound_to_FBA"
                     type="text"
@@ -545,7 +545,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   />
                 ) : (
                   product?.Inbound_to_FBA
-                )}
+                )} */}
               </td>
               <td className="w-[5%] text-xs font-medium text-right relative">
                 {!editingRow[product?.id] ? (
