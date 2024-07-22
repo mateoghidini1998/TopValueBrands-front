@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
 // import { data } from "../../data/index";
 import IndexPageContainer from "../page.container";
@@ -15,21 +15,23 @@ const columns: Column[] = [
   { key: "ninety_days_rank", name: "90 Day Rank", width: "150px" },
   { key: "units_sold", name: "Units Sold", width: "150px" },
   { key: "product_velocity", name: "Velocity", width: "150px" },
-  { key: "lowest_fba_price", name: "Lowest FBA Price ", width: "150px" },
+  { key: "lowest_fba_price", name: "FBA Price ", width: "150px" },
   { key: "fees", name: "Fees", width: "150px" },
   { key: "product_cost", name: "Product Cost", width: "150px" },
   { key: "profit", name: "Profit", width: "150px" },
 ];
 
 export default function POGeneratorPage() {
-
   const { trackedProducts } = useTrackedProductContext();
 
   // console.log(trackedProducts);
 
   return (
     <IndexPageContainer>
-      <TableComponent<TrackedProductType> columns={columns} data={trackedProducts} />
+      <TableComponent<TrackedProductType>
+        columns={columns}
+        data={trackedProducts}
+      />
     </IndexPageContainer>
   );
 }

@@ -18,17 +18,22 @@ import { useEffect, useState } from "react";
 
 const trackedProductsCol: Column[] = [
   { key: "product_name", name: "Product", width: "300px" },
-  { key: "ASIN", name: "ASIN", width: "150px" },
-  { key: "seller_sku", name: "Amazon SKU", width: "150px" },
   { key: "supplier_name", name: "Supplier Name", width: "150px" },
-  { key: "thirty_days_rank", name: "30 Day Rank", width: "150px" },
-  { key: "ninety_days_rank", name: "90 Day Rank", width: "150px" },
-  { key: "units_sold", name: "Units Sold", width: "150px" },
-  { key: "product_velocity", name: "Velocity", width: "150px" },
-  { key: "lowest_fba_price", name: "Lowest FBA Price ", width: "150px" },
-  { key: "fees", name: "Fees", width: "150px" },
-  { key: "product_cost", name: "Product Cost", width: "150px" },
-  { key: "profit", name: "Profit", width: "150px" },
+  { key: "product_velocity", name: "Velocity", width: "75px" },
+  { key: "units_sold", name: "Units Sold", width: "75px" },
+  { key: "thirty_days_rank", name: "30 Day Rank", width: "75px" },
+  { key: "ninety_days_rank", name: "90 Day Rank", width: "75px" },
+  { key: "ASIN", name: "ASIN", width: "130px" },
+  // supplier_item_number
+  { key: "seller_sku", name: "Amazon SKU", width: "130px" },
+  { key: "product_cost", name: "Product Cost", width: "75px" },
+  { key: "lowest_fba_price", name: "FBA Price ", width: "75px" },
+  { key: "profit", name: "Profit", width: "75px" },
+  { key: "fees", name: "Fees", width: "75px" },
+  // roi
+  // warehouse stock
+  // fba stock
+  // inbound stock
 ];
 
 const orderProductsCol: Column[] = [

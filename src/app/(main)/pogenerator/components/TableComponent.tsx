@@ -4,7 +4,7 @@ import {
   ProductInOrder,
   useTrackedProductContext,
 } from "@/contexts/trackedProducts.context";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { TableComponentProps } from "../interfaces/ITableComponent";
 import { OrderTags } from "@/components/ui/OrderTags";
 
@@ -82,7 +82,13 @@ export const TableComponent = <T,>({
               return (
                 <tr
                   key={rowIndex}
-                  className="dark:text-white h-[60px] dark:bg-dark text-xs font-medium flex items-center justify-between border-b  dark:border-[#393E4F] text-light"
+                  className={`dark:text-white h-[60px] dark:bg-dark text-xs font-medium flex items-center justify-between border-b  dark:border-[#393E4F] text-light ${
+                    row.profit > 2
+                      ? "bg-green-100 dark:bg-green-500"
+                      : row.profit < -2
+                        ? "bg-red-100 dark:bg-red-700"
+                        : "bg-white dark:bg-dark-3"
+                  } `}
                 >
                   {columns.map((column) => {
                     const cellValue = (row as any)[column.key];
@@ -90,7 +96,7 @@ export const TableComponent = <T,>({
                       <td
                         width={column.width}
                         key={column.key}
-                        className="py-2 px-4 text-right"
+                        className={`py-2 px-4 text-right`}
                       >
                         {actions && actionHandlers && (
                           <div className="flex items-center justify-end gap-2">
@@ -160,7 +166,7 @@ export const TableComponent = <T,>({
                         className="py-2 px-4 text-center"
                         style={{ width: column.width }}
                       >
-                        {row.quantity * row.unit_price}
+                        {`$ ${row.quantity * row.unit_price}`}
                       </td>
                     ) : column.key === "status" ? (
                       <td
@@ -193,6 +199,25 @@ export const TableComponent = <T,>({
                         {typeof cellValue === "number"
                           ? cellValue.toLocaleString()
                           : cellValue}
+                      </td>
+                    ) : column.key === "lowest_fba_price" ||
+                      column.key === "fees" ||
+                      column.key === "product_cost" ||
+                      column.key === "profit" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center"
+                        style={{ width: column.width }}
+                      >
+                        {`$${cellValue}`}
+                      </td>
+                    ) : column.key === "product_velocity" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center"
+                        style={{ width: column.width }}
+                      >
+                        {`${cellValue.toFixed(2)}`}
                       </td>
                     ) : (
                       <td
