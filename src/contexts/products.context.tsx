@@ -12,6 +12,7 @@ import { ProductType } from "@/types/product.types";
 import { InventoryService } from "@/services/inventory/inventory";
 import { EditProductType } from "@/components/inventory/TableRow";
 import { NewProductType } from "@/components/inventory/NewTableRow";
+import { usePathname, useRouter } from "next/navigation";
 
 export type ProductState = {
   addingProduct: boolean;
@@ -53,6 +54,9 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [keyword, setKeyword] = useState("");
+
+  const route = usePathname();
+
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
@@ -61,6 +65,12 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   useEffect(() => {
     getProducts(currentPage, limit, keyword);
   }, [currentPage, limit, keyword]);
+
+  useEffect(() => {
+    if (!(route === "/")) {
+      setKeyword("");
+    }
+  }, [route]);
 
   const getProducts = async (page: number, limit: number, keyword?: string) => {
     try {

@@ -336,12 +336,10 @@ const TableRow = ({ products }: TableRowProps) => {
           products.map((product: any, i) => (
             <tr
               key={product?.id}
-              className={`${
-                i == 0 ? "mt-[60px]" : ""
-              } m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-fit ${
-                sidebarOpen ? "w-full" : "w-full"
-              }  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]
-              ${!product?.in_seller_account ? "bg-gray-500" : ""}
+              className={`${i == 0 ? "mt-[60px]" : ""} 
+                m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-fit ${sidebarOpen ? "w-full" : "w-full"}
+                 text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]
+              ${!product?.in_seller_account ? "bg-[#393e4f]" : ""}
                 `}
             >
               {/* Product Image and Product Name */}
