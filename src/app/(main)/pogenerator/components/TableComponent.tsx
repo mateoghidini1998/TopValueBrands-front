@@ -183,6 +183,17 @@ export const TableComponent = <T,>({
                       >
                         {cellValue}
                       </td>
+                    ) : column.key === "ninety_days_rank" ||
+                      column.key === "thirty_days_rank" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center"
+                        style={{ width: column.width }}
+                      >
+                        {typeof cellValue === "number"
+                          ? cellValue.toLocaleString()
+                          : cellValue}
+                      </td>
                     ) : (
                       <td
                         key={column.key}
