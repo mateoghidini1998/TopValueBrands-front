@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import IndexPageContainer from "./page.container";
 import AddProductBtn from "@/components/inventory/AddProductBtn";
+import FilterBySupplier from "@/components/inventory/FilterBySupplier";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,8 +33,9 @@ export default function RootLayout({
                 <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark transition-colors duration-[0.6s] ease-in-out h-[115px]">
                   <PageTitle />
                   <div className="flex items-center gap-4">
-                    <AddProductBtn/>
+                    <AddProductBtn />
                     <SearchInput />
+                    <FilterBySupplier />
                     <UserMenu />
                   </div>
                 </div>
