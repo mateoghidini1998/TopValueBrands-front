@@ -22,6 +22,8 @@ export type ProductState = {
   totalPages: number;
   keyword: string;
   supplier: any;
+  orderBy: string;
+  handleSetOrderBy: (order: string, orderWay: string) => void;
   handleSetSupplier: (supplier: any) => void;
   handleSetKeyword: (keyword: string) => void;
   updateProduct: (updatedProduct: ProductType) => void;
@@ -40,6 +42,8 @@ export const ProductContext = createContext<ProductState>({
   totalPages: 0,
   keyword: "",
   supplier: null,
+  orderBy: "",
+  handleSetOrderBy: () => {},
   handleSetSupplier: () => {},
   handleSetKeyword: () => {},
   updateProduct: () => {},
@@ -59,8 +63,11 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [keyword, setKeyword] = useState("");
   const [supplier, setSupplier] = useState("");
+  const [orderBy, setOrderBy] = useState("");
+  const [orderWay, setOrderWay] = useState("");
 
   const route = usePathname();
+  console.log(orderBy);
 
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
@@ -68,8 +75,8 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   const limit = 50;
 
   useEffect(() => {
-    getProducts(currentPage, limit, keyword);
-  }, [currentPage, limit, keyword]);
+    getProducts(currentPage, limit, keyword, supplier, orderBy, orderWay);
+  }, [currentPage, limit, keyword, supplier, orderBy, orderWay]);
 
   useEffect(() => {
     if (!(route === "/")) {
@@ -81,14 +88,18 @@ export const ProductProvider: FC<PropsWithChildren> = ({
     page: number,
     limit: number,
     keyword?: string,
-    supplier?: any
+    supplier?: any,
+    order?: string,
+    orderWay?: string
   ) => {
     try {
       const response = await InventoryService.getProducts(
         page,
         limit,
         keyword,
-        supplier
+        supplier,
+        order,
+        orderWay
       );
       setProducts(response.data);
       setTotalPages(response.pages);
@@ -118,14 +129,20 @@ export const ProductProvider: FC<PropsWithChildren> = ({
     setSearchTimeout(
       setTimeout(() => {
         setKeyword(keyword);
-        getProducts(currentPage, limit, keyword);
+        getProducts(currentPage, limit, keyword, supplier, orderBy, orderWay);
       }, 500)
     );
   };
 
+  const handleSetOrderBy = (order: string, orderWay: string) => {
+    setOrderBy(order);
+    setOrderWay(orderWay);
+    getProducts(currentPage, limit, keyword, supplier, order, orderWay);
+  };
+
   const handleSetSupplier = (supplier: any) => {
-    setKeyword(keyword);
-    getProducts(currentPage, limit, keyword, supplier);
+    setSupplier(supplier);
+    getProducts(currentPage, limit, keyword, supplier, orderBy, orderWay);
   };
 
   const handlePreviousPage = () => {
@@ -172,6 +189,8 @@ export const ProductProvider: FC<PropsWithChildren> = ({
         handleSetKeyword,
         supplier,
         handleSetSupplier,
+        orderBy,
+        handleSetOrderBy,
       }}
     >
       {children}

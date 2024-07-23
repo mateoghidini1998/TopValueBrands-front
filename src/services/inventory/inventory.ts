@@ -10,12 +10,14 @@ export class InventoryService {
     page: number,
     limit: number,
     keyword: string = "",
-    supplier: any = ""
+    supplier: any = "",
+    orderBy: string = "",
+    orderWay: string = ""
   ) {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}&supplier=${supplier}`,
+        `http://localhost:5000/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}&supplier=${supplier}&orderBy=${orderBy}&orderWay=${orderWay}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
