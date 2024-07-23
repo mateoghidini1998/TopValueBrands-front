@@ -21,6 +21,8 @@ export type ProductState = {
   currentPage: number;
   totalPages: number;
   keyword: string;
+  supplier: any;
+  handleSetSupplier: (supplier: any) => void;
   handleSetKeyword: (keyword: string) => void;
   updateProduct: (updatedProduct: ProductType) => void;
   handleDeleteProduct: (id: string) => void;
@@ -37,6 +39,8 @@ export const ProductContext = createContext<ProductState>({
   currentPage: 1,
   totalPages: 0,
   keyword: "",
+  supplier: null,
+  handleSetSupplier: () => {},
   handleSetKeyword: () => {},
   updateProduct: () => {},
   handleNextPage: () => {},
@@ -54,6 +58,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [keyword, setKeyword] = useState("");
+  const [supplier, setSupplier] = useState("");
 
   const route = usePathname();
 
@@ -72,9 +77,19 @@ export const ProductProvider: FC<PropsWithChildren> = ({
     }
   }, [route]);
 
-  const getProducts = async (page: number, limit: number, keyword?: string) => {
+  const getProducts = async (
+    page: number,
+    limit: number,
+    keyword?: string,
+    supplier?: any
+  ) => {
     try {
-      const response = await InventoryService.getProducts(page, limit, keyword);
+      const response = await InventoryService.getProducts(
+        page,
+        limit,
+        keyword,
+        supplier
+      );
       setProducts(response.data);
       setTotalPages(response.pages);
     } catch (error) {
@@ -106,6 +121,11 @@ export const ProductProvider: FC<PropsWithChildren> = ({
         getProducts(currentPage, limit, keyword);
       }, 500)
     );
+  };
+
+  const handleSetSupplier = (supplier: any) => {
+    setKeyword(keyword);
+    getProducts(currentPage, limit, keyword, supplier);
   };
 
   const handlePreviousPage = () => {
@@ -150,6 +170,8 @@ export const ProductProvider: FC<PropsWithChildren> = ({
         setCurrentPage,
         keyword,
         handleSetKeyword,
+        supplier,
+        handleSetSupplier,
       }}
     >
       {children}

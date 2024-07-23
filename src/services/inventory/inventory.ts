@@ -6,11 +6,16 @@ import { EditProductType } from "@/components/inventory/TableRow";
 import { NewProductType } from "@/components/inventory/NewTableRow";
 
 export class InventoryService {
-  static async getProducts(page: number, limit: number, keyword: string = "") {
+  static async getProducts(
+    page: number,
+    limit: number,
+    keyword: string = "",
+    supplier: any = ""
+  ) {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}`,
+        `http://localhost:5000/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}&supplier=${supplier}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

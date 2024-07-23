@@ -35,7 +35,7 @@ const SupplierSelect = ({
     >
       <option value="">All suppliers</option>
       {suppliers?.map((supplier: any) => (
-        <option key={supplier.id} value={supplier.supplier_name}>
+        <option key={supplier.id} value={supplier.id}>
           {supplier.supplier_name}
         </option>
       ))}
@@ -45,7 +45,7 @@ const SupplierSelect = ({
 
 const FilterBySupplier = () => {
   const [showPlaceholder, setShowPlaceholder] = useState(true);
-  const { keyword, handleSetKeyword } = useProductContext();
+  const { supplier, handleSetSupplier } = useProductContext();
   const route = usePathname();
   const isHome = route === "/";
   const hidePlaceholder = () => setShowPlaceholder(!showPlaceholder);
@@ -53,11 +53,11 @@ const FilterBySupplier = () => {
   return (
     isHome && (
       <div className="flex justify-center h-[35px] relative">
-        <Placeholder showPlaceholder={showPlaceholder} keyword={keyword} />
+        <Placeholder showPlaceholder={showPlaceholder} keyword={supplier} />
         <SupplierSelect
           hidePlaceholder={hidePlaceholder}
           setShowPlaceholder={setShowPlaceholder}
-          handleSetKeyword={handleSetKeyword}
+          handleSetKeyword={handleSetSupplier}
         />
       </div>
     )
