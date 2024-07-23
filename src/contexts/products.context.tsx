@@ -81,6 +81,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   useEffect(() => {
     if (!(route === "/")) {
       setKeyword("");
+      setSupplier("");
     }
   }, [route]);
 

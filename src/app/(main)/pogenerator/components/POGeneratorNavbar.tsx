@@ -1,5 +1,6 @@
 import { FilterSupplier } from "./FilterSupplier";
 import { POGeneratorActiveLink } from "./POGeneratorActiveLink";
+import SearchInputPOGenerator from "./SearchInputPOGenerator";
 
 const navLinks = [
   {
@@ -26,6 +27,7 @@ export const POGeneratorNavbar = () => {
           </li>
         ))}
       </ul>
+      <SearchInputPOGenerator />
       <FilterSupplier />
     </nav>
   );

@@ -32,19 +32,22 @@ export type ProductInOrder = {
 export type TrackedProductsState = {
   trackedProducts: TrackedProductType[];
   supplierId: string;
-  setSupplierId: (supplier_id: string) => void;
   trackedProductsAddedToOrder: any;
+  keyword: string;
+  setSupplierId: (supplier_id: string) => void;
   setTrackedProductsAddedToOrder: (data: any) => void;
   addTrackedProductToOrder: (data: any) => any;
   removeTrackedProductFromOrder: (data: any) => void;
   updateTrackedProductInOrder: (data: any) => void;
   handleCreateOrder: (data: any, notes: string) => any;
   getTotalPrice: (data: any) => void;
+  handleSetKeyword: (keyword: string) => void;
 };
 
 export const TrackedProductContext = createContext<TrackedProductsState>({
   trackedProducts: [],
   supplierId: "",
+  keyword: "",
   setSupplierId: () => {},
   setTrackedProductsAddedToOrder: () => {},
   trackedProductsAddedToOrder: [],
@@ -53,6 +56,7 @@ export const TrackedProductContext = createContext<TrackedProductsState>({
   updateTrackedProductInOrder: () => {},
   handleCreateOrder: (data: ProductInOrder[], notes: string) => {},
   getTotalPrice: (data: ProductInOrder[]) => {},
+  handleSetKeyword: () => {},
 });
 
 export const TrackedProductsProvider: FC<PropsWithChildren> = ({
@@ -60,6 +64,12 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 }: PropsWithChildren) => {
   const [trackedProducts, setTrackedProducts] = useState([]);
   const [supplierId, setSupplierId] = useState("");
+  const [keyword, setKeyword] = useState("");
+
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
+
   const [trackedProductsAddedToOrder, setTrackedProductsAddedToOrder] =
     useState<ProductInOrder[]>([]);
 
@@ -68,13 +78,31 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   console.log(trackedProductsAddedToOrder);
 
   useEffect(() => {
-    getFilteredTrackedProducts(supplierId);
-  }, [supplierId]);
+    getFilteredTrackedProducts(supplierId, keyword);
+  }, [supplierId, keyword]);
 
-  const getFilteredTrackedProducts = async (supplier_id: string = "") => {
+  const handleSetKeyword = (keyword: string) => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    setSearchTimeout(
+      setTimeout(() => {
+        setKeyword(keyword);
+        // setCurrentPage(1); //  to use with pagination
+        getFilteredTrackedProducts(supplierId, keyword);
+      }, 500)
+    );
+  };
+
+  const getFilteredTrackedProducts = async (
+    supplier_id: string = "",
+    keyword: string = ""
+  ) => {
     try {
-      const response =
-        await TrackedProductsService.getTrackedProducts(supplier_id);
+      const response = await TrackedProductsService.getTrackedProducts(
+        supplier_id,
+        keyword
+      );
       setTrackedProducts(response.data);
     } catch (error) {
       console.error(error);
@@ -222,14 +250,16 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       value={{
         trackedProducts,
         supplierId,
-        setSupplierId,
         trackedProductsAddedToOrder,
+        keyword,
+        setSupplierId,
         setTrackedProductsAddedToOrder,
         addTrackedProductToOrder,
         removeTrackedProductFromOrder,
         updateTrackedProductInOrder,
         handleCreateOrder,
         getTotalPrice,
+        handleSetKeyword,
       }}
     >
       {children}
