@@ -82,13 +82,7 @@ export const TableComponent = <T,>({
               return (
                 <tr
                   key={rowIndex}
-                  className={`dark:text-white h-[60px] dark:bg-dark text-xs font-medium flex items-center justify-between border-b  dark:border-[#393E4F] text-light ${
-                    row.profit > 2
-                      ? "bg-green-100 dark:bg-green-500"
-                      : row.profit < -2
-                        ? "bg-red-100 dark:bg-red-700"
-                        : "bg-white dark:bg-dark-3"
-                  } `}
+                  className={`dark:text-white h-[60px] dark:bg-dark text-xs font-medium flex items-center justify-between border-b  dark:border-[#393E4F] text-light `}
                 >
                   {columns.map((column) => {
                     const cellValue = (row as any)[column.key];
