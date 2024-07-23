@@ -156,6 +156,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   };
 
   const addTrackedProductToOrder = (data: any) => {
+    console.log(data);
+
     if (data.supplier_id) {
       setSupplierId(data.supplier_id);
     } else {
@@ -190,13 +192,13 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     // Transform data to the new object structure
     const newProductInOrder: ProductInOrder = {
       id: data.id,
-      product_id: data.id,
+      product_id: data.product_id,
       supplier_id: data.supplier_id,
       product_name: data.product_name,
       ASIN: data.ASIN,
       supplier_name: data.supplier_name,
       quantity: 0,
-      unit_price: 0,
+      unit_price: data.product_cost,
       total_amount: 0,
       units_sold: data.units_sold,
     };

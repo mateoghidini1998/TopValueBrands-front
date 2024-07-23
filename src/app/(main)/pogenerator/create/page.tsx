@@ -41,7 +41,7 @@ const orderProductsCol: Column[] = [
   { key: "ASIN", name: "ASIN", width: "12%" },
   { key: "supplier_name", name: "Supplier Name", width: "12%" },
   { key: "quantity", name: "Quantity", width: "12%" },
-  { key: "unit_price", name: "Unit Price", width: "12%" },
+  { key: "unit_price", name: "Product Cost", width: "12%" },
   { key: "total_amount", name: "Total Amount", width: "12%" },
   { key: "units_sold", name: "Units Sold", width: "5%" },
 ];
