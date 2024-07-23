@@ -19,6 +19,20 @@ type Actions<T> = {
   download?: ActionHandler<T>;
 };
 
+const dateStr = "2024-07-22T19:57:43.000Z";
+const date = new Date(dateStr);
+
+const formattedDate = date
+  .toLocaleString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  })
+  .replace(",", "");
+
 export const TableComponent = <T,>({
   columns,
   data,
@@ -212,6 +226,23 @@ export const TableComponent = <T,>({
                         style={{ width: column.width }}
                       >
                         {`${cellValue.toFixed(2)}`}
+                      </td>
+                    ) : column.key === "updatedAt" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center"
+                        style={{ width: column.width }}
+                      >
+                        {`${new Date(cellValue)
+                          .toLocaleString("en-US", {
+                            month: "2-digit",
+                            day: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })
+                          .replace(",", "")}`}
                       </td>
                     ) : (
                       <td

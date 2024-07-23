@@ -34,6 +34,7 @@ const trackedProductsCol: Column[] = [
   // warehouse stock
   // fba stock
   // inbound stock
+  { key: "updatedAt", name: "Last Update", width: "100px" },
 ];
 
 const orderProductsCol: Column[] = [
