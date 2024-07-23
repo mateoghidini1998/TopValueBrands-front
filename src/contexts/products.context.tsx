@@ -129,6 +129,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({
     setSearchTimeout(
       setTimeout(() => {
         setKeyword(keyword);
+        setCurrentPage(1);
         getProducts(currentPage, limit, keyword, supplier, orderBy, orderWay);
       }, 500)
     );
@@ -137,11 +138,13 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   const handleSetOrderBy = (order: string, orderWay: string) => {
     setOrderBy(order);
     setOrderWay(orderWay);
+    setCurrentPage(1);
     getProducts(currentPage, limit, keyword, supplier, order, orderWay);
   };
 
   const handleSetSupplier = (supplier: any) => {
     setSupplier(supplier);
+    setCurrentPage(1);
     getProducts(currentPage, limit, keyword, supplier, orderBy, orderWay);
   };
 
