@@ -1,24 +1,27 @@
 import { getAuthToken } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
 import { UserType } from "@/types/user.types";
-import kv from '../../utils/kvClient'
+import kv from "../../utils/kvClient";
 
 export class UsersService {
   static async getUsers() {
     try {
-      const cachedUsers = await kv.get('users') as any;
+      const cachedUsers = (await kv.get("users")) as any;
       if (cachedUsers) {
         return JSON.parse(cachedUsers);
       }
 
       const token = getAuthToken();
-      const response = await HttpAPI.get(`http://localhost:5000/api/v1/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await HttpAPI.get(
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      await kv.set('users', JSON.stringify(response.data), { ex: 3600 }); // Cache for 1 hour
+      await kv.set("users", JSON.stringify(response.data), { ex: 3600 }); // Cache for 1 hour
       return response.data;
     } catch (error) {
       throw new Error("Error fetching data");
@@ -30,12 +33,12 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.post(
-      `http://localhost:5000/api/v1/auth/register`,
+      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/auth/register`,
       data,
       token
     );
 
-    await kv.del('users'); 
+    await kv.del("users");
     return response;
   }
 
@@ -49,11 +52,11 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.delete(
-      `http://localhost:5000/api/v1/users/${user.id}`,
+      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users/${user.id}`,
       token
     );
 
-    await kv.del('users'); // Invalidate cache
+    await kv.del("users"); // Invalidate cache
     return response;
   }
 
@@ -67,12 +70,12 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.patch(
-      `http://localhost:5000/api/v1/users/update/${user.id}`,
+      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users/update/${user.id}`,
       data,
       token
     );
 
-    await kv.del('users'); // Invalidate cache
+    await kv.del("users"); // Invalidate cache
     return response;
   }
 }

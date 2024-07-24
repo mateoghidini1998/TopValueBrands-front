@@ -154,7 +154,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/v1/purchaseorders",
+        "https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders",
         {
           method: "POST",
           headers: {
