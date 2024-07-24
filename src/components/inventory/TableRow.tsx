@@ -342,7 +342,7 @@ const TableRow = ({ products }: TableRowProps) => {
             >
               {/* Product Image and Product Name */}
               <td
-                style={{ width: "25%" }}
+                style={{ width: "20%" }}
                 className={` text-xs font-medium text-left p-3 h-fit relative`}
               >
                 <div className="relative flex w-full h-full items-center justify-between text-left">
@@ -428,7 +428,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   `${product?.seller_sku}`
                 )}
               </td>
-              <td className="w-[5%] text-xs font-medium text-center flex justify-center">
+              <td className="w-[3%] text-xs font-medium text-center flex justify-center">
                 {editingRow[product?.id] ? (
                   <input
                     name="product_cost"
@@ -498,7 +498,7 @@ const TableRow = ({ products }: TableRowProps) => {
                   product?.pack_type
                 )}
               </td>
-              <td className="w-[5%] text-xs font-medium text-center">
+              <td className="w-[8%] text-xs font-medium text-center">
                 {product?.FBA_available_inventory}
 
                 {/* {editingRow[product?.id] ? (
@@ -542,6 +542,18 @@ const TableRow = ({ products }: TableRowProps) => {
                 ) : (
                   product?.Inbound_to_FBA
                 )} */}
+              </td>
+              <td className="w-[10%] text-xs font-medium text-right relative">
+                {`${new Date(product?.updatedAt)
+                  .toLocaleString("en-US", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })
+                  .replace(",", "")}`}
               </td>
               <td className="w-[5%] text-xs font-medium text-right relative">
                 {!editingRow[product?.id] ? (
