@@ -2,14 +2,13 @@
 import CancelButton from "@/components/svgs/CancelButton";
 import ConfirmButton from "@/components/svgs/ConfirmButton";
 import DownloadIcon from "@/components/svgs/DownloadIcon";
-import { EditButton } from "@/components/svgs/EditButton";
 import { useOrdersContext } from "@/contexts/orders.context";
+import useThemeContext from "@/contexts/theme.context";
+import { FaEye } from "react-icons/fa";
 import IndexPageContainer from "../../page.container";
 import EditOrderModal from "../components/EditModalOrder";
 import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
-import useThemeContext from "@/contexts/theme.context";
-import { useEffect } from "react";
 
 const columns: Column[] = [
   { key: "supplier_name", name: "Supplier Name", width: "100px" },
@@ -71,20 +70,20 @@ export default function OrderPage() {
         data={orders || []}
         actions={[
           <div key={"actions"}>
-            <EditButton
-              key={"actions"}
-              color={!(theme === "light") ? "#fff" : "#000"}
-            />
+            <FaEye key={"actions"} className="w-5 h-5" />
           </div>,
-          <ConfirmButton key={"actions"} />,
-          <div
-            key={"actions"}
-            className="flex items-center border-solid border-[1px] border-light gap-2 justify-between dark:bg-[#393E4F] dark:text-white py-1 px-2 rounded-lg"
-          >
-            Download PDF
-            <DownloadIcon />
-          </div>,
-          <CancelButton key={"actions"} />,
+          <></>,
+          // <ConfirmButton key={"actions"} />
+          // <div
+          //   key={"actions"}
+          //   className="flex items-center border-solid border-[1px] border-light gap-2 justify-between dark:bg-[#393E4F] dark:text-white py-1 px-2 rounded-lg"
+          // >
+          //   Download PDF
+          //   <DownloadIcon />
+          // </div>
+          <></>,
+          // <CancelButton key={"actions"} />
+          <></>,
         ]}
         actionHandlers={{
           edit: actionHandlers.edit,
