@@ -82,8 +82,7 @@ export default function OrderPage() {
           //   <DownloadIcon />
           // </div>
           <></>,
-          // <CancelButton key={"actions"} />
-          <></>,
+          <CancelButton key={"actions"} />,
         ]}
         actionHandlers={{
           edit: actionHandlers.edit,
