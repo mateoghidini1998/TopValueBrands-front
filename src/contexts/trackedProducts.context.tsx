@@ -31,9 +31,14 @@ export type ProductInOrder = {
 
 export type TrackedProductsState = {
   trackedProducts: TrackedProductType[];
+  currentPage: number;
+  totalPages: number;
   supplierId: string;
   trackedProductsAddedToOrder: any;
   keyword: string;
+  setCurrentPage: (page: number) => void;
+  handleNextPage: () => void;
+  handlePreviousPage: () => void;
   setSupplierId: (supplier_id: string) => void;
   setTrackedProductsAddedToOrder: (data: any) => void;
   addTrackedProductToOrder: (data: any) => any;
@@ -46,9 +51,14 @@ export type TrackedProductsState = {
 
 export const TrackedProductContext = createContext<TrackedProductsState>({
   trackedProducts: [],
+  currentPage: 1,
+  totalPages: 0,
   supplierId: "",
   keyword: "",
+  setCurrentPage: () => {},
   setSupplierId: () => {},
+  handleNextPage: () => {},
+  handlePreviousPage: () => {},
   setTrackedProductsAddedToOrder: () => {},
   trackedProductsAddedToOrder: [],
   addTrackedProductToOrder: () => {},
@@ -65,6 +75,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [trackedProducts, setTrackedProducts] = useState([]);
   const [supplierId, setSupplierId] = useState("");
   const [keyword, setKeyword] = useState("");
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
@@ -75,11 +87,18 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
   const { fetchOrders } = useOrdersContext();
 
-  console.log(trackedProductsAddedToOrder);
+  // console.log(trackedProductsAddedToOrder);
 
   useEffect(() => {
-    getFilteredTrackedProducts(supplierId, keyword);
-  }, [supplierId, keyword]);
+    getFilteredTrackedProducts(
+      supplierId,
+      keyword,
+      currentPage,
+      50,
+      "profit",
+      "DESC"
+    );
+  }, [supplierId, keyword, currentPage]);
 
   const handleSetKeyword = (keyword: string) => {
     if (searchTimeout) {
@@ -88,7 +107,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     setSearchTimeout(
       setTimeout(() => {
         setKeyword(keyword);
-        // setCurrentPage(1); //  to use with pagination
+        setCurrentPage(1); //  to use with pagination
         getFilteredTrackedProducts(supplierId, keyword);
       }, 500)
     );
@@ -96,17 +115,35 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
   const getFilteredTrackedProducts = async (
     supplier_id: string = "",
-    keyword: string = ""
+    keyword: string = "",
+    page: number = 1,
+    limit: number = 50,
+    orderBy: string = "profit",
+    orderWay: "ASC" | "DESC" = "ASC"
   ) => {
     try {
       const response = await TrackedProductsService.getTrackedProducts(
+        page,
+        limit,
         supplier_id,
-        keyword
+        keyword,
+        orderBy,
+        orderWay
       );
+
+      console.log(response);
       setTrackedProducts(response.data);
+      setTotalPages(response.pages);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
   };
 
   const updateTrackedProductInOrder = (updatedProduct: ProductInOrder) => {
@@ -252,6 +289,11 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         supplierId,
         trackedProductsAddedToOrder,
         keyword,
+        currentPage,
+        totalPages,
+        setCurrentPage,
+        handleNextPage,
+        handlePreviousPage,
         setSupplierId,
         setTrackedProductsAddedToOrder,
         addTrackedProductToOrder,
