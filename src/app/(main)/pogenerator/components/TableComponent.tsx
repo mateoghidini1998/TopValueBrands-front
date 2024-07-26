@@ -96,7 +96,7 @@ export const TableComponent = <T,>({
                           <div className="flex items-center justify-end gap-2">
                             {actionHandlers.edit && (
                               <button
-                                className={`${row?.status === "Approved" ? "hidden" : ""}`}
+                                className={``}
                                 onClick={() => actionHandlers.edit!(row as any)}
                               >
                                 {actions[0]}
@@ -111,7 +111,7 @@ export const TableComponent = <T,>({
                             )}
                             {actionHandlers.download && (
                               <button
-                                className={`${!(row?.status === "Approved") ? "hidden" : ""}`}
+                                className={``}
                                 onClick={() =>
                                   actionHandlers.download!(row as any)
                                 }

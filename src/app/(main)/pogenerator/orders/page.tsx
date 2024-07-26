@@ -72,16 +72,14 @@ export default function OrderPage() {
           <div key={"actions"}>
             <FaEye key={"actions"} className="w-5 h-5" />
           </div>,
-          <></>,
-          // <ConfirmButton key={"actions"} />
-          // <div
-          //   key={"actions"}
-          //   className="flex items-center border-solid border-[1px] border-light gap-2 justify-between dark:bg-[#393E4F] dark:text-white py-1 px-2 rounded-lg"
-          // >
-          //   Download PDF
-          //   <DownloadIcon />
-          // </div>
-          <></>,
+          <ConfirmButton key={"actions"} />,
+          <div
+            key={"actions"}
+            className="flex items-center border-solid border-[1px] border-light gap-2 justify-between dark:bg-[#393E4F] dark:text-white py-1 px-2 rounded-lg"
+          >
+            Download PDF
+            <DownloadIcon />
+          </div>,
           <CancelButton key={"actions"} />,
         ]}
         actionHandlers={{
