@@ -1,12 +1,12 @@
 "use client";
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
+import { OrderTags } from "@/components/ui/OrderTags";
 import {
   ProductInOrder,
   useTrackedProductContext,
 } from "@/contexts/trackedProducts.context";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { TableComponentProps } from "../interfaces/ITableComponent";
-import { OrderTags } from "@/components/ui/OrderTags";
 
 type ActionType = "add" | "remove" | "edit" | "download";
 
@@ -18,20 +18,6 @@ type Actions<T> = {
   edit?: ActionHandler<T>;
   download?: ActionHandler<T>;
 };
-
-const dateStr = "2024-07-22T19:57:43.000Z";
-const date = new Date(dateStr);
-
-const formattedDate = date
-  .toLocaleString("en-US", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  })
-  .replace(",", "");
 
 export const TableComponent = <T,>({
   columns,
@@ -110,7 +96,7 @@ export const TableComponent = <T,>({
                           <div className="flex items-center justify-end gap-2">
                             {actionHandlers.edit && (
                               <button
-                                className={`${row?.status === "Approved" ? "hidden" : ""}`}
+                                className={``}
                                 onClick={() => actionHandlers.edit!(row as any)}
                               >
                                 {actions[0]}
@@ -125,7 +111,7 @@ export const TableComponent = <T,>({
                             )}
                             {actionHandlers.download && (
                               <button
-                                className={`${!(row?.status === "Approved") ? "hidden" : ""}`}
+                                className={``}
                                 onClick={() =>
                                   actionHandlers.download!(row as any)
                                 }
@@ -211,13 +197,14 @@ export const TableComponent = <T,>({
                     ) : column.key === "lowest_fba_price" ||
                       column.key === "fees" ||
                       column.key === "product_cost" ||
-                      column.key === "profit" ? (
+                      column.key === "profit" ||
+                      column.key === "total_price" ? (
                       <td
                         key={column.key}
                         className="py-2 px-4 text-center"
                         style={{ width: column.width }}
                       >
-                        {`$${cellValue}`}
+                        {`$ ${Number(cellValue).toLocaleString("en-US")}`}
                       </td>
                     ) : column.key === "product_velocity" ? (
                       <td
@@ -227,7 +214,8 @@ export const TableComponent = <T,>({
                       >
                         {`${cellValue.toFixed(2)}`}
                       </td>
-                    ) : column.key === "updatedAt" ? (
+                    ) : column.key === "updatedAt" ||
+                      column.key === "createdAt" ? (
                       <td
                         key={column.key}
                         className="py-2 px-4 text-center"

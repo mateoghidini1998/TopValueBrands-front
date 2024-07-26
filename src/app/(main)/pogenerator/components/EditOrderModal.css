@@ -1,12 +1,22 @@
 /* styles.css */
+
+.ant-modal-content {
+  width: 1000px;
+  /* center the modal */
+  transform: translate(-50%, -50%);
+  top: 350px;
+  left: 50%;
+  position: fixed;
+}
+
 .dark-mode .ant-modal-content {
-  background-color: #1f1f1f;
+  background-color: #1F2128;
   color: #ffffff;
 }
 
 .dark-mode .ant-modal-header {
-  background-color: #1f1f1f;
-  border-bottom: 1px solid #4a4a4a;
+  background-color: #1F2128;
+  border-bottom: 1px solid #1F2128;
 }
 
 .dark-mode .ant-modal-header .ant-modal-title {
@@ -20,15 +30,15 @@
 .dark-mode .ant-input,
 .dark-mode .ant-select-selection-item,
 .dark-mode .ant-input-number {
-  background-color: #333333;
+  background-color: #1F2128;
   color: #ffffff;
-  border-color: #4a4a4a;
+  border-color: #1F2128;
 }
 
 .dark-mode .ant-select-selector {
   background-color: #333333;
   color: #ffffff;
-  border-color: #4a4a4a;
+  border-color: #1F2128;
 }
 
 .ant-select-selector {
@@ -36,7 +46,7 @@
 }
 
 .dark-mode .ant-divider {
-  background-color: #4a4a4a;
+  background-color: #1F2128;
 }
 
 .dark-mode .ant-btn-primary {

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Button, Select, Divider } from "antd";
 import { OrderProductType, useOrdersContext } from "@/contexts/orders.context";
 import { useSupplierContext } from "@/contexts/suppliers.context";
-import { ProductType } from "@/types/product.types";
 const { Option } = Select;
 
 const EditOrderModal = ({ isDarkMode }: any) => {
@@ -23,7 +22,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
         notes: orderToEdit.notes,
         products: orderToEdit.purchaseOrderProducts.map((product) => ({
           product_id: product.product_id,
-          unit_price: product.unit_price,
+          unit_price: Number(product.unit_price),
           product_name: product.product_name,
           quantity: product.quantity,
           total_amount_by_product: product.quantity * product.unit_price,
@@ -46,13 +45,11 @@ const EditOrderModal = ({ isDarkMode }: any) => {
 
   const handleValuesChange = (changedValues: any, allValues: any) => {
     if (changedValues.products) {
-      const updatedProducts = allValues.products.map(
-        (product: ProductType) => ({
-          ...product,
-          total_amount_by_product:
-            (product.quantity || 0) * (product.unit_price || 0),
-        })
-      );
+      const updatedProducts = allValues.products.map((product: any) => ({
+        ...product,
+        total_amount_by_product:
+          (product.quantity || 0) * (product.unit_price || 0),
+      }));
       form.setFieldsValue({ products: updatedProducts });
       calculateTotalPrice(updatedProducts);
     }
@@ -68,7 +65,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
 
   return (
     <Modal
-      title="Edit Order"
+      title="Purchase Order"
       open={isEditModalOpen}
       onOk={handleOk}
       onCancel={closeEditModal}
@@ -87,54 +84,83 @@ const EditOrderModal = ({ isDarkMode }: any) => {
         layout="vertical"
         name="edit_order_form"
         onValuesChange={handleValuesChange}
+        className="flex flex-col items-start justify-between"
       >
-        <Form.Item
-          name="order_number"
-          label="Order Number"
-          rules={[
-            { required: true, message: "Please input the order number!" },
-          ]}
-        >
-          <Input
-            className="text-dark cursor-not-allowed border-solid border-[1px] border-[#ef2b2b]"
-            disabled
-          />
-        </Form.Item>
-        <Form.Item
-          name="supplier_id"
-          label="Supplier"
-          rules={[{ required: true, message: "Please select the supplier!" }]}
-        >
-          <Select placeholder="Select a supplier">
-            {suppliers.map((supplier, index) => (
-              <Option key={index} value={supplier.id}>
-                {supplier.supplier_name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.List name="products">
-          {(fields) => (
-            <>
-              {fields.map((field, index) => (
-                <Form.Item
-                  {...field}
-                  key={index}
-                  label={`Product #${index + 1}`}
-                  style={{ marginBottom: 0 }}
-                >
-                  <Form.Item name={[field.name, "product_id"]} noStyle hidden>
-                    <Input disabled />
-                  </Form.Item>
+        <div className="w-full flex items-center justify-left gap-2">
+          <Form.Item
+            name="order_number"
+            label="Order Number"
+            rules={[
+              { required: true, message: "Please input the order number!" },
+            ]}
+          >
+            <Input
+              className="text-dark cursor-not-allowed border-solid border-[1px] border-[#ef2b2b]"
+              disabled
+            />
+          </Form.Item>
+          <Form.Item
+            name="supplier_id"
+            label="Supplier"
+            rules={[{ required: true, message: "Please select the supplier!" }]}
+          >
+            <h3 className="dark:text-white">{orderToEdit?.supplier_name}</h3>
+          </Form.Item>
+        </div>
+
+        <table className="w-full flex flex-col items-center justify-normal">
+          <thead className="w-full mb-6">
+            <tr className="w-full flex items-center justify-between">
+              <th className="flex-1 text-left dark:text-white">Product</th>
+              <th className="flex-1 text-left dark:text-white">Product ID</th>
+              <th className="flex-1 text-left dark:text-white">Quantity</th>
+              <th className="flex-1 text-left dark:text-white">Unit Price</th>
+              <th className="flex-1 text-left dark:text-white">Total Amount</th>
+            </tr>
+          </thead>
+          <tbody className="w-full">
+            {orderToEdit?.purchaseOrderProducts.map((product, index) => (
+              <tr
+                key={index}
+                className="w-full flex items-center justify-between"
+              >
+                <td className="flex-1 text-left">
                   <Form.Item
-                    name={[field.name, "product_name"]}
-                    label="Product Name"
+                    name={["products", index, "product_name"]}
+                    initialValue={product.product_name}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the product name!",
+                      },
+                    ]}
                   >
                     <Input disabled />
                   </Form.Item>
+                </td>
+                <td className="flex-1 text-left">
                   <Form.Item
-                    name={[field.name, "unit_price"]}
-                    label="Unit Price"
+                    name={["products", index, "product_id"]}
+                    initialValue={product.product_id}
+                  >
+                    <Input disabled />
+                  </Form.Item>
+                </td>
+                <td className="flex-1 text-left">
+                  <Form.Item
+                    name={["products", index, "quantity"]}
+                    initialValue={product.quantity}
+                    rules={[
+                      { required: true, message: "Please input the quantity!" },
+                    ]}
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </td>
+                <td className="flex-1 text-left">
+                  <Form.Item
+                    name={["products", index, "unit_price"]}
+                    initialValue={product.unit_price}
                     rules={[
                       {
                         required: true,
@@ -142,42 +168,42 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input type="number" />
                   </Form.Item>
+                </td>
+                <td className="flex-1 text-left">
                   <Form.Item
-                    name={[field.name, "quantity"]}
-                    label="Quantity"
-                    rules={[
-                      { required: true, message: "Please input the quantity!" },
-                    ]}
+                    name={["products", index, "total_amount_by_product"]}
+                    // initialValue={(
+                    //   product.quantity * product.unit_price
+                    // ).toLocaleString()}
                   >
-                    <Input />
+                    <Input
+                      disabled
+                      value={(
+                        product.quantity * product.unit_price
+                      ).toLocaleString()}
+                    />
+                    {/* <p>
+                      ${" "}
+                      {(product.quantity * product.unit_price).toLocaleString()}
+                    </p> */}
                   </Form.Item>
-                  <Form.Item
-                    name={[field.name, "total_amount_by_product"]}
-                    label="Total"
-                  >
-                    <Input disabled />
-                  </Form.Item>
-                </Form.Item>
-              ))}
-            </>
-          )}
-        </Form.List>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
         <Divider className="bg-dark" />
         <Form.Item
           label="Total Price"
           style={{ marginBottom: 0, fontWeight: "bold", fontSize: "18px" }}
         >
-          <Input value={totalPrice} disabled />
+          <Input value={`$ ${totalPrice.toLocaleString()}`} disabled />
         </Form.Item>
 
-        <Form.Item
-          name="notes"
-          label="Notes"
-          // rules={[{ required: true, message: "Please input the notes!" }]}
-          initialValue={orderToEdit?.notes}
-        >
+        <Form.Item name="notes" label="Notes" initialValue={orderToEdit?.notes}>
           <Input.TextArea />
         </Form.Item>
       </Form>
