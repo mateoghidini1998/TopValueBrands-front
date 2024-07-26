@@ -54,6 +54,11 @@ export default function Page() {
     addTrackedProductToOrder,
     removeTrackedProductFromOrder,
     updateTrackedProductInOrder,
+    handleNextPage,
+    handlePreviousPage,
+    totalPages,
+    currentPage,
+    setCurrentPage,
   } = useTrackedProductContext();
 
   const { theme } = useThemeContext();
@@ -133,6 +138,11 @@ export default function Page() {
       )}
       <IndexPageContainer>
         <TableComponent<TrackedProductType>
+          nextPage={handleNextPage}
+          previousPage={handlePreviousPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
           columns={trackedProductsCol}
           data={trackedProducts}
           actions={[<></>, <InputOrderAction key={"actions"} />, <></>, <></>]}
@@ -142,6 +152,7 @@ export default function Page() {
         />
         <div className="w-full h-fit space-y-4">
           <TableComponent<ProductInOrder>
+            totalPages={0}
             columns={orderProductsCol}
             data={trackedProductsAddedToOrder}
             actions={[<></>, <></>, <></>, <DeleteIcon key={"actions"} />]}

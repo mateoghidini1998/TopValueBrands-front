@@ -258,10 +258,10 @@ export const TableComponent = <T,>({
       </div>
       {totalPages > 0 && (
         <Pagination
-          currentPage={currentPage}
-          handleNextPage={nextPage}
-          setCurrentPage={setCurrentPage}
-          handlePreviousPage={previousPage}
+          currentPage={currentPage || 0}
+          handleNextPage={nextPage || (() => {})}
+          setCurrentPage={setCurrentPage || (() => {})}
+          handlePreviousPage={previousPage || (() => {})}
           totalPages={totalPages}
         />
       )}
