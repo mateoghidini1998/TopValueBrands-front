@@ -23,15 +23,27 @@ const columns: Column[] = [
 ];
 
 export default function POGeneratorPage() {
-  const { trackedProducts } = useTrackedProductContext();
+  const {
+    trackedProducts,
+    handleNextPage,
+    handlePreviousPage,
+    totalPages,
+    currentPage,
+    setCurrentPage,
+  } = useTrackedProductContext();
 
-  // console.log(trackedProducts);
+  console.log(totalPages);
 
   return (
     <IndexPageContainer>
       <TableComponent<TrackedProductType>
         columns={columns}
         data={trackedProducts}
+        nextPage={handleNextPage}
+        previousPage={handlePreviousPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
       />
     </IndexPageContainer>
   );

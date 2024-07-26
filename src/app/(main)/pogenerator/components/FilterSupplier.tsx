@@ -6,7 +6,8 @@ import { SupplierType } from "@/types/supplier.types";
 import { useEffect, useState } from "react";
 
 export const FilterSupplier = () => {
-  const { setSupplierId, supplierId } = useTrackedProductContext();
+  const { setSupplierId, supplierId, currentPage, setCurrentPage } =
+    useTrackedProductContext();
   const { suppliers } = useSupplierContext();
   const [showPlaceholder, setShowPlaceholder] = useState(true);
 
@@ -14,6 +15,7 @@ export const FilterSupplier = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSupplierId(event.target.value);
+    setCurrentPage(1);
     const supplier_id = supplierId;
   };
 

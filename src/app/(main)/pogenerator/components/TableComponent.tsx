@@ -7,6 +7,7 @@ import {
 } from "@/contexts/trackedProducts.context";
 import { ChangeEvent } from "react";
 import { TableComponentProps } from "../interfaces/ITableComponent";
+import Pagination from "@/components/inventory/Pagination";
 
 type ActionType = "add" | "remove" | "edit" | "download";
 
@@ -20,6 +21,11 @@ type Actions<T> = {
 };
 
 export const TableComponent = <T,>({
+  nextPage,
+  previousPage,
+  currentPage,
+  setCurrentPage,
+  totalPages,
   columns,
   data,
   actions,
@@ -30,6 +36,8 @@ export const TableComponent = <T,>({
 }: TableComponentProps<T> & { actionHandlers?: Actions<T> }) => {
   const TABLE_COLUMNS = columns;
   const TABLE_ROWS = data;
+
+  console.log(totalPages);
 
   // check if actions exists on the TABLE_COLUMNS
   if (actions && !TABLE_COLUMNS.find((column) => column.key === "actions")) {
@@ -248,6 +256,15 @@ export const TableComponent = <T,>({
           </tbody>
         </table>
       </div>
+      {totalPages > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          handleNextPage={nextPage}
+          setCurrentPage={setCurrentPage}
+          handlePreviousPage={previousPage}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 };
