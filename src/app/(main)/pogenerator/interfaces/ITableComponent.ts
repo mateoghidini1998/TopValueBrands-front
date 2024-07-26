@@ -5,10 +5,10 @@ export interface Column {
 }
 
 export interface TableComponentProps<T> {
-  nextPage: () => void;
-  previousPage: () => void;
-  currentPage: number;
-  setCurrentPage: (page: number) => void;
+  nextPage?: () => void;
+  previousPage?: () => void;
+  currentPage?: number;
+  setCurrentPage?: (page: number) => void;
   totalPages: number;
   columns: Column[];
   data: T[] | any[];
