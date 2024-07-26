@@ -27,7 +27,7 @@ export class TrackedProductsService {
       params.append("orderWay", orderWay);
 
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/trackedproducts?${params.toString()}`,
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/trackedproducts?${params.toString()}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
