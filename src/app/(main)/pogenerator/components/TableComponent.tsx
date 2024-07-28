@@ -205,7 +205,6 @@ export const TableComponent = <T,>({
                     ) : column.key === "lowest_fba_price" ||
                       column.key === "fees" ||
                       column.key === "product_cost" ||
-                      column.key === "profit" ||
                       column.key === "total_price" ? (
                       <td
                         key={column.key}
@@ -213,6 +212,20 @@ export const TableComponent = <T,>({
                         style={{ width: column.width }}
                       >
                         {`$ ${Number(cellValue).toLocaleString("en-US")}`}
+                      </td>
+                    ) : column.key === "profit" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center flex items-center justify-center"
+                        style={{ width: column.width }}
+                      >
+                        <div
+                          className={`w-[65px] py-2 rounded-sm ${cellValue > 2 ? " bg-emerald-800 text-emerald-400" : cellValue < 2 && cellValue > 0 ? "bg-yellow-800 text-yellow-400 " : "bg-red-800 text-red-400"}
+                          
+                        }`}
+                        >
+                          {`$ ${Number(cellValue).toLocaleString("en-US")}`}
+                        </div>
                       </td>
                     ) : column.key === "product_velocity" ? (
                       <td
