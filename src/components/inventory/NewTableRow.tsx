@@ -124,7 +124,7 @@ const NewTableRow = () => {
         }  text-light bg-white dark:bg-dark  border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
       >
         {/* <ProductNameTableData product={product} width={"25%"} /> */}
-        <td className="w-[25%] text-xs font-medium text-center">
+        <td className="w-[17%] text-xs font-medium text-center">
           <textarea
             name="product_name"
             // type="text"
@@ -135,7 +135,7 @@ const NewTableRow = () => {
             // defaultValue={formData.product_name}
           />
         </td>
-        <td className="w-[10%] text-xs font-medium text-center">
+        <td className="w-[8%] text-xs font-medium text-center">
           <input
             name="ASIN"
             type="text"
@@ -145,7 +145,7 @@ const NewTableRow = () => {
             // defaultValue={formData.ASIN}
           />
         </td>
-        <td className="w-[10%] text-xs font-medium text-center">
+        <td className="w-[8%] text-xs font-medium text-center">
           <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
@@ -164,7 +164,7 @@ const NewTableRow = () => {
             // defaultValue={formData.ASIN}
           />
         </td>
-        <td className="w-[15%] text-xs font-medium text-center">
+        <td className="w-[10%] text-xs font-medium text-center">
           <div className="relative">
             <input
               type="text"
