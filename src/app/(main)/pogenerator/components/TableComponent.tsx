@@ -220,7 +220,7 @@ export const TableComponent = <T,>({
                         style={{ width: column.width }}
                       >
                         <div
-                          className={`w-[65px] py-2 rounded-sm ${cellValue > 2 ? " bg-emerald-800 text-emerald-400" : cellValue < 2 && cellValue > 0 ? "bg-yellow-800 text-yellow-400 " : "bg-red-800 text-red-400"}
+                          className={`w-[65px] py-2 rounded-sm ${cellValue > 2 ? " bg-[#00952A] bg-opacity-10 font-bold  text-[#00952A]" : cellValue < 2 && cellValue > 0 ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] " : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"}
                           
                         }`}
                         >
