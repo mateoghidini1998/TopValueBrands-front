@@ -19,6 +19,7 @@ const columns: Column[] = [
   { key: "fees", name: "Fees", width: "150px" },
   { key: "product_cost", name: "Product Cost", width: "150px" },
   { key: "profit", name: "Profit", width: "150px" },
+  { key: "roi", name: "ROI", width: "100px" },
   { key: "updatedAt", name: "Last Update", width: "150px" },
 ];
 

@@ -253,6 +253,17 @@ export const TableComponent = <T,>({
                           })
                           .replace(",", "")}`}
                       </td>
+                    ) : column.key === "roi" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center"
+                        style={{ width: column.width }}
+                      >
+                        {row.product_cost !== 0
+                          ? `${((row.profit / row.product_cost) * 100).toFixed(0)} %`
+                          : "N/A"}
+                        {/* {`${(row.profit / row.product_cost).toFixed(2)}%`} */}
+                      </td>
                     ) : (
                       <td
                         key={column.key}
