@@ -1,6 +1,7 @@
 "use client";
 import { UsersService } from "@/services/users/users.service";
 import { UserRole, UserType } from "@/types/user.types";
+import { usePathname } from "next/navigation";
 import {
   FC,
   PropsWithChildren,
@@ -12,7 +13,7 @@ import {
 
 type Error = {
   message: string;
-}
+};
 
 export type UserState = {
   users: UserType[];
@@ -55,12 +56,13 @@ export const UsersContext = createContext<UserState>({
 });
 
 export const UsersProvider: FC<PropsWithChildren> = ({
-    children,
+  children,
 }: PropsWithChildren) => {
-    const [users, setUsers] = useState<UserType[]>([]);
-    const [registerError, setRegisterError] = useState<string | null>(null);
-    const [updateUserError, setUpdateUserError] = useState<string | null>(null);
-    const [editingUser, setEditingUser] = useState < UserType | null>(null);
+  const [users, setUsers] = useState<UserType[]>([]);
+  const [registerError, setRegisterError] = useState<string | null>(null);
+  const [updateUserError, setUpdateUserError] = useState<string | null>(null);
+  const [editingUser, setEditingUser] = useState<UserType | null>(null);
+  const path = usePathname();
 
   // test
   const [isUpdateFormOpen, setUpdateFormIsOpen] = useState<boolean>(false);
@@ -68,7 +70,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
   const fetchUsers = async () => {
     try {
       const response = await UsersService.getUsers();
-      setUsers(response.data);
+      setUsers(response);
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
