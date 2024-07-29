@@ -66,6 +66,7 @@ export default function OrderPage() {
   return (
     <IndexPageContainer>
       <TableComponent
+        totalPages={Math.ceil(orders?.length / 50)}
         columns={columns}
         data={orders || []}
         actions={[

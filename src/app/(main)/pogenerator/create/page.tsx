@@ -27,8 +27,8 @@ const trackedProductsCol: Column[] = [
   // supplier_item_number
   { key: "seller_sku", name: "Amazon SKU", width: "130px" },
   { key: "product_cost", name: "Product Cost", width: "75px" },
-  { key: "lowest_fba_price", name: "FBA Price ", width: "75px" },
-  { key: "profit", name: "Profit", width: "75px" },
+  { key: "lowest_fba_price", name: "FBA Price ", width: "100px" },
+  { key: "profit", name: "Profit", width: "100px" },
   { key: "fees", name: "Fees", width: "75px" },
   // roi
   // warehouse stock
