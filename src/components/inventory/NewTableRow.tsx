@@ -18,7 +18,7 @@ export interface NewProductType {
 }
 
 const NewTableRow = () => {
-  const { suppliers } = useSupplierContext();
+  const { suppliers, createSupplier } = useSupplierContext();
   const isDarkmode = localStorage.getItem("theme") === "dark";
   const [theme, setTheme] = useState(isDarkmode ? "dark" : "light");
 
@@ -71,6 +71,10 @@ const NewTableRow = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+  const handleCreateSupplier = (newSupplier: String) => {
+    createSupplier(newSupplier);
+  };
 
   const handleSelectSupplier = (supplier: SupplierType) => {
     setSelectedSupplier(supplier.id);
@@ -154,7 +158,7 @@ const NewTableRow = () => {
             onChange={handleChange}
           />
         </td>
-        <td className="w-[5%] text-xs font-medium text-center">
+        <td className="w-[4%] text-xs font-medium text-center">
           <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
@@ -164,7 +168,7 @@ const NewTableRow = () => {
             // defaultValue={formData.ASIN}
           />
         </td>
-        <td className="w-[10%] text-xs font-medium text-center">
+        <td className="w-[15%] text-xs font-medium text-center">
           <div className="relative">
             <input
               type="text"
@@ -176,15 +180,27 @@ const NewTableRow = () => {
             />
             {showOptions && (
               <ul className="absolute z-10 w-full bg-[#F8FAFC] dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3] rounded-lg mt-1 max-h-40 overflow-y-auto no-scrollbar">
-                {filteredSuppliers.map((supplier: SupplierType) => (
-                  <li
-                    key={supplier.id}
-                    onClick={() => handleSelectSupplier(supplier)}
-                    className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
-                  >
-                    {supplier.supplier_name}
+                {filteredSuppliers.length > 0 ? (
+                  filteredSuppliers.map((supplier: SupplierType) => (
+                    <li
+                      key={supplier.id}
+                      onClick={() => handleSelectSupplier(supplier)}
+                      className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+                    >
+                      {supplier.supplier_name}
+                    </li>
+                  ))
+                ) : (
+                  <li className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-left items-center gap-2 px-6">
+                    <button
+                      className="flex gap-2"
+                      onClick={() => handleCreateSupplier(filterText)}
+                    >
+                      <span>+</span>
+                      <span>Create</span>
+                    </button>
                   </li>
-                ))}
+                )}
               </ul>
             )}
           </div>
@@ -228,6 +244,18 @@ const NewTableRow = () => {
             className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="0"
             name="reserved_quantity"
+            onChange={handleChange}
+            // defaultValue={formData.ASIN}
+          /> */}
+
+          {"N/A"}
+        </td>
+        <td className="w-[10%] text-xs font-medium text-center">
+          {/* <input
+            type="text"
+            className="w-[90%] mx-auto h-[30px] text-xs bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
+            placeholder="0"
+            name="Inbound_to_FBA"
             onChange={handleChange}
             // defaultValue={formData.ASIN}
           /> */}
