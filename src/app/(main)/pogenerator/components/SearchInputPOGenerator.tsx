@@ -8,7 +8,7 @@ const SearchInputPOGenerator = () => {
   const [showPlaceholder, setShowPlaceholder] = useState(true);
   const { keyword, handleSetKeyword } = useTrackedProductContext();
   const route = usePathname();
-  const isHome = route === "/pogenerator";
+  const isHome = route === "/pogenerator" || "/pogenerator/create";
   const hidePlaceholder = () => setShowPlaceholder(!showPlaceholder);
 
   return (
