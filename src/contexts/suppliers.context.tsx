@@ -12,7 +12,7 @@ import {
 
 export type SupplierState = {
   suppliers: SupplierType[];
-  createSupplier: (supplier: String) => void;
+  createSupplier: (supplier: String) => any;
   getSuppliers: () => void;
 };
 
@@ -44,6 +44,7 @@ export const SupplierProvider: FC<PropsWithChildren> = ({
     try {
       const response = await SuppliersService.addSupplier(supplier);
       setSuppliers([...suppliers, response.data]);
+      return response;
     } catch (error) {
       console.error(error);
     }

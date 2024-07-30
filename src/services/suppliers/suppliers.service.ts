@@ -26,7 +26,7 @@ export class SuppliersService {
       if (token) {
         const response = await HttpAPI.post(
           `http://localhost:5000/api/v1/suppliers`,
-          data,
+          { supplier_name: data },
           token
         );
         return response;
