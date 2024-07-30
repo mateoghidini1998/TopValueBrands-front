@@ -33,11 +33,10 @@ export default function POGeneratorPage() {
     setCurrentPage,
   } = useTrackedProductContext();
 
-  console.log(totalPages);
-
   return (
     <IndexPageContainer>
       <TableComponent<TrackedProductType>
+        hasOrderFilds={true}
         columns={columns}
         data={trackedProducts}
         nextPage={handleNextPage}

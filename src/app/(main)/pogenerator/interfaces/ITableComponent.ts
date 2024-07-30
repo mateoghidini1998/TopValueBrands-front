@@ -5,6 +5,7 @@ export interface Column {
 }
 
 export interface TableComponentProps<T> {
+  hasOrderFilds?: boolean;
   nextPage?: () => void;
   previousPage?: () => void;
   currentPage?: number;
