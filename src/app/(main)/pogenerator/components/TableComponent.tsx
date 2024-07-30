@@ -170,7 +170,7 @@ export const TableComponent = <T,>({
                         {column.key === "unit_price" && "$"}
                         <input
                           type="number"
-                          value={cellValue}
+                          value={cellValue.toFixed(2)}
                           onChange={(event) =>
                             handleInputChange(event, row, column.key)
                           }
@@ -183,7 +183,7 @@ export const TableComponent = <T,>({
                         className="py-2 px-4 text-center"
                         style={{ width: column.width }}
                       >
-                        {`$ ${row.quantity * row.unit_price}`}
+                        {`$ ${(row.quantity * row.unit_price).toFixed(2)}`}
                       </td>
                     ) : column.key === "status" ? (
                       <td
@@ -220,13 +220,17 @@ export const TableComponent = <T,>({
                     ) : column.key === "lowest_fba_price" ||
                       column.key === "fees" ||
                       column.key === "product_cost" ||
+                      column.key === "unit_price" ||
                       column.key === "total_price" ? (
                       <td
                         key={column.key}
                         className="py-2 px-4 text-center"
                         style={{ width: column.width }}
                       >
-                        {`$ ${Number(cellValue).toLocaleString("en-US")}`}
+                        {column.key === "product_cost" ||
+                        column.key === "total_price"
+                          ? `$ ${Number(cellValue).toFixed(2).toLocaleString()}`
+                          : `$ ${Number(cellValue).toLocaleString("en-US")}`}
                       </td>
                     ) : column.key === "profit" ? (
                       <td
