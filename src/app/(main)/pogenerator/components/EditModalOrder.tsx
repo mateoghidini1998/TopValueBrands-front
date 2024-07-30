@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Button, Select, Divider } from "antd";
 import { OrderProductType, useOrdersContext } from "@/contexts/orders.context";
 import { useSupplierContext } from "@/contexts/suppliers.context";
+import TextArea from "antd/es/input/TextArea";
 const { Option } = Select;
 
 const EditOrderModal = ({ isDarkMode }: any) => {
@@ -25,7 +26,9 @@ const EditOrderModal = ({ isDarkMode }: any) => {
           unit_price: Number(product.unit_price),
           product_name: product.product_name,
           quantity: product.quantity,
-          total_amount_by_product: product.quantity * product.unit_price,
+          total_amount_by_product: (
+            product.quantity * product.unit_price
+          ).toFixed(2),
         })),
       });
 
@@ -69,6 +72,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
       open={isEditModalOpen}
       onOk={handleOk}
       onCancel={closeEditModal}
+      closeIcon={<span id="close-icon">❌</span>}
       footer={[
         <Button key="back" onClick={closeEditModal}>
           Cancel
@@ -135,7 +139,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                       },
                     ]}
                   >
-                    <Input disabled />
+                    <Input className="w-full h-full" disabled />
                   </Form.Item>
                 </td>
                 <td className="flex-1 text-left">
@@ -146,7 +150,8 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                     <Input disabled />
                   </Form.Item>
                 </td>
-                <td className="flex-1 text-left">
+                <td className="flex-1 flex text-left">
+                  <span>✏️</span>
                   <Form.Item
                     name={["products", index, "quantity"]}
                     initialValue={product.quantity}
@@ -157,7 +162,8 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                     <Input type="number" />
                   </Form.Item>
                 </td>
-                <td className="flex-1 text-left">
+                <td className="flex-1 flex text-left">
+                  <span>✏️</span>
                   <Form.Item
                     name={["products", index, "unit_price"]}
                     initialValue={product.unit_price}
@@ -180,9 +186,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                   >
                     <Input
                       disabled
-                      value={(
-                        product.quantity * product.unit_price
-                      ).toLocaleString()}
+                      value={(product.quantity * product.unit_price).toFixed(2)}
                     />
                     {/* <p>
                       ${" "}
@@ -200,7 +204,10 @@ const EditOrderModal = ({ isDarkMode }: any) => {
           label="Total Price"
           style={{ marginBottom: 0, fontWeight: "bold", fontSize: "18px" }}
         >
-          <Input value={`$ ${totalPrice.toLocaleString()}`} disabled />
+          <Input
+            value={`$ ${totalPrice.toFixed(2).toLocaleString()}`}
+            disabled
+          />
         </Form.Item>
 
         <Form.Item name="notes" label="Notes" initialValue={orderToEdit?.notes}>
