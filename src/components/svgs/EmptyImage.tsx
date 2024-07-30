@@ -3,8 +3,8 @@ import React from "react";
 export default function EmptyImage() {
   return (
     <svg
-      width="29"
-      height="29"
+      width="32"
+      height="32"
       viewBox="0 0 29 29"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

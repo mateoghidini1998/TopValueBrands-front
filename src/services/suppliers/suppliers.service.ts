@@ -20,7 +20,7 @@ export class SuppliersService {
     }
   }
 
-  static async addSupplier(data: EditSupplierType) {
+  static async addSupplier(data: String) {
     try {
       const token = getAuthToken();
       if (token) {
