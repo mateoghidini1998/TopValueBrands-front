@@ -170,7 +170,11 @@ export const TableComponent = <T,>({
                         {column.key === "unit_price" && "$"}
                         <input
                           type="number"
-                          value={cellValue.toFixed(2)}
+                          value={
+                            column.key === "unit_price"
+                              ? cellValue.toFixed(2)
+                              : cellValue
+                          }
                           onChange={(event) =>
                             handleInputChange(event, row, column.key)
                           }
