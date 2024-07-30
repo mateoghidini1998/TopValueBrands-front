@@ -67,7 +67,6 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   const [orderWay, setOrderWay] = useState("");
 
   const route = usePathname();
-  console.log(orderBy);
 
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null

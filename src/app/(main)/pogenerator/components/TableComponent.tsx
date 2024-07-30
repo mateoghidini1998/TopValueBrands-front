@@ -8,6 +8,7 @@ import {
 import { ChangeEvent } from "react";
 import { TableComponentProps } from "../interfaces/ITableComponent";
 import Pagination from "@/components/inventory/Pagination";
+import { OrderByComponent } from "./OrderByComponent";
 
 type ActionType = "add" | "remove" | "edit" | "download";
 
@@ -37,7 +38,17 @@ export const TableComponent = <T,>({
   const TABLE_COLUMNS = columns;
   const TABLE_ROWS = data;
 
-  console.log(totalPages);
+  const ORDER_COLS = [
+    "current_rank",
+    "thirty_days_rank",
+    "ninety_days_rank",
+    "units_sold",
+    "product_velocity",
+    "lowest_fba_price",
+    "fees",
+    "profit",
+    "updatedAt",
+  ];
 
   // check if actions exists on the TABLE_COLUMNS
   if (actions && !TABLE_COLUMNS.find((column) => column.key === "actions")) {
@@ -77,9 +88,12 @@ export const TableComponent = <T,>({
               {TABLE_COLUMNS.map((column) => (
                 <th
                   key={column.key}
-                  className={`py-2 px-4 text-xs font-medium whitespace-nowrap ${column.key === "actions" ? "text-right" : "text-center"}`}
+                  className={`flex items-center gap-2 py-2 px-4 text-xs font-medium whitespace-nowrap ${column.key === "actions" ? "text-right" : "text-center"}`}
                   style={{ width: column.width }}
                 >
+                  {ORDER_COLS.includes(column.key) && (
+                    <OrderByComponent orderBy={column.key} />
+                  )}
                   {column.name}
                 </th>
               ))}
