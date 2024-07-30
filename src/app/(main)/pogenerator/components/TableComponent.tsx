@@ -89,7 +89,7 @@ export const TableComponent = <T,>({
               {TABLE_COLUMNS.map((column) => (
                 <th
                   key={column.key}
-                  className={`${hasOrderFilds ? "flex items-center gap-2" : ""} py-2 px-4 text-xs font-medium whitespace-nowrap ${column.key === "actions" ? "text-right" : "text-center"}`}
+                  className={`${hasOrderFilds ? "flex items-center justify-center gap-1" : ""} py-2 px-4 text-xs font-medium whitespace-nowrap ${column.key === "actions" ? "text-right" : "text-center"}`}
                   style={{ width: column.width }}
                 >
                   {hasOrderFilds && ORDER_COLS.includes(column.key) && (
@@ -275,7 +275,9 @@ export const TableComponent = <T,>({
                     ) : column.key === "roi" ? (
                       <td
                         key={column.key}
-                        className="py-2 px-4 text-center"
+                        className={`py2 px-4 text-center w-[65px] py-2 rounded-sm ${cellValue > 2 ? " bg-[#00952A] bg-opacity-10 font-bold  text-[#00952A]" : cellValue < 2 && cellValue > 0 ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] " : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"}
+                          
+                        }`}
                         style={{ width: column.width }}
                       >
                         {row.product_cost !== 0
