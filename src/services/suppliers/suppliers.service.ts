@@ -26,7 +26,7 @@ export class SuppliersService {
       if (token) {
         const response = await HttpAPI.post(
           `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/suppliers`,
-          data,
+          { supplier_name: data },
           token
         );
         return response;

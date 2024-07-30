@@ -36,6 +36,8 @@ export type TrackedProductsState = {
   supplierId: string;
   trackedProductsAddedToOrder: any;
   keyword: string;
+  orderBy: string;
+  handleSetOrderBy: (order: string, orderWay: any) => void;
   setCurrentPage: (page: number) => void;
   handleNextPage: () => void;
   handlePreviousPage: () => void;
@@ -55,6 +57,8 @@ export const TrackedProductContext = createContext<TrackedProductsState>({
   totalPages: 0,
   supplierId: "",
   keyword: "",
+  orderBy: "",
+  handleSetOrderBy: () => {},
   setCurrentPage: () => {},
   setSupplierId: () => {},
   handleNextPage: () => {},
@@ -77,6 +81,10 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [keyword, setKeyword] = useState("");
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [orderBy, setOrderBy] = useState("");
+  const [orderWay, setOrderWay] = useState<any>("");
+
+  const limit = 50;
 
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
@@ -87,18 +95,16 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
   const { fetchOrders } = useOrdersContext();
 
-  // console.log(trackedProductsAddedToOrder);
-
   useEffect(() => {
     getFilteredTrackedProducts(
       supplierId,
       keyword,
       currentPage,
       50,
-      "profit",
-      "DESC"
+      orderBy,
+      orderWay
     );
-  }, [supplierId, keyword, currentPage]);
+  }, [supplierId, keyword, currentPage, limit, orderBy, orderWay]);
 
   const handleSetKeyword = (keyword: string) => {
     if (searchTimeout) {
@@ -119,7 +125,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     page: number = 1,
     limit: number = 50,
     orderBy: string = "profit",
-    orderWay: "ASC" | "DESC" = "ASC"
+    orderWay?: any
   ) => {
     try {
       const response = await TrackedProductsService.getTrackedProducts(
@@ -131,7 +137,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         orderWay
       );
 
-      console.log(response);
+      // console.log(response);
       setTrackedProducts(response.data);
       setTotalPages(response.pages);
     } catch (error) {
@@ -144,6 +150,20 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   };
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const handleSetOrderBy = (order: string, orderWay: string) => {
+    setOrderBy(order);
+    setOrderWay(orderWay);
+    setCurrentPage(1);
+    getFilteredTrackedProducts(
+      supplierId,
+      keyword,
+      currentPage,
+      limit,
+      order,
+      orderWay
+    );
   };
 
   const updateTrackedProductInOrder = (updatedProduct: ProductInOrder) => {
@@ -285,12 +305,14 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   return (
     <TrackedProductContext.Provider
       value={{
+        orderBy,
         trackedProducts,
         supplierId,
         trackedProductsAddedToOrder,
         keyword,
         currentPage,
         totalPages,
+        handleSetOrderBy,
         setCurrentPage,
         handleNextPage,
         handlePreviousPage,

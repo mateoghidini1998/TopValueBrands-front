@@ -73,7 +73,7 @@ const NewTableRow = () => {
     });
 
   const handleCreateSupplier = (newSupplier: String) => {
-    createSupplier(newSupplier);
+    return createSupplier(newSupplier);
   };
 
   const handleSelectSupplier = (supplier: SupplierType) => {
@@ -194,7 +194,11 @@ const NewTableRow = () => {
                   <li className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-left items-center gap-2 px-6">
                     <button
                       className="flex gap-2"
-                      onClick={() => handleCreateSupplier(filterText)}
+                      onClick={() =>
+                        handleCreateSupplier(filterText).then((res: any) => {
+                          handleSelectSupplier(res.data);
+                        })
+                      }
                     >
                       <span>+</span>
                       <span>Create</span>
