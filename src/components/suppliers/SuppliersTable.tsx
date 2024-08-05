@@ -1,7 +1,8 @@
 "use client";
 import { useSupplierContext } from "@/contexts/suppliers.context";
-import { BsThreeDots } from "react-icons/bs";
+import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
+import SupplierForm from "./SupplierForm";
 
 export type SupplierType = {
   id: number;
@@ -21,7 +22,13 @@ export default function SuppliersTable() {
     // "Actions",
   ];
 
-  return (
+  const [isCreatingSupplier, setIsCreatingSupplier] = useState(false);
+
+  const handleCreateSupplier = () => {
+    setIsCreatingSupplier(true);
+  };
+
+  return !isCreatingSupplier ? (
     <table className="w-full mb-5 rounded-[20px] border-[#EFF1F3] dark:border-[#393E4F] border-[1px] border-solid border-separate relative">
       {/* table head */}
       <thead className="">
@@ -44,7 +51,10 @@ export default function SuppliersTable() {
                 </th>
               );
             })}
-            <button className="w-[15%] text-xs font-medium absolute right-0 flex items-end justify-center gap-2">
+            <button
+              className="w-[15%] text-xs font-medium absolute right-0 flex items-end justify-center gap-2"
+              onClick={handleCreateSupplier}
+            >
               <IoMdAdd className="text-[#438EF3] font-bold w-4 h-4" /> Add
               Supplier
             </button>
@@ -65,14 +75,37 @@ export default function SuppliersTable() {
               {supplier.supplier_name}
             </td>
             <td className="w-[15%] text-xs font-medium text-center">
-              {supplier.createdAt}
+              {`${new Date(supplier.createdAt)
+                .toLocaleString("en-US", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })
+                .replace(",", "")}`}
             </td>
             <td className="w-[15%] text-xs font-medium text-center">
-              {supplier.updatedAt}
+              {`${new Date(supplier.createdAt)
+                .toLocaleString("en-US", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })
+                .replace(",", "")}`}
             </td>
           </tr>
         ))}
       </tbody>
     </table>
+  ) : (
+    <SupplierForm
+      createSupplier={createSupplier}
+      setIsCreatingSupplier={setIsCreatingSupplier}
+    />
   );
 }
