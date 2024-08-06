@@ -47,6 +47,7 @@ export const SupplierProvider: FC<PropsWithChildren> = ({
       return response;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 

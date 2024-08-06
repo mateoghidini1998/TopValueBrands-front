@@ -23,13 +23,19 @@ export default function SupplierForm({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createSupplier(formData.supplier_name).then((response: any) => {
-      if (response) {
-        setFormData({ supplier_name: "" });
-        alert("Supplier created successfully");
-        setIsCreatingSupplier(false);
-      }
-    });
+    createSupplier(formData.supplier_name)
+      .then((response: any) => {
+        if (response) {
+          // console.log(response);
+          alert("Supplier created successfully");
+          setFormData({ supplier_name: "" });
+          setIsCreatingSupplier(false);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        alert("Error creating supplier");
+      });
   };
 
   return (
@@ -58,23 +64,23 @@ export default function SupplierForm({
           />
         </div>
 
-        <div className="w-full flex items-center justify-between mt-10">
+        <div className="w-full flex flex-col items-center justify-between mt-10">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="w-full p-2 rounded-md bg-[#438EF3] text-[14px] text-white"
           >
             Submit
           </button>
 
           <button
             type="button"
+            className="text-[#61656E] dark:text-[#f8fafc] dark:bg-[#393E4F] bg-[#F8FAFC] border-[#eff1f3] flex justify-center w-full items-center gap-2 px-4 py-2 text-sm dark:hover:bg-dark-3 border-2 dark:border-[#393E4F] rounded-md mt-6"
             onClick={() => {
               setIsCreatingSupplier(false);
               setFormData({ supplier_name: "" });
             }}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           >
-            Cancel
+            Discard
           </button>
         </div>
       </form>
