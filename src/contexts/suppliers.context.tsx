@@ -15,6 +15,7 @@ export type SupplierState = {
   createSupplier: (supplier: String) => any;
   editSupplier: (supplier: SupplierType) => any;
   getSuppliers: () => void;
+  deleteSupplier: (id: number) => any;
 };
 
 export const SupplierContext = createContext<SupplierState>({
@@ -22,6 +23,7 @@ export const SupplierContext = createContext<SupplierState>({
   getSuppliers: () => {},
   createSupplier: (): any => {},
   editSupplier: (): any => {},
+  deleteSupplier: (): any => {},
 });
 
 export const SupplierProvider: FC<PropsWithChildren> = ({
@@ -72,9 +74,28 @@ export const SupplierProvider: FC<PropsWithChildren> = ({
     }
   };
 
+  const deleteSupplier = async (id: number) => {
+    try {
+      const response = await SuppliersService.deleteSupplier(id);
+      setSuppliers(
+        suppliers.filter((supplier: SupplierType) => supplier.id !== id)
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return (
     <SupplierContext.Provider
-      value={{ suppliers, getSuppliers, createSupplier, editSupplier }}
+      value={{
+        suppliers,
+        getSuppliers,
+        createSupplier,
+        editSupplier,
+        deleteSupplier,
+      }}
     >
       {children}
     </SupplierContext.Provider>

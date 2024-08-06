@@ -15,16 +15,15 @@ export type SupplierType = {
 };
 
 export default function SuppliersTable() {
-  const { suppliers, getSuppliers, createSupplier, editSupplier }: any =
-    useSupplierContext();
+  const {
+    suppliers,
+    getSuppliers,
+    createSupplier,
+    editSupplier,
+    deleteSupplier,
+  }: any = useSupplierContext();
 
-  const SUPPLIERS_COLUMNS = [
-    "ID",
-    "Supplier Name",
-    "Created At",
-    "Updated At",
-    // "Actions",
-  ];
+  const SUPPLIERS_COLUMNS = ["ID", "Supplier Name", "Created At", "Updated At"];
 
   const [isSupplierFormOpen, setIsSupplierFormOpen] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState({
@@ -45,6 +44,17 @@ export default function SuppliersTable() {
       supplier_name: supplier.supplier_name,
     });
     setIsSupplierFormOpen(true);
+  };
+
+  const handleDeleteSupplier = async (id: number) => {
+    try {
+      const response = await deleteSupplier(id);
+      if (response) {
+        getSuppliers();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const toggleOptions = (id: number) => {
@@ -151,7 +161,7 @@ export default function SuppliersTable() {
                 <TableRowOptions
                   onClose={() => toggleOptions(supplier.id)}
                   onEdit={() => handleEditSupplier(supplier)}
-                  onDelete={() => console.log("deleting supplier")}
+                  onDelete={() => handleDeleteSupplier(supplier.id)}
                 />
               )}
             </div>
