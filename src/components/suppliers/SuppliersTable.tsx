@@ -1,8 +1,11 @@
 "use client";
 import { useSupplierContext } from "@/contexts/suppliers.context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import SupplierForm from "./SupplierForm";
+import DotsSVG from "../svgs/DotsSVG";
+import TableRowOptions from "../ui/TableRowOptions";
+import { EditSupplierType } from "@/types/supplier.types";
 
 export type SupplierType = {
   id: number;
@@ -12,7 +15,8 @@ export type SupplierType = {
 };
 
 export default function SuppliersTable() {
-  const { suppliers, getSuppliers, createSupplier }: any = useSupplierContext();
+  const { suppliers, getSuppliers, createSupplier, editSupplier }: any =
+    useSupplierContext();
 
   const SUPPLIERS_COLUMNS = [
     "ID",
@@ -22,13 +26,43 @@ export default function SuppliersTable() {
     // "Actions",
   ];
 
-  const [isCreatingSupplier, setIsCreatingSupplier] = useState(false);
+  const [isSupplierFormOpen, setIsSupplierFormOpen] = useState(false);
+  const [editingSupplier, setEditingSupplier] = useState({
+    id: 0,
+    supplier_name: "",
+  });
+  const [showOptionsMap, setShowOptionsMap] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const handleCreateSupplier = () => {
-    setIsCreatingSupplier(true);
+    setIsSupplierFormOpen(true);
   };
 
-  return !isCreatingSupplier ? (
+  const handleEditSupplier = (supplier: EditSupplierType) => {
+    setEditingSupplier({
+      id: supplier.id,
+      supplier_name: supplier.supplier_name,
+    });
+    setIsSupplierFormOpen(true);
+  };
+
+  const toggleOptions = (id: number) => {
+    // Actualiza el estado para mostrar u ocultar las opciones del usuario específico
+    setShowOptionsMap((prevState) => ({
+      [id]: !prevState[id], // Invierte el valor actual
+    }));
+  };
+
+  useEffect(() => {
+    !isSupplierFormOpen &&
+      setEditingSupplier({
+        id: 0,
+        supplier_name: "",
+      });
+  }, [isSupplierFormOpen]);
+
+  return !isSupplierFormOpen ? (
     <table className="w-full mb-5 rounded-[20px] border-[#EFF1F3] dark:border-[#393E4F] border-[1px] border-solid border-separate relative">
       {/* table head */}
       <thead className="">
@@ -98,14 +132,39 @@ export default function SuppliersTable() {
                 })
                 .replace(",", "")}`}
             </td>
+            <div className="w-fit absolute right-0  flex items-center justify-between gap-2 px-2">
+              {/* Usa la función toggleOptions para cambiar el estado */}
+              <button
+                className="flex"
+                onClick={() => toggleOptions(supplier.id)}
+              >
+                {!showOptionsMap[supplier.id] ? (
+                  <DotsSVG stroke="#438EF3" />
+                ) : (
+                  <button>
+                    <DotsSVG stroke="#438EF3" />
+                  </button>
+                )}
+              </button>
+              {/* Muestra las opciones solo si showOptionsMap[supplier.id] es true */}
+              {showOptionsMap[supplier.id] && (
+                <TableRowOptions
+                  onClose={() => toggleOptions(supplier.id)}
+                  onEdit={() => handleEditSupplier(supplier)}
+                  onDelete={() => console.log("deleting supplier")}
+                />
+              )}
+            </div>
           </tr>
         ))}
       </tbody>
     </table>
   ) : (
     <SupplierForm
+      editingSupplier={editingSupplier}
       createSupplier={createSupplier}
-      setIsCreatingSupplier={setIsCreatingSupplier}
+      editSupplier={editSupplier}
+      setIsCreatingSupplier={setIsSupplierFormOpen}
     />
   );
 }

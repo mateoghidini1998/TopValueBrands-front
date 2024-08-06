@@ -1,17 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { EditSupplierType } from "@/types/supplier.types";
+import { useEffect, useState } from "react";
 
 export type SupplierFormProps = {
   setIsCreatingSupplier: (value: boolean) => void;
   createSupplier: (supplier_name: string) => any;
+  editSupplier?: (supplier: EditSupplierType) => any;
+  editingSupplier?: {
+    id: number;
+    supplier_name: string;
+  };
 };
 
 export default function SupplierForm({
   setIsCreatingSupplier,
   createSupplier,
+  editingSupplier = {
+    id: 0,
+    supplier_name: "",
+  },
+  editSupplier = () => {},
 }: SupplierFormProps) {
-  const [formData, setFormData] = useState({ supplier_name: "" });
+  const [formData, setFormData] = useState({
+    id: 0,
+    supplier_name: editingSupplier.supplier_name || "",
+  });
+
+  const IS_EDITING = editingSupplier.id !== 0;
+
+  useEffect(() => {
+    if (IS_EDITING) {
+      setFormData({
+        id: editingSupplier.id,
+        supplier_name: editingSupplier.supplier_name,
+      });
+    }
+  }, [editingSupplier]);
+
+  console.log("IS_EDITING", IS_EDITING);
+  console.log({ formData });
+  console.log(editingSupplier);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -21,21 +50,46 @@ export default function SupplierForm({
     });
   };
 
+  const handleEditSupplier = (supplier: EditSupplierType) => {
+    console.log(supplier);
+    return editSupplier(supplier);
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createSupplier(formData.supplier_name)
-      .then((response: any) => {
-        if (response) {
-          // console.log(response);
-          alert("Supplier created successfully");
-          setFormData({ supplier_name: "" });
-          setIsCreatingSupplier(false);
-        }
+
+    if (IS_EDITING) {
+      handleEditSupplier({
+        id: formData.id,
+        supplier_name: formData.supplier_name,
       })
-      .catch((error: any) => {
-        console.log(error);
-        alert("Error creating supplier");
-      });
+        .then((response: any) => {
+          if (response) {
+            // console.log(response);
+            alert("Supplier updated successfully");
+            setFormData({ id: 0, supplier_name: "" });
+            setIsCreatingSupplier(false);
+          }
+        })
+        .catch((error: any) => {
+          console.log(error);
+          alert("Error creating supplier");
+        });
+    } else {
+      createSupplier(formData.supplier_name)
+        .then((response: any) => {
+          if (response) {
+            // console.log(response);
+            alert("Supplier created successfully");
+            setFormData({ id: 0, supplier_name: "" });
+            setIsCreatingSupplier(false);
+          }
+        })
+        .catch((error: any) => {
+          console.log(error);
+          alert("Error creating supplier");
+        });
+    }
   };
 
   return (
@@ -46,6 +100,9 @@ export default function SupplierForm({
       role="dialog"
       aria-modal="true"
     >
+      <h1 className="text-lg text-black dark:text-white mb-10">
+        {IS_EDITING ? "Edit Supplier" : "Create Supplier"}
+      </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-6">
           <label
@@ -77,7 +134,7 @@ export default function SupplierForm({
             className="text-[#61656E] dark:text-[#f8fafc] dark:bg-[#393E4F] bg-[#F8FAFC] border-[#eff1f3] flex justify-center w-full items-center gap-2 px-4 py-2 text-sm dark:hover:bg-dark-3 border-2 dark:border-[#393E4F] rounded-md mt-6"
             onClick={() => {
               setIsCreatingSupplier(false);
-              setFormData({ supplier_name: "" });
+              setFormData({ id: 0, supplier_name: "" });
             }}
           >
             Discard
