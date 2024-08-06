@@ -36,6 +36,8 @@ const EditOrderModal = ({ isDarkMode }: any) => {
   const { suppliers } = useSupplierContext();
   const {
     trackedProducts,
+    getTrackedProductsFromAnOrder,
+    trackedProductsAddedToOrder,
     handleNextPage,
     handlePreviousPage,
     totalPages,
@@ -66,11 +68,11 @@ const EditOrderModal = ({ isDarkMode }: any) => {
       });
 
       calculateTotalPrice(orderToEdit.purchaseOrderProducts);
+      getTrackedProductsFromAnOrder(orderToEdit.id);
     }
   }, [orderToEdit, form]);
 
   console.log(orderToEdit?.purchaseOrderProducts);
-
   const getTrackedProductFromTheOrder = (trackedProductsArr: any) => {
     const productsInOrder = orderToEdit?.purchaseOrderProducts;
 
@@ -86,7 +88,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
     return trackedProducts;
   };
 
-  console.log(getTrackedProductFromTheOrder(trackedProducts));
+  // console.log(getTrackedProductFromTheOrder(trackedProducts));
 
   const calculateTotalPrice = (products: OrderProductType[]) => {
     const totalPrice = products.reduce(
@@ -167,7 +169,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
           <TableComponent<TrackedProductType>
             hasOrderFilds={true}
             columns={columns}
-            data={getTrackedProductFromTheOrder(trackedProducts)}
+            data={trackedProductsAddedToOrder}
             nextPage={() => {}}
             previousPage={() => {}}
             totalPages={1}

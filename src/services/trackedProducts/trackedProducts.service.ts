@@ -40,4 +40,22 @@ export class TrackedProductsService {
       throw new Error("Error fetching data");
     }
   }
+
+  static async getTrackedProductsFromAnOrder(order_id: number) {
+    try {
+      const token = getAuthToken();
+      const response = await HttpAPI.get(
+        `http://localhost:5000/api/v1/trackedproducts/order/${order_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching data");
+    }
+  }
 }
