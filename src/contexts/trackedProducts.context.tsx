@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { useOrdersContext } from "./orders.context";
+import { data } from "../app/data/index";
 
 interface TrackedProductInOrder {
   id: string;
@@ -37,6 +38,7 @@ export type TrackedProductsState = {
   trackedProductsAddedToOrder: any;
   keyword: string;
   orderBy: string;
+  trackedProductsToAnalyze: any;
   handleSetOrderBy: (order: string, orderWay: any) => void;
   setCurrentPage: (page: number) => void;
   handleNextPage: () => void;
@@ -49,6 +51,8 @@ export type TrackedProductsState = {
   handleCreateOrder: (data: any, notes: string) => any;
   getTotalPrice: (data: any) => void;
   handleSetKeyword: (keyword: string) => void;
+  getTrackedProductsFromAnOrder: (order_id: number) => any;
+  setTrackedProductsToAnalyze: (data: any) => void;
 };
 
 export const TrackedProductContext = createContext<TrackedProductsState>({
@@ -58,6 +62,7 @@ export const TrackedProductContext = createContext<TrackedProductsState>({
   supplierId: "",
   keyword: "",
   orderBy: "",
+  trackedProductsToAnalyze: [],
   handleSetOrderBy: () => {},
   setCurrentPage: () => {},
   setSupplierId: () => {},
@@ -71,6 +76,8 @@ export const TrackedProductContext = createContext<TrackedProductsState>({
   handleCreateOrder: (data: ProductInOrder[], notes: string) => {},
   getTotalPrice: (data: ProductInOrder[]) => {},
   handleSetKeyword: () => {},
+  getTrackedProductsFromAnOrder: () => {},
+  setTrackedProductsToAnalyze: () => {},
 });
 
 export const TrackedProductsProvider: FC<PropsWithChildren> = ({
@@ -92,6 +99,10 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
   const [trackedProductsAddedToOrder, setTrackedProductsAddedToOrder] =
     useState<ProductInOrder[]>([]);
+
+  const [trackedProductsToAnalyze, setTrackedProductsToAnalyze] = useState<
+    ProductInOrder[]
+  >([]);
 
   const { fetchOrders } = useOrdersContext();
 
@@ -117,6 +128,23 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         getFilteredTrackedProducts(supplierId, keyword);
       }, 500)
     );
+  };
+
+  const getTrackedProductsFromAnOrder = async (order_id: number) => {
+    try {
+      const response =
+        await TrackedProductsService.getTrackedProductsFromAnOrder(order_id);
+
+      if (response.success) {
+        console.log(response);
+
+        setTrackedProductsToAnalyze(response.data);
+        return response.data;
+      }
+    } catch (error) {
+      alert(error);
+      console.error(error);
+    }
   };
 
   const getFilteredTrackedProducts = async (
@@ -312,6 +340,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         keyword,
         currentPage,
         totalPages,
+        trackedProductsToAnalyze,
         handleSetOrderBy,
         setCurrentPage,
         handleNextPage,
@@ -324,6 +353,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         handleCreateOrder,
         getTotalPrice,
         handleSetKeyword,
+        getTrackedProductsFromAnOrder,
+        setTrackedProductsToAnalyze,
       }}
     >
       {children}

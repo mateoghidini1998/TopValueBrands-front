@@ -59,4 +59,21 @@ export class SuppliersService {
       throw new Error("Error updating supplier");
     }
   }
+
+  static async deleteSupplier(id: number) {
+    try {
+      const token = getAuthToken();
+      if (token) {
+        const response = await HttpAPI.delete(
+          `http://localhost:5000/api/v1/suppliers/${id}`,
+          token
+        );
+        return response;
+      } else {
+        throw new Error("Token not found");
+      }
+    } catch (error) {
+      throw new Error("Error deleting supplier");
+    }
+  }
 }

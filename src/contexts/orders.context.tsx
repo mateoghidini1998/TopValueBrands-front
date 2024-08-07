@@ -87,7 +87,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      setOrders(data.data); // Assuming the orders are in the `data` property
+      setOrders(data.data);
     } catch (error: any) {
       setError(error);
     } finally {
@@ -110,16 +110,37 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   };
 
   const rejectOrder = async (orderId: number) => {
-    try {
-      await PurchaseOrdersService.rejectOrderStatus(orderId);
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "Rejected" } : order
-        )
-      );
-      console.log("Order rejected:", orderId);
-    } catch (error: any) {
-      setError(error);
+    const order = orders.find((order) => order.id === orderId);
+    const orderStatus = order?.status;
+
+    if (orderStatus === "Rejected") {
+      try {
+        const res = await PurchaseOrdersService.deleteOrder(orderId);
+        console.log("Order deleted:", orderId);
+
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order.id !== orderId)
+        );
+
+        return res;
+      } catch (error: any) {
+        console.error(error);
+        setError(error);
+      }
+    } else {
+      try {
+        const response = await PurchaseOrdersService.rejectOrderStatus(orderId);
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === orderId ? { ...order, status: "Rejected" } : order
+          )
+        );
+        console.log("Order rejected:", orderId);
+        return response;
+      } catch (error: any) {
+        console.error(error);
+        setError(error);
+      }
     }
   };
 

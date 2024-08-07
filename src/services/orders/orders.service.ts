@@ -98,4 +98,16 @@ export class PurchaseOrdersService {
 
     return await response.json();
   }
+
+  static async deleteOrder(orderId: number) {
+    const response = await HttpAPI.delete(
+      `http://localhost:5000/api/v1/purchaseorders/delete/${orderId}`
+    );
+
+    console.log(response);
+
+    if (!response.success) {
+      throw new Error("Error deleting order");
+    }
+  }
 }
