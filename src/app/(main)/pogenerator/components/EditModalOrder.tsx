@@ -37,7 +37,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
   const {
     trackedProducts,
     getTrackedProductsFromAnOrder,
-    trackedProductsAddedToOrder,
+    trackedProductsToAnalyze,
     handleNextPage,
     handlePreviousPage,
     totalPages,
@@ -169,7 +169,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
           <TableComponent<TrackedProductType>
             hasOrderFilds={true}
             columns={columns}
-            data={trackedProductsAddedToOrder}
+            data={trackedProductsToAnalyze}
             nextPage={() => {}}
             previousPage={() => {}}
             totalPages={1}
