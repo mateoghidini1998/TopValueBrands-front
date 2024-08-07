@@ -17,6 +17,7 @@ const columns: Column[] = [
   { key: "total_price", name: "Total", width: "100px" },
   { key: "notes", name: "Notes", width: "150px" },
   { key: "status", name: "Status", width: "150px" },
+  { key: "average_roi", name: "AVG ROI", width: "150px" },
 ];
 
 export default function OrderPage() {

@@ -216,6 +216,22 @@ export const TableComponent = <T,>({
                       >
                         {cellValue}
                       </td>
+                    ) : column.key === "average_roi" ? (
+                      <td
+                        key={column.key}
+                        className="py-2 px-4 text-center text-nowrap overflow-hidden cursor-pointer"
+                        style={{ width: column.width }}
+                      >
+                        <span
+                          className={`w-[65px] py-2 rounded-sm px-4 text-center ${
+                            cellValue > 20
+                              ? "bg-[#00952A] bg-opacity-10 font-bold  text-[#00952A]"
+                              : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
+                          }`}
+                        >
+                          {Number(cellValue).toFixed(2) + " %"}
+                        </span>
+                      </td>
                     ) : column.key === "ninety_days_rank" ||
                       column.key === "thirty_days_rank" ? (
                       <td
