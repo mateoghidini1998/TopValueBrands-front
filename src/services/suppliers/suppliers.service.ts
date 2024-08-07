@@ -65,7 +65,7 @@ export class SuppliersService {
       const token = getAuthToken();
       if (token) {
         const response = await HttpAPI.delete(
-          `http://localhost:5000/api/v1/suppliers/${id}`,
+          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/suppliers/${id}`,
           token
         );
         return response;

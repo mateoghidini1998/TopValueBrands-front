@@ -101,7 +101,7 @@ export class PurchaseOrdersService {
 
   static async deleteOrder(orderId: number) {
     const response = await HttpAPI.delete(
-      `http://localhost:5000/api/v1/purchaseorders/delete/${orderId}`
+      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders/delete/${orderId}`
     );
 
     console.log(response);
