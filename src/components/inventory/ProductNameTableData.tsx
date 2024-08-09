@@ -10,7 +10,10 @@ type ProductNameTableDataProps = {
   width: any;
 };
 
-export const ProductNameTableData = ({product, width}: ProductNameTableDataProps) => {
+export const ProductNameTableData = ({
+  product,
+  width,
+}: ProductNameTableDataProps) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipText, setTooltipText] = useState<string>("");
   const spanRef = useRef<HTMLSpanElement>(null);
@@ -28,7 +31,10 @@ export const ProductNameTableData = ({product, width}: ProductNameTableDataProps
   // console.log(product?.product?.product_name);
 
   return (
-    <td style={{width:width}} className={` text-xs font-medium text-left p-3 h-fit relative`}>
+    <td
+      style={{ width: width }}
+      className={` text-xs font-medium text-left p-3 h-fit relative`}
+    >
       <div className="relative flex w-full h-full items-center justify-between text-left">
         <div className="w-8 h-8">
           {product?.product_image ? (
@@ -36,7 +42,7 @@ export const ProductNameTableData = ({product, width}: ProductNameTableDataProps
               target="a_blank"
               href={`https://www.amazon.com/dp/${product?.ASIN}`}
             >
-              <Image
+              {/* <Image
                 loading="lazy"
                 className="cover rounded-xl w-full h-full"
                 src={product?.product_image}
@@ -44,6 +50,17 @@ export const ProductNameTableData = ({product, width}: ProductNameTableDataProps
                 height={32}
                 alt="product_image"
                 blurDataURL="data:image/jpeg"
+              /> */}
+              <img
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                }}
+                src={product?.product_image}
+                alt="product_image"
+                loading="lazy"
               />
             </Link>
           ) : (
@@ -67,7 +84,10 @@ export const ProductNameTableData = ({product, width}: ProductNameTableDataProps
         </span>
       </div>
       {tooltipVisible && tooltipText === product?.product_name && (
-        <Tooltip product_name={product?.product_name} visible={tooltipVisible} />
+        <Tooltip
+          product_name={product?.product_name}
+          visible={tooltipVisible}
+        />
       )}
     </td>
   );
