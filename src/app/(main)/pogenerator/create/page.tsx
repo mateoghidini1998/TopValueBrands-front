@@ -30,6 +30,7 @@ const trackedProductsCol: Column[] = [
   { key: "lowest_fba_price", name: "FBA Price ", width: "100px" },
   { key: "profit", name: "Profit", width: "100px" },
   { key: "fees", name: "Fees", width: "75px" },
+  { key: "roi", name: "ROI", width: "85px" },
   // roi
   // warehouse stock
   // fba stock
