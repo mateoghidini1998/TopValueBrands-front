@@ -4,8 +4,15 @@ import Shop from "@/components/svgs/Shop";
 import Users from "@/components/svgs/Users";
 
 export const LINKS = [
-  { title: "Inventory Management", href: "/", icon: <Search /> },
-  { title: "Suppliers", href: "/suppliers", icon: <Users /> },
+  {
+    title: "Inventory Management",
+    href: "/",
+    icon: <Search />,
+    subLinks: [
+      { title: "Suppliers", href: "/suppliers", icon: <Users /> },
+      // Puedes agregar más submenús aquí si es necesario
+    ],
+  },
   { title: "PO Generator", href: "/pogenerator", icon: <Package /> },
   { title: "Warehouse", href: "/warehouse", icon: <Shop /> },
   { title: "Users", href: "/users", icon: <Users /> },
