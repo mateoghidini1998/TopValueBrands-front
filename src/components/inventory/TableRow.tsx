@@ -339,7 +339,9 @@ const TableRow = ({ products }: TableRowProps) => {
             <tr
               key={product?.id}
               className={`${i == 0 ? "mt-[60px]" : ""} 
-                m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-fit ${sidebarOpen ? "w-full" : "w-full"}
+                m-0 w-full py-1 stroke-1 stroke-dark-3 flex items-center h-fit ${
+                  sidebarOpen ? "w-full" : "w-full"
+                }
                  text-light bg-transparent border-b dark:border-b-dark-3 dark:text-white border-b-[#EFF1F3]`}
             >
               {/* Product Image and Product Name */}
@@ -355,7 +357,7 @@ const TableRow = ({ products }: TableRowProps) => {
                           target="a_blank"
                           href={`https://www.amazon.com/dp/${product?.ASIN}`}
                         >
-                          <Image
+                          {/* <Image
                             loading="lazy"
                             className="cover rounded-xl w-8 h-8"
                             src={product?.product_image}
@@ -363,6 +365,13 @@ const TableRow = ({ products }: TableRowProps) => {
                             height={32}
                             alt="product_image"
                             blurDataURL="data:image/jpeg"
+                          /> */}
+                          <img
+                            src={product?.product_image}
+                            alt="product_image"
+                            loading="lazy"
+                            className="cover rounded-xl w-8 h-8"
+                            style={{ objectFit: "cover", borderRadius: "8px" }}
                           />
                         </Link>
                       </div>
@@ -372,7 +381,11 @@ const TableRow = ({ products }: TableRowProps) => {
                       </div>
                     )}
                     <div
-                      className={`w-2 h-2 rounded-full ${product?.in_seller_account ? "bg-[#00952A]" : "bg-[#ef4444]"}`}
+                      className={`w-2 h-2 rounded-full ${
+                        product?.in_seller_account
+                          ? "bg-[#00952A]"
+                          : "bg-[#ef4444]"
+                      }`}
                     ></div>
                   </div>
                   <span
