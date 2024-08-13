@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { BiRightArrow } from "react-icons/bi";
 import TypewriterText from "../ui/TypeWriterText";
+import CollapseSidebar from "../svgs/CollapseSidebar";
+import classNames from "classnames";
 
 type MenuProps = {
   links: LinkType[];
@@ -62,7 +64,7 @@ const Menu = ({ isOpen, setIsOpen, links }: MenuProps) => {
                       : ""
                   }`}
                 >
-                  <BiRightArrow />
+                  <CollapseSidebar color="#438EF3" />
                 </i>
               )}
             </Link>

@@ -17,16 +17,16 @@ import useThemeContext from "@/contexts/theme.context";
 import { useEffect, useState } from "react";
 
 const trackedProductsCol: Column[] = [
-  { key: "product_name", name: "Product", width: "300px" },
+  { key: "product_name", name: "Product", width: "250px" },
   { key: "supplier_name", name: "Supplier Name", width: "150px" },
   { key: "product_velocity", name: "Velocity", width: "75px" },
   { key: "units_sold", name: "Units Sold", width: "75px" },
   { key: "thirty_days_rank", name: "30 Day Rank", width: "75px" },
   { key: "ninety_days_rank", name: "90 Day Rank", width: "75px" },
-  { key: "ASIN", name: "ASIN", width: "130px" },
+  { key: "ASIN", name: "ASIN", width: "100px" },
   // supplier_item_number
-  { key: "seller_sku", name: "Amazon SKU", width: "130px" },
-  { key: "product_cost", name: "Product Cost", width: "75px" },
+  { key: "seller_sku", name: "Amazon SKU", width: "120px" },
+  { key: "product_cost", name: "Product Cost", width: "80px" },
   { key: "lowest_fba_price", name: "FBA Price ", width: "100px" },
   { key: "profit", name: "Profit", width: "100px" },
   { key: "fees", name: "Fees", width: "75px" },
@@ -139,6 +139,7 @@ export default function Page() {
       )}
       <IndexPageContainer>
         <TableComponent<TrackedProductType>
+          hasOrderFilds={true}
           nextPage={handleNextPage}
           previousPage={handlePreviousPage}
           currentPage={currentPage}
@@ -148,7 +149,8 @@ export default function Page() {
           data={trackedProducts}
           actions={[<></>, <InputOrderAction key={"actions"} />, <></>, <></>]}
           actionHandlers={{ add: actionHandlers.add }}
-          tableHeigth="300px"
+          tableHeigth="600px"
+          tableMaxHeight="fit-content"
           actionsWidth="60px"
         />
         <div className="w-full h-fit space-y-4">
@@ -161,9 +163,9 @@ export default function Page() {
               remove: actionHandlers.remove,
               // edit: actionHandlers.edit,
             }}
-            tableHeigth="300px"
+            tableHeigth="fit-content"
+            tableMaxHeight="fit-content"
             actionsWidth="60px"
-            tableMaxHeight="300px"
           />
 
           <OrderSummary orderProducts={trackedProductsAddedToOrder} />
