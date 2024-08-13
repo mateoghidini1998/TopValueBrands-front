@@ -1,8 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
-import EmptyImage from "../svgs/EmptyImage";
-import { ProductType } from "@/types/product.types";
 import { useRef, useState } from "react";
+import EmptyImage from "../svgs/EmptyImage";
 import { Tooltip } from "./Tooltip";
 
 type ProductNameTableDataProps = {
