@@ -17,7 +17,7 @@ import useThemeContext from "@/contexts/theme.context";
 import { useEffect, useState } from "react";
 
 const trackedProductsCol: Column[] = [
-  { key: "product_name", name: "Product", width: "250px" },
+  { key: "product_name", name: "Product", width: "300px" },
   { key: "supplier_name", name: "Supplier Name", width: "150px" },
   { key: "product_velocity", name: "Velocity", width: "75px" },
   { key: "units_sold", name: "Units Sold", width: "75px" },
