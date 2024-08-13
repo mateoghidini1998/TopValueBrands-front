@@ -148,7 +148,8 @@ export default function Page() {
           data={trackedProducts}
           actions={[<></>, <InputOrderAction key={"actions"} />, <></>, <></>]}
           actionHandlers={{ add: actionHandlers.add }}
-          tableHeigth="300px"
+          tableHeigth="500px"
+          tableMaxHeight="fit-content"
           actionsWidth="60px"
         />
         <div className="w-full h-fit space-y-4">
@@ -161,9 +162,9 @@ export default function Page() {
               remove: actionHandlers.remove,
               // edit: actionHandlers.edit,
             }}
-            tableHeigth="300px"
+            tableHeigth="fit-content"
+            tableMaxHeight="fit-content"
             actionsWidth="60px"
-            tableMaxHeight="300px"
           />
 
           <OrderSummary orderProducts={trackedProductsAddedToOrder} />

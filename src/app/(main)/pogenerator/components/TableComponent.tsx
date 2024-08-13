@@ -84,7 +84,7 @@ export const TableComponent = <T,>({
         <table
           className={`${tableHeigth} max-h-[${tableMaxHeight}] w-full bg-white dark:bg-dark transition-colors duration-[0.6s] ease-in-out`}
         >
-          <thead className="pogenerator_table_header right-0 bg-white text-light dark:bg-dark-3 dark:text-white">
+          <thead className="pogenerator_table_header right-0 bg-white text-light dark:bg-dark-3 dark:text-white sticky top-0">
             <tr className="m-0 py-6 stroke-1 stroke-dark-3 h-[60px] bg-[#F8FAFC] text-black dark:text-white dark:bg-dark-2 transition-colors duration-[0.6s] ease-in-out flex items-center justify-between">
               {TABLE_COLUMNS.map((column) => (
                 <th
