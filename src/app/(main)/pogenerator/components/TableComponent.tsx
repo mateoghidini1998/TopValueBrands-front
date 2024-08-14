@@ -9,16 +9,21 @@ import { ChangeEvent } from "react";
 import { TableComponentProps } from "../interfaces/ITableComponent";
 import Pagination from "@/components/inventory/Pagination";
 import { OrderByComponent } from "./OrderByComponent";
+import { ActionButtons } from "./ActionButtons";
 
 type ActionType = "add" | "remove" | "edit" | "download";
 
 type ActionHandler<T> = (arg1: T, arg2?: any) => Promise<void>;
 
-type Actions<T> = {
+export type Actions<T> = {
   add?: ActionHandler<T>;
   remove?: ActionHandler<T>;
   edit?: ActionHandler<T>;
   download?: ActionHandler<T>;
+};
+
+type ActionElementMap = {
+  [key in ActionType]: JSX.Element;
 };
 
 export const TableComponent = <T,>({
@@ -35,7 +40,11 @@ export const TableComponent = <T,>({
   actionsWidth = "600px",
   tableHeigth = "100%",
   tableMaxHeight = "100%",
-}: TableComponentProps<T> & { actionHandlers?: Actions<T> }) => {
+  actionElements,
+}: TableComponentProps<T> & {
+  actionHandlers?: Actions<T>;
+  actionElements?: ActionElementMap;
+}) => {
   const TABLE_COLUMNS = columns;
   const TABLE_ROWS = data;
 
@@ -119,45 +128,19 @@ export const TableComponent = <T,>({
                       <td
                         width={column.width}
                         key={column.key}
-                        className={`py-2 px-4 text-right`}
+                        className="py-2 px-4 text-right"
                       >
-                        {actions && actionHandlers && (
-                          <div className="flex items-center justify-end gap-2">
-                            {actionHandlers.edit && (
-                              <button
-                                className={``}
-                                onClick={() => actionHandlers.edit!(row as any)}
-                              >
-                                {actions[0]}
-                              </button>
-                            )}
-                            {actionHandlers.add && (
-                              <button
-                                onClick={() => actionHandlers.add!(row as any)}
-                              >
-                                {actions[1]}
-                              </button>
-                            )}
-                            {actionHandlers.download && (
-                              <button
-                                className={``}
-                                onClick={() =>
-                                  actionHandlers.download!(row as any)
-                                }
-                              >
-                                {actions[2]}
-                              </button>
-                            )}
-                            {actionHandlers.remove && (
-                              <button
-                                onClick={() =>
-                                  actionHandlers.remove!(row as any)
-                                }
-                              >
-                                {actions[3]}
-                              </button>
-                            )}
-                          </div>
+                        {actions && actionHandlers && actionElements && (
+                          <ActionButtons
+                            actionHandlers={actionHandlers}
+                            actions={[
+                              actionElements.edit!,
+                              actionElements.add!,
+                              actionElements.download!,
+                              actionElements.remove!,
+                            ]}
+                            row={row}
+                          />
                         )}
                       </td>
                     ) : column.key === "product_name" ? (

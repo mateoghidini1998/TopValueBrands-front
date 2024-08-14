@@ -90,6 +90,17 @@ export default function OrderPage() {
           download: actionHandlers.download,
           remove: actionHandlers.remove,
         }}
+        actionElements={{
+          edit: <FaEye />,
+          add: <ConfirmButton />,
+          download: (
+            <div className="flex items-center gap-2">
+              Download PDF
+              <DownloadIcon />
+            </div>
+          ),
+          remove: <CancelButton />,
+        }}
       />
       <EditOrderModal isDarkMode={theme === "light" ? false : true} />;
     </IndexPageContainer>

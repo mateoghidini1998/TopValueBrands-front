@@ -147,7 +147,13 @@ export default function Page() {
           totalPages={totalPages}
           columns={trackedProductsCol}
           data={trackedProducts}
-          actions={[<></>, <InputOrderAction key={"actions"} />, <></>, <></>]}
+          actions={[<InputOrderAction key={"actions"} />]}
+          actionElements={{
+            add: <InputOrderAction key={"actions"} />,
+            edit: <></>,
+            download: <></>,
+            remove: <></>,
+          }}
           actionHandlers={{ add: actionHandlers.add }}
           tableHeigth="600px"
           tableMaxHeight="fit-content"
@@ -158,10 +164,15 @@ export default function Page() {
             totalPages={0}
             columns={orderProductsCol}
             data={trackedProductsAddedToOrder}
-            actions={[<></>, <></>, <></>, <DeleteIcon key={"actions"} />]}
+            actions={[<DeleteIcon key={"actions"} />]}
             actionHandlers={{
               remove: actionHandlers.remove,
-              // edit: actionHandlers.edit,
+            }}
+            actionElements={{
+              remove: <DeleteIcon key={"actions"} />,
+              edit: <></>,
+              download: <></>,
+              add: <></>,
             }}
             tableHeigth="fit-content"
             tableMaxHeight="fit-content"
