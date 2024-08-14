@@ -24,6 +24,21 @@ const getColorClass = (status: string) => {
   }
 };
 
+const changeName = (status: string) => {
+  switch (status) {
+    case TAG_STATUS.PENDING:
+      return "Pending";
+    case TAG_STATUS.APPROVED:
+      return "Good to go";
+    case TAG_STATUS.REJECTED:
+      return "Rejected";
+    case TAG_STATUS.CANCELLED:
+      return "Needs revision";
+    default:
+      return "Unknown";
+  }
+};
+
 export const OrderTags = ({ status }: OrderTagsProps) => {
   const colorClasses = getColorClass(status).split(" ");
   const bgColorClass = colorClasses[0];
@@ -33,7 +48,9 @@ export const OrderTags = ({ status }: OrderTagsProps) => {
     <div
       className={`w-fit mx-auto px-2 py-2 bg-opacity-10 rounded  ${bgColorClass}`}
     >
-      <p className={`font-bold bg-transparent ${textColorClass}`}>{status}</p>
+      <p className={`font-bold bg-transparent ${textColorClass}`}>
+        {changeName(status)}
+      </p>
     </div>
   );
 };
