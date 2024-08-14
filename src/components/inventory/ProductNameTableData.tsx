@@ -64,11 +64,13 @@ export const ProductNameTableData = ({
               <EmptyImage />
             </div>
           )}
-          <div
-            className={`w-2 h-2 rounded-full ${
-              product?.in_seller_account ? "bg-[#00952A]" : "bg-[#ef4444]"
-            }`}
-          ></div>
+          {product.in_seller_account !== undefined && (
+            <div
+              className={`w-2 h-2 rounded-full ${
+                product?.in_seller_account ? "bg-[#00952A]" : "bg-[#ef4444]"
+              }`}
+            ></div>
+          )}
         </div>
         <span
           ref={spanRef}
