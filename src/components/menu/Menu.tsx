@@ -26,7 +26,7 @@ const Menu = ({ isOpen, setIsOpen, links }: MenuProps) => {
   return (
     <ul className="flex flex-col items-start w-full">
       {links.map((link, index) => (
-        <li key={index} className="mb-6 w-full">
+        <li key={index} className="mb-6 w-full" onClick={() => setIsOpen(true)}>
           <div
             className={`w-full flex items-center justify-start h-[40px] text-nowrap cursor-pointer`}
           >
