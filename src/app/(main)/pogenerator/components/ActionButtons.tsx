@@ -26,5 +26,8 @@ export const ActionButtons = <T,>({
     {actionHandlers.remove && (
       <button onClick={() => actionHandlers.remove!(row)}>{actions[3]}</button>
     )}
+    {actionHandlers.restart && (
+      <button onClick={() => actionHandlers.restart!(row)}>{actions[4]}</button>
+    )}
   </div>
 );

@@ -20,6 +20,7 @@ export type Actions<T> = {
   remove?: ActionHandler<T>;
   edit?: ActionHandler<T>;
   download?: ActionHandler<T>;
+  restart?: ActionHandler<T>;
 };
 
 type ActionElementMap = {
