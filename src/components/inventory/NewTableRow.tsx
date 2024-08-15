@@ -1,11 +1,11 @@
 "use client";
 import { useProductContext } from "@/contexts/products.context";
+import { useSupplierContext } from "@/contexts/suppliers.context";
 import useThemeContext from "@/contexts/theme.context";
+import { SupplierType } from "@/types/supplier.types";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import CancelButton from "../svgs/CancelButton";
 import SaveButton from "../svgs/SaveButton";
-import { SupplierType } from "@/types/supplier.types";
-import { useSupplierContext } from "@/contexts/suppliers.context";
 
 export interface NewProductType {
   product_name?: string;
@@ -19,6 +19,10 @@ export interface NewProductType {
 
 const NewTableRow = () => {
   const { suppliers, createSupplier } = useSupplierContext();
+  const { setAddingProduct, createProduct, getProductBySku } =
+    useProductContext();
+  const { sidebarOpen } = useThemeContext();
+
   const isDarkmode = localStorage.getItem("theme") === "dark";
   const [theme, setTheme] = useState(isDarkmode ? "dark" : "light");
 
@@ -30,25 +34,32 @@ const NewTableRow = () => {
     }
   }, [theme]);
 
-  const { sidebarOpen } = useThemeContext();
+  const generateRandomSKU = (): string => {
+    const randomNumbers = () =>
+      `${Math.floor(100 + Math.random() * 900)}-${Math.floor(
+        100 + Math.random() * 900
+      )}`;
 
-  const exampleProduct = {
+    return `TVB-${randomNumbers()}`;
+    // return "TVB-352-952";
+  };
+
+  const initalProductState = {
     product_name: "",
     ASIN: "",
-    seller_sku: "",
+    seller_sku: generateRandomSKU(),
     product_cost: 0,
     supplier_id: 0,
     supplier_item_number: "",
     pack_type: "",
   };
 
-  const { setAddingProduct, createProduct } = useProductContext();
-
   const [formData, setFormData] = useState<NewProductType>({
-    ASIN: exampleProduct.ASIN,
-    product_cost: exampleProduct.product_cost,
-    supplier_id: exampleProduct.supplier_id,
-    supplier_item_number: exampleProduct.supplier_item_number,
+    ASIN: initalProductState.ASIN,
+    product_cost: initalProductState.product_cost,
+    supplier_id: initalProductState.supplier_id,
+    supplier_item_number: initalProductState.supplier_item_number,
+    seller_sku: initalProductState.seller_sku,
   });
 
   const [filterText, setFilterText] = useState<string>("");
@@ -95,14 +106,35 @@ const NewTableRow = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleCreateProduct = (newProduct: NewProductType) => {
+  // const handleCreateProduct = (newProduct: NewProductType) => {
+  //   const requiredFields = [
+  //     "supplier_id",
+  //     "supplier_item_number",
+  //     "ASIN",
+  //     "product_cost",
+  //   ];
+  //   console.log(Object.keys(newProduct));
+
+  //   for (const field of requiredFields) {
+  //     if (!newProduct[field as keyof NewProductType]) {
+  //       alert(`Product ${field} is required`);
+  //       return;
+  //     }
+  //   }
+  //   console.log(newProduct);
+  //   createProduct(newProduct);
+  //   setAddingProduct(false);
+  //   setFormData(initalProductState);
+  // };
+
+  const handleCreateProduct = async (newProduct: NewProductType) => {
     const requiredFields = [
       "supplier_id",
       "supplier_item_number",
       "ASIN",
       "product_cost",
+      "seller_sku",
     ];
-    console.log(Object.keys(newProduct));
 
     for (const field of requiredFields) {
       if (!newProduct[field as keyof NewProductType]) {
@@ -110,15 +142,25 @@ const NewTableRow = () => {
         return;
       }
     }
-    console.log(newProduct);
+
+    // Verificar si el SKU ya existe
+    const existingProduct = await getProductBySku(newProduct.seller_sku!);
+    if (existingProduct) {
+      alert("The SKU already exists. Please generate a new one.");
+      setFormData({ ...formData, seller_sku: generateRandomSKU() });
+      return;
+    }
+
     createProduct(newProduct);
     setAddingProduct(false);
-    setFormData(exampleProduct);
+    setFormData({ ...initalProductState, seller_sku: generateRandomSKU() });
   };
 
   return (
     <tbody
-      className={` ${sidebarOpen ? "inventory_new_product" : "inventory_new_product_tr"}`}
+      className={` ${
+        sidebarOpen ? "inventory_new_product" : "inventory_new_product_tr"
+      }`}
     >
       <tr
         className={`${
@@ -149,13 +191,23 @@ const NewTableRow = () => {
             // defaultValue={formData.ASIN}
           />
         </td>
-        <td className="w-[10%] text-xs font-medium text-center">
+        {/* <td className="w-[10%] text-xs font-medium text-center">
           <input
             type="text"
             className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
             placeholder="seller sku"
             name="seller_sku"
             onChange={handleChange}
+          />
+        </td> */}
+        <td className="w-[10%] text-xs font-medium text-center">
+          <input
+            type="text"
+            className="w-[90%] mx-auto h-[30px] text-xs bg-white dark:bg-dark border-[1px] rounded-md px-4 dark:text-white border-light border-solid  "
+            placeholder="seller sku"
+            name="seller_sku"
+            value={formData.seller_sku}
+            readOnly
           />
         </td>
         <td className="w-[3%] text-xs font-medium text-center">
@@ -289,7 +341,7 @@ const NewTableRow = () => {
             className="cursor-pointer"
             onClick={() => {
               setAddingProduct(false);
-              setFormData(exampleProduct);
+              setFormData(initalProductState);
             }}
           >
             <CancelButton />

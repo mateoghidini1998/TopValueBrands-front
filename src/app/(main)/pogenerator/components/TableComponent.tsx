@@ -9,16 +9,23 @@ import { ChangeEvent } from "react";
 import { TableComponentProps } from "../interfaces/ITableComponent";
 import Pagination from "@/components/inventory/Pagination";
 import { OrderByComponent } from "./OrderByComponent";
+import { ActionButtons } from "./ActionButtons";
 
-type ActionType = "add" | "remove" | "edit" | "download";
+type ActionType = "add" | "remove" | "edit" | "download" | "restart" | "none";
 
 type ActionHandler<T> = (arg1: T, arg2?: any) => Promise<void>;
 
-type Actions<T> = {
+export type Actions<T> = {
   add?: ActionHandler<T>;
   remove?: ActionHandler<T>;
   edit?: ActionHandler<T>;
   download?: ActionHandler<T>;
+  restart?: ActionHandler<T>;
+  none?: any;
+};
+
+type ActionElementMap = {
+  [key in ActionType]: JSX.Element;
 };
 
 export const TableComponent = <T,>({
@@ -35,7 +42,11 @@ export const TableComponent = <T,>({
   actionsWidth = "600px",
   tableHeigth = "100%",
   tableMaxHeight = "100%",
-}: TableComponentProps<T> & { actionHandlers?: Actions<T> }) => {
+  actionElements,
+}: TableComponentProps<T> & {
+  actionHandlers?: Actions<T>;
+  actionElements?: ActionElementMap;
+}) => {
   const TABLE_COLUMNS = columns;
   const TABLE_ROWS = data;
 
@@ -75,6 +86,36 @@ export const TableComponent = <T,>({
     updateTrackedProductInOrder(updatedRow);
   };
 
+  /**
+   * 1. Edit
+   * 2. Add
+   * 3. Download
+   * 4. Remove
+   * 5. Restart
+   * 6. None
+   */
+
+  const actionMap: { [key: string]: ActionType[] } = {
+    Pending: ["edit", "add", "download", "remove", "restart", "none"],
+    Approved: ["none", "none", "download", "none", "restart", "none"],
+    Rejected: ["edit", "add", "download", "remove", "restart", "none"],
+    Cancelled: ["edit", "add", "download", "remove", "restart", "none"],
+    // Agrega más mapeos según sea necesario
+  };
+
+  const getActionsForStatus = (status: string): JSX.Element[] => {
+    console.log(status);
+    const actionsForStatus = actionMap[status] || [];
+
+    console.log(actionsForStatus);
+
+    if (!actionElements) {
+      return [];
+    }
+
+    return actionsForStatus.map((action) => actionElements[action]!);
+  };
+
   return (
     <div className="scroll-container mt-8">
       <div
@@ -108,6 +149,8 @@ export const TableComponent = <T,>({
           </thead>
           <tbody>
             {TABLE_ROWS.map((row, rowIndex) => {
+              console.log(row);
+
               return (
                 <tr
                   key={rowIndex}
@@ -119,46 +162,30 @@ export const TableComponent = <T,>({
                       <td
                         width={column.width}
                         key={column.key}
-                        className={`py-2 px-4 text-right`}
+                        className="py-2 px-4 text-right"
                       >
-                        {actions && actionHandlers && (
-                          <div className="flex items-center justify-end gap-2">
-                            {actionHandlers.edit && (
-                              <button
-                                className={``}
-                                onClick={() => actionHandlers.edit!(row as any)}
-                              >
-                                {actions[0]}
-                              </button>
-                            )}
-                            {actionHandlers.add && (
-                              <button
-                                onClick={() => actionHandlers.add!(row as any)}
-                              >
-                                {actions[1]}
-                              </button>
-                            )}
-                            {actionHandlers.download && (
-                              <button
-                                className={``}
-                                onClick={() =>
-                                  actionHandlers.download!(row as any)
-                                }
-                              >
-                                {actions[2]}
-                              </button>
-                            )}
-                            {actionHandlers.remove && (
-                              <button
-                                onClick={() =>
-                                  actionHandlers.remove!(row as any)
-                                }
-                              >
-                                {actions[3]}
-                              </button>
-                            )}
-                          </div>
-                        )}
+                        {actions &&
+                          actionHandlers &&
+                          actionElements &&
+                          (row.order_number ? (
+                            <ActionButtons
+                              actionHandlers={actionHandlers}
+                              actions={getActionsForStatus(row?.status)}
+                              row={row}
+                            />
+                          ) : (
+                            <ActionButtons
+                              actionHandlers={actionHandlers}
+                              actions={[
+                                actionElements.edit!,
+                                actionElements.add!,
+                                actionElements.download!,
+                                actionElements.remove!,
+                                actionElements.restart!,
+                              ]}
+                              row={row}
+                            />
+                          ))}
                       </td>
                     ) : column.key === "product_name" ? (
                       <ProductNameTableData
@@ -176,11 +203,7 @@ export const TableComponent = <T,>({
                         {column.key === "unit_price" && "$"}
                         <input
                           type="number"
-                          value={
-                            column.key === "unit_price"
-                              ? cellValue.toFixed(2)
-                              : cellValue
-                          }
+                          value={cellValue}
                           onChange={(event) =>
                             handleInputChange(event, row, column.key)
                           }
@@ -193,7 +216,13 @@ export const TableComponent = <T,>({
                         className="py-2 px-4 text-center"
                         style={{ width: column.width }}
                       >
-                        {`$ ${(row.quantity * row.unit_price).toFixed(2)}`}
+                        {`$ ${(row.quantity * row.unit_price).toLocaleString(
+                          "en-US",
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }
+                        )}`}
                       </td>
                     ) : column.key === "status" ? (
                       <td
@@ -255,7 +284,10 @@ export const TableComponent = <T,>({
                       >
                         {column.key === "product_cost" ||
                         column.key === "total_price"
-                          ? `$ ${Number(cellValue).toFixed(2).toLocaleString()}`
+                          ? `$ ${Number(cellValue).toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}`
                           : `$ ${Number(cellValue).toLocaleString("en-US")}`}
                       </td>
                     ) : column.key === "profit" ? (

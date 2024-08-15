@@ -17,17 +17,17 @@ import useThemeContext from "@/contexts/theme.context";
 import { useEffect, useState } from "react";
 
 const trackedProductsCol: Column[] = [
-  { key: "product_name", name: "Product", width: "300px" },
+  { key: "product_name", name: "Product", width: "250px" },
   { key: "supplier_name", name: "Supplier Name", width: "150px" },
-  { key: "product_velocity", name: "Velocity", width: "75px" },
-  { key: "units_sold", name: "Units Sold", width: "75px" },
-  { key: "thirty_days_rank", name: "30 Day Rank", width: "75px" },
-  { key: "ninety_days_rank", name: "90 Day Rank", width: "75px" },
+  { key: "product_velocity", name: "Velocity", width: "60px" },
+  { key: "units_sold", name: "U. Sold", width: "60px" },
+  { key: "thirty_days_rank", name: "30 Day Rank", width: "90px" },
+  { key: "ninety_days_rank", name: "90 Day Rank", width: "90px" },
   { key: "ASIN", name: "ASIN", width: "100px" },
   // supplier_item_number
   { key: "seller_sku", name: "Amazon SKU", width: "120px" },
   { key: "product_cost", name: "Product Cost", width: "80px" },
-  { key: "lowest_fba_price", name: "FBA Price ", width: "100px" },
+  { key: "lowest_fba_price", name: "FBA Price ", width: "90px" },
   { key: "profit", name: "Profit", width: "100px" },
   { key: "fees", name: "Fees", width: "75px" },
   { key: "roi", name: "ROI", width: "85px" },
@@ -45,7 +45,7 @@ const orderProductsCol: Column[] = [
   { key: "quantity", name: "Quantity", width: "12%" },
   { key: "unit_price", name: "Product Cost", width: "12%" },
   { key: "total_amount", name: "Total Amount", width: "12%" },
-  { key: "units_sold", name: "Units Sold", width: "5%" },
+  { key: "units_sold", name: "U. Sold", width: "5%" },
 ];
 
 export default function Page() {
@@ -147,7 +147,15 @@ export default function Page() {
           totalPages={totalPages}
           columns={trackedProductsCol}
           data={trackedProducts}
-          actions={[<></>, <InputOrderAction key={"actions"} />, <></>, <></>]}
+          actions={[<InputOrderAction key={"actions"} />]}
+          actionElements={{
+            add: <InputOrderAction key={"actions"} />,
+            edit: <></>,
+            download: <></>,
+            remove: <></>,
+            restart: <></>,
+            none: <></>,
+          }}
           actionHandlers={{ add: actionHandlers.add }}
           tableHeigth="600px"
           tableMaxHeight="fit-content"
@@ -158,10 +166,17 @@ export default function Page() {
             totalPages={0}
             columns={orderProductsCol}
             data={trackedProductsAddedToOrder}
-            actions={[<></>, <></>, <></>, <DeleteIcon key={"actions"} />]}
+            actions={[<DeleteIcon key={"actions"} />]}
             actionHandlers={{
               remove: actionHandlers.remove,
-              // edit: actionHandlers.edit,
+            }}
+            actionElements={{
+              remove: <DeleteIcon key={"actions"} />,
+              edit: <></>,
+              download: <></>,
+              add: <></>,
+              restart: <></>,
+              none: <></>,
             }}
             tableHeigth="fit-content"
             tableMaxHeight="fit-content"

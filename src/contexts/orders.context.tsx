@@ -41,6 +41,7 @@ type OrdersContextType = {
   error: Error | null;
   acceptOrder: (id: number) => Promise<void>;
   rejectOrder: (id: number) => Promise<void>;
+  restartOrder: (id: number) => Promise<void>;
   editOrder: (id: number, orderData: any) => Promise<void>;
   openEditModal: (order: OrderType) => void;
   closeEditModal: () => void;
@@ -144,6 +145,20 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
+  const restartOrder = async (orderId: number) => {
+    try {
+      await PurchaseOrdersService.restartOrderStatus(orderId);
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === orderId ? { ...order, status: "Pending" } : order
+        )
+      );
+      console.log("Order restarted:", orderId);
+    } catch (error: any) {
+      setError(error);
+    }
+  };
+
   const downloadOrder = async (orderId: number) => {
     try {
       await PurchaseOrdersService.downloadOrder(orderId);
@@ -180,6 +195,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         editOrder,
         acceptOrder,
         rejectOrder,
+        restartOrder,
         openEditModal,
         closeEditModal,
         downloadOrder,
