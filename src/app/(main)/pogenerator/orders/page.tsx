@@ -82,6 +82,7 @@ export default function OrderPage() {
         columns={columns}
         data={orders || []}
         tableHeigth="600px"
+        actionsWidth="300px"
         actions={[
           <div key={"actions"}>
             <FaEye key={"actions"} className="w-5 h-5" />
