@@ -34,7 +34,7 @@ export const ProductNameTableData = ({
       className={` text-xs font-medium text-left p-3 h-fit relative`}
     >
       <div className="relative flex w-full h-full items-center justify-between text-left">
-        <div className="h-8 gap-2 flex items-center justify-between">
+        <div className="h-8 gap-2 flex items-center justify-between mr-2">
           {product?.product_image ? (
             <div className="">
               <Link

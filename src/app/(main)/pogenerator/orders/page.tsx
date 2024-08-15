@@ -14,10 +14,10 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { MdDeleteForever } from "react-icons/md";
 
 const columns: Column[] = [
-  { key: "supplier_name", name: "Supplier Name", width: "100px" },
+  { key: "supplier_name", name: "Supplier Name", width: "150px" },
   { key: "order_number", name: "Order Number", width: "100px" },
-  { key: "createdAt", name: "Date", width: "100px" },
-  { key: "total_price", name: "Total", width: "100px" },
+  { key: "createdAt", name: "Date", width: "150px" },
+  { key: "total_price", name: "Total", width: "120px" },
   { key: "notes", name: "Notes", width: "150px" },
   { key: "status", name: "Status", width: "150px" },
   { key: "average_roi", name: "AVG ROI", width: "150px" },
@@ -104,16 +104,49 @@ export default function OrderPage() {
           none: () => {},
         }}
         actionElements={{
-          edit: <FaEdit className="w-[.9rem] h-[.9rem]" />,
-          add: <GrStatusGood className="w-[.9rem] h-[.9rem]" />,
-          restart: <VscDebugRestart className="w-[.9rem] h-[.9rem]" />,
+          edit: (
+            <div className="relative group">
+              <FaEdit className="w-[.9rem] h-[.9rem]" />
+              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                Edit
+              </span>
+            </div>
+          ),
+          add: (
+            <div className="relative group">
+              <GrStatusGood className="w-[.9rem] h-[.9rem]" />
+              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                Approve
+              </span>
+            </div>
+          ),
+          restart: (
+            <div className="relative group">
+              <VscDebugRestart className="w-[.9rem] h-[.9rem]" />
+              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                Pending
+              </span>
+            </div>
+          ),
           download: (
-            <FaDownload className="w-[.9rem] h-[.9rem]" />
+            <div className="relative group">
+              <FaDownload className="w-[.9rem] h-[.9rem]" />
+              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                Download
+              </span>
+            </div>
             // <div className="flex items-center gap-2">
             //   Download PDF
             // </div>
           ),
-          remove: <MdDeleteForever className="w-[.9rem] h-[.9rem]" />,
+          remove: (
+            <div className="relative group">
+              <MdDeleteForever className="w-[.9rem] h-[.9rem]" />
+              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                Reject
+              </span>
+            </div>
+          ),
           none: <></>,
         }}
       />
