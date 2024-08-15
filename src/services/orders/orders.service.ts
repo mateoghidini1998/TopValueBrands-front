@@ -52,7 +52,7 @@ export class PurchaseOrdersService {
     try {
       // const token = getAuthToken();
       const response = await HttpAPI.patch(
-        `http://localhost:5000/api/v1/purchaseorders/restart/${orderId}`
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders/restart/${orderId}`
         // { status }
         // { headers: { Authorization: `Bearer ${token}` }}
       );

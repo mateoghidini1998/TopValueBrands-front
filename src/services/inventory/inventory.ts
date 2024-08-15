@@ -35,7 +35,7 @@ export class InventoryService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/products/${seller_sku}`,
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products/${seller_sku}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
