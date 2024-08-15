@@ -48,6 +48,20 @@ export class PurchaseOrdersService {
     }
   }
 
+  static async restartOrderStatus(orderId: number) {
+    try {
+      // const token = getAuthToken();
+      const response = await HttpAPI.patch(
+        `http://localhost:5000/api/v1/purchaseorders/restart/${orderId}`
+        // { status }
+        // { headers: { Authorization: `Bearer ${token}` }}
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error updating order status");
+    }
+  }
+
   static async downloadOrder(orderId: number) {
     try {
       const token = getAuthToken();

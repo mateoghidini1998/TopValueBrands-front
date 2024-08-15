@@ -4,11 +4,14 @@ import ConfirmButton from "@/components/svgs/ConfirmButton";
 import DownloadIcon from "@/components/svgs/DownloadIcon";
 import { useOrdersContext } from "@/contexts/orders.context";
 import useThemeContext from "@/contexts/theme.context";
-import { FaEye } from "react-icons/fa";
+import { FaDownload, FaEdit, FaEye } from "react-icons/fa";
 import IndexPageContainer from "../../page.container";
 import EditOrderModal from "../components/EditModalOrder";
 import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
+import { GrStatusGood } from "react-icons/gr";
+import { VscDebugRestart } from "react-icons/vsc";
+import { MdDeleteForever } from "react-icons/md";
 
 const columns: Column[] = [
   { key: "supplier_name", name: "Supplier Name", width: "100px" },
@@ -28,6 +31,7 @@ export default function OrderPage() {
     rejectOrder,
     acceptOrder,
     downloadOrder,
+    restartOrder,
     editOrder,
     openEditModal,
   } = useOrdersContext();
@@ -59,6 +63,13 @@ export default function OrderPage() {
         resolve();
       });
     },
+
+    restart: (data: any) => {
+      return new Promise<void>((resolve) => {
+        restartOrder(data.id);
+        resolve();
+      });
+    },
   };
 
   if (loading) return <p>Loading...</p>;
@@ -87,19 +98,23 @@ export default function OrderPage() {
         actionHandlers={{
           edit: actionHandlers.edit,
           add: actionHandlers.add,
+          restart: actionHandlers.restart,
           download: actionHandlers.download,
           remove: actionHandlers.remove,
+          none: () => {},
         }}
         actionElements={{
-          edit: <FaEye />,
-          add: <ConfirmButton />,
+          edit: <FaEdit className="w-[.9rem] h-[.9rem]" />,
+          add: <GrStatusGood className="w-[.9rem] h-[.9rem]" />,
+          restart: <VscDebugRestart className="w-[.9rem] h-[.9rem]" />,
           download: (
-            <div className="flex items-center gap-2">
-              Download PDF
-              <DownloadIcon />
-            </div>
+            <FaDownload className="w-[.9rem] h-[.9rem]" />
+            // <div className="flex items-center gap-2">
+            //   Download PDF
+            // </div>
           ),
-          remove: <CancelButton />,
+          remove: <MdDeleteForever className="w-[.9rem] h-[.9rem]" />,
+          none: <></>,
         }}
       />
       <EditOrderModal isDarkMode={theme === "light" ? false : true} />;
