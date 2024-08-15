@@ -81,6 +81,7 @@ export default function OrderPage() {
         totalPages={Math.ceil(orders?.length / 50)}
         columns={columns}
         data={orders || []}
+        tableHeigth="600px"
         actions={[
           <div key={"actions"}>
             <FaEye key={"actions"} className="w-5 h-5" />
