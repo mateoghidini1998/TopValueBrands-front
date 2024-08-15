@@ -32,6 +32,7 @@ export type ProductState = {
   handlePreviousPage: () => void;
   setCurrentPage: (page: number) => void;
   createProduct: (newProduct: NewProductType) => void;
+  getProductBySku: (sku: string) => any;
 };
 
 export const ProductContext = createContext<ProductState>({
@@ -52,6 +53,17 @@ export const ProductContext = createContext<ProductState>({
   setCurrentPage: () => {},
   handleDeleteProduct: () => {},
   createProduct: () => {},
+  getProductBySku: () => ({
+    id: "",
+    ASIN: "",
+    product_cost: 0,
+    supplier_id: 0,
+    supplier_item_number: "",
+    seller_sku: "",
+    product_name: "",
+    updatedAt: "",
+    createdAt: "",
+  }),
 });
 
 export const ProductProvider: FC<PropsWithChildren> = ({
@@ -105,6 +117,17 @@ export const ProductProvider: FC<PropsWithChildren> = ({
       setTotalPages(response.pages);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  // get product by seller_sku
+  const getProductBySku = async (seller_sku: string) => {
+    try {
+      const response = await InventoryService.getProductBySku(seller_sku);
+      return response;
+    } catch (error) {
+      console.error(error);
+      // throw new Error("Error fetching data");
     }
   };
 
@@ -194,6 +217,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({
         handleSetSupplier,
         orderBy,
         handleSetOrderBy,
+        getProductBySku,
       }}
     >
       {children}

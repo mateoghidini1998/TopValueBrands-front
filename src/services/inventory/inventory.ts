@@ -30,6 +30,25 @@ export class InventoryService {
     }
   }
 
+  // get product by seller_sku
+  static async getProductBySku(seller_sku: string) {
+    try {
+      const token = getAuthToken();
+      const response = await HttpAPI.get(
+        `http://localhost:5000/api/v1/products/${seller_sku}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      // throw new Error("Error fetching data");
+    }
+  }
+
   static async createProduct(data: NewProductType) {
     try {
       const token = getAuthToken();
