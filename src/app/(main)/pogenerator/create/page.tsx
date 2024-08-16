@@ -161,30 +161,32 @@ export default function Page() {
           tableMaxHeight="fit-content"
           actionsWidth="60px"
         />
-        <div className="w-full h-fit space-y-4">
-          <TableComponent<ProductInOrder>
-            totalPages={0}
-            columns={orderProductsCol}
-            data={trackedProductsAddedToOrder}
-            actions={[<DeleteIcon key={"actions"} />]}
-            actionHandlers={{
-              remove: actionHandlers.remove,
-            }}
-            actionElements={{
-              remove: <DeleteIcon key={"actions"} />,
-              edit: <></>,
-              download: <></>,
-              add: <></>,
-              restart: <></>,
-              none: <></>,
-            }}
-            tableHeigth="fit-content"
-            tableMaxHeight="fit-content"
-            actionsWidth="60px"
-          />
+        {trackedProductsAddedToOrder.length > 0 && (
+          <div className="w-full h-fit space-y-4">
+            <TableComponent<ProductInOrder>
+              totalPages={0}
+              columns={orderProductsCol}
+              data={trackedProductsAddedToOrder}
+              actions={[<DeleteIcon key={"actions"} />]}
+              actionHandlers={{
+                remove: actionHandlers.remove,
+              }}
+              actionElements={{
+                remove: <DeleteIcon key={"actions"} />,
+                edit: <></>,
+                download: <></>,
+                add: <></>,
+                restart: <></>,
+                none: <></>,
+              }}
+              tableHeigth="fit-content"
+              tableMaxHeight="fit-content"
+              actionsWidth="60px"
+            />
 
-          <OrderSummary orderProducts={trackedProductsAddedToOrder} />
-        </div>
+            <OrderSummary orderProducts={trackedProductsAddedToOrder} />
+          </div>
+        )}
       </IndexPageContainer>
     </>
   );
