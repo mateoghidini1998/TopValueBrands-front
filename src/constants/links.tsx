@@ -13,7 +13,7 @@ export const LINKS = [
       // Puedes agregar más submenús aquí si es necesario
     ],
   },
-  { title: "PO Generator", href: "/pogenerator", icon: <Package /> },
+  { title: "PO Generator", href: "/pogenerator/create", icon: <Package /> },
   { title: "Warehouse", href: "/warehouse", icon: <Shop /> },
   { title: "Users", href: "/users", icon: <Users /> },
 ];
