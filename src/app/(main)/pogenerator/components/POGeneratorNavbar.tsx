@@ -3,10 +3,10 @@ import { POGeneratorActiveLink } from "./POGeneratorActiveLink";
 import SearchInputPOGenerator from "./SearchInputPOGenerator";
 
 const navLinks = [
-  {
-    name: "Products",
-    href: "/pogenerator",
-  },
+  // {
+  //   name: "Products",
+  //   href: "/pogenerator",
+  // },
   {
     name: "Generator",
     href: "/pogenerator/create",

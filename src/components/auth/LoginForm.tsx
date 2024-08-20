@@ -29,14 +29,14 @@ const LoginForm = () => {
       router.refresh();
     }
   }, [authToken, router]);
-    
+
   const onSubmit = async (data: FormData) => {
     try {
       await login(data.email, data.password);
       if (user && user.role === "admin") {
         router.push("/");
       } else if (user && user.role !== "admin") {
-        router.push("/pogenerator");
+        router.push("/pogenerator/create");
       }
     } catch (error) {
       console.error(error);
