@@ -10,6 +10,8 @@ import { TableComponentProps } from "../interfaces/ITableComponent";
 import Pagination from "@/components/inventory/Pagination";
 import { OrderByComponent } from "./OrderByComponent";
 import { ActionButtons } from "./ActionButtons";
+import EditOrderOptionActions from "./EditOrderOptionActions";
+import { useOrdersContext } from "@/contexts/orders.context";
 
 type ActionType = "add" | "remove" | "edit" | "download" | "restart" | "none";
 
@@ -21,11 +23,11 @@ export type Actions<T> = {
   edit?: ActionHandler<T>;
   download?: ActionHandler<T>;
   restart?: ActionHandler<T>;
-  none?: any;
+  none: (order: any) => any;
 };
 
 type ActionElementMap = {
-  [key in ActionType]: JSX.Element;
+  [key in ActionType]: any;
 };
 
 export const TableComponent = <T,>({
@@ -71,6 +73,7 @@ export const TableComponent = <T,>({
     });
   }
   const { updateTrackedProductInOrder } = useTrackedProductContext();
+  const { editOrderAction, setEditOrderAction } = useOrdersContext();
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -104,10 +107,10 @@ export const TableComponent = <T,>({
   };
 
   const getActionsForStatus = (status: string): JSX.Element[] => {
-    console.log(status);
+    // console.log(status);
     const actionsForStatus = actionMap[status] || [];
 
-    console.log(actionsForStatus);
+    // console.log(actionsForStatus);
 
     if (!actionElements) {
       return [];
@@ -149,7 +152,7 @@ export const TableComponent = <T,>({
           </thead>
           <tbody>
             {TABLE_ROWS.map((row, rowIndex) => {
-              console.log(row);
+              // console.log(row);
 
               return (
                 <tr
@@ -162,30 +165,32 @@ export const TableComponent = <T,>({
                       <td
                         width={column.width}
                         key={column.key}
-                        className="py-2 px-4 text-right"
+                        className="py-2 px-4 text-right relative"
                       >
-                        {actions &&
+                        {actions && actionHandlers && actionElements && (
+                          <ActionButtons
+                            actionHandlers={actionHandlers}
+                            actions={[
+                              actionElements.edit!,
+                              actionElements.add!,
+                              actionElements.download!,
+                              actionElements.remove!,
+                              actionElements.restart!,
+                              actionElements.none!,
+                            ]}
+                            row={row}
+                          />
+                        )}
+
+                        {editOrderAction?.id == row.id &&
                           actionHandlers &&
-                          actionElements &&
-                          (row.order_number ? (
-                            <ActionButtons
+                          actionElements && (
+                            <EditOrderOptionActions
+                              actionElements={actionElements}
                               actionHandlers={actionHandlers}
-                              actions={getActionsForStatus(row?.status)}
                               row={row}
                             />
-                          ) : (
-                            <ActionButtons
-                              actionHandlers={actionHandlers}
-                              actions={[
-                                actionElements.edit!,
-                                actionElements.add!,
-                                actionElements.download!,
-                                actionElements.remove!,
-                                actionElements.restart!,
-                              ]}
-                              row={row}
-                            />
-                          ))}
+                          )}
                       </td>
                     ) : column.key === "product_name" ? (
                       <ProductNameTableData

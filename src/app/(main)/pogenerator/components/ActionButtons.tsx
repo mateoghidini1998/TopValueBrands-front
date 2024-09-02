@@ -34,6 +34,10 @@ export const ActionButtons = <T,>({
           {actions[4]}
         </button>
       )}
+
+      {actionHandlers.none && (
+        <button onClick={() => actionHandlers.none!(row)}>{actions[5]}</button>
+      )}
     </div>
   );
 };

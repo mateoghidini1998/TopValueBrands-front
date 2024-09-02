@@ -49,6 +49,8 @@ type OrdersContextType = {
   fetchOrders: () => Promise<void>;
   isEditModalOpen: boolean;
   orderToEdit: OrderType | null;
+  editOrderAction: any;
+  setEditOrderAction: (data: any) => void;
 };
 
 const OrdersContext = createContext<OrdersContextType | undefined>(undefined);
@@ -72,6 +74,8 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const [error, setError] = useState<Error | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [orderToEdit, setOrderToEdit] = useState<OrderType | null>(null);
+
+  const [editOrderAction, setEditOrderAction] = useState<any>(null);
 
   useEffect(() => {
     fetchOrders();
@@ -205,6 +209,8 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         fetchOrders,
         isEditModalOpen,
         orderToEdit,
+        editOrderAction,
+        setEditOrderAction,
       }}
     >
       {children}

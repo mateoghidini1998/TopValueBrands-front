@@ -12,6 +12,9 @@ import { Column } from "../interfaces/ITableComponent";
 import { GrStatusGood } from "react-icons/gr";
 import { VscDebugRestart } from "react-icons/vsc";
 import { MdDeleteForever } from "react-icons/md";
+import DotsSVG from "@/components/svgs/DotsSVG";
+import EditOrderOptionActions from "../components/EditOrderOptionActions";
+import { useState } from "react";
 
 const columns: Column[] = [
   { key: "supplier_name", name: "Supplier Name", width: "150px" },
@@ -34,13 +37,20 @@ export default function OrderPage() {
     restartOrder,
     editOrder,
     openEditModal,
+    setEditOrderAction,
+    editOrderAction,
+    // getOrderById,
   } = useOrdersContext();
 
   const { theme } = useThemeContext();
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
+  // Estado para controlar el ID del elemento seleccionado
 
   const actionHandlers = {
     add: (data: any) => {
       return new Promise<void>((resolve) => {
+        console.log(data);
         acceptOrder(data.id);
         resolve();
       });
@@ -63,12 +73,22 @@ export default function OrderPage() {
         resolve();
       });
     },
-
     restart: (data: any) => {
       return new Promise<void>((resolve) => {
         restartOrder(data.id);
         resolve();
       });
+    },
+    none: (data: any) => {
+      if (selectedOrderId === data) {
+        // Si se hace clic en el mismo botón, cerrar
+        setSelectedOrderId(null);
+        setEditOrderAction(null);
+      } else {
+        // Si es un botón diferente, abrir y establecer como seleccionado
+        setSelectedOrderId(data);
+        setEditOrderAction(data);
+      }
     },
   };
 
@@ -84,18 +104,11 @@ export default function OrderPage() {
         tableHeigth="600px"
         actionsWidth="300px"
         actions={[
-          <div key={"actions"}>
-            <FaEye key={"actions"} className="w-5 h-5" />
-          </div>,
-          <ConfirmButton key={"actions"} />,
-          <div
-            key={"actions"}
-            className="flex items-center border-solid border-[1px] border-light gap-2 justify-between dark:bg-[#393E4F] dark:text-white py-1 px-2 rounded-lg"
-          >
-            Download PDF
-            <DownloadIcon />
-          </div>,
-          <CancelButton key={"actions"} />,
+          <p>Edit</p>,
+          <p>Delete</p>,
+          <p>Download</p>,
+          <p>Reset</p>,
+          <p>None</p>,
         ]}
         actionHandlers={{
           edit: actionHandlers.edit,
@@ -103,56 +116,25 @@ export default function OrderPage() {
           restart: actionHandlers.restart,
           download: actionHandlers.download,
           remove: actionHandlers.remove,
-          none: () => {},
+          none: actionHandlers.none,
         }}
         actionElements={{
-          edit: (
-            <div className="relative group">
-              <FaEdit className="w-[.9rem] h-[.9rem]" />
-              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                Edit
-              </span>
+          edit: <></>,
+          none: (
+            <div className="relative">
+              <button>
+                <DotsSVG stroke={theme === "light" ? "#000" : "#FFF"} />
+              </button>
             </div>
           ),
-          add: (
-            <div className="relative group">
-              <GrStatusGood className="w-[.9rem] h-[.9rem]" />
-              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                Approve
-              </span>
-            </div>
-          ),
-          restart: (
-            <div className="relative group">
-              <VscDebugRestart className="w-[.9rem] h-[.9rem]" />
-              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                Pending
-              </span>
-            </div>
-          ),
-          download: (
-            <div className="relative group">
-              <FaDownload className="w-[.9rem] h-[.9rem]" />
-              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                Download
-              </span>
-            </div>
-            // <div className="flex items-center gap-2">
-            //   Download PDF
-            // </div>
-          ),
-          remove: (
-            <div className="relative group">
-              <MdDeleteForever className="w-[.9rem] h-[.9rem]" />
-              <span className="absolute z-30 left-[-10px] top-full mt-3 w-max p-1 text-xs bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                Reject
-              </span>
-            </div>
-          ),
-          none: <></>,
+
+          add: <></>,
+          remove: <></>,
+          restart: <></>,
+          download: <></>,
         }}
       />
-      <EditOrderModal isDarkMode={theme === "light" ? false : true} />;
+      <EditOrderModal isDarkMode={theme === "light" ? false : true} />
     </IndexPageContainer>
   );
 }
