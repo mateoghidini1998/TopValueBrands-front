@@ -46,7 +46,7 @@ export const OrderTags = ({ status }: OrderTagsProps) => {
 
   return (
     <div
-      className={`w-fit mx-auto px-2 py-2 bg-opacity-10 rounded  ${bgColorClass}`}
+      className={`min-w-[80px] py-2 bg-opacity-10 rounded cursor-pointer  ${bgColorClass}`}
     >
       <p className={`font-bold bg-transparent ${textColorClass}`}>
         {changeName(status)}

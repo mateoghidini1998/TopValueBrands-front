@@ -5,13 +5,15 @@ import {
   ProductInOrder,
   useTrackedProductContext,
 } from "@/contexts/trackedProducts.context";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { TableComponentProps } from "../interfaces/ITableComponent";
 import Pagination from "@/components/inventory/Pagination";
 import { OrderByComponent } from "./OrderByComponent";
 import { ActionButtons } from "./ActionButtons";
 import EditOrderOptionActions from "./EditOrderOptionActions";
 import { useOrdersContext } from "@/contexts/orders.context";
+import classNames from "classnames";
+import Image from "next/image";
 
 type ActionType = "add" | "remove" | "edit" | "download" | "restart" | "none";
 
@@ -73,7 +75,14 @@ export const TableComponent = <T,>({
     });
   }
   const { updateTrackedProductInOrder } = useTrackedProductContext();
-  const { editOrderAction, setEditOrderAction } = useOrdersContext();
+  const {
+    editOrderAction,
+    setEditOrderAction,
+    acceptOrder,
+    rejectOrder,
+    restartOrder,
+  } = useOrdersContext();
+  const [showStatusDropdown, setShowStatusDropdown] = useState<string>("");
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -89,34 +98,20 @@ export const TableComponent = <T,>({
     updateTrackedProductInOrder(updatedRow);
   };
 
-  /**
-   * 1. Edit
-   * 2. Add
-   * 3. Download
-   * 4. Remove
-   * 5. Restart
-   * 6. None
-   */
-
-  const actionMap: { [key: string]: ActionType[] } = {
-    Pending: ["edit", "add", "download", "remove", "restart", "none"],
-    Approved: ["none", "none", "download", "none", "restart", "none"],
-    Rejected: ["edit", "add", "download", "remove", "restart", "none"],
-    Cancelled: ["edit", "add", "download", "remove", "restart", "none"],
-    // Agrega más mapeos según sea necesario
+  const handleApproveOrderStatus = (rowId: number) => {
+    acceptOrder(rowId);
+    setShowStatusDropdown("");
+    return;
   };
 
-  const getActionsForStatus = (status: string): JSX.Element[] => {
-    // console.log(status);
-    const actionsForStatus = actionMap[status] || [];
+  const handleRejectOrderStatus = (rowId: number) => {
+    rejectOrder(rowId);
+    setShowStatusDropdown("");
+  };
 
-    // console.log(actionsForStatus);
-
-    if (!actionElements) {
-      return [];
-    }
-
-    return actionsForStatus.map((action) => actionElements[action]!);
+  const handlePendingOrderStatus = (rowId: number) => {
+    restartOrder(rowId);
+    setShowStatusDropdown("");
   };
 
   return (
@@ -231,13 +226,84 @@ export const TableComponent = <T,>({
                       </td>
                     ) : column.key === "status" ? (
                       <td
+                        onClick={() => {
+                          if (showStatusDropdown == row.id) {
+                            setShowStatusDropdown("");
+                          } else if (
+                            showStatusDropdown != row.id ||
+                            showStatusDropdown == ""
+                          ) {
+                            setShowStatusDropdown(row.id);
+                          }
+                        }}
                         key={column.key}
-                        className="py-2 px-4 text-center"
+                        className="py-2 px-4 text-center relative"
                         style={{ width: column.width }}
                       >
                         <div className="rounded-full flex items-center justify-between">
                           <OrderTags status={cellValue} />
                         </div>
+                        {showStatusDropdown == row.id && (
+                          <div className=" py-2 pl-4 pr-2 flex flex-col absolute top-[50px] z-20 items-start justify-between gap-3 bg-white dark:bg-dark-2 rounded-md border-solid border-[1px] border-[#d0d7df] dark:border-dark-3">
+                            <div
+                              className="flex justify-between items-center w-[120px]"
+                              onClick={() => handleApproveOrderStatus(row.id)}
+                            >
+                              <OrderTags status={"Approved"} />
+                              {row.status === "Approved" ? (
+                                <span className="">
+                                  <Image
+                                    src={"/Done_round.svg"}
+                                    alt="check"
+                                    width={20}
+                                    height={20}
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                </span>
+                              ) : (
+                                <span className=""></span>
+                              )}
+                            </div>
+                            <div
+                              className="w-[120px] flex justify-between items-center"
+                              onClick={() => handlePendingOrderStatus(row.id)}
+                            >
+                              <OrderTags status={"Pending"} />
+                              {row.status === "Pending" ? (
+                                <span className="">
+                                  <Image
+                                    src={"/Done_round.svg"}
+                                    alt="check"
+                                    width={20}
+                                    height={20}
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                </span>
+                              ) : (
+                                <span className=""></span>
+                              )}
+                            </div>
+                            <div
+                              className="w-[120px] flex justify-between items-center"
+                              onClick={() => handleRejectOrderStatus(row.id)}
+                            >
+                              <OrderTags status={"Rejected"} />
+                              {row.status === "Rejected" ? (
+                                <span className="">
+                                  <Image
+                                    src={"/Done_round.svg"}
+                                    alt="check"
+                                    width={20}
+                                    height={20}
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                </span>
+                              ) : (
+                                <span className=""></span>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </td>
                     ) : column.key === "notes" ? (
                       <td

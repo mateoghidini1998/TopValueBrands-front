@@ -22,7 +22,7 @@ const columns: Column[] = [
   { key: "createdAt", name: "Date", width: "150px" },
   { key: "total_price", name: "Total", width: "120px" },
   { key: "notes", name: "Notes", width: "150px" },
-  { key: "status", name: "Status", width: "150px" },
+  { key: "status", name: "Status", width: "110px" },
   { key: "average_roi", name: "AVG ROI", width: "150px" },
 ];
 
