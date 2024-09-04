@@ -15,6 +15,7 @@ export type OrderProductType = {
   purchase_order_id: number;
   product_id: number;
   product_name: string;
+  total_amount_by_product: number;
   unit_price: number;
   total_amount: number;
   quantity: number;
