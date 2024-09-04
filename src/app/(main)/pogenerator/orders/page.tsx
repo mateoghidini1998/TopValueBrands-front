@@ -104,11 +104,11 @@ export default function OrderPage() {
         tableHeigth="600px"
         actionsWidth="300px"
         actions={[
-          <p>Edit</p>,
-          <p>Delete</p>,
-          <p>Download</p>,
-          <p>Reset</p>,
-          <p>None</p>,
+          <p key="edit">Edit</p>,
+          <p key="remove">Delete</p>,
+          <p key="download">Download</p>,
+          <p key="restart">Reset</p>,
+          <p key="none">None</p>,
         ]}
         actionHandlers={{
           edit: actionHandlers.edit,
