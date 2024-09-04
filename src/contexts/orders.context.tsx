@@ -17,6 +17,7 @@ export type OrderProductType = {
   product_name: string;
   unit_price: number;
   total_amount: number;
+  total_amount_by_product?: number;
   quantity: number;
   createdAt: string;
   updatedAt: string;

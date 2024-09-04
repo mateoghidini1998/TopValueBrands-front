@@ -1,16 +1,15 @@
-import "./EditOrderModal.css";
-import classNames from "classnames";
-import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Button, Select, Divider } from "antd";
 import { OrderProductType, useOrdersContext } from "@/contexts/orders.context";
 import { useSupplierContext } from "@/contexts/suppliers.context";
-import TextArea from "antd/es/input/TextArea";
-import { TableComponent } from "./TableComponent";
-import { Column } from "../interfaces/ITableComponent";
-import { TrackedProductType } from "@/types/trackedProducts.types";
-import IndexPageContainer from "../../page.container";
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
-import { ProductInOrder } from "../../../../contexts/trackedProducts.context";
+import { TrackedProductType } from "@/types/trackedProducts.types";
+import { Button, Form, Input, Modal, Select } from "antd";
+import classNames from "classnames";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import IndexPageContainer from "../../page.container";
+import { Column } from "../interfaces/ITableComponent";
+import "./EditOrderModal.css";
+import { TableComponent } from "./TableComponent";
 const { Option } = Select;
 
 const columns: Column[] = [
@@ -34,88 +33,73 @@ const EditOrderModal = ({ isDarkMode }: any) => {
   const { isEditModalOpen, closeEditModal, orderToEdit, editOrder } =
     useOrdersContext();
   const { suppliers } = useSupplierContext();
-  const {
-    trackedProducts,
-    getTrackedProductsFromAnOrder,
-    trackedProductsToAnalyze,
-    handleNextPage,
-    handlePreviousPage,
-    totalPages,
-    currentPage,
-    setCurrentPage,
-  } = useTrackedProductContext();
+  const { trackedProductsToAnalyze, getTrackedProductsFromAnOrder } =
+    useTrackedProductContext();
 
   const [form] = Form.useForm();
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const [products, setProducts] = useState<OrderProductType[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  const [showProductCostInput, setShowProductCostInput] = useState(false);
+  const [showProductQuantityInput, setShowProductQuantityInput] =
+    useState(false);
 
   useEffect(() => {
     if (orderToEdit) {
+      const initialProducts = orderToEdit.purchaseOrderProducts.map(
+        (product) => ({
+          ...product,
+          unit_price: Number(product.unit_price).toFixed(2),
+          total_amount_by_product: (
+            product.quantity * product.unit_price
+          ).toFixed(2),
+        })
+      );
+
       form.setFieldsValue({
         order_number: orderToEdit.order_number,
         supplier_id: orderToEdit.supplier_id,
         notes: orderToEdit.notes,
-        products: orderToEdit.purchaseOrderProducts.map((product) => ({
-          product_id: product.product_id,
-          unit_price: Number(product.unit_price),
-          product_name: product.product_name,
-          quantity: product.quantity,
-          total_amount_by_product: (
-            product.quantity * product.unit_price
-          ).toFixed(2),
-        })),
+        products: initialProducts,
       });
 
-      calculateTotalPrice(orderToEdit.purchaseOrderProducts);
+      setProducts(initialProducts as any);
+      calculateTotalPrice(initialProducts as any);
       getTrackedProductsFromAnOrder(orderToEdit.id);
     }
-  }, [orderToEdit, form]);
-
-  console.log(orderToEdit?.purchaseOrderProducts);
-  const getTrackedProductFromTheOrder = (trackedProductsArr: any) => {
-    const productsInOrder = orderToEdit?.purchaseOrderProducts;
-
-    const productsInOrderIds = productsInOrder?.map(
-      (product: any) => product.product_id
-    );
-
-    // get the trackedProducts where the product_id === productsInOrderIds
-    const trackedProducts = trackedProductsArr?.filter((product: any) =>
-      productsInOrderIds?.includes(product?.product_id)
-    );
-
-    return trackedProducts;
-  };
-
-  // console.log(getTrackedProductFromTheOrder(trackedProducts));
+  }, [orderToEdit]);
 
   const calculateTotalPrice = (products: OrderProductType[]) => {
     const totalPrice = products.reduce(
-      (total: number, product: OrderProductType) => {
-        return total + (product?.unit_price || 0) * (product?.quantity || 0);
-      },
+      (total: number, product: OrderProductType) =>
+        total + (Number(product.unit_price) || 0) * (product.quantity || 0),
       0
     );
     setTotalPrice(totalPrice);
   };
 
-  const handleValuesChange = (changedValues: any, allValues: any) => {
-    if (changedValues.products) {
-      const updatedProducts = allValues.products.map((product: any) => ({
-        ...product,
-        total_amount_by_product:
-          (product.quantity || 0) * (product.unit_price || 0),
-      }));
-      form.setFieldsValue({ products: updatedProducts });
-      calculateTotalPrice(updatedProducts);
-    }
+  const handleProductChange = (index: number, field: string, value: any) => {
+    const updatedProducts = [...products];
+    updatedProducts[index] = {
+      ...updatedProducts[index],
+      [field]: field === "unit_price" ? parseFloat(value) : Number(value),
+      total_amount_by_product:
+        (field === "unit_price"
+          ? parseFloat(value)
+          : updatedProducts[index].unit_price) *
+        (field === "quantity"
+          ? Number(value)
+          : updatedProducts[index].quantity),
+    };
+    setProducts(updatedProducts);
+    calculateTotalPrice(updatedProducts);
   };
 
   const handleOk = () => {
     form.validateFields().then((values) => {
       if (orderToEdit) {
-        editOrder(orderToEdit.id, values);
+        editOrder(orderToEdit.id, { ...values, products });
       }
     });
   };
@@ -132,7 +116,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
   return (
     <Modal
       style={isAnalyzing ? { top: 100 } : {}}
-      title="Purchase Order"
+      title="Order Summary"
       open={isEditModalOpen}
       onOk={handleOk}
       onCancel={handleCloseEditModal}
@@ -178,7 +162,10 @@ const EditOrderModal = ({ isDarkMode }: any) => {
           />
         </IndexPageContainer>
       ) : (
-        <Form
+        <section className="w-full h-full flex flex-col gap-4 bg-[#2A2D38]">
+          {/*
+            
+            <Form
           form={form}
           layout="vertical"
           name="edit_order_form"
@@ -315,6 +302,193 @@ const EditOrderModal = ({ isDarkMode }: any) => {
             <Input.TextArea />
           </Form.Item>
         </Form>
+
+            */}
+          <div className="custom-scrollbar w-full max-h-[400px] border-solid border-[1px] rounded-md border-light-3 dark:border-dark-3 overflow-y-scroll p-4">
+            {trackedProductsToAnalyze.map((product: any, index: number) => {
+              console.log(product);
+              return (
+                // should be a component
+                <div className="flex flex-col item-center justify-start mb-4">
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">Product</p>
+                    <p className="dark:text-white text-nowrap">
+                      {product.product_name}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">ASIN</p>
+                    <p className="dark:text-white">{product.ASIN}</p>
+                  </div>
+
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">Amazon SKU</p>
+                    <p className="dark:text-white">{product.seller_sku}</p>
+                  </div>
+
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">Current Rank</p>
+                    <p className="dark:text-white">{product.current_rank}</p>
+                  </div>
+
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">30 Day Rank</p>
+                    <p className="dark:text-white">
+                      {product.thirty_days_rank}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">90 Day Rank</p>
+                    <p className="dark:text-white">
+                      {product.ninety_days_rank}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">Units Sold</p>
+                    <p className="dark:text-white">{product.units_sold}</p>
+                  </div>
+
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">Velocity</p>
+                    <p className="dark:text-white">
+                      {product.product_velocity}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">Unit Price</p>
+
+                    {showProductCostInput ? (
+                      <>
+                        <Input
+                          className="w-[100px]"
+                          defaultValue={
+                            orderToEdit?.purchaseOrderProducts.find(
+                              (po: any) => {
+                                return po.product_id === product.product_id;
+                              }
+                            )?.unit_price
+                          }
+                          onChange={(e) =>
+                            handleProductChange(
+                              index,
+                              "unit_price",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </>
+                    ) : (
+                      <>
+                        ${" "}
+                        {Number(
+                          orderToEdit?.purchaseOrderProducts.find((po: any) => {
+                            return po.product_id === product.product_id;
+                          })?.unit_price
+                        ).toFixed(2)}
+                        <span
+                          className="cursor-pointer"
+                          onClick={() => setShowProductCostInput(true)}
+                        >
+                          ✏️
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">Quantity</p>
+                    {showProductQuantityInput ? (
+                      <>
+                        <Input
+                          className="w-[100px]"
+                          defaultValue={
+                            orderToEdit?.purchaseOrderProducts.find(
+                              (po: any) => {
+                                return po.product_id === product.product_id;
+                              }
+                            )?.quantity || 0
+                          }
+                          onChange={(e) =>
+                            handleProductChange(
+                              index,
+                              "unit_price",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {orderToEdit?.purchaseOrderProducts.find((po: any) => {
+                          return po.product_id === product.product_id;
+                        })?.quantity || 0}
+                        <span
+                          className="cursor-pointer"
+                          onClick={() => setShowProductQuantityInput(true)}
+                        >
+                          ✏️
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="flex items-center text-left gap-4">
+                    <p className="w-[100px]">Total Price</p>
+                    <p className="dark:text-white">
+                      <span>$ </span>
+                      {Number(
+                        (orderToEdit?.purchaseOrderProducts.find((po: any) => {
+                          return po.product_id === product.product_id;
+                        })?.unit_price ?? 0) *
+                          (orderToEdit?.purchaseOrderProducts.find(
+                            (po) => po.product_id === product.product_id
+                          )?.quantity ?? 0)
+                      )
+                        .toFixed(2)
+                        .toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div>
+            <div className="flex items-center text-left gap-4">
+              <p className="w-[100px]">Notes</p>
+              <p className="dark:text-white">{orderToEdit?.notes}</p>
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center text-left gap-4">
+              <p className="w-[100px]">Order Number</p>
+              <p className="dark:text-white">{orderToEdit?.order_number}</p>
+            </div>
+
+            <div className="flex items-center text-left gap-4">
+              <p className="w-[100px]">Supplier</p>
+              <p className="dark:text-white">{orderToEdit?.supplier_name}</p>
+            </div>
+
+            <div className="flex items-center text-left gap-4">
+              <p className="w-[100px]">Date</p>
+              <p className="dark:text-white">{orderToEdit?.createdAt}</p>
+            </div>
+
+            <div>
+              <div className="flex items-center text-left gap-4">
+                <p className="w-[100px]">Total</p>
+                <p className="dark:text-white">
+                  <span>$ </span>
+                  {totalPrice.toFixed(2)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       )}
     </Modal>
   );
