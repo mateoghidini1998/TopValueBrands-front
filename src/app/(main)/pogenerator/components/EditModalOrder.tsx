@@ -66,7 +66,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
 
   useEffect(() => {
     getTrackedProductsFromAnOrder(orderToEdit?.id || 0);
-  }, [trackedProductsToAnalyze, orderToEdit?.id]);
+  }, [getTrackedProductsFromAnOrder, orderToEdit?.id]);
 
   const calculateTotalPrice = (products: OrderProductType[]) => {
     const totalPrice = products.reduce(
@@ -307,7 +307,10 @@ const EditOrderModal = ({ isDarkMode }: any) => {
               console.log(product);
               return (
                 // should be a component
-                <div className="flex flex-col item-center justify-start mb-4">
+                <div
+                  key={index}
+                  className="flex flex-col item-center justify-start mb-4"
+                >
                   <div className="flex items-center text-left gap-4">
                     <p className="w-[100px]">Product</p>
                     <p className="dark:text-white text-nowrap">
