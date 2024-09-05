@@ -1,17 +1,13 @@
 import { OrderProductType, useOrdersContext } from "@/contexts/orders.context";
-import { useSupplierContext } from "@/contexts/suppliers.context";
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
 import { TrackedProductType } from "@/types/trackedProducts.types";
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import classNames from "classnames";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import IndexPageContainer from "../../page.container";
 import { Column } from "../interfaces/ITableComponent";
 import "./EditOrderModal.css";
 import { TableComponent } from "./TableComponent";
-const { Option } = Select;
-
 const columns: Column[] = [
   { key: "product_name", name: "Product", width: "20%" },
   { key: "ASIN", name: "ASIN", width: "150px" },
@@ -32,7 +28,6 @@ const columns: Column[] = [
 const EditOrderModal = ({ isDarkMode }: any) => {
   const { isEditModalOpen, closeEditModal, orderToEdit, editOrder } =
     useOrdersContext();
-  const { suppliers } = useSupplierContext();
   const { trackedProductsToAnalyze, getTrackedProductsFromAnOrder } =
     useTrackedProductContext();
 
@@ -66,9 +61,12 @@ const EditOrderModal = ({ isDarkMode }: any) => {
 
       setProducts(initialProducts as any);
       calculateTotalPrice(initialProducts as any);
-      getTrackedProductsFromAnOrder(orderToEdit.id);
     }
-  }, [orderToEdit]);
+  }, [orderToEdit, form]);
+
+  useEffect(() => {
+    getTrackedProductsFromAnOrder(orderToEdit?.id || 0);
+  }, [trackedProductsToAnalyze, orderToEdit?.id]);
 
   const calculateTotalPrice = (products: OrderProductType[]) => {
     const totalPrice = products.reduce(
@@ -414,7 +412,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                           onChange={(e) =>
                             handleProductChange(
                               index,
-                              "unit_price",
+                              "quantity",
                               e.target.value
                             )
                           }
