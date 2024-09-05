@@ -25,7 +25,7 @@ export type Actions<T> = {
   edit?: ActionHandler<T>;
   download?: ActionHandler<T>;
   restart?: ActionHandler<T>;
-  none: (order: any) => any;
+  none?: (order: any) => any;
 };
 
 type ActionElementMap = {

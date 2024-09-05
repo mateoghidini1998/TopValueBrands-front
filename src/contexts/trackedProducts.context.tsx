@@ -5,6 +5,7 @@ import {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -130,22 +131,24 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     );
   };
 
-  const getTrackedProductsFromAnOrder = async (order_id: number) => {
-    try {
-      const response =
-        await TrackedProductsService.getTrackedProductsFromAnOrder(order_id);
+  const getTrackedProductsFromAnOrder = useCallback(
+    async (order_id: number) => {
+      try {
+        const response =
+          await TrackedProductsService.getTrackedProductsFromAnOrder(order_id);
 
-      if (response.success) {
-        console.log(response);
-
-        setTrackedProductsToAnalyze(response.data);
-        return response.data;
+        if (response.success) {
+          console.log(response);
+          setTrackedProductsToAnalyze(response.data);
+          return response.data;
+        }
+      } catch (error) {
+        alert(error);
+        console.error(error);
       }
-    } catch (error) {
-      alert(error);
-      console.error(error);
-    }
-  };
+    },
+    []
+  );
 
   const getFilteredTrackedProducts = async (
     supplier_id: string = "",
