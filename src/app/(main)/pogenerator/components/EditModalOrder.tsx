@@ -8,6 +8,7 @@ import IndexPageContainer from "../../page.container";
 import { Column } from "../interfaces/ITableComponent";
 import "./EditOrderModal.css";
 import { TableComponent } from "./TableComponent";
+import { MdOutlineEdit } from "react-icons/md";
 const columns: Column[] = [
   { key: "product_name", name: "Product", width: "20%" },
   { key: "ASIN", name: "ASIN", width: "150px" },
@@ -100,11 +101,15 @@ const EditOrderModal = ({ isDarkMode }: any) => {
         editOrder(orderToEdit.id, { ...values, products });
       }
     });
+    setShowProductQuantityInput(true);
+    setShowProductCostInput(true);
   };
 
   const handleCloseEditModal = () => {
     closeEditModal();
     setIsAnalyzing(false);
+    setShowProductQuantityInput(false);
+    setShowProductCostInput(false);
   };
 
   const handleAnalyzeOrder = () => {
@@ -384,18 +389,18 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                       </>
                     ) : (
                       <>
+                        <span
+                          className="cursor-pointer"
+                          onClick={() => setShowProductCostInput(true)}
+                        >
+                          <MdOutlineEdit />
+                        </span>
                         ${" "}
                         {Number(
                           orderToEdit?.purchaseOrderProducts.find((po: any) => {
                             return po.product_id === product.product_id;
                           })?.unit_price
                         ).toFixed(2)}
-                        <span
-                          className="cursor-pointer"
-                          onClick={() => setShowProductCostInput(true)}
-                        >
-                          ✏️
-                        </span>
                       </>
                     )}
                   </div>
@@ -423,15 +428,15 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                       </>
                     ) : (
                       <>
-                        {orderToEdit?.purchaseOrderProducts.find((po: any) => {
-                          return po.product_id === product.product_id;
-                        })?.quantity || 0}
                         <span
                           className="cursor-pointer"
                           onClick={() => setShowProductQuantityInput(true)}
                         >
-                          ✏️
+                          <MdOutlineEdit />
                         </span>
+                        {orderToEdit?.purchaseOrderProducts.find((po: any) => {
+                          return po.product_id === product.product_id;
+                        })?.quantity || 0}
                       </>
                     )}
                   </div>
