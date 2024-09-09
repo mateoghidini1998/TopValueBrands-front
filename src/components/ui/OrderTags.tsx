@@ -4,7 +4,7 @@ type OrderTagsProps = {
 
 const enum TAG_STATUS {
   PENDING = "PENDING",
-  GOOD_TO_GO = "GOOD_TO_GO",
+  GOOD_TO_GO = "GOOD TO GO",
   REJECTED = "REJECTED",
   CANCELLED = "CANCELLED",
   IN_TRANSIT = "IN_TRANSIT",

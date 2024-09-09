@@ -106,7 +106,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       await PurchaseOrdersService.approveOrderStatus(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "GOOD_TO_GO" } : order
+          order.id === orderId ? { ...order, status: "GOOD TO GO" } : order
         )
       );
       console.log("Order accepted:", orderId);

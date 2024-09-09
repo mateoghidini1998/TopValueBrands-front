@@ -250,8 +250,8 @@ export const TableComponent = <T,>({
                               className="flex justify-between items-center w-[120px]"
                               onClick={() => handleApproveOrderStatus(row.id)}
                             >
-                              <OrderTags status={"GOOD_TO_GO"} />
-                              {row.status === "GOOD_TO_GO" ? (
+                              <OrderTags status={"GOOD TO GO"} />
+                              {row.status === "GOOD TO GO" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
