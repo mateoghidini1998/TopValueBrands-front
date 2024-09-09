@@ -250,8 +250,8 @@ export const TableComponent = <T,>({
                               className="flex justify-between items-center w-[120px]"
                               onClick={() => handleApproveOrderStatus(row.id)}
                             >
-                              <OrderTags status={"Approved"} />
-                              {row.status === "Approved" ? (
+                              <OrderTags status={"GOOD_TO_GO"} />
+                              {row.status === "GOOD_TO_GO" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -269,8 +269,8 @@ export const TableComponent = <T,>({
                               className="w-[120px] flex justify-between items-center"
                               onClick={() => handlePendingOrderStatus(row.id)}
                             >
-                              <OrderTags status={"Pending"} />
-                              {row.status === "Pending" ? (
+                              <OrderTags status={"PENDING"} />
+                              {row.status === "PENDING" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -288,8 +288,8 @@ export const TableComponent = <T,>({
                               className="w-[120px] flex justify-between items-center"
                               onClick={() => handleRejectOrderStatus(row.id)}
                             >
-                              <OrderTags status={"Rejected"} />
-                              {row.status === "Rejected" ? (
+                              <OrderTags status={"REJECTED"} />
+                              {row.status === "REJECTED" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}

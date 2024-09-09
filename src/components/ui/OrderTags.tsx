@@ -3,17 +3,21 @@ type OrderTagsProps = {
 };
 
 const enum TAG_STATUS {
-  PENDING = "Pending",
-  APPROVED = "Approved",
-  REJECTED = "Rejected",
-  CANCELLED = "Cancelled",
+  PENDING = "PENDING",
+  GOOD_TO_GO = "GOOD_TO_GO",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED",
+  IN_TRANSIT = "IN_TRANSIT",
+  ARRIVED = "ARRIVED",
+  WATING_FOR_SUPPLIER_APPROVAL = "WAITING_FOR_SUPPLIER_APPROVAL",
+  CLOSED = "CLOSED",
 }
 
 const getColorClass = (status: string) => {
   switch (status) {
     case TAG_STATUS.PENDING:
       return "bg-[#C26900] text-[#C26900]";
-    case TAG_STATUS.APPROVED:
+    case TAG_STATUS.GOOD_TO_GO:
       return "bg-[#00952A] text-[#00952A]";
     case TAG_STATUS.REJECTED:
       return "bg-[#ef4444] text-[#ef4444]";
@@ -28,12 +32,12 @@ const changeName = (status: string) => {
   switch (status) {
     case TAG_STATUS.PENDING:
       return "Pending";
-    case TAG_STATUS.APPROVED:
+    case TAG_STATUS.GOOD_TO_GO:
       return "Good to go";
     case TAG_STATUS.REJECTED:
       return "Rejected";
     case TAG_STATUS.CANCELLED:
-      return "Needs revision";
+      return "Cancelled";
     default:
       return "Unknown";
   }

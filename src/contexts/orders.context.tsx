@@ -106,7 +106,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       await PurchaseOrdersService.approveOrderStatus(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "Approved" } : order
+          order.id === orderId ? { ...order, status: "GOOD_TO_GO" } : order
         )
       );
       console.log("Order accepted:", orderId);
@@ -119,7 +119,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     const order = orders.find((order) => order.id === orderId);
     const orderStatus = order?.status;
 
-    if (orderStatus === "Rejected") {
+    if (orderStatus === "REJECTED") {
       try {
         const res = await PurchaseOrdersService.deleteOrder(orderId);
         console.log("Order deleted:", orderId);
@@ -138,10 +138,10 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         const response = await PurchaseOrdersService.rejectOrderStatus(orderId);
         setOrders((prevOrders) =>
           prevOrders.map((order) =>
-            order.id === orderId ? { ...order, status: "Rejected" } : order
+            order.id === orderId ? { ...order, status: "REJECTED" } : order
           )
         );
-        console.log("Order rejected:", orderId);
+        console.log("Order REJECTED:", orderId);
         return response;
       } catch (error: any) {
         console.error(error);
@@ -155,7 +155,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       await PurchaseOrdersService.restartOrderStatus(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "Pending" } : order
+          order.id === orderId ? { ...order, status: "PENDING" } : order
         )
       );
       console.log("Order restarted:", orderId);
