@@ -6,13 +6,13 @@ export class AuthService {
     onUserLoaded: (user: any) => void
   ) {
     const response = await HttpAPI.post(
-      "http://localhost:5000/api/v1/auth/login",
+      "https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/auth/login",
       { email, password }
     );
     localStorage.setItem("access-token", response.token);
 
     const userResponse = await HttpAPI.get(
-      "http://localhost:5000/api/v1/auth/me",
+      "https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/auth/me",
       {
         headers: {
           Authorization: `Bearer ${response.token}`,
@@ -27,7 +27,7 @@ export class AuthService {
   static async getUserProfile(token: string) {
     try {
       const response = await HttpAPI.get(
-        "http://localhost:5000/api/v1/auth/me",
+        "https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/auth/me",
         {
           headers: {
             Authorization: `Bearer ${token}`,

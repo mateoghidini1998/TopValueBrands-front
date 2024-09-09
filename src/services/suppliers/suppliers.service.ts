@@ -7,7 +7,7 @@ export class SuppliersService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/suppliers`,
+        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/suppliers`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -25,7 +25,7 @@ export class SuppliersService {
       const token = getAuthToken();
       if (token) {
         const response = await HttpAPI.post(
-          `http://localhost:5000/api/v1/suppliers`,
+          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/suppliers`,
           { supplier_name: data },
           token
         );
@@ -47,7 +47,7 @@ export class SuppliersService {
         }
         const id = data.id;
         const response = await HttpAPI.patch(
-          `http://localhost:5000/api/v1/suppliers/${id}`,
+          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/suppliers/${id}`,
           data,
           token
         );
@@ -65,7 +65,7 @@ export class SuppliersService {
       const token = getAuthToken();
       if (token) {
         const response = await HttpAPI.delete(
-          `http://localhost:5000/api/v1/suppliers/${id}`,
+          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/suppliers/${id}`,
           token
         );
         return response;
