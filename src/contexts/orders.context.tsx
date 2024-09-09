@@ -18,7 +18,7 @@ export type OrderProductType = {
   total_amount_by_product: number;
   unit_price: number;
   total_amount: number;
-  quantity: number;
+  quantity_purchased: number;
   createdAt: string;
   updatedAt: string;
 };
