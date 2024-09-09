@@ -181,6 +181,7 @@ export const TableComponent = <T,>({
                           actionHandlers &&
                           actionElements && (
                             <EditOrderOptionActions
+                              setEditOrderAction={setEditOrderAction}
                               actionElements={actionElements}
                               actionHandlers={actionHandlers}
                               row={row}

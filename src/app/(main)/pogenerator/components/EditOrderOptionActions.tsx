@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Actions } from "./TableComponent";
-import { ActionButtons } from "./ActionButtons";
+import { IoMdDownload } from "react-icons/io";
+
+import { EditButton } from "@/components/svgs/EditButton";
+import { DeleteButton } from "@/components/svgs/DeleteButton";
+import useOnClickOutside from "@/hooks/useOnClickOutside";
+import useThemeContext from "@/contexts/theme.context";
 
 interface EditOrderOptionActionsProps {
   hidden?: boolean;
   actionElements: any;
   actionHandlers: Actions<any>;
   row: any;
+  setEditOrderAction: React.Dispatch<React.SetStateAction<any>>; // Agregar el tipo de prop
 }
 
 const EditOrderOptionActions: React.FC<EditOrderOptionActionsProps> = ({
@@ -14,33 +20,63 @@ const EditOrderOptionActions: React.FC<EditOrderOptionActionsProps> = ({
   actionElements,
   actionHandlers,
   row,
+  setEditOrderAction, // Recibir la prop
 }) => {
+  const { theme } = useThemeContext();
+  const [editColor, setEditColor] = useState(
+    theme === "dark" ? "#ADB3CC" : "#393E4F"
+  );
+  const [deleteColor, setDeleteColor] = useState(
+    theme === "dark" ? "#ADB3CC" : "#FF4C3F"
+  );
+
+  const ref = useRef(null);
+
+  useOnClickOutside(ref, () => {
+    setEditOrderAction(null);
+  });
+
+  useEffect(() => {
+    setEditColor(theme === "dark" ? "#ADB3CC" : "#393E4F");
+    setDeleteColor(theme === "dark" ? "#ADB3CC" : "#FF4C3F");
+  }, [theme]);
+
   return (
     <div
-      hidden={hidden}
-      className="flex flex-col items-start gap-2 absolute z-50 bg-dark-2 text-white rounded shadow-md w-[100px] right-[50px] top-10 py-2"
+      ref={ref}
+      className="absolute bg-white right-[60px] top-[0px] mt-2 rounded-md shadow-lg dark:bg-dark ring-1 ring-black ring-opacity-5 z-[1000] text-black dark:text-white w-[50%]"
     >
-      <button
-        className="hover:bg-dark-3 w-full m-auto py-1"
-        onClick={() => {
-          console.log(row);
-          actionHandlers.edit!(row);
-        }}
+      <div
+        className="py-1"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="options-menu"
       >
-        View Details
-      </button>
-      <button
-        className="hover:bg-dark-3 w-full m-auto py-1"
-        onClick={() => actionHandlers.remove!(row)}
-      >
-        Delete Order
-      </button>
-      <button
-        className="hover:bg-dark-3 w-full m-auto py-1"
-        onClick={() => actionHandlers.download!(row)}
-      >
-        Download PDF
-      </button>
+        <button
+          onClick={() => actionHandlers.edit!(row)}
+          className="w-full flex flex-start px-4 py-2 text-sm dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2"
+          role="menuitem"
+        >
+          <EditButton color={editColor} />
+          Edit
+        </button>
+        <button
+          onClick={() => actionHandlers.remove!(row)}
+          className="w-full flex flex-start px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2"
+          role="menuitem"
+        >
+          <DeleteButton color={deleteColor} />
+          Delete
+        </button>
+        <button
+          onClick={() => actionHandlers.download!(row)}
+          className="w-full flex flex-start px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2"
+          role="menuitem"
+        >
+          <IoMdDownload />
+          Download
+        </button>
+      </div>
     </div>
   );
 };
