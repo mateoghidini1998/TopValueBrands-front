@@ -18,11 +18,13 @@ export default async function middleware(req: NextRequest) {
 
   if (!verify && isProtectedRoute) {
     console.log('Redirecting to login...');
+    console.log(`${process.env.NEXT_PUBLIC_FRONT_URL}/login`)
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONT_URL}/login`);
   }
 
   if (verify && isPublicRoute) {
     console.log('Redirecting to home...');
+    console.log(`${process.env.NEXT_PUBLIC_FRONT_URL}/`);
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONT_URL}/`);
   }
 
