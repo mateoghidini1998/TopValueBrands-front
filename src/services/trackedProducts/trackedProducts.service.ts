@@ -27,7 +27,9 @@ export class TrackedProductsService {
       params.append("orderWay", orderWay);
 
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/trackedproducts?${params.toString()}`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL
+        }/api/v1/trackedproducts?${params.toString()}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -45,7 +47,7 @@ export class TrackedProductsService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/trackedproducts/order/${order_id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/trackedproducts/order/${order_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

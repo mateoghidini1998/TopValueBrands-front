@@ -87,7 +87,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     setError(null);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/v1/purchaseorders"
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");

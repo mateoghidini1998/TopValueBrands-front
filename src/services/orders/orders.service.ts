@@ -6,7 +6,7 @@ export class PurchaseOrdersService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `http://localhost:5000/api/v1/trackedproducts?supplier_id=${supplier_id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/trackedproducts?supplier_id=${supplier_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -24,7 +24,7 @@ export class PurchaseOrdersService {
     try {
       // const token = getAuthToken();
       const response = await HttpAPI.patch(
-        `http://localhost:5000/api/v1/purchaseorders/reject/${orderId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/reject/${orderId}`
         // { status }
         // { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -38,7 +38,7 @@ export class PurchaseOrdersService {
     try {
       // const token = getAuthToken();
       const response = await HttpAPI.patch(
-        `http://localhost:5000/api/v1/purchaseorders/approve/${orderId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/approve/${orderId}`
         // { status }
         // { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -52,7 +52,7 @@ export class PurchaseOrdersService {
     try {
       // const token = getAuthToken();
       const response = await HttpAPI.patch(
-        `http://localhost:5000/api/v1/purchaseorders/restart/${orderId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/restart/${orderId}`
         // { status }
         // { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -66,7 +66,7 @@ export class PurchaseOrdersService {
     try {
       const token = getAuthToken();
       const response = await fetch(
-        `http://localhost:5000/api/v1/purchaseorders/download/${orderId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/download/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ export class PurchaseOrdersService {
   static async editOrder(orderId: number, orderData: any) {
     const token = getAuthToken();
     const response = await fetch(
-      `http://localhost:5000/api/v1/purchaseorders/${orderId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/${orderId}`,
       {
         method: "PUT",
         headers: {
@@ -115,7 +115,7 @@ export class PurchaseOrdersService {
 
   static async deleteOrder(orderId: number) {
     const response = await HttpAPI.delete(
-      `http://localhost:5000/api/v1/purchaseorders/delete/${orderId}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/delete/${orderId}`
     );
 
     console.log(response);
