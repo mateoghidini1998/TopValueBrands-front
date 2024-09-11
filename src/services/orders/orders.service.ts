@@ -6,11 +6,7 @@ export class PurchaseOrdersService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-<<<<<<< HEAD
-        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/trackedproducts?supplier_id=${supplier_id}`,
-=======
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/trackedproducts?supplier_id=${supplier_id}`,
->>>>>>> warehouse/feature/TVB_01
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -28,11 +24,7 @@ export class PurchaseOrdersService {
     try {
       // const token = getAuthToken();
       const response = await HttpAPI.patch(
-<<<<<<< HEAD
-        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders/reject/${orderId}`
-=======
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/reject/${orderId}`
->>>>>>> warehouse/feature/TVB_01
         // { status }
         // { headers: { Authorization: `Bearer ${token}` }}
       );
