@@ -303,6 +303,104 @@ export const TableComponent = <T,>({
                                 <span className=""></span>
                               )}
                             </div>
+                            <div
+                              className="w-[120px] flex justify-between items-center"
+                              onClick={() => handleRejectOrderStatus(row.id)}
+                            >
+                              <OrderTags status={"IN_TRANSIT"} />
+                              {row.status === "IN_TRANSIT" ? (
+                                <span className="">
+                                  <Image
+                                    src={"/Done_round.svg"}
+                                    alt="check"
+                                    width={20}
+                                    height={20}
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                </span>
+                              ) : (
+                                <span className=""></span>
+                              )}
+                            </div>
+                            <div
+                              className="w-[120px] flex justify-between items-center"
+                              onClick={() => handleRejectOrderStatus(row.id)}
+                            >
+                              <OrderTags status={"ARRIVED"} />
+                              {row.status === "ARRIVED" ? (
+                                <span className="">
+                                  <Image
+                                    src={"/Done_round.svg"}
+                                    alt="check"
+                                    width={20}
+                                    height={20}
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                </span>
+                              ) : (
+                                <span className=""></span>
+                              )}
+                            </div>
+                            <div
+                              className="w-[120px] flex justify-between items-center"
+                              onClick={() => handleRejectOrderStatus(row.id)}
+                            >
+                              <OrderTags
+                                status={"WAITING_FOR_SUPPLIER_APPROVAL"}
+                              />
+                              {row.status ===
+                              "WAITING_FOR_SUPPLIER_APPROVAL" ? (
+                                <span className="">
+                                  <Image
+                                    src={"/Done_round.svg"}
+                                    alt="check"
+                                    width={20}
+                                    height={20}
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                </span>
+                              ) : (
+                                <span className=""></span>
+                              )}
+                            </div>
+                            <div
+                              className="w-[120px] flex justify-between items-center"
+                              onClick={() => handleRejectOrderStatus(row.id)}
+                            >
+                              <OrderTags status={"CLOSED"} />
+                              {row.status === "CLOSED" ? (
+                                <span className="">
+                                  <Image
+                                    src={"/Done_round.svg"}
+                                    alt="check"
+                                    width={20}
+                                    height={20}
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                </span>
+                              ) : (
+                                <span className=""></span>
+                              )}
+                            </div>
+                            <div
+                              className="w-[120px] flex justify-between items-center"
+                              onClick={() => handleRejectOrderStatus(row.id)}
+                            >
+                              <OrderTags status={"CANCELLED"} />
+                              {row.status === "CANCELLED" ? (
+                                <span className="">
+                                  <Image
+                                    src={"/Done_round.svg"}
+                                    alt="check"
+                                    width={20}
+                                    height={20}
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                </span>
+                              ) : (
+                                <span className=""></span>
+                              )}
+                            </div>
                           </div>
                         )}
                       </td>
