@@ -11,10 +11,13 @@ export default async function middleware(req: NextRequest) {
   const isPublicRoute = publicRoutes.includes(path);
 
   if (!verify && isProtectedRoute) {
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONT_URL}/login`);
+    // return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONT_URL}/login`);
+    return NextResponse.redirect(
+      `https://top-value-brands-front.vercel.app/login`
+    );
   }
 
   if (verify && isPublicRoute) {
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONT_URL}/`);
+    return NextResponse.redirect(`https://top-value-brands-front.vercel.app/`);
   }
 }
