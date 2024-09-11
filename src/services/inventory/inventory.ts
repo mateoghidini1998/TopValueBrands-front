@@ -17,7 +17,7 @@ export class InventoryService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}&supplier=${supplier}&orderBy=${orderBy}&orderWay=${orderWay}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}&supplier=${supplier}&orderBy=${orderBy}&orderWay=${orderWay}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,7 +35,7 @@ export class InventoryService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products/${seller_sku}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/${seller_sku}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -54,7 +54,7 @@ export class InventoryService {
       const token = getAuthToken();
       if (token) {
         const response = await HttpAPI.post(
-          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products/add`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/add`,
           data,
           token
         );
@@ -72,7 +72,7 @@ export class InventoryService {
       const token = getAuthToken();
       if (token) {
         const response = await HttpAPI.patch(
-          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products/disable`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/disable`,
           { id: id },
           token
         );
@@ -94,7 +94,7 @@ export class InventoryService {
           throw new Error("id is required");
         }
         const response = await HttpAPI.patch(
-          `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/products/addExtraInfoToProduct`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/addExtraInfoToProduct`,
           data,
           token
         );

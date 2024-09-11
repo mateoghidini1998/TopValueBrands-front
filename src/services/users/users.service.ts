@@ -7,7 +7,7 @@ export class UsersService {
     try {
       const token = getAuthToken();
       const response = await HttpAPI.get(
-        `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -26,7 +26,7 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.post(
-      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/auth/register`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/register`,
       data,
       token
     );
@@ -43,7 +43,7 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.delete(
-      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users/${user.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.id}`,
       token
     );
 
@@ -60,7 +60,7 @@ export class UsersService {
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.patch(
-      `https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/users/update/${user.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/update/${user.id}`,
       data,
       token
     );

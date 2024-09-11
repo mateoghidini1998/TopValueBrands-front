@@ -18,7 +18,7 @@ export type OrderProductType = {
   total_amount_by_product: number;
   unit_price: number;
   total_amount: number;
-  quantity: number;
+  quantity_purchased: number;
   createdAt: string;
   updatedAt: string;
 };
@@ -87,7 +87,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     setError(null);
     try {
       const response = await fetch(
-        "https://topvaluebrands-webapp-bjavghfxdpcgdnay.eastus-01.azurewebsites.net/api/v1/purchaseorders"
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -106,7 +106,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       await PurchaseOrdersService.approveOrderStatus(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "Approved" } : order
+          order.id === orderId ? { ...order, status: "GOOD TO GO" } : order
         )
       );
       console.log("Order accepted:", orderId);
@@ -119,7 +119,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     const order = orders.find((order) => order.id === orderId);
     const orderStatus = order?.status;
 
-    if (orderStatus === "Rejected") {
+    if (orderStatus === "REJECTED") {
       try {
         const res = await PurchaseOrdersService.deleteOrder(orderId);
         console.log("Order deleted:", orderId);
@@ -138,10 +138,10 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         const response = await PurchaseOrdersService.rejectOrderStatus(orderId);
         setOrders((prevOrders) =>
           prevOrders.map((order) =>
-            order.id === orderId ? { ...order, status: "Rejected" } : order
+            order.id === orderId ? { ...order, status: "REJECTED" } : order
           )
         );
-        console.log("Order rejected:", orderId);
+        console.log("Order REJECTED:", orderId);
         return response;
       } catch (error: any) {
         console.error(error);
@@ -155,7 +155,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       await PurchaseOrdersService.restartOrderStatus(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "Pending" } : order
+          order.id === orderId ? { ...order, status: "PENDING" } : order
         )
       );
       console.log("Order restarted:", orderId);

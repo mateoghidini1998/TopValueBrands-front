@@ -48,7 +48,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
           ...product,
           unit_price: Number(product.unit_price).toFixed(2),
           total_amount_by_product: (
-            product.quantity * product.unit_price
+            product.quantity_purchased * product.unit_price
           ).toFixed(2),
         })
       );
@@ -72,7 +72,8 @@ const EditOrderModal = ({ isDarkMode }: any) => {
   const calculateTotalPrice = (products: OrderProductType[]) => {
     const totalPrice = products.reduce(
       (total: number, product: OrderProductType) =>
-        total + (Number(product.unit_price) || 0) * (product.quantity || 0),
+        total +
+        (Number(product.unit_price) || 0) * (product.quantity_purchased || 0),
       0
     );
     setTotalPrice(totalPrice);
@@ -89,7 +90,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
           : updatedProducts[index].unit_price) *
         (field === "quantity"
           ? Number(value)
-          : updatedProducts[index].quantity),
+          : updatedProducts[index].quantity_purchased),
     };
     setProducts(updatedProducts);
     calculateTotalPrice(updatedProducts);
@@ -415,7 +416,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                               (po: any) => {
                                 return po.product_id === product.product_id;
                               }
-                            )?.quantity || 0
+                            )?.quantity_purchased || 0
                           }
                           onChange={(e) =>
                             handleProductChange(
@@ -436,7 +437,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                         </span>
                         {orderToEdit?.purchaseOrderProducts.find((po: any) => {
                           return po.product_id === product.product_id;
-                        })?.quantity || 0}
+                        })?.quantity_purchased || 0}
                       </>
                     )}
                   </div>
@@ -450,7 +451,7 @@ const EditOrderModal = ({ isDarkMode }: any) => {
                         })?.unit_price ?? 0) *
                           (orderToEdit?.purchaseOrderProducts.find(
                             (po) => po.product_id === product.product_id
-                          )?.quantity ?? 0)
+                          )?.quantity_purchased ?? 0)
                       )
                         .toFixed(2)
                         .toLocaleString()}
