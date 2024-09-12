@@ -305,7 +305,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleRejectOrderStatus(row.id)}
+                              onClick={() => console.log(row.id)}
                             >
                               <OrderTags status={"IN TRANSIT"} />
                               {row.status.toUpperCase() === "IN TRANSIT" ? (
@@ -324,7 +324,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleRejectOrderStatus(row.id)}
+                              onClick={() => console.log(row.id)}
                             >
                               <OrderTags status={"ARRIVED"} />
                               {row.status.toUpperCase() === "ARRIVED" ? (
@@ -343,7 +343,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleRejectOrderStatus(row.id)}
+                              onClick={() => console.log(row.id)}
                             >
                               <OrderTags
                                 status={"WAITING FOR SUPPLIER APPROVAL"}
@@ -365,7 +365,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleRejectOrderStatus(row.id)}
+                              onClick={() => console.log(row.id)}
                             >
                               <OrderTags status={"CLOSED"} />
                               {row.status.toUpperCase() === "CLOSED" ? (
@@ -384,7 +384,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleRejectOrderStatus(row.id)}
+                              onClick={() => console.log(row.id)}
                             >
                               <OrderTags status={"CANCELLED"} />
                               {row.status.toUpperCase() === "CANCELLED" ? (
