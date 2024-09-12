@@ -251,7 +251,7 @@ export const TableComponent = <T,>({
                               onClick={() => handleApproveOrderStatus(row.id)}
                             >
                               <OrderTags status={"GOOD TO GO"} />
-                              {row.status === "GOOD TO GO" ? (
+                              {row.status.toUpperCase() === "GOOD TO GO" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -270,7 +270,7 @@ export const TableComponent = <T,>({
                               onClick={() => handlePendingOrderStatus(row.id)}
                             >
                               <OrderTags status={"PENDING"} />
-                              {row.status === "PENDING" ? (
+                              {row.status.toUpperCase() === "PENDING" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -289,7 +289,7 @@ export const TableComponent = <T,>({
                               onClick={() => handleRejectOrderStatus(row.id)}
                             >
                               <OrderTags status={"REJECTED"} />
-                              {row.status === "REJECTED" ? (
+                              {row.status.toUpperCase() === "REJECTED" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -307,8 +307,8 @@ export const TableComponent = <T,>({
                               className="w-[120px] flex justify-between items-center"
                               onClick={() => handleRejectOrderStatus(row.id)}
                             >
-                              <OrderTags status={"IN_TRANSIT"} />
-                              {row.status === "IN_TRANSIT" ? (
+                              <OrderTags status={"IN TRANSIT"} />
+                              {row.status.toUpperCase() === "IN TRANSIT" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -327,7 +327,7 @@ export const TableComponent = <T,>({
                               onClick={() => handleRejectOrderStatus(row.id)}
                             >
                               <OrderTags status={"ARRIVED"} />
-                              {row.status === "ARRIVED" ? (
+                              {row.status.toUpperCase() === "ARRIVED" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -346,10 +346,10 @@ export const TableComponent = <T,>({
                               onClick={() => handleRejectOrderStatus(row.id)}
                             >
                               <OrderTags
-                                status={"WAITING_FOR_SUPPLIER_APPROVAL"}
+                                status={"WAITING FOR SUPPLIER APPROVAL"}
                               />
-                              {row.status ===
-                              "WAITING_FOR_SUPPLIER_APPROVAL" ? (
+                              {row.status.toUpperCase() ===
+                              "WAITING FOR SUPPLIER APPROVAL" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -368,7 +368,7 @@ export const TableComponent = <T,>({
                               onClick={() => handleRejectOrderStatus(row.id)}
                             >
                               <OrderTags status={"CLOSED"} />
-                              {row.status === "CLOSED" ? (
+                              {row.status.toUpperCase() === "CLOSED" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -387,7 +387,7 @@ export const TableComponent = <T,>({
                               onClick={() => handleRejectOrderStatus(row.id)}
                             >
                               <OrderTags status={"CANCELLED"} />
-                              {row.status === "CANCELLED" ? (
+                              {row.status.toUpperCase() === "CANCELLED" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
