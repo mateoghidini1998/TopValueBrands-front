@@ -418,7 +418,7 @@ export const TableComponent = <T,>({
                     ) : column.key === "average_roi" ? (
                       <td
                         key={column.key}
-                        className="py-2 px-4 text-center text-nowrap overflow-hidden cursor-pointer"
+                        className="py-2 px-4 text-center text-nowrap overflow-hidden"
                         style={{ width: column.width }}
                       >
                         <span
