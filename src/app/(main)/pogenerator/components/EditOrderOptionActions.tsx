@@ -44,7 +44,7 @@ const EditOrderOptionActions: React.FC<EditOrderOptionActionsProps> = ({
   return (
     <div
       ref={ref}
-      className="absolute bg-white right-[60px] top-[0px] mt-2 rounded-md shadow-lg dark:bg-dark ring-1 ring-black ring-opacity-5 z-[1000] text-black dark:text-white w-[50%]"
+      className="absolute bg-white right-[20px] top-[45px] mt-2 rounded-md shadow-lg dark:bg-dark ring-1 ring-black ring-opacity-5 z-[1000] text-black dark:text-white w-[50%]"
     >
       <div
         className="py-1"
@@ -61,20 +61,20 @@ const EditOrderOptionActions: React.FC<EditOrderOptionActionsProps> = ({
           Edit
         </button>
         <button
+          onClick={() => actionHandlers.download!(row)}
+          className="w-full flex flex-start px-4 py-2 text-sm dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2"
+          role="menuitem"
+        >
+          <IoMdDownload />
+          Download
+        </button>
+        <button
           onClick={() => actionHandlers.remove!(row)}
           className="w-full flex flex-start px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2"
           role="menuitem"
         >
           <DeleteButton color={deleteColor} />
           Delete
-        </button>
-        <button
-          onClick={() => actionHandlers.download!(row)}
-          className="w-full flex flex-start px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2"
-          role="menuitem"
-        >
-          <IoMdDownload />
-          Download
         </button>
       </div>
     </div>
