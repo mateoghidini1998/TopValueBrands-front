@@ -51,7 +51,7 @@ const changeName = (status: string) => {
     case TAG_STATUS.ARRIVED:
       return "Arrived";
     case TAG_STATUS.WAITING_FOR_SUPPLIER_APPROVAL:
-      return "Waiting for supplier approval";
+      return "Waiting Supplier";
     case TAG_STATUS.CLOSED:
       return "Closed";
     default:

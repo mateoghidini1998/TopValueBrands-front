@@ -16,7 +16,7 @@ export default function POGeneratorLayout({
 }>) {
   const navLinks = [
     {
-      name: "Incoming Shipments",
+      name: "Incoming POs",
       href: "/warehouse/incoming-shipments",
     },
     {
