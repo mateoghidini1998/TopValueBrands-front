@@ -156,7 +156,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     try {
       await PurchaseOrdersService.updateOrderStatus(orderId, statusId);
 
-      if ([1, 2, 3, 6].includes(statusId)) {
+      if ([1, 2, 3, 8].includes(statusId)) {
         // Si el estado es 1, 2, 3 o 6, mantenlo en ordersToCreate
         setOrdersToCreate((prevOrders) => {
           const updatedOrders = prevOrders.map((order) =>
