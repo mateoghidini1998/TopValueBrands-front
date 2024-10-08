@@ -14,6 +14,6 @@ export const LINKS = [
     ],
   },
   { title: "PO Generator", href: "/pogenerator/create", icon: <Package /> },
-  { title: "Warehouse", href: "/warehouse", icon: <Shop /> },
+  { title: "Warehouse", href: "/warehouse/incoming-shipments", icon: <Shop /> },
   { title: "Users", href: "/users", icon: <Users /> },
 ];

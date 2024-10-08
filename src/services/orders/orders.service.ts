@@ -20,41 +20,12 @@ export class PurchaseOrdersService {
   }
 
   // Change the status of the order
-  static async rejectOrderStatus(orderId: number) {
+  static async updateOrderStatus(orderId: number, status: number) {
     try {
-      // const token = getAuthToken();
       const response = await HttpAPI.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/reject/${orderId}`
-        // { status }
-        // { headers: { Authorization: `Bearer ${token}` }}
-      );
-      return response;
-    } catch (error) {
-      throw new Error("Error updating order status");
-    }
-  }
-
-  static async approveOrderStatus(orderId: number) {
-    try {
-      // const token = getAuthToken();
-      const response = await HttpAPI.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/approve/${orderId}`
-        // { status }
-        // { headers: { Authorization: `Bearer ${token}` }}
-      );
-      return response;
-    } catch (error) {
-      throw new Error("Error updating order status");
-    }
-  }
-
-  static async restartOrderStatus(orderId: number) {
-    try {
-      // const token = getAuthToken();
-      const response = await HttpAPI.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/restart/${orderId}`
-        // { status }
-        // { headers: { Authorization: `Bearer ${token}` }}
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/${orderId}/status`,
+        { status } // Enviar el estado en el cuerpo de la solicitud
+        // { headers: { Authorization: `Bearer ${token}` }} // Descomentar si es necesario el token
       );
       return response;
     } catch (error) {

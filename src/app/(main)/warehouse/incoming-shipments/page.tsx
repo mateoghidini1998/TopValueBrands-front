@@ -4,9 +4,9 @@ import { useOrdersContext } from "@/contexts/orders.context";
 import useThemeContext from "@/contexts/theme.context";
 import { useState } from "react";
 import IndexPageContainer from "../../page.container";
-import EditOrderModal from "../components/EditModalOrder";
-import { TableComponent } from "../components/TableComponent";
-import { Column } from "../interfaces/ITableComponent";
+import EditOrderModal from "../../pogenerator/components/EditModalOrder";
+import { TableComponent } from "../../pogenerator/components/TableComponent";
+import { Column } from "../../pogenerator/interfaces/ITableComponent";
 
 const columns: Column[] = [
   { key: "supplier_name", name: "Supplier Name", width: "150px" },
@@ -18,18 +18,13 @@ const columns: Column[] = [
   { key: "average_roi", name: "AVG ROI", width: "150px" },
 ];
 
-export default function OrderPage() {
+export default function IncomingOrdersPage() {
   const {
-    orders,
+    shippedOrders,
     loading,
     error,
     rejectOrder,
     acceptOrder,
-    cancelOrder,
-    inTransitOrder,
-    arrivedOrder,
-    closeOrder,
-    waitingForSupplierApprovalOrder,
     downloadOrder,
     restartOrder,
     editOrder,
@@ -49,36 +44,6 @@ export default function OrderPage() {
       return new Promise<void>((resolve) => {
         console.log(data);
         acceptOrder(data.id);
-        resolve();
-      });
-    },
-    cancel: (data: any) => {
-      return new Promise<void>((resolve) => {
-        cancelOrder(data.id);
-        resolve();
-      });
-    },
-    inTransit: (data: any) => {
-      return new Promise<void>((resolve) => {
-        inTransitOrder(data.id);
-        resolve();
-      });
-    },
-    arrived: (data: any) => {
-      return new Promise<void>((resolve) => {
-        arrivedOrder(data.id);
-        resolve();
-      });
-    },
-    close: (data: any) => {
-      return new Promise<void>((resolve) => {
-        closeOrder(data.id);
-        resolve();
-      });
-    },
-    waitingForSupplierApproval: (data: any) => {
-      return new Promise<void>((resolve) => {
-        waitingForSupplierApprovalOrder(data.id);
         resolve();
       });
     },
@@ -125,9 +90,9 @@ export default function OrderPage() {
   return (
     <IndexPageContainer>
       <TableComponent
-        totalPages={Math.ceil(orders?.length / 50)}
+        totalPages={Math.ceil(shippedOrders?.length / 50)}
         columns={columns}
-        data={orders || []}
+        data={shippedOrders || []}
         tableHeigth="600px"
         actionsWidth="300px"
         actions={[
@@ -144,11 +109,6 @@ export default function OrderPage() {
           download: actionHandlers.download,
           remove: actionHandlers.remove,
           none: actionHandlers.none,
-          cancel: actionHandlers.cancel,
-          inTransit: actionHandlers.inTransit,
-          arrived: actionHandlers.arrived,
-          close: actionHandlers.close,
-          waitingForSupplierApproval: actionHandlers.waitingForSupplierApproval,
         }}
         actionElements={{
           edit: <></>,
