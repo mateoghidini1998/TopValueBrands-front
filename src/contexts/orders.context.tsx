@@ -41,14 +41,7 @@ type OrdersContextType = {
   shippedOrders: OrderType[];
   loading: boolean;
   error: Error | null;
-  acceptOrder: (id: number) => Promise<void>;
-  rejectOrder: (id: number) => Promise<void>;
-  restartOrder: (id: number) => Promise<void>;
-  cancelOrder: (id: number) => Promise<void>;
-  inTransitOrder: (id: number) => Promise<void>;
-  arrivedOrder: (id: number) => Promise<void>;
-  closeOrder: (id: number) => Promise<void>;
-  waitingForSupplierApprovalOrder: (id: number) => Promise<void>;
+  updateOrderStatus: (orderId: number, status: string) => Promise<void>;
   editOrder: (id: number, orderData: any) => Promise<void>;
   openEditModal: (order: OrderType) => void;
   closeEditModal: () => void;
@@ -61,7 +54,7 @@ type OrdersContextType = {
 };
 
 // Enumeración de estados de la orden de compra
-const PURCHASE_ORDER_STATUSES = {
+export const PURCHASE_ORDER_STATUSES = {
   REJECTED: 1,
   PENDING: 2,
   GOOD_TO_GO: 3,
@@ -89,7 +82,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
 }: OrdersProviderProps) => {
   const [ordersToCreate, setOrdersToCreate] = useState<OrderType[]>([]);
   const [shippedOrders, setShippedOrders] = useState<OrderType[]>([]);
-  const { suppliers } = useSupplierContext();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -148,12 +140,43 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
-  const updateOrderStatus = async (
-    orderId: number,
-    status: string,
-    statusId: number
-  ) => {
+  const getOrderStatusId = async (status: string) => {
+    let statusId;
+    switch (status) {
+      case "PENDING":
+        statusId = 2;
+        break;
+      case "REJECTED":
+        statusId = 1;
+        break;
+      case "WAITING_FOR_SUPPLIER_APPROVAL":
+        statusId = 8;
+        break;
+      case "GOOD_TO_GO":
+        statusId = 3;
+        break;
+      case "IN_TRANSIT":
+        statusId = 5;
+        break;
+      case "ARRIVED":
+        statusId = 6;
+        break;
+      case "CLOSED":
+        statusId = 7;
+        break;
+      case "CANCELLED":
+        statusId = 4;
+        break;
+      default:
+        throw new Error("Invalid status");
+    }
+    return statusId;
+  };
+
+  const updateOrderStatus = async (orderId: number, status: string) => {
     try {
+      const statusId = await getOrderStatusId(status);
+
       await PurchaseOrdersService.updateOrderStatus(orderId, statusId);
 
       if ([1, 2, 3, 8].includes(statusId)) {
@@ -195,83 +218,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
-  const acceptOrder = async (orderId: number) => {
-    await updateOrderStatus(
-      orderId,
-      "GOOD TO GO",
-      PURCHASE_ORDER_STATUSES.GOOD_TO_GO
-    );
-  };
-
-  const cancelOrder = async (orderId: number) => {
-    await updateOrderStatus(
-      orderId,
-      "CANCELLED",
-      PURCHASE_ORDER_STATUSES.CANCELLED
-    );
-  };
-
-  const inTransitOrder = async (orderId: number) => {
-    await updateOrderStatus(
-      orderId,
-      "IN TRANSIT",
-      PURCHASE_ORDER_STATUSES.IN_TRANSIT
-    );
-  };
-
-  const arrivedOrder = async (orderId: number) => {
-    await updateOrderStatus(
-      orderId,
-      "ARRIVED",
-      PURCHASE_ORDER_STATUSES.ARRIVED
-    );
-  };
-
-  const closeOrder = async (orderId: number) => {
-    await updateOrderStatus(orderId, "CLOSED", PURCHASE_ORDER_STATUSES.CLOSED);
-  };
-
-  const waitingForSupplierApprovalOrder = async (orderId: number) => {
-    await updateOrderStatus(
-      orderId,
-      "WAITING FOR SUPPLIER APPROVAL",
-      PURCHASE_ORDER_STATUSES.WAITING_FOR_SUPPLIER_APPROVAL
-    );
-  };
-
-  const rejectOrder = async (orderId: number) => {
-    const order = ordersToCreate.find((order) => order.id === orderId);
-    const orderStatus = order?.status;
-
-    if (orderStatus === "REJECTED") {
-      try {
-        const res = await PurchaseOrdersService.deleteOrder(orderId);
-        console.log("Order deleted:", orderId);
-        setOrdersToCreate((prevOrders) =>
-          prevOrders.filter((order) => order.id !== orderId)
-        );
-        return res;
-      } catch (error: any) {
-        console.error(error);
-        setError(error);
-      }
-    } else {
-      await updateOrderStatus(
-        orderId,
-        "REJECTED",
-        PURCHASE_ORDER_STATUSES.REJECTED
-      );
-    }
-  };
-
-  const restartOrder = async (orderId: number) => {
-    await updateOrderStatus(
-      orderId,
-      "PENDING",
-      PURCHASE_ORDER_STATUSES.PENDING
-    );
-  };
-
   const downloadOrder = async (orderId: number) => {
     try {
       await PurchaseOrdersService.downloadOrder(orderId);
@@ -305,15 +251,8 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   return (
     <OrdersContext.Provider
       value={{
+        updateOrderStatus,
         editOrder,
-        acceptOrder,
-        rejectOrder,
-        restartOrder,
-        cancelOrder,
-        inTransitOrder,
-        arrivedOrder,
-        closeOrder,
-        waitingForSupplierApprovalOrder,
         openEditModal,
         closeEditModal,
         downloadOrder,

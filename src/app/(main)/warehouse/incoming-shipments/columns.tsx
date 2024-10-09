@@ -80,18 +80,18 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
     header: "Status",
     cell: ({ row }) => {
       const rowItem = row.original;
+      const [isEditing, setIsEditing] = useState(false);
+      const { updateOrderStatus } = useOrdersContext();
       const currentStatus: string = row.getValue("status");
 
-      const { updateOrderStatus } = useOrdersContext();
-      const [isEditing, setIsEditing] = useState(false);
-
       const handleStatusChange = (newStatus: string) => {
-        setIsEditing(false);
+        setIsEditing(false); // Ocultar el Select después de cambiar el status
+        // handleStatusUpdate(row.original.id, newStatus); // Aquí llamamos a la función para actualizar el status
         updateOrderStatus(rowItem.id, newStatus);
       };
 
       return (
-        <div className="w-[80px]">
+        <div>
           {isEditing ? (
             // Renderizamos el Select si isEditing es true
             <Select

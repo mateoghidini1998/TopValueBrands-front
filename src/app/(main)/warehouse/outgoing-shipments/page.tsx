@@ -4,7 +4,7 @@ import IndexPageContainer from "../../page.container";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
-export default async function OutgoingShipments() {
+export default function OutgoingShipments() {
   const { shippedOrders } = useOrdersContext();
 
   return (
