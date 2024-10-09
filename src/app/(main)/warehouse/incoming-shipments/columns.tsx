@@ -1,5 +1,15 @@
 "use client";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { Badge } from "@/components/ui/badge"; // Puedes agregar estilos a tus badges
 import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
@@ -23,6 +33,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { OutgoingOrderType } from "../types/outgoing-order.type";
+import OrderSummary from "./order-summary";
 
 const availableStatuses = [
   "PENDING",
@@ -179,31 +190,38 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
     id: "actions",
     header: () => <div className="text-right">Actions</div>,
     cell: ({ row }) => {
-      const outgoingOrder = row.original;
+      const incomingOrder = row.original;
 
       return (
         <div className="flex items-center justify-end gap-2">
-          <DropdownMenu key={outgoingOrder.id}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => console.log("Copy payment ID")}>
-                Copy payment ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => alert("Clicking View Customer ")}
-              >
-                View customer
-              </DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Dialog>
+            <DropdownMenu key={incomingOrder.id}>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem className="w-full">
+                    View Details
+                  </DropdownMenuItem>
+                </DialogTrigger>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => alert("Clicking View Customer ")}
+                >
+                  View customer
+                </DropdownMenuItem>
+                <DropdownMenuItem>View payment details</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Dialog for View Details */}
+            <OrderSummary />
+          </Dialog>
         </div>
       );
     },

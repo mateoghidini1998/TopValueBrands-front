@@ -5,12 +5,12 @@ import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export default function IncomingShipments() {
-  const { orders } = useOrdersContext();
+  const { shippedOrders } = useOrdersContext();
 
   return (
     <IndexPageContainer>
       <div className="w-full px-[1.3rem] py-10">
-        <DataTable columns={columns} data={orders} />
+        <DataTable columns={columns} data={shippedOrders} />
       </div>
     </IndexPageContainer>
   );
