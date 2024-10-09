@@ -113,15 +113,15 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         if (
           order.status === "REJECTED" ||
           order.status === "PENDING" ||
-          order.status === "GOOD TO GO" ||
-          order.status === "WAITING FOR SUPPLIER APPROVAL"
+          order.status === "GOOD_TO_GO" ||
+          order.status === "WAITING_FOR_SUPPLIER_APPROVAL"
         ) {
           if (!ordersToCreateList.some((o) => o.id === order.id)) {
             ordersToCreateList.push(order);
           }
         } else if (
           order.status === "CANCELLED" ||
-          order.status === "IN TRANSIT" ||
+          order.status === "IN_TRANSIT" ||
           order.status === "ARRIVED" ||
           order.status === "CLOSED"
         ) {
