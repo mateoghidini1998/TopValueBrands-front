@@ -23,6 +23,10 @@ export default function POGeneratorLayout({
       name: "Outgoing Shipments",
       href: "/warehouse/outgoing-shipments",
     },
+    {
+      name: "Storage",
+      href: "/warehouse/storage",
+    },
   ];
 
   return (
