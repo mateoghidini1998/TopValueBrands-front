@@ -17,23 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PurchaseOrdersService } from "@/services/orders/orders.service";
+import { useOrdersContext } from "@/contexts/orders.context";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { OutgoingOrderType } from "./types/outgoing-order.type";
-import { useOrdersContext } from "@/contexts/orders.context";
-
-const statusColors: Record<string, string> = {
-  PENDING: "bg-yellow-500 text-white",
-  ARRIVED: "bg-green-500 text-white",
-  CANCELLED: "bg-red-500 text-white",
-  REJECTED: "bg-red-500 text-white",
-  IN_TRANSIT: "bg-blue-500 text-white",
-  CLOSED: "bg-gray-500 text-white",
-  WAITING_FOR_SUPPLIER_APPROVAL: "bg-gray-500 text-white",
-  GOOD_TO_GO: "bg-gray-500 text-white",
-};
 
 const availableStatuses = [
   "PENDING",
@@ -84,9 +72,30 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
       const { updateOrderStatus } = useOrdersContext();
       const currentStatus: string = row.getValue("status");
 
+      const getBadgeVariant = (status: string) => {
+        if (status === "PENDING") {
+          return "pending";
+        } else if (status === "ARRIVED") {
+          return "arrived";
+        } else if (status === "CANCELLED") {
+          return "cancelled";
+        } else if (status === "REJECTED") {
+          return "rejected";
+        } else if (status === "IN_TRANSIT") {
+          return "in_transit";
+        } else if (status === "CLOSED") {
+          return "closed";
+        } else if (status === "WAITING_FOR_SUPPLIER_APPROVAL") {
+          return "waiting_for_supplier_approval";
+        } else if (status === "GOOD_TO_GO") {
+          return "good_to_go";
+        } else {
+          return "default";
+        }
+      };
+
       const handleStatusChange = (newStatus: string) => {
         setIsEditing(false); // Ocultar el Select después de cambiar el status
-        // handleStatusUpdate(row.original.id, newStatus); // Aquí llamamos a la función para actualizar el status
         updateOrderStatus(rowItem.id, newStatus);
       };
 
@@ -106,7 +115,12 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
               <SelectContent>
                 {availableStatuses.map((status) => (
                   <SelectItem key={status} value={status}>
-                    <Badge className={statusColors[status]}>{status}</Badge>
+                    <Badge
+                      className={"cursor-pointer"}
+                      variant={getBadgeVariant(status)}
+                    >
+                      {status}
+                    </Badge>
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -114,7 +128,8 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
           ) : (
             // Renderizamos el Badge si isEditing es false
             <Badge
-              className={`cursor-pointer ${statusColors[currentStatus]}`}
+              variant={getBadgeVariant(currentStatus)}
+              className={`cursor-pointer`}
               onClick={() => setIsEditing(true)} // Al hacer clic, habilita el modo edición
             >
               {currentStatus}
