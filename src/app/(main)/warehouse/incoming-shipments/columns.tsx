@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge"; // Puedes agregar estilos a tus badges
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,8 +22,7 @@ import { useOrdersContext } from "@/contexts/orders.context";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
-import { OutgoingOrderType } from "./types/outgoing-order.type";
-import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { OutgoingOrderType } from "../types/outgoing-order.type";
 
 const availableStatuses = [
   "PENDING",
