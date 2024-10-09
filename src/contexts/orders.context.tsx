@@ -1,16 +1,13 @@
 "use client";
 import { PurchaseOrdersService } from "@/services/orders/orders.service";
 import {
+  createContext,
   FC,
   PropsWithChildren,
   useContext,
-  useState,
-  createContext,
   useEffect,
-  useCallback,
+  useState,
 } from "react";
-import { useSupplierContext } from "./suppliers.context";
-import { TrackedProductsService } from "@/services/trackedProducts/trackedProducts.service";
 
 export type OrderProductType = {
   id: number;
