@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge"; // Puedes agregar estilos a tus badges
 import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +23,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { OutgoingOrderType } from "./types/outgoing-order.type";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 
 const availableStatuses = [
   "PENDING",
@@ -44,11 +46,15 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "Date",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Date" />;
+    },
   },
   {
     accessorKey: "total_price",
-    header: "Total",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Total" />;
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("total_price"));
       const formatted = new Intl.NumberFormat("en-US", {
@@ -140,8 +146,34 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
     },
   },
   {
-    accessorKey: "avg_roi",
-    header: "AVG ROI",
+    accessorKey: "average_roi",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="AVG ROI" />;
+    },
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("average_roi")).toFixed(2);
+
+      const getBadgeVariant = (amount: number) => {
+        if (amount >= 2) {
+          return "success";
+        }
+
+        if (amount <= 0) {
+          return "danger";
+        }
+
+        return "warning";
+      };
+
+      return (
+        <Badge
+          variant={getBadgeVariant(parseFloat(amount))}
+          className={`cursor-pointer`}
+        >
+          {amount}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: "actions",

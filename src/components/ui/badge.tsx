@@ -8,17 +8,23 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
+        // Defaults
         default: "",
-        pending: "bg-[#C26900] text-[#C26900]  border-transparent",
-        good_to_go:
-          "bg-[#00952A] text-[#00952A] border-transparent text-secondary-foreground",
+
+        // Order Statuses
+        pending: "bg-[#C26900] text-[#C26900]",
+        good_to_go: "bg-[#00952A] text-[#00952A]",
         rejected: "bg-[#ef4444] text-[#ef4444]",
-        cancelled: "bg-yellow-500 text-yellow-500 border-transparent ",
-        in_transit: "bg-[#007BFF] text-[#007BFF] border-transparent ",
-        arrived: "bg-[#28A745] text-[#28A745] border-transparent ",
-        waiting_for_supplier_approval:
-          "bg-[#FFC107] text-[#FFC107] border-transparent ",
-        closed: "bg-[#6C757D] text-[#6C757D] border-transparent ",
+        cancelled: "bg-yellow-500 text-yellow-500",
+        in_transit: "bg-[#007BFF] text-[#007BFF]",
+        arrived: "bg-[#28A745] text-[#28A745]",
+        waiting_for_supplier_approval: "bg-[#FFC107] text-[#FFC107]",
+        closed: "bg-[#6C757D] text-[#6C757D]",
+
+        // Transaction Statuses
+        success: "bg-[#00952A] text-[#00952A]",
+        warning: "bg-[#C26900] text-[#C26900]",
+        danger: "bg-[#ef4444] text-[#ef4444]",
       },
     },
     defaultVariants: {
