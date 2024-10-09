@@ -7,8 +7,10 @@ import {
   useState,
   createContext,
   useEffect,
+  useCallback,
 } from "react";
 import { useSupplierContext } from "./suppliers.context";
+import { TrackedProductsService } from "@/services/trackedProducts/trackedProducts.service";
 
 export type OrderProductType = {
   id: number;
@@ -84,9 +86,10 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const [shippedOrders, setShippedOrders] = useState<OrderType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
+  //! No lo uso, pero lo dejo por si acaso
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [orderToEdit, setOrderToEdit] = useState<OrderType | null>(null);
-
   const [editOrderAction, setEditOrderAction] = useState<any>(null);
 
   useEffect(() => {
@@ -227,16 +230,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
-  const openEditModal = (order: OrderType) => {
-    setOrderToEdit(order);
-    setIsEditModalOpen(true);
-  };
-
-  const closeEditModal = () => {
-    setOrderToEdit(null);
-    setIsEditModalOpen(false);
-  };
-
   const editOrder = async (orderId: number, orderData: any) => {
     try {
       await PurchaseOrdersService.editOrder(orderId, orderData); // Implement this method in your service
@@ -246,6 +239,18 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     } catch (error: any) {
       setError(error);
     }
+  };
+
+  //! No lo uso, pero lo dejo por si acaso
+  const openEditModal = (order: OrderType) => {
+    setOrderToEdit(order);
+    setIsEditModalOpen(true);
+  };
+
+  //! No lo uso, pero lo dejo por si acaso
+  const closeEditModal = () => {
+    setOrderToEdit(null);
+    setIsEditModalOpen(false);
   };
 
   return (

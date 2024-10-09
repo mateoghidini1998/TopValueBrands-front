@@ -191,7 +191,6 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
     header: () => <div className="text-right">Actions</div>,
     cell: ({ row }) => {
       const incomingOrder = row.original;
-
       return (
         <div className="flex items-center justify-end gap-2">
           <Dialog>
@@ -220,7 +219,10 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
             </DropdownMenu>
 
             {/* Dialog for View Details */}
-            <OrderSummary />
+            <OrderSummary
+              order={incomingOrder}
+              purchaseOrderProducts={incomingOrder.purchaseOrderProducts}
+            />
           </Dialog>
         </div>
       );

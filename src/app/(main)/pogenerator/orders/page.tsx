@@ -90,6 +90,7 @@ export default function OrderPage() {
     },
     edit: (data: any) => {
       return new Promise<void>((resolve) => {
+        console.log(data);
         openEditModal(data);
         resolve();
       });
