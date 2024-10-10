@@ -30,13 +30,13 @@ export default function OrderSummary({
   purchasedOrderProductsFieldsToShow,
 }: OrderSummaryProps) {
   return (
-    <DialogContent className="flex flex-col gap-4 item-center justify-between">
+    <DialogContent className="flex flex-col gap-4 item-center justify-between dark:bg-dark">
       <DialogHeader className="flex flex-col items-center gap-4">
         <DialogTitle className="text-center">Order Summary</DialogTitle>
 
         {/* Products List */}
         <DialogDescription className="w-full flex flex-col gap-4">
-          <ScrollArea className="h-[400px] w-full rounded-md border p-4">
+          <ScrollArea className="h-[400px] w-full rounded-md border p-4 dark:text-white">
             {order.trackedProducts?.map((product: any, index: number) => {
               // Encuentra el producto correspondiente en purchaseOrderProducts
               const purchaseOrderProduct = order.purchaseOrderProducts.find(
@@ -55,7 +55,7 @@ export default function OrderSummary({
               };
 
               return (
-                <ul key={index} className="flex flex-col gap-2">
+                <ul key={index} className="flex flex-col gap-2 dark:text-white">
                   {/* Mostrar los campos de trackedProductsFieldsToShow */}
                   {Object.entries(product)
                     .filter(([key]) =>
@@ -113,19 +113,19 @@ export default function OrderSummary({
             })}
           </ScrollArea>
 
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" variant="tvb">
             Analyze Products
           </Button>
         </DialogDescription>
 
         {/* Notes */}
-        <DialogDescription className="flex flex-col gap-2 w-full">
+        <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
           <h2>Notes</h2>
           <p>{order?.notes}</p>
         </DialogDescription>
 
         {/* Order Information */}
-        <DialogDescription className="flex flex-col gap-2 w-full">
+        <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
           <div className="flex justify-between items-center">
             <h2>Order Number</h2>
             <p>{order?.order_number}</p>
@@ -150,7 +150,7 @@ export default function OrderSummary({
         <Separator className="my-4" />
 
         {/* Status */}
-        <DialogDescription className="flex flex-col gap-2 w-full">
+        <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
           <h2>Status</h2>
           <Select>
             <SelectTrigger className="w-full">
@@ -168,12 +168,12 @@ export default function OrderSummary({
       </DialogHeader>
 
       {/* Dialog Footer */}
-      <DialogFooter className="w-full flex flex-col gap-2 item-center justify-between">
-        <Button className="w-full" type="submit">
-          Confirm
-        </Button>
-        <Button className="w-full" type="submit">
+      <DialogFooter className="w-full flex flex-col gap-2 item-center justify-between dark:text-white">
+        <Button className="w-full" type="submit" variant={"tvb_invert"}>
           Discard
+        </Button>
+        <Button className="w-full" type="submit" variant={"tvb"}>
+          Confirm
         </Button>
       </DialogFooter>
     </DialogContent>

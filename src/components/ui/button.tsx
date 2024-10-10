@@ -9,6 +9,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        tvb: "bg-[#438EF3] text-primary-foreground shadow-sm hover:bg-[#438EF3]/90 border-[#438EF3] border-solid border-[.5px] dark:bg-[#438EF3] dark:text-white",
+        tvb_invert:
+          "bg-white text-[#438EF3] shadow-sm hover:bg-primary/90 border-[#438EF3] border-solid border-[.5px] hover:bg-[#f1f1f1]",
         default:
           "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive:
