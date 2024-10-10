@@ -83,14 +83,14 @@ export const TableComponent = <T,>({
   const {
     editOrderAction,
     setEditOrderAction,
-    acceptOrder,
-    rejectOrder,
-    restartOrder,
-    cancelOrder,
-    inTransitOrder,
-    arrivedOrder,
-    closeOrder,
-    waitingForSupplierApprovalOrder,
+    // acceptOrder,
+    // rejectOrder,
+    // restartOrder,
+    // cancelOrder,
+    // inTransitOrder,
+    // arrivedOrder,
+    // closeOrder,
+    // waitingForSupplierApprovalOrder,
   } = useOrdersContext();
   const [showStatusDropdown, setShowStatusDropdown] = useState<string>("");
 
@@ -108,46 +108,46 @@ export const TableComponent = <T,>({
     updateTrackedProductInOrder(updatedRow);
   };
 
-  const handleApproveOrderStatus = (rowId: number) => {
-    acceptOrder(rowId);
-    setShowStatusDropdown("");
-    return;
-  };
+  // const handleApproveOrderStatus = (rowId: number) => {
+  //   acceptOrder(rowId);
+  //   setShowStatusDropdown("");
+  //   return;
+  // };
 
-  const handleRejectOrderStatus = (rowId: number) => {
-    rejectOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handleRejectOrderStatus = (rowId: number) => {
+  //   rejectOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
-  const handlePendingOrderStatus = (rowId: number) => {
-    restartOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handlePendingOrderStatus = (rowId: number) => {
+  //   restartOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
-  const handleCancelOrderStatus = (rowId: number) => {
-    cancelOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handleCancelOrderStatus = (rowId: number) => {
+  //   cancelOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
-  const handleInTransitOrderStatus = (rowId: number) => {
-    inTransitOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handleInTransitOrderStatus = (rowId: number) => {
+  //   inTransitOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
-  const handleArrivedOrderStatus = (rowId: number) => {
-    arrivedOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handleArrivedOrderStatus = (rowId: number) => {
+  //   arrivedOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
-  const handleCloseOrderStatus = (rowId: number) => {
-    closeOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handleCloseOrderStatus = (rowId: number) => {
+  //   closeOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
-  const handleWaitingForSupplierApprovalOrderStatus = (rowId: number) => {
-    waitingForSupplierApprovalOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handleWaitingForSupplierApprovalOrderStatus = (rowId: number) => {
+  //   waitingForSupplierApprovalOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
   return (
     <div className="scroll-container mt-8">
@@ -283,7 +283,7 @@ export const TableComponent = <T,>({
                           <div className=" py-2 pl-4 pr-2 flex flex-col absolute top-[50px] z-20 items-start justify-between gap-3 bg-white dark:bg-dark-2 rounded-md border-solid border-[1px] border-[#d0d7df] dark:border-dark-3">
                             <div
                               className="flex justify-between items-center w-[120px]"
-                              onClick={() => handleApproveOrderStatus(row.id)}
+                              // onClick={() => handleApproveOrderStatus(row.id)}
                             >
                               <OrderTags status={"GOOD TO GO"} />
                               {row.status.toUpperCase() === "GOOD TO GO" ? (
@@ -302,7 +302,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handlePendingOrderStatus(row.id)}
+                              // onClick={() => handlePendingOrderStatus(row.id)}
                             >
                               <OrderTags status={"PENDING"} />
                               {row.status.toUpperCase() === "PENDING" ? (
@@ -321,7 +321,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleRejectOrderStatus(row.id)}
+                              // onClick={() => handleRejectOrderStatus(row.id)}
                             >
                               <OrderTags status={"REJECTED"} />
                               {row.status.toUpperCase() === "REJECTED" ? (
@@ -340,7 +340,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleInTransitOrderStatus(row.id)}
+                              // onClick={() => handleInTransitOrderStatus(row.id)}
                             >
                               <OrderTags status={"IN TRANSIT"} />
                               {row.status.toUpperCase() === "IN TRANSIT" ? (
@@ -359,7 +359,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleArrivedOrderStatus(row.id)}
+                              // onClick={() => handleArrivedOrderStatus(row.id)}
                             >
                               <OrderTags status={"ARRIVED"} />
                               {row.status.toUpperCase() === "ARRIVED" ? (
@@ -378,11 +378,11 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() =>
-                                handleWaitingForSupplierApprovalOrderStatus(
-                                  row.id
-                                )
-                              }
+                              // onClick={() =>
+                              //   handleWaitingForSupplierApprovalOrderStatus(
+                              //     row.id
+                              //   )
+                              // }
                             >
                               <OrderTags
                                 status={"WAITING FOR SUPPLIER APPROVAL"}
@@ -404,7 +404,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleCloseOrderStatus(row.id)}
+                              // onClick={() => handleCloseOrderStatus(row.id)}
                             >
                               <OrderTags status={"CLOSED"} />
                               {row.status.toUpperCase() === "CLOSED" ? (
@@ -423,7 +423,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleCancelOrderStatus(row.id)}
+                              // onClick={() => handleCancelOrderStatus(row.id)}
                             >
                               <OrderTags status={"CANCELLED"} />
                               {row.status.toUpperCase() === "CANCELLED" ? (
@@ -510,8 +510,8 @@ export const TableComponent = <T,>({
                             cellValue > 2
                               ? " bg-[#00952A] bg-opacity-10 font-bold  text-[#00952A]"
                               : cellValue < 2 && cellValue > 0
-                              ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] "
-                              : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
+                                ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] "
+                                : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
                           }
                           
                         }`}
@@ -555,17 +555,19 @@ export const TableComponent = <T,>({
                           ) >= 20
                             ? " bg-[#00952A] bg-opacity-10 font-bold  text-[#00952A]"
                             : Number(
-                                ((row.profit / row.product_cost) * 100).toFixed(
-                                  2
-                                )
-                              ) < 20 &&
-                              Number(
-                                ((row.profit / row.product_cost) * 100).toFixed(
-                                  2
-                                )
-                              ) > 19
-                            ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] "
-                            : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
+                                  (
+                                    (row.profit / row.product_cost) *
+                                    100
+                                  ).toFixed(2)
+                                ) < 20 &&
+                                Number(
+                                  (
+                                    (row.profit / row.product_cost) *
+                                    100
+                                  ).toFixed(2)
+                                ) > 19
+                              ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] "
+                              : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
                         }
                           
                         }`}
