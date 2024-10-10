@@ -97,17 +97,12 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
         "product_name",
         "ASIN",
         "seller_sku",
-        "current_rank",
-        "thirty_days_rank",
-        "ninety_days_rank",
-        "units_sold",
-        "product_velocity",
-        "product_cost",
       ];
 
       const purchasedOrderProductsFieldsToShow = [
         "quantity_purchased",
-        "total_amount",
+        "quantity_received",
+        "quantity_missing",
       ];
 
       const incomingOrder = row.original;
