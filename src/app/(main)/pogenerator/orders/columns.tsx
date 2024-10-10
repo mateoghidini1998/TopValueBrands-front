@@ -56,7 +56,16 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => <StatusCell row={row} />,
+    cell: ({ row }) => {
+      const availableStatuses = [
+        "PENDING",
+        "ARRIVED",
+        "GOOD_TO_GO",
+        "REJECTED",
+        "WAITING_FOR_SUPPLIER_APPROVAL",
+      ];
+      return <StatusCell row={row} avaliableStatuses={availableStatuses} />;
+    },
   },
   {
     accessorKey: "average_roi",
