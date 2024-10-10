@@ -11,12 +11,6 @@ import {
   useState,
 } from "react";
 import { useOrdersContext } from "./orders.context";
-import { data } from "../app/data/index";
-
-interface TrackedProductInOrder {
-  id: string;
-  supplier_id: string;
-}
 
 export type ProductInOrder = {
   id: string;

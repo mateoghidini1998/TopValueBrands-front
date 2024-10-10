@@ -20,12 +20,14 @@ import {
 
 type OrderSummaryProps = {
   order: any;
-  purchaseOrderProducts: any;
+  trackedProductsFieldsToShow: string[];
+  purchasedOrderProductsFieldsToShow: string[];
 };
 
 export default function OrderSummary({
   order,
-  purchaseOrderProducts,
+  trackedProductsFieldsToShow,
+  purchasedOrderProductsFieldsToShow,
 }: OrderSummaryProps) {
   return (
     <DialogContent className="flex flex-col gap-4 item-center justify-between">
@@ -35,21 +37,11 @@ export default function OrderSummary({
         {/* Products List */}
         <DialogDescription className="w-full flex flex-col gap-4">
           <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-            {purchaseOrderProducts?.map((product: any, index: number) => {
-              // Lista de campos que deseas mostrar
-              const fieldsToShow = [
-                "product_name",
-                "asin",
-                "amazon_sku",
-                "current_rank",
-                "30_day_rank",
-                "90_day_rank",
-                "units_sold",
-                "velocity",
-                "unit_price",
-                "quantity",
-                "total_price",
-              ];
+            {order.trackedProducts?.map((product: any, index: number) => {
+              // Encuentra el producto correspondiente en purchaseOrderProducts
+              const purchaseOrderProduct = order.purchaseOrderProducts.find(
+                (p: any) => p.product_id === product.product_id
+              );
 
               // Función para formatear las claves como las necesitas
               const formatKey = (key: string) => {
@@ -64,24 +56,63 @@ export default function OrderSummary({
 
               return (
                 <ul key={index} className="flex flex-col gap-2">
+                  {/* Mostrar los campos de trackedProductsFieldsToShow */}
                   {Object.entries(product)
-                    // .filter(([key]) => fieldsToShow.includes(key)) // Filtra los campos a mostrar
+                    .filter(([key]) =>
+                      trackedProductsFieldsToShow.includes(key)
+                    ) // Filtra los campos a mostrar
                     .map(([key, value]: any) => (
                       <li
                         key={key}
                         className="flex justify-between items-center"
                       >
-                        <p>{formatKey(key)}:</p> <p>{value || "N/A"} </p>
+                        <p>{formatKey(key)}:</p>{" "}
+                        <p>
+                          {" "}
+                          {typeof value === "number"
+                            ? value || 0
+                            : typeof value === "string"
+                              ? value
+                              : "N/A"}{" "}
+                        </p>
                       </li>
                     ))}
 
-                  {index !== purchaseOrderProducts.length - 1 && (
+                  {/* Mostrar los datos de purchaseOrderProducts */}
+                  {purchaseOrderProduct && (
+                    <>
+                      {Object.entries(purchaseOrderProduct)
+                        .filter(([key]) =>
+                          purchasedOrderProductsFieldsToShow.includes(key)
+                        ) // Filtra los campos a mostrar
+                        .map(([key, value]: any) => (
+                          <li
+                            key={key}
+                            className="flex justify-between items-center"
+                          >
+                            <p>{formatKey(key)}:</p>{" "}
+                            <p>
+                              {" "}
+                              {typeof value === "number"
+                                ? value || 0
+                                : typeof value === "string"
+                                  ? value
+                                  : "N/A"}{" "}
+                            </p>
+                          </li>
+                        ))}
+                    </>
+                  )}
+
+                  {/* Separador entre productos */}
+                  {index !== order.trackedProducts.length - 1 && (
                     <Separator className="my-4" />
                   )}
                 </ul>
               );
             })}
           </ScrollArea>
+
           <Button className="w-full" type="submit">
             Analyze Products
           </Button>

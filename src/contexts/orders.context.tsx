@@ -1,5 +1,6 @@
 "use client";
 import { PurchaseOrdersService } from "@/services/orders/orders.service";
+import { IPurchaseOrder, IPurchaseOrderSummary } from "@/types/product.types";
 import {
   createContext,
   FC,
@@ -9,47 +10,48 @@ import {
   useState,
 } from "react";
 
-export type OrderProductType = {
-  id: number;
-  purchase_order_id: number;
-  product_id: number;
-  product_name: string;
-  total_amount_by_product: number;
-  unit_price: number;
-  total_amount: number;
-  quantity_purchased: number;
-  createdAt: string;
-  updatedAt: string;
-};
+// export type OrderProductType = {
+//   id: number;
+//   purchase_order_id: number;
+//   product_id: number;
+//   product_name: string;
+//   total_amount_by_product: number;
+//   unit_price: number;
+//   total_amount: number;
+//   quantity_purchased: number;
+//   createdAt: string;
+//   updatedAt: string;
+// };
 
-export type OrderType = {
-  id: number;
-  notes: string;
-  order_number: string;
-  supplier_id: number;
-  supplier_name?: string;
-  status: string | null;
-  total_price: number;
-  createdAt: string;
-  updatedAt: string;
-  purchaseOrderProducts: OrderProductType[];
-};
+// export type OrderType = {
+//   id: number;
+//   notes: string;
+//   order_number: string;
+//   supplier_id: number;
+//   supplier_name?: string;
+//   status: string | null;
+//   total_price: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   purchaseOrderProducts: OrderProductType[];
+// };
 
 type OrdersContextType = {
-  orders: OrderType[];
-  shippedOrders: OrderType[];
+  orders: IPurchaseOrder[];
+  shippedOrders: IPurchaseOrder[];
   loading: boolean;
   error: Error | null;
   updateOrderStatus: (orderId: number, status: string) => Promise<void>;
   editOrder: (id: number, orderData: any) => Promise<void>;
-  openEditModal: (order: OrderType) => void;
+  openEditModal: (order: IPurchaseOrder) => void;
   closeEditModal: () => void;
   downloadOrder: (id: number) => Promise<void>;
   fetchOrders: () => Promise<void>;
   isEditModalOpen: boolean;
-  orderToEdit: OrderType | null;
+  orderToEdit: IPurchaseOrder | null;
   editOrderAction: any;
   setEditOrderAction: (data: any) => void;
+  getPurchaseOrderSummary: (orderId: number) => Promise<IPurchaseOrderSummary>;
 };
 
 // Enumeración de estados de la orden de compra
@@ -79,19 +81,25 @@ type OrdersProviderProps = PropsWithChildren;
 export const OrdersProvider: FC<OrdersProviderProps> = ({
   children,
 }: OrdersProviderProps) => {
-  const [ordersToCreate, setOrdersToCreate] = useState<OrderType[]>([]);
-  const [shippedOrders, setShippedOrders] = useState<OrderType[]>([]);
+  const [ordersToCreate, setOrdersToCreate] = useState<IPurchaseOrder[]>([]);
+  const [shippedOrders, setShippedOrders] = useState<IPurchaseOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   //! No lo uso, pero lo dejo por si acaso
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [orderToEdit, setOrderToEdit] = useState<OrderType | null>(null);
+  const [orderToEdit, setOrderToEdit] = useState<IPurchaseOrder | null>(null);
   const [editOrderAction, setEditOrderAction] = useState<any>(null);
 
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  const getPurchaseOrderSummary = (orderId: number) => {
+    const orderSummary = PurchaseOrdersService.getPurchaseOrderSummary(orderId);
+    console.log(orderSummary);
+    return orderSummary;
+  };
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -106,8 +114,8 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       const data = await response.json();
 
       // Procesa las órdenes en lote, sin duplicados
-      const ordersToCreateList: OrderType[] = [];
-      const shippedOrdersList: OrderType[] = [];
+      const ordersToCreateList: IPurchaseOrder[] = [];
+      const shippedOrdersList: IPurchaseOrder[] = [];
 
       data.data.forEach((order: any) => {
         if (
@@ -239,7 +247,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   };
 
   //! No lo uso, pero lo dejo por si acaso
-  const openEditModal = (order: OrderType) => {
+  const openEditModal = (order: IPurchaseOrder) => {
     setOrderToEdit(order);
     setIsEditModalOpen(true);
   };
@@ -267,6 +275,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         orderToEdit,
         editOrderAction,
         setEditOrderAction,
+        getPurchaseOrderSummary,
       }}
     >
       {children}

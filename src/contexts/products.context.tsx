@@ -8,16 +8,17 @@ import {
   useEffect,
   useRef,
 } from "react";
-import { ProductType } from "@/types/product.types";
+// import { ProductType } from "@/types/product.types";
 import { InventoryService } from "@/services/inventory/inventory";
 import { EditProductType } from "@/components/inventory/TableRow";
 import { NewProductType } from "@/components/inventory/NewTableRow";
 import { usePathname, useRouter } from "next/navigation";
+import { IProductType } from "@/types/product.types";
 
 export type ProductState = {
   addingProduct: boolean;
   setAddingProduct: React.Dispatch<React.SetStateAction<boolean>>;
-  products: ProductType[];
+  products: IProductType[];
   currentPage: number;
   totalPages: number;
   keyword: string;
@@ -26,7 +27,7 @@ export type ProductState = {
   handleSetOrderBy: (order: string, orderWay: string) => void;
   handleSetSupplier: (supplier: any) => void;
   handleSetKeyword: (keyword: string) => void;
-  updateProduct: (updatedProduct: ProductType) => void;
+  updateProduct: (updatedProduct: IProductType) => void;
   handleDeleteProduct: (id: string) => void;
   handleNextPage: () => void;
   handlePreviousPage: () => void;
@@ -69,7 +70,7 @@ export const ProductContext = createContext<ProductState>({
 export const ProductProvider: FC<PropsWithChildren> = ({
   children,
 }: PropsWithChildren) => {
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<IProductType[]>([]);
   const [addingProduct, setAddingProduct] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -175,7 +176,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
-  const updateProduct = async (updatedProduct: ProductType) => {
+  const updateProduct = async (updatedProduct: IProductType) => {
     try {
       const response = await InventoryService.updateProduct(updatedProduct);
       // update the product state

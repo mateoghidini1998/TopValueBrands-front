@@ -19,6 +19,23 @@ export class PurchaseOrdersService {
     }
   }
 
+  static async getPurchaseOrderSummary(orderId: number) {
+    try {
+      const token = getAuthToken();
+      const response = await HttpAPI.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/summary/${orderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching data");
+    }
+  }
+
   // Change the status of the order
   static async updateOrderStatus(orderId: number, status: number) {
     try {

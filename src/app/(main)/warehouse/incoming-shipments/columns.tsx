@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 import { Badge } from "@/components/ui/badge"; // Puedes agregar estilos a tus badges
 import { Button } from "@/components/ui/button";
@@ -21,30 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useOrdersContext } from "@/contexts/orders.context";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-import { useState } from "react";
 import { OutgoingOrderType } from "../types/outgoing-order.type";
 import OrderSummary from "./order-summary";
+import StatusCell from "./status-cell";
 
-const availableStatuses = [
-  "PENDING",
-  "ARRIVED",
-  "CANCELLED",
-  "REJECTED",
-  "IN_TRANSIT",
-  "CLOSED",
-  "WAITING_FOR_SUPPLIER_APPROVAL",
-  "GOOD_TO_GO",
-];
 export const columns: ColumnDef<OutgoingOrderType>[] = [
   {
     accessorKey: "supplier_name",
@@ -82,78 +56,7 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => {
-      const rowItem = row.original;
-      const [isEditing, setIsEditing] = useState(false);
-      const { updateOrderStatus } = useOrdersContext();
-      const currentStatus: string = row.getValue("status");
-
-      const getBadgeVariant = (status: string) => {
-        if (status === "PENDING") {
-          return "pending";
-        } else if (status === "ARRIVED") {
-          return "arrived";
-        } else if (status === "CANCELLED") {
-          return "cancelled";
-        } else if (status === "REJECTED") {
-          return "rejected";
-        } else if (status === "IN_TRANSIT") {
-          return "in_transit";
-        } else if (status === "CLOSED") {
-          return "closed";
-        } else if (status === "WAITING_FOR_SUPPLIER_APPROVAL") {
-          return "waiting_for_supplier_approval";
-        } else if (status === "GOOD_TO_GO") {
-          return "good_to_go";
-        } else {
-          return "default";
-        }
-      };
-
-      const handleStatusChange = (newStatus: string) => {
-        setIsEditing(false); // Ocultar el Select después de cambiar el status
-        updateOrderStatus(rowItem.id, newStatus);
-      };
-
-      return (
-        <div>
-          {isEditing ? (
-            // Renderizamos el Select si isEditing es true
-            <Select
-              onValueChange={(newStatus) => handleStatusChange(newStatus)}
-              value={currentStatus}
-              open
-              onOpenChange={() => setIsEditing(false)} // Al cerrar el Select, deshabilita el modo edición
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Change status" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableStatuses.map((status) => (
-                  <SelectItem key={status} value={status}>
-                    <Badge
-                      className={"cursor-pointer"}
-                      variant={getBadgeVariant(status)}
-                    >
-                      {status}
-                    </Badge>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          ) : (
-            // Renderizamos el Badge si isEditing es false
-            <Badge
-              variant={getBadgeVariant(currentStatus)}
-              className={`cursor-pointer`}
-              onClick={() => setIsEditing(true)} // Al hacer clic, habilita el modo edición
-            >
-              {currentStatus}
-            </Badge>
-          )}
-        </div>
-      );
-    },
+    cell: ({ row }) => <StatusCell row={row} />,
   },
   {
     accessorKey: "average_roi",
@@ -190,6 +93,23 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
     id: "actions",
     header: () => <div className="text-right">Actions</div>,
     cell: ({ row }) => {
+      const trackedProductsFieldsToShow = [
+        "product_name",
+        "ASIN",
+        "seller_sku",
+        "current_rank",
+        "thirty_days_rank",
+        "ninety_days_rank",
+        "units_sold",
+        "product_velocity",
+        "product_cost",
+      ];
+
+      const purchasedOrderProductsFieldsToShow = [
+        "quantity_purchased",
+        "total_amount",
+      ];
+
       const incomingOrder = row.original;
       return (
         <div className="flex items-center justify-end gap-2">
@@ -221,7 +141,10 @@ export const columns: ColumnDef<OutgoingOrderType>[] = [
             {/* Dialog for View Details */}
             <OrderSummary
               order={incomingOrder}
-              purchaseOrderProducts={incomingOrder.purchaseOrderProducts}
+              purchasedOrderProductsFieldsToShow={
+                purchasedOrderProductsFieldsToShow
+              }
+              trackedProductsFieldsToShow={trackedProductsFieldsToShow}
             />
           </Dialog>
         </div>
