@@ -21,8 +21,8 @@ export interface IProductType {
   pack_type: string;
 
   is_active: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // Tracked Products
