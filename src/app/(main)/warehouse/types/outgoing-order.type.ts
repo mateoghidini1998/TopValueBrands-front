@@ -1,6 +1,6 @@
-import { OrderProductType } from "@/contexts/orders.context";
+import { IPurchaseOrder } from "@/types/product.types";
 
-export type OutgoingOrderType = {
+export type IcomingOrderType = {
   id: number;
   notes: string;
   order_number: string;
@@ -10,5 +10,5 @@ export type OutgoingOrderType = {
   total_price: number;
   createdAt: string;
   updatedAt: string;
-  purchaseOrderProducts: OrderProductType[];
+  purchaseOrderProducts: IPurchaseOrder[];
 };

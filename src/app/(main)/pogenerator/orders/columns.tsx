@@ -13,11 +13,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { IPurchaseOrder } from "@/types/product.types";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import OrderSummary from "./order-summary";
 import StatusCell from "./status-cell";
+import { IPurchaseOrder } from "@/types/product.types";
 
 export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
