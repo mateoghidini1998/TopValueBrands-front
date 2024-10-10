@@ -1,23 +1,11 @@
 "use client";
 
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-
 import { Badge } from "@/components/ui/badge"; // Puedes agregar estilos a tus badges
-import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-import OrderSummary from "./order-summary";
-import StatusCell from "./status-cell";
 import { IPurchaseOrder } from "@/types/product.types";
+import { ColumnDef } from "@tanstack/react-table";
+import ActionsCell from "./actions-cell";
+import StatusCell from "./status-cell";
 
 export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
@@ -101,63 +89,6 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     accessorKey: "actions",
     id: "actions",
     header: () => <div className="text-right">Actions</div>,
-    cell: ({ row }) => {
-      const trackedProductsFieldsToShow = [
-        "product_name",
-        "ASIN",
-        "seller_sku",
-        "current_rank",
-        "thirty_days_rank",
-        "ninety_days_rank",
-        "units_sold",
-        "product_velocity",
-        "product_cost",
-      ];
-
-      const purchasedOrderProductsFieldsToShow = [
-        "quantity_purchased",
-        "total_amount",
-      ];
-
-      const incomingOrder = row.original;
-      return (
-        <div className="flex items-center justify-end gap-2">
-          <Dialog>
-            <DropdownMenu key={incomingOrder.id}>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DialogTrigger asChild>
-                  <DropdownMenuItem className="w-full">
-                    View Details
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => alert("Clicking View Customer ")}
-                >
-                  View customer
-                </DropdownMenuItem>
-                <DropdownMenuItem>View payment details</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Dialog for View Details */}
-            <OrderSummary
-              order={incomingOrder}
-              purchasedOrderProductsFieldsToShow={
-                purchasedOrderProductsFieldsToShow
-              }
-              trackedProductsFieldsToShow={trackedProductsFieldsToShow}
-            />
-          </Dialog>
-        </div>
-      );
-    },
+    cell: ({ row }) => <ActionsCell row={row} />,
   },
 ];

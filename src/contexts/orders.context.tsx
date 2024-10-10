@@ -10,32 +10,6 @@ import {
   useState,
 } from "react";
 
-// export type OrderProductType = {
-//   id: number;
-//   purchase_order_id: number;
-//   product_id: number;
-//   product_name: string;
-//   total_amount_by_product: number;
-//   unit_price: number;
-//   total_amount: number;
-//   quantity_purchased: number;
-//   createdAt: string;
-//   updatedAt: string;
-// };
-
-// export type OrderType = {
-//   id: number;
-//   notes: string;
-//   order_number: string;
-//   supplier_id: number;
-//   supplier_name?: string;
-//   status: string | null;
-//   total_price: number;
-//   createdAt: string;
-//   updatedAt: string;
-//   purchaseOrderProducts: OrderProductType[];
-// };
-
 type OrdersContextType = {
   orders: IPurchaseOrder[];
   shippedOrders: IPurchaseOrder[];
@@ -52,6 +26,7 @@ type OrdersContextType = {
   editOrderAction: any;
   setEditOrderAction: (data: any) => void;
   getPurchaseOrderSummary: (orderId: number) => Promise<IPurchaseOrderSummary>;
+  deleteOrder: (id: number) => Promise<boolean>;
 };
 
 // Enumeración de estados de la orden de compra
@@ -95,6 +70,21 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     fetchOrders();
   }, []);
 
+  const deleteOrder = async (orderId: number): Promise<boolean> => {
+    try {
+      const response = await PurchaseOrdersService.deleteOrder(orderId);
+      if (response) {
+        // remove it from the state
+        setOrdersToCreate(
+          ordersToCreate.filter((order) => order.id !== orderId)
+        );
+      }
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
   const getPurchaseOrderSummary = (orderId: number) => {
     const orderSummary = PurchaseOrdersService.getPurchaseOrderSummary(orderId);
     console.log(orderSummary);
@@ -276,6 +266,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         editOrderAction,
         setEditOrderAction,
         getPurchaseOrderSummary,
+        deleteOrder,
       }}
     >
       {children}

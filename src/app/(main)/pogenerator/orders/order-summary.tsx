@@ -10,19 +10,12 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TrackedProductType } from "@/types/trackedProducts.types";
 import { useState } from "react";
 import IndexPageContainer from "../../page.container";
 import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 const columns: Column[] = [
   { key: "product_name", name: "Product", width: "20%" },
@@ -217,7 +210,7 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                 <Separator className="my-4" />
 
                 {/* Status */}
-                <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
+                {/* <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
                   <h2>Status</h2>
                   <Select>
                     <SelectTrigger className="w-full">
@@ -230,16 +223,24 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                </DialogDescription>
+                </DialogDescription> */}
               </DialogHeader>
 
-              <DialogFooter className="w-full flex flex-col gap-2 item-center justify-between dark:text-white">
-                <Button className="w-full" type="submit" variant={"tvb_invert"}>
-                  Discard
-                </Button>
-                <Button className="w-full" type="submit" variant={"tvb"}>
-                  Confirm
-                </Button>
+              <DialogFooter className="w-full flex flex-1 gap-2 item-center justify-between dark:text-white">
+                <DialogPrimitive.Close className="w-full">
+                  <Button
+                    className="w-full"
+                    type="submit"
+                    variant={"tvb_invert"}
+                  >
+                    Discard
+                  </Button>
+                </DialogPrimitive.Close>
+                <DialogPrimitive.Close className="w-full">
+                  <Button className="w-full" type="submit" variant={"tvb"}>
+                    Confirm
+                  </Button>
+                </DialogPrimitive.Close>
               </DialogFooter>
             </DialogContent>
           </>

@@ -102,13 +102,12 @@ export class PurchaseOrdersService {
   }
 
   static async deleteOrder(orderId: number) {
-    const response = await HttpAPI.delete(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/delete/${orderId}`
-    );
-
-    console.log(response);
-
-    if (!response.success) {
+    try {
+      const response = await HttpAPI.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/delete/${orderId}`
+      );
+      return response.success;
+    } catch (error) {
       throw new Error("Error deleting order");
     }
   }
