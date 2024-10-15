@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { MoreHorizontal } from "lucide-react";
-import OrderSummary from "./order-summary";
+import OrderSummary from "./(order-summary)/order-summary";
 
 type ActionsCellProps = {
   row: any;
@@ -21,23 +21,6 @@ type ActionsCellProps = {
 
 const ActionsCell = ({ row }: ActionsCellProps) => {
   const { downloadOrder, deleteOrder } = useOrdersContext();
-
-  const trackedProductsFieldsToShow = [
-    "product_name",
-    "ASIN",
-    "seller_sku",
-    "current_rank",
-    "thirty_days_rank",
-    "ninety_days_rank",
-    "units_sold",
-    "product_velocity",
-    "product_cost",
-  ];
-
-  const purchasedOrderProductsFieldsToShow = [
-    "quantity_purchased",
-    "total_amount",
-  ];
 
   const incomingOrder = row.original;
   return (
@@ -68,13 +51,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         </DropdownMenu>
 
         {/* Dialog for View Details */}
-        <OrderSummary
-          order={incomingOrder}
-          purchasedOrderProductsFieldsToShow={
-            purchasedOrderProductsFieldsToShow
-          }
-          trackedProductsFieldsToShow={trackedProductsFieldsToShow}
-        />
+        <OrderSummary order={incomingOrder} />
       </Dialog>
     </div>
   );
