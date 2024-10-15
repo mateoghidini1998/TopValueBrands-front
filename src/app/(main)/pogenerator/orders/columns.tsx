@@ -47,7 +47,7 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     cell: ({ row }) => {
       const availableStatuses = [
         "PENDING",
-        "ARRIVED",
+        "IN_TRANSIT",
         "GOOD_TO_GO",
         "REJECTED",
         "WAITING_FOR_SUPPLIER_APPROVAL",
