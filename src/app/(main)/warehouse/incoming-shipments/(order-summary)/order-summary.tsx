@@ -13,9 +13,13 @@ type OrderSummaryProps = {
 };
 
 export default function OrderSummary({ order }: OrderSummaryProps) {
+  console.log(order);
   // Función para transformar los datos
   const transformOrderData = (order: any) => {
     return order.purchaseOrderProducts.map((product: any, index: number) => ({
+      purchase_order_product_id: order.purchaseOrderProducts[index]?.id,
+      order_id: order?.id,
+      order_number: order?.order_number,
       product_name:
         order.trackedProducts[index]?.product_name || product.product_name,
       product_image: order.trackedProducts[index]?.product_image || "N/A",
@@ -23,6 +27,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
       seller_sku: order.trackedProducts[index]?.seller_sku || "N/A",
       quantity_purchased: product.quantity_purchased,
       quantity_received: product.quantity_received,
+      quantity_missing: product.quantity_missing,
       reason_id: product.reason_id,
       notes: order.notes,
     }));
@@ -34,9 +39,9 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
         <DialogHeader className="flex flex-col items-center gap-4">
           <DialogTitle className="text-center">Order Summary</DialogTitle>
 
-          <DialogDescription>
+          <>
             <DataTable columns={columns} data={transformOrderData(order)} />
-          </DialogDescription>
+          </>
         </DialogHeader>
       </DialogContent>
     </>

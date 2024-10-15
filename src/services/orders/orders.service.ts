@@ -111,4 +111,19 @@ export class PurchaseOrdersService {
       throw new Error("Error deleting order");
     }
   }
+
+  static async addQuantityReceived(
+    purchaseOrderProductId: number,
+    quantityReceived: number
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/received/${purchaseOrderProductId}`,
+        { quantityReceived }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding quantity received");
+    }
+  }
 }

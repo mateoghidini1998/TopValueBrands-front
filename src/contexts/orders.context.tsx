@@ -13,6 +13,7 @@ import {
 type OrdersContextType = {
   orders: IPurchaseOrder[];
   shippedOrders: IPurchaseOrder[];
+  setShippedOrders: React.Dispatch<React.SetStateAction<IPurchaseOrder[]>>;
   loading: boolean;
   error: Error | null;
   updateOrderStatus: (orderId: number, status: string) => Promise<void>;
@@ -27,6 +28,10 @@ type OrdersContextType = {
   setEditOrderAction: (data: any) => void;
   getPurchaseOrderSummary: (orderId: number) => Promise<IPurchaseOrderSummary>;
   deleteOrder: (id: number) => Promise<boolean>;
+  addQuantityReceived: (
+    purchaseOrderProductId: number,
+    quantityReceived: number
+  ) => Promise<void>;
 };
 
 // Enumeración de estados de la orden de compra
@@ -242,6 +247,26 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
+  const addQuantityReceived = async (
+    purchaseOrderProductId: number,
+    quantityReceived: number
+  ) => {
+    try {
+      await PurchaseOrdersService.addQuantityReceived(
+        purchaseOrderProductId,
+        quantityReceived
+      ); // Implement this method in your service
+      fetchOrders();
+      console.log(
+        "Quantity received added:",
+        purchaseOrderProductId,
+        quantityReceived
+      );
+    } catch (error: any) {
+      setError(error);
+    }
+  };
+
   //! No lo uso, pero lo dejo por si acaso
   const openEditModal = (order: IPurchaseOrder) => {
     setOrderToEdit(order);
@@ -264,6 +289,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         downloadOrder,
         shippedOrders,
         orders: ordersToCreate,
+        setShippedOrders,
         loading,
         error,
         fetchOrders,
@@ -273,6 +299,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         setEditOrderAction,
         getPurchaseOrderSummary,
         deleteOrder,
+        addQuantityReceived,
       }}
     >
       {children}
