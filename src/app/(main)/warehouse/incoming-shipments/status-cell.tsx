@@ -13,14 +13,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 const availableStatuses = [
-  "PENDING",
+  "IN_TRANSIT",
   "ARRIVED",
   "CANCELLED",
-  "REJECTED",
-  "IN_TRANSIT",
   "CLOSED",
-  "WAITING_FOR_SUPPLIER_APPROVAL",
-  "GOOD_TO_GO",
+  // "PENDING",
+  // "REJECTED",
+  // "WAITING_FOR_SUPPLIER_APPROVAL",
+  // "GOOD_TO_GO",
 ];
 
 const StatusCell = ({ row }: any) => {

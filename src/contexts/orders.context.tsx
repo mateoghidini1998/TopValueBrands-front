@@ -75,9 +75,15 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       const response = await PurchaseOrdersService.deleteOrder(orderId);
       if (response) {
         // remove it from the state
-        setOrdersToCreate(
-          ordersToCreate.filter((order) => order.id !== orderId)
-        );
+        if (ordersToCreate.find((order) => order.id === orderId)) {
+          setOrdersToCreate(
+            ordersToCreate.filter((order) => order.id !== orderId)
+          );
+        } else if (shippedOrders.find((order) => order.id === orderId)) {
+          setShippedOrders(
+            shippedOrders.filter((order) => order.id !== orderId)
+          );
+        }
       }
       return true;
     } catch (error) {
