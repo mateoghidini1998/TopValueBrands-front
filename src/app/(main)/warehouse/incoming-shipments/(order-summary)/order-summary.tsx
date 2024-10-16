@@ -1,20 +1,20 @@
 import {
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { IPurchaseOrderSummary } from "@/types/product.types";
 import { DataTable } from "../data-table";
 import { columns } from "./columns";
+import useThemeContext from "@/contexts/theme.context";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
 };
 
 export default function OrderSummary({ order }: OrderSummaryProps) {
-  console.log(order);
-  // Función para transformar los datos
+  const { sidebarOpen } = useThemeContext();
+
   const transformOrderData = (order: any) => {
     return order.purchaseOrderProducts.map((product: any, index: number) => ({
       purchase_order_product_id: order.purchaseOrderProducts[index]?.id,
@@ -35,7 +35,9 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
 
   return (
     <>
-      <DialogContent className="flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] max-w-[70%] w-fit translate-x-[-50%] translate-y-[-50%]">
+      <DialogContent
+        className={`flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[70%] max-w-[70%] ${sidebarOpen ? "translate-x-[-40%]" : "translate-x-[-48%]"} translate-y-[-50%]`}
+      >
         <DialogHeader className="flex flex-col items-center gap-4">
           <DialogTitle className="text-center">Order Summary</DialogTitle>
 
