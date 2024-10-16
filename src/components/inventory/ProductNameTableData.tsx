@@ -25,9 +25,6 @@ export const ProductNameTableData = ({
     setTooltipText("");
     setTooltipVisible(false);
   };
-
-  console.log(product);
-
   return (
     <td
       style={{ width: width }}
