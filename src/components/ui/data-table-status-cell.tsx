@@ -12,18 +12,12 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 
-const availableStatuses = [
-  "IN_TRANSIT",
-  "ARRIVED",
-  "CANCELLED",
-  "CLOSED",
-  // "PENDING",
-  // "REJECTED",
-  // "WAITING_FOR_SUPPLIER_APPROVAL",
-  // "GOOD_TO_GO",
-];
+type StatusCellProps = {
+  row: any;
+  avaliableStatuses: string[];
+};
 
-const StatusCell = ({ row }: any) => {
+const StatusCell = ({ row, avaliableStatuses }: StatusCellProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { updateOrderStatus } = useOrdersContext();
   const currentStatus = row.getValue("status");
@@ -69,7 +63,7 @@ const StatusCell = ({ row }: any) => {
             <SelectValue placeholder="Change status" />
           </SelectTrigger>
           <SelectContent>
-            {availableStatuses.map((status) => (
+            {avaliableStatuses.map((status) => (
               <SelectItem key={status} value={status}>
                 <Badge
                   className={"cursor-pointer"}

@@ -4,9 +4,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { IPurchaseOrderSummary } from "@/types/product.types";
-import { DataTable } from "../data-table";
 import { columns } from "./columns";
 import useThemeContext from "@/contexts/theme.context";
+import { DataTable } from "@/components/ui/data-table";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;

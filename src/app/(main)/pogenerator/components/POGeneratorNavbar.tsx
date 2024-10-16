@@ -1,3 +1,5 @@
+"use client";
+import { usePathname } from "next/navigation";
 import { FilterSupplier } from "./FilterSupplier";
 import { POGeneratorActiveLink } from "./POGeneratorActiveLink";
 import SearchInputPOGenerator from "./SearchInputPOGenerator";
@@ -8,6 +10,8 @@ interface NavLink {
 }
 
 export const POGeneratorNavbar = ({ navLinks }: any) => {
+  const pathname = usePathname();
+
   return (
     <nav className="inventory_table_header h-[60px] flex justify-start items-center px-6 gap-6 bg-white dark:bg-dark">
       <ul className="flex flex-row justify-start gap-6 items-center">
@@ -17,8 +21,12 @@ export const POGeneratorNavbar = ({ navLinks }: any) => {
           </li>
         ))}
       </ul>
-      <SearchInputPOGenerator />
-      <FilterSupplier />
+      {pathname === "/pogenerator/create" && (
+        <>
+          <SearchInputPOGenerator />
+          <FilterSupplier />
+        </>
+      )}
     </nav>
   );
 };

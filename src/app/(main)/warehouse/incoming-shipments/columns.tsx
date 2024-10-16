@@ -4,7 +4,9 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import { IPurchaseOrder } from "@/types/product.types";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionsCell from "./actions-cell";
-import StatusCell from "./status-cell";
+import StatusCell from "@/components/ui/data-table-status-cell";
+
+const availableStatuses = ["IN_TRANSIT", "ARRIVED", "CANCELLED", "CLOSED"];
 
 export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
@@ -39,7 +41,9 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => <StatusCell row={row} />,
+    cell: ({ row }) => (
+      <StatusCell avaliableStatuses={availableStatuses} row={row} />
+    ),
   },
   {
     accessorKey: "actions",

@@ -2,7 +2,7 @@
 import { useOrdersContext } from "@/contexts/orders.context";
 import IndexPageContainer from "../../page.container";
 import { columns } from "./columns";
-import { DataTable } from "./data-table";
+import { DataTable } from "@/components/ui/data-table";
 
 export default function OrderPage() {
   const { orders } = useOrdersContext();

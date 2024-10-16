@@ -5,7 +5,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import { IPurchaseOrder } from "@/types/product.types";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionsCell from "./actions-cell";
-import StatusCell from "./status-cell";
+import StatusCell from "@/components/ui/data-table-status-cell";
 
 export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
