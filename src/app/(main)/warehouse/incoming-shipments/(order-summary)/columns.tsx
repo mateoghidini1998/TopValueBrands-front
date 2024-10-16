@@ -60,9 +60,9 @@ export const columns: ColumnDef<TrackedProductType>[] = [
     accessorKey: "notes",
     header: "Notes",
   },
-  {
-    accessorKey: "actions",
-    header: "Actions",
-    cell: ({ row }) => <ActionsCell row={row} />,
-  },
+  // {
+  //   accessorKey: "actions",
+  //   header: "Actions",
+  //   cell: ({ row }) => <ActionsCell row={row} />,
+  // },
 ];
