@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { PaginationComponent } from "./pagintation";
+import { PaginationComponent } from "./data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,7 +60,7 @@ export function DataTable<TData, TValue>({
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: 5,
+        pageSize: 10,
       },
     },
     state: {
@@ -160,24 +160,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {/* <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div> */}
       <PaginationComponent table={table} />
     </div>
   );
