@@ -3,6 +3,7 @@ import { TrackedProductType } from "@/types/trackedProducts.types";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionsCell from "./actions-cell";
 import QuantityReceivedCell from "./quantity-received-cell";
+import NotesCell from "./notes-cell";
 
 export const columns: ColumnDef<TrackedProductType>[] = [
   {
@@ -56,10 +57,13 @@ export const columns: ColumnDef<TrackedProductType>[] = [
     accessorKey: "reason_id",
     header: "Reason",
   },
-  {
-    accessorKey: "notes",
-    header: "Notes",
-  },
+  // {
+  //   accessorKey: "purchase_order_product_notes",
+  //   header: "Notes",
+  //   cell: ({ row }) => {
+  //     return <NotesCell row={row.original} />;
+  //   },
+  // },
   // {
   //   accessorKey: "actions",
   //   header: "Actions",
