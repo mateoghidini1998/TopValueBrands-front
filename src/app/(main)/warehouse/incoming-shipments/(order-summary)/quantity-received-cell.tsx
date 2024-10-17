@@ -32,7 +32,7 @@ export default function QuantityReceivedCell({
   return (
     <Input
       type="number"
-      className="border p-1 w-20"
+      className="border p-1 w-20 dark:bg-dark-2 dark:text-light-2 border-dark-3 dark:border-light-3 rounded-md text-xs text-center"
       value={quantityReceived}
       onChange={handleQuantityChange}
       min={0} // Si quieres restringir a números positivos

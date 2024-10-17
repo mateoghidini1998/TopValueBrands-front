@@ -3,17 +3,17 @@ import { TrackedProductType } from "@/types/trackedProducts.types";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionsCell from "./actions-cell";
 import QuantityReceivedCell from "./quantity-received-cell";
-import NotesCell from "./notes-cell";
+// import NotesCell from "./notes-cell";
 
 export const columns: ColumnDef<TrackedProductType>[] = [
-  {
-    accessorKey: "order_number",
-    header: "Order Number",
-  },
-  {
-    accessorKey: "order_id",
-    header: "Order ID",
-  },
+  // {
+  //   accessorKey: "order_number",
+  //   header: "Order Number",
+  // },
+  // {
+  //   accessorKey: "order_id",
+  //   header: "Order ID",
+  // },
   {
     accessorKey: "product_name",
     header: "Product Name",
@@ -21,7 +21,7 @@ export const columns: ColumnDef<TrackedProductType>[] = [
       console.log(row.original);
 
       return (
-        <div className="w-[250px] flex items-center gap-2">
+        <div className="w-[200px] flex items-center gap-2">
           <img
             className="h-10 w-10 rounded-md"
             src={row.original.product_image}
@@ -66,7 +66,8 @@ export const columns: ColumnDef<TrackedProductType>[] = [
   // },
   // {
   //   accessorKey: "actions",
-  //   header: "Actions",
+  //   id: "actions",
+  //   header: () => <div className="text-right">Actions</div>,
   //   cell: ({ row }) => <ActionsCell row={row} />,
   // },
 ];

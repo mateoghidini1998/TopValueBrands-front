@@ -46,6 +46,10 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     ),
   },
   {
+    accessorKey: "notes",
+    header: "Notes",
+  },
+  {
     accessorKey: "actions",
     id: "actions",
     header: () => <div className="text-right">Actions</div>,

@@ -36,13 +36,19 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
   return (
     <>
       <DialogContent
-        className={`flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[70%] max-w-[70%] ${sidebarOpen ? "translate-x-[-40%]" : "translate-x-[-48%]"} translate-y-[-50%]`}
+        className={`flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] ${sidebarOpen ? "translate-x-[-42%]" : "translate-x-[-48%]"} translate-y-[-50%]`}
       >
         <DialogHeader className="flex flex-col items-center gap-4">
-          <DialogTitle className="text-center">Order Summary</DialogTitle>
+          <DialogTitle className="text-center">
+            Order Summary - {order.order_number}
+          </DialogTitle>
 
           <>
-            <DataTable columns={columns} data={transformOrderData(order)} />
+            <DataTable
+              columns={columns}
+              data={transformOrderData(order)}
+              dataLength={6}
+            />
           </>
         </DialogHeader>
       </DialogContent>

@@ -15,11 +15,11 @@ const badgeVariants = cva(
         pending: "bg-[#C26900] text-[#C26900]",
         good_to_go: "bg-[#00952A] text-[#00952A]",
         rejected: "bg-[#ef4444] text-[#ef4444]",
-        cancelled: "bg-yellow-500 text-yellow-500",
-        in_transit: "bg-[#007BFF] text-[#007BFF]",
-        arrived: "bg-[#28A745] text-[#28A745]",
+        cancelled: "bg-[#FF4C3F] text-[#FF4C3F]",
+        in_transit: "bg-[#C26900] text-[#C26900]",
+        arrived: "bg-[#00952A] text-[#00952A]",
         waiting_for_supplier_approval: "bg-[#FFC107] text-[#FFC107]",
-        closed: "bg-[#6C757D] text-[#6C757D]",
+        closed: "bg-[#0059D0] text-[#0059D0]",
 
         // Transaction Statuses
         success: "bg-[#00952A] text-[#00952A]",

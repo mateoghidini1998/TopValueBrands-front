@@ -5,12 +5,12 @@ import {
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
-  SortingState,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
-  VisibilityState,
+  SortingState,
   useReactTable,
+  VisibilityState,
 } from "@tanstack/react-table";
 
 import {
@@ -30,18 +30,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Settings2 } from "lucide-react";
 import { useState } from "react";
 import { PaginationComponent } from "./data-table-pagination";
-import { Settings2, SlidersHorizontal } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  dataLength?: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  dataLength = 10,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -61,7 +63,7 @@ export function DataTable<TData, TValue>({
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: 10,
+        pageSize: dataLength,
       },
     },
     state: {

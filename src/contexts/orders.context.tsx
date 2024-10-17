@@ -257,11 +257,11 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         quantityReceived
       ); // Implement this method in your service
       fetchOrders();
-      console.log(
-        "Quantity received added:",
-        purchaseOrderProductId,
-        quantityReceived
-      );
+      // console.log(
+      //   "Quantity received added:",
+      //   purchaseOrderProductId,
+      //   quantityReceived
+      // );
     } catch (error: any) {
       setError(error);
     }
