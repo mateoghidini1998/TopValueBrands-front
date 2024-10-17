@@ -32,6 +32,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { PaginationComponent } from "./data-table-pagination";
+import { Settings2, SlidersHorizontal } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -81,12 +82,13 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("supplier_name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm text-xs font-bold bg-light-2 dark:bg-dark-2 border border-[#EFF1F3] dark:border-[#393E4F] rounded-md"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns
+              {/* <SlidersHorizontal /> */}
+              <Settings2 className="h-[16px] w-[16px]" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

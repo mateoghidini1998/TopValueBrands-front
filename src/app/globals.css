@@ -17,7 +17,7 @@ body::-webkit-scrollbar {
 }
 
 .main_layout {
-  width: calc(100vw - 17rem);
+  width: calc(100vw - 16rem);
   transition: width .6s ease-in-out;
   /* width: 100%; */
   margin-left: auto;
@@ -26,13 +26,13 @@ body::-webkit-scrollbar {
 
 .table_header {
   /* background-color: #1F2128; */
-  width: calc(100vw - 17rem);
+  width: calc(100vw - 16rem);
   margin-left: auto;
 }
 
 
 .inventory_table_header {
-  width: calc(100vw - 17rem);
+  width: calc(100vw - 16rem);
   transition: width .6s ease-in-out;
   position: fixed;
   right: 0;
@@ -41,7 +41,7 @@ body::-webkit-scrollbar {
 }
 
 .inventory_new_product {
-  width: calc(100vw - 17rem);
+  width: calc(100vw - 16rem);
   transition: width .6s ease-in-out;
   transition: width .6s ease-in-out;
   position: fixed;
@@ -64,13 +64,13 @@ body::-webkit-scrollbar {
 }
 
 .pogenerator_table_header {
-  width: calc(100vw - 17rem);
+  width: calc(100vw - 16rem);
   transition: width .6s ease-in-out;
   z-index: 5;
 }
 
 .navbar-closed {
-  width: calc(100vw - (4.75rem));
+  width: calc(100vw - (3.7rem));
   right: 0;
   transition: width .6s ease-in-out;
 }
@@ -245,6 +245,7 @@ input[type="number"]::-webkit-outer-spin-button:active {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -277,6 +278,7 @@ input[type="number"]::-webkit-outer-spin-button:active {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
