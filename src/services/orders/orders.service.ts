@@ -1,5 +1,6 @@
 import { getAuthToken } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
+import { PurchaseOrderProductUpdates } from "@/contexts/orders.context";
 
 export class PurchaseOrdersService {
   static async getTrackedProducts(supplier_id?: string) {
@@ -33,6 +34,22 @@ export class PurchaseOrdersService {
       return response;
     } catch (error) {
       throw new Error("Error fetching data");
+    }
+  }
+
+  static async updatePOProducts(
+    orderId: number,
+    purchaseOrderProductsUpdates: PurchaseOrderProductUpdates[]
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/${orderId}/products`,
+        { purchaseOrderProductsUpdates } // Enviar el estado en el cuerpo de la solicitud
+        // { headers: { Authorization: `Bearer ${token}` }} // Descomentar si es necesario el token
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error updating order products");
     }
   }
 

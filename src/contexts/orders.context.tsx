@@ -32,6 +32,16 @@ type OrdersContextType = {
     purchaseOrderProductId: number,
     quantityReceived: number
   ) => Promise<void>;
+  updatePOProducts: (
+    orderId: number,
+    purchaseOrderProductsUpdates: PurchaseOrderProductUpdates[]
+  ) => Promise<void>;
+};
+
+export type PurchaseOrderProductUpdates = {
+  purchaseOrderProductId: number;
+  quantityPurchased: number;
+  unit_price: number;
 };
 
 // Enumeración de estados de la orden de compra
@@ -100,6 +110,26 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     const orderSummary = PurchaseOrdersService.getPurchaseOrderSummary(orderId);
     console.log(orderSummary);
     return orderSummary;
+  };
+
+  const updatePOProducts = async (
+    orderId: number,
+    purchaseOrderProductsUpdates: PurchaseOrderProductUpdates[]
+  ) => {
+    try {
+      const response = await PurchaseOrdersService.updatePOProducts(
+        orderId,
+        purchaseOrderProductsUpdates
+      );
+
+      if (response) {
+        fetchOrders();
+      } else {
+        throw new Error("Failed to update the purchase order products");
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
   };
 
   const fetchOrders = async () => {
@@ -300,6 +330,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         getPurchaseOrderSummary,
         deleteOrder,
         addQuantityReceived,
+        updatePOProducts,
       }}
     >
       {children}

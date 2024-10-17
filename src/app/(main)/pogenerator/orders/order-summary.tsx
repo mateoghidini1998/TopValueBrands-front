@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,12 +11,18 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
+import { Input } from "@/components/ui/input";
+import {
+  PurchaseOrderProductUpdates,
+  useOrdersContext,
+} from "@/contexts/orders.context";
+import { IPurchaseOrder } from "@/types/product.types";
 import { TrackedProductType } from "@/types/trackedProducts.types";
-import { useState } from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { useEffect, useState } from "react";
 import IndexPageContainer from "../../page.container";
 import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 const columns: Column[] = [
   { key: "product_name", name: "Product", width: "20%" },
@@ -35,17 +42,39 @@ const columns: Column[] = [
 ];
 
 type OrderSummaryProps = {
-  order: any;
-  trackedProductsFieldsToShow: string[];
-  purchasedOrderProductsFieldsToShow: string[];
+  orderId: number;
 };
 
-export default function OrderSummary({
-  order,
-  trackedProductsFieldsToShow,
-  purchasedOrderProductsFieldsToShow,
-}: OrderSummaryProps) {
+export default function OrderSummary({ orderId }: OrderSummaryProps) {
+  const { orders, updatePOProducts } = useOrdersContext();
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
+  const [editingOrder, setEditingOrder] = useState<IPurchaseOrder | null>(null);
+
+  const [poProductUpdates, setPoProductUpdates] = useState<
+    PurchaseOrderProductUpdates[]
+  >([]);
+
+  useEffect(() => {
+    const order = orders.find((order) => order.id === orderId);
+    if (order) {
+      setEditingOrder(order);
+    }
+  }, [orderId, orders]);
+
+  useEffect(() => {
+    if (editingOrder) {
+      setPoProductUpdates(
+        editingOrder.purchaseOrderProducts.map((product) => ({
+          purchaseOrderProductId: product.id,
+          quantityPurchased: product.quantity_purchased,
+          unit_price: product.unit_price,
+        }))
+      );
+    }
+  }, [editingOrder]);
+
+  console.log(poProductUpdates);
+  console.log(editingOrder?.id);
 
   return (
     <>
@@ -65,7 +94,7 @@ export default function OrderSummary({
                   <TableComponent<TrackedProductType>
                     hasOrderFilds={true}
                     columns={columns}
-                    data={order.trackedProducts}
+                    data={editingOrder?.trackedProducts!!}
                     nextPage={() => {}}
                     previousPage={() => {}}
                     totalPages={1}
@@ -88,90 +117,102 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                 {/* Products List */}
                 <DialogDescription className="w-full flex flex-col gap-4">
                   <ScrollArea className="h-[400px] w-full rounded-md border p-4 dark:text-white">
-                    {order.trackedProducts?.map(
+                    {editingOrder?.trackedProducts?.map(
                       (product: any, index: number) => {
                         // Encuentra el producto correspondiente en purchaseOrderProducts
                         const purchaseOrderProduct =
-                          order.purchaseOrderProducts.find(
+                          editingOrder?.purchaseOrderProducts.find(
                             (p: any) => p.product_id === product.product_id
                           );
-
-                        // Función para formatear las claves como las necesitas
-                        const formatKey = (key: string) => {
-                          return key
-                            .split("_")
-                            .map(
-                              (word) =>
-                                word.charAt(0).toUpperCase() +
-                                word.slice(1).toLowerCase()
-                            )
-                            .join(" ");
-                        };
-
                         return (
                           <ul
                             key={index}
-                            className="flex flex-col gap-2 dark:text-white"
+                            className="flex flex-col gap-2 dark:text-white pr-1"
                           >
-                            {Object.entries(product)
-                              .filter(([key]) =>
-                                trackedProductsFieldsToShow.includes(key)
-                              )
-                              .map(([key, value]: any) => (
-                                <li
-                                  key={key}
-                                  className="flex justify-between items-center"
-                                >
-                                  <p>{formatKey(key)}:</p>
-                                  <p>
-                                    {typeof value === "number"
-                                      ? value || 0
-                                      : typeof value === "string"
-                                        ? value
-                                        : "N/A"}
-                                  </p>
-                                </li>
-                              ))}
+                            <li className="flex justify-between items-center">
+                              Product Name: <span>{product.product_name}</span>
+                            </li>
+                            <li className="flex justify-between items-center">
+                              ASIN : <span>{product.ASIN}</span>
+                            </li>
+                            <li className="flex justify-between items-center">
+                              Seller SKU: <span>{product.seller_sku}</span>
+                            </li>
+                            <li className="flex justify-between items-center">
+                              Current Rank: <span>{product.current_rank}</span>
+                            </li>
+                            <li className="flex justify-between items-center">
+                              30 Days Rank:{" "}
+                              <span>{product.thirty_days_rank}</span>
+                            </li>
+                            <li className="flex justify-between items-center">
+                              90 Days Rank:{" "}
+                              <span>{product.ninety_days_rank}</span>
+                            </li>
+                            <li className="flex justify-between items-center">
+                              Units Sold: <span>{product.units_sold}</span>
+                            </li>
+                            <li className="flex justify-between items-center">
+                              Velocity: <span>{product.product_velocity}</span>
+                            </li>
 
-                            {/* Mostrar los datos de purchaseOrderProducts */}
-                            {purchaseOrderProduct && (
-                              <>
-                                {Object.entries(purchaseOrderProduct)
-                                  .filter(([key]) =>
-                                    purchasedOrderProductsFieldsToShow.includes(
-                                      key
-                                    )
-                                  )
-                                  .sort(
-                                    ([keyA], [keyB]) =>
-                                      purchasedOrderProductsFieldsToShow.indexOf(
-                                        keyA
-                                      ) -
-                                      purchasedOrderProductsFieldsToShow.indexOf(
-                                        keyB
-                                      )
-                                  ) // Ordena según el índice en el array de campos
-                                  .map(([key, value]: any) => (
-                                    <li
-                                      key={key}
-                                      className="flex justify-between items-center"
-                                    >
-                                      <p>{formatKey(key)}:</p>
-                                      <p>
-                                        {typeof value === "number"
-                                          ? value || 0
-                                          : typeof value === "string"
-                                            ? value
-                                            : "N/A"}
-                                      </p>
-                                    </li>
-                                  ))}
-                              </>
-                            )}
+                            <li className="flex justify-between items-center">
+                              Product Cost: <span>{product.product_cost}</span>
+                            </li>
+                            <li className="flex justify-between items-center">
+                              Unit Price:{" "}
+                              <Input
+                                className="w-24 text-center"
+                                type="number"
+                                value={purchaseOrderProduct?.unit_price}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value, 10);
+                                  purchaseOrderProduct!.unit_price = value;
+                                  purchaseOrderProduct!.total_amount =
+                                    value *
+                                    purchaseOrderProduct!.quantity_purchased;
+                                  setEditingOrder({
+                                    ...editingOrder,
+                                    purchaseOrderProducts: [
+                                      ...editingOrder?.purchaseOrderProducts,
+                                    ],
+                                  });
+                                }}
+                              />
+                            </li>
+                            <li className="flex justify-between items-center">
+                              Quantity Purchased:{" "}
+                              <Input
+                                className="w-24 text-center"
+                                type="number"
+                                value={purchaseOrderProduct?.quantity_purchased}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value, 10);
+                                  purchaseOrderProduct!.quantity_purchased =
+                                    value;
+                                  purchaseOrderProduct!.total_amount =
+                                    value * purchaseOrderProduct!.unit_price;
 
-                            {index !== order.trackedProducts.length - 1 && (
-                              <Separator className="my-4" />
-                            )}
+                                  setEditingOrder({
+                                    ...editingOrder,
+                                    purchaseOrderProducts: [
+                                      ...editingOrder?.purchaseOrderProducts,
+                                    ],
+                                  });
+                                }}
+                              />
+                            </li>
+                            <li className="flex justify-between items-center">
+                              Total Amount:{" "}
+                              <Input
+                                className="w-24 text-center"
+                                type="text"
+                                disabled
+                                value={`$ ${purchaseOrderProduct?.total_amount}`}
+                              />
+                            </li>
+
+                            <Separator className="my-4" />
                           </ul>
                         );
                       }
@@ -190,29 +231,29 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                 {/* Notes */}
                 <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
                   <h2>Notes</h2>
-                  <p>{order?.notes}</p>
+                  <p>{editingOrder?.notes}</p>
                 </DialogDescription>
 
                 {/* Order Information */}
                 <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
                   <div className="flex justify-between items-center">
                     <h2>Order Number</h2>
-                    <p>{order?.order_number}</p>
+                    <p>{editingOrder?.order_number}</p>
                   </div>
 
                   <div className="flex justify-between items-center">
                     <h2>Supplier</h2>
-                    <p>{order?.supplier_name}</p>
+                    <p>{editingOrder?.supplier_name}</p>
                   </div>
 
                   <div className="flex justify-between items-center">
                     <h2>Date</h2>
-                    <p>{order?.createdAt}</p>
+                    <p>{editingOrder?.createdAt}</p>
                   </div>
 
                   <div className="flex justify-between items-center">
                     <h2>Total</h2>
-                    <p>{`$ ${order?.total_price}`}</p>
+                    <p>{`$ ${editingOrder?.total_price}`}</p>
                   </div>
                 </DialogDescription>
 
@@ -246,7 +287,14 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                   </Button>
                 </DialogPrimitive.Close>
                 <DialogPrimitive.Close className="w-full">
-                  <Button className="w-full" type="submit" variant={"tvb"}>
+                  <Button
+                    className="w-full"
+                    type="submit"
+                    variant={"tvb"}
+                    onClick={() =>
+                      updatePOProducts(editingOrder?.id!!, poProductUpdates!!)
+                    }
+                  >
                     Confirm
                   </Button>
                 </DialogPrimitive.Close>

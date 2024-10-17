@@ -70,6 +70,7 @@ export interface IPurchaseOrder {
   updatedAt: string;
   purchase_order_status_id: number;
   purchaseOrderStatus: IPurchaseOrderStatus;
+  trackedProducts: ITrackedProduct[];
   purchaseOrderProducts: IPurchaseOrderProduct[];
 }
 
