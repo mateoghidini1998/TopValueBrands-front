@@ -142,6 +142,15 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                                       key
                                     )
                                   )
+                                  .sort(
+                                    ([keyA], [keyB]) =>
+                                      purchasedOrderProductsFieldsToShow.indexOf(
+                                        keyA
+                                      ) -
+                                      purchasedOrderProductsFieldsToShow.indexOf(
+                                        keyB
+                                      )
+                                  ) // Ordena según el índice en el array de campos
                                   .map(([key, value]: any) => (
                                     <li
                                       key={key}
