@@ -1,0 +1,154 @@
+"use client";
+import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { ColumnDef } from "@tanstack/react-table";
+import AddToOrderCell from "./add-to-order-cell";
+import { Input } from "@/components/ui/input";
+import UnitPriceCell from "./unit-price-cell";
+import QuantityCell from "./quantity-cell";
+import RemoveFromOrderCell from "./remove-from-order-cell";
+
+export const columns: ColumnDef<any>[] = [
+  {
+    accessorKey: "product_name",
+    header: "Product",
+    cell: ({ row }) => (
+      <ProductNameTableData product={row.original} width={250} />
+    ),
+  },
+  {
+    accessorKey: "supplier_name",
+    header: "Supplier",
+    cell: ({ row }) => (
+      <span className="">{row.getValue("supplier_name") || "-"}</span>
+    ),
+  },
+  {
+    accessorKey: "product_velocity",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Velocity" />;
+    },
+  },
+  {
+    accessorKey: "units_sold",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Units Sold" />;
+    },
+  },
+  {
+    accessorKey: "thirty_days_rank",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="30 Day Rank" />;
+    },
+  },
+  {
+    accessorKey: "ninety_days_rank",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="90 Day Rank" />;
+    },
+  },
+  {
+    accessorKey: "ASIN",
+    header: "ASIN",
+  },
+  {
+    accessorKey: "seller_sku",
+    header: "Seller SKU",
+  },
+  {
+    accessorKey: "product_cost",
+    header: "Product Cost",
+  },
+  {
+    accessorKey: "lowest_fba_price",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="FBA Price" />;
+    },
+  },
+  {
+    accessorKey: "profit",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Profit" />;
+    },
+  },
+  {
+    accessorKey: "fees",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Fees" />;
+    },
+  },
+  {
+    id: "product_roi",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="ROI" />;
+    },
+    cell: ({ row }) => {
+      return <span>missing calc</span>;
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Last Updated" />;
+    },
+  },
+  {
+    id: "actions",
+    header: () => <div className="text-right">Actions</div>,
+    cell: ({ row }) => <AddToOrderCell row={row} />,
+  },
+];
+
+export const POColumns: ColumnDef<any>[] = [
+  {
+    accessorKey: "product_name",
+    header: "Product",
+    cell: ({ row }) => (
+      <ProductNameTableData product={row.original} width={250} />
+    ),
+  },
+  {
+    accessorKey: "ASIN",
+    header: "ASIN",
+  },
+  {
+    accessorKey: "supplier_name",
+    header: "Supplier",
+    cell: ({ row }) => (
+      <span className="">{row.getValue("supplier_name") || "-"}</span>
+    ),
+  },
+  {
+    accessorKey: "quantity",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Quantity" />;
+    },
+    cell: ({ row }) => {
+      return <QuantityCell row={row.original} />;
+    },
+  },
+  {
+    accessorKey: "unit_price",
+    header: "Product Cost",
+    cell: ({ row }) => {
+      return <UnitPriceCell row={row.original} />;
+    },
+  },
+  {
+    accessorKey: "total_amount",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Total" />;
+    },
+  },
+  {
+    accessorKey: "units_sold",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Units Sold" />;
+    },
+  },
+  {
+    id: "actions",
+    header: () => <div className="text-right">Actions</div>,
+    cell: ({ row }) => <RemoveFromOrderCell row={row} />,
+  },
+];

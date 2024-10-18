@@ -31,19 +31,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Settings2 } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { PaginationComponent } from "./data-table-pagination";
+import PaginationComponentAPI from "./data-table-pagination-api";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   dataLength?: number;
+  pagination?: React.ReactElement;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   dataLength = 10,
+  pagination,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -164,7 +167,13 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <PaginationComponent table={table} />
+
+      {/* Client Pagination */}
+      {/* <PaginationComponent table={table} /> */}
+
+      {/* Server Pagination */}
+      {/* <PaginationComponentAPI /> */}
+      {pagination ? pagination : <PaginationComponent table={table} />}
     </div>
   );
 }

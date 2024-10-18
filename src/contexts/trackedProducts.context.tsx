@@ -17,6 +17,7 @@ export type ProductInOrder = {
   product_id: string;
   supplier_id: string;
   product_name: string;
+  product_image: string;
   ASIN: string;
   supplier_name: string;
   quantity: number;
@@ -94,6 +95,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
   const [trackedProductsAddedToOrder, setTrackedProductsAddedToOrder] =
     useState<ProductInOrder[]>([]);
+
+  console.log(trackedProductsAddedToOrder);
 
   const [trackedProductsToAnalyze, setTrackedProductsToAnalyze] = useState<
     ProductInOrder[]
@@ -267,7 +270,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   };
 
   const addTrackedProductToOrder = (data: any) => {
-    console.log(data);
+    // console.log(data);
 
     if (data.supplier_id) {
       setSupplierId(data.supplier_id);
@@ -306,6 +309,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       product_id: data.product_id,
       supplier_id: data.supplier_id,
       product_name: data.product_name,
+      product_image: data.product_image,
       ASIN: data.ASIN,
       supplier_name: data.supplier_name,
       quantity: 0,
