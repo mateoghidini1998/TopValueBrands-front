@@ -86,7 +86,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [orderBy, setOrderBy] = useState("");
   const [orderWay, setOrderWay] = useState<any>("");
 
-  const limit = 50;
+  const LIMIT = 50;
 
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
@@ -106,11 +106,11 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       supplierId,
       keyword,
       currentPage,
-      50,
+      LIMIT,
       orderBy,
       orderWay
     );
-  }, [supplierId, keyword, currentPage, limit, orderBy, orderWay]);
+  }, [supplierId, keyword, currentPage, LIMIT, orderBy, orderWay]);
 
   const handleSetKeyword = (keyword: string) => {
     if (searchTimeout) {
@@ -186,7 +186,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       supplierId,
       keyword,
       currentPage,
-      limit,
+      LIMIT,
       order,
       orderWay
     );
