@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRef, useState } from "react";
 import EmptyImage from "../svgs/EmptyImage";
@@ -26,7 +27,7 @@ export const ProductNameTableData = ({
     setTooltipVisible(false);
   };
   return (
-    <td
+    <div
       style={{ width: width }}
       className={` text-xs font-medium text-left p-3 h-fit relative`}
     >
@@ -89,6 +90,6 @@ export const ProductNameTableData = ({
           visible={tooltipVisible}
         />
       )}
-    </td>
+    </div>
   );
 };
