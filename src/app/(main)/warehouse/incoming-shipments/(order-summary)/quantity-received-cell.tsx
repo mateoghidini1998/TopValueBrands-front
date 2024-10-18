@@ -9,11 +9,13 @@ type QuantityReceivedCellProps = {
 export default function QuantityReceivedCell({
   row,
 }: QuantityReceivedCellProps) {
-  console.log(row.original);
-
   const { addQuantityReceived } = useOrdersContext(); // Usamos el contexto para actualizar el pedido
   const [quantityReceived, setQuantityReceived] = useState(
     row.original.quantity_received
+  );
+
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
+    null
   );
 
   const handleQuantityChange = async (
@@ -22,10 +24,18 @@ export default function QuantityReceivedCell({
     const newQuantity = e.target.value;
     setQuantityReceived(newQuantity);
 
-    // Llamada para actualizar el valor en la base de datos o backend
-    await addQuantityReceived(
-      row.original.purchase_order_product_id,
-      parseInt(newQuantity)
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+
+    setSearchTimeout(
+      setTimeout(async () => {
+        // Llamada para actualizar el valor en la base de datos o backend
+        await addQuantityReceived(
+          row.original.purchase_order_product_id,
+          parseInt(newQuantity)
+        );
+      }, 500)
     );
   };
 

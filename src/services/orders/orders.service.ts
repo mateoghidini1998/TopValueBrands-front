@@ -143,4 +143,19 @@ export class PurchaseOrdersService {
       throw new Error("Error adding quantity received");
     }
   }
+
+  static async addNotesToPOProduct(
+    purchaseOrderProductId: number,
+    notes: string
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/notes/${purchaseOrderProductId}`,
+        { notes }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding notes to PO product");
+    }
+  }
 }

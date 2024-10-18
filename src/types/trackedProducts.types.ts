@@ -2,7 +2,7 @@ export type TrackedProductType = {
   purchase_order_product_id?: string | number | readonly string[] | undefined;
   product_image?: string;
   product_name: string;
-  supplier_name: string;
+  // supplier_name?: string;
   asin: string;
   amazon_sku: string;
   "30_day_rank": number;

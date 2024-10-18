@@ -76,9 +76,6 @@ const TableRow = ({ products }: TableRowProps) => {
     description: "",
     visible: false,
   });
-
-  console.log(products[0]);
-
   // Suppliers
   const { suppliers } = useSupplierContext();
 
@@ -188,7 +185,7 @@ const TableRow = ({ products }: TableRowProps) => {
       setFilterText("");
       return response;
     } catch (error) {
-      console.error("Error al actualizar el producto: ", error);
+      // console.error("Error al actualizar el producto: ", error);
     }
     setIsActionsOpen(null);
     setEditingRow({});
@@ -222,7 +219,7 @@ const TableRow = ({ products }: TableRowProps) => {
       handleDeleteProduct(currentProduct?.id || "");
       return response;
     } catch (error) {
-      console.error("Error al desactivar el producto: ", error);
+      // console.error("Error al desactivar el producto: ", error);
     }
   };
 
