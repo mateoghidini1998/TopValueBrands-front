@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import { useOrdersContext } from "./orders.context";
+import { toast } from "sonner";
 
 export type ProductInOrder = {
   id: string;
@@ -287,6 +288,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       const supplier_id = trackedProductsAddedToOrder[0]?.supplier_id;
       if (!hasTheSameSupplierId || supplier_id !== data.supplier_id) {
         // alert("Products must be from the same supplier");
+        toast.error("Products must be from the same supplier");
         return "Products must be from the same supplier";
       }
     }
@@ -294,12 +296,14 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     // Check that the product is not already in the order
     if (trackedProductsAddedToOrder.some((item: any) => item.id === data.id)) {
       // alert("Product already added to order");
+      toast.error("Product already added to order");
       return "Product already added to order";
     }
 
     // Check that the product has a supplier
     if (!data.supplier_id) {
       // alert("Please assign a supplier to the product before");
+      toast.error("Please assign a supplier to the product before");
       return "Please assign a supplier to the product before";
     }
 
@@ -323,6 +327,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       newProductInOrder,
     ]);
 
+    toast.success("Product added to order!");
+
     return newProductInOrder;
   };
 
@@ -330,6 +336,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     setTrackedProductsAddedToOrder((prevState) =>
       prevState.filter((item: any) => item.id !== data.id)
     );
+    toast.success("Product removed from order!");
   };
 
   return (

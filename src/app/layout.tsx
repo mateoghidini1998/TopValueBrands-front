@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/contexts/theme.context";
 import "./globals.css";
 import { Suspense } from "react";
 import Loading from "./loading";
+import { Toaster } from "@/components/ui/sonner";
 
 const setInitialThemeScript = `
   (function() {
@@ -30,6 +31,7 @@ export default function RootLayout({
         <body className="flex bg-white dark:bg-dark">
           <Suspense fallback={<Loading />}>
             <AuthProvider>{children}</AuthProvider>
+            <Toaster position="top-right" richColors />
           </Suspense>
         </body>
       </ThemeProvider>
