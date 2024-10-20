@@ -42,7 +42,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
             Order Summary - {order.order_number}
           </DialogTitle>
 
-          <DialogDescription>
+          <DialogDescription className="w-full">
             <DataTable
               columns={columns}
               data={transformOrderData(order)}
