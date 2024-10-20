@@ -17,3 +17,14 @@ export const LINKS = [
   { title: "Warehouse", href: "/warehouse/incoming-shipments", icon: <Shop /> },
   { title: "Users", href: "/users", icon: <Users /> },
 ];
+
+export const MAIN_ROUTES = [
+  { title: "Inventory Management", href: "/", icon: <Search /> },
+  { title: "PO Generator", href: "/pogenerator/create", icon: <Package /> },
+  { title: "PO Generator", href: "/pogenerator/orders", icon: <Package /> },
+  { title: "Warehouse", href: "/warehouse/incoming-shipments", icon: <Shop /> },
+  { title: "Warehouse", href: "/warehouse/outgoing-shipments", icon: <Shop /> },
+  { title: "Warehouse", href: "/warehouse/storage", icon: <Shop /> },
+  { title: "Users", href: "/users", icon: <Users /> },
+  { title: "Suppliers", href: "/suppliers", icon: <Users /> },
+];
