@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="w-full">
       <div className="flex items-center pb-4">
-        <Input
+        {/* <Input
           placeholder="Filter by supplier..."
           value={
             (table.getColumn("supplier_name")?.getFilterValue() as string) ?? ""
@@ -88,7 +88,7 @@ export function DataTable<TData, TValue>({
             table.getColumn("supplier_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm text-xs font-bold bg-light-2 dark:bg-dark-2 border border-[#EFF1F3] dark:border-[#393E4F] rounded-md"
-        />
+        /> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

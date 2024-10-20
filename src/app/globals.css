@@ -136,7 +136,7 @@ body::-webkit-scrollbar {
 .table-wrapper {
   overflow-y: auto;
   height: 100%;
-  /* Esto permitirá que el contenedor mantenga la altura definida por `tableHeigth` */
+  /* Esto permitirá que el contenedor mantenga la altura definida por tableHeigth */
 }
 
 /* Personalización del scrollbar para navegadores WebKit */

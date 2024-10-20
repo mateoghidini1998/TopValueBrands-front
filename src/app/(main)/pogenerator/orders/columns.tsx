@@ -17,11 +17,12 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     header: "Order Number",
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "updatedStatusAt",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Date" />;
     },
   },
+
   {
     accessorKey: "total_price",
     header: ({ column }) => {
