@@ -80,7 +80,6 @@ export const columns: ColumnDef<any>[] = [
   },
   {
     accessorKey: "roi",
-    id: "roi",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="ROI" />;
     },

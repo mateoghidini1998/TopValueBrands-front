@@ -72,10 +72,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
       );
     }
   }, [editingOrder]);
-
-  console.log(poProductUpdates);
-  console.log(editingOrder?.id);
-
   return (
     <>
       {/* Dialog para controlar la apertura/cierre */}
