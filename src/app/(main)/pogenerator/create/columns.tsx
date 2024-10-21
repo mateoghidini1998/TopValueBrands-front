@@ -84,7 +84,7 @@ export const columns: ColumnDef<any>[] = [
       return <DataTableColumnHeader column={column} title="ROI" />;
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("roi")).toFixed(2);
+      const amount = parseFloat(row.getValue("roi") || "0") || 0;
 
       const getBadgeVariant = (amount: number) => {
         if (amount >= 2) {
@@ -99,11 +99,8 @@ export const columns: ColumnDef<any>[] = [
       };
 
       return (
-        <Badge
-          variant={getBadgeVariant(parseFloat(amount))}
-          className={`cursor-pointer`}
-        >
-          {amount}
+        <Badge variant={getBadgeVariant(amount)} className={`cursor-pointer`}>
+          {amount.toFixed(2) || 0}
         </Badge>
       );
     },
