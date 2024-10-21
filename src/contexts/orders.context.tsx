@@ -112,7 +112,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   };
   const getPurchaseOrderSummary = (orderId: number) => {
     const orderSummary = PurchaseOrdersService.getPurchaseOrderSummary(orderId);
-    console.log(orderSummary);
     return orderSummary;
   };
 
@@ -253,8 +252,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
           prevOrders.filter((order) => order.id !== orderId)
         );
       }
-
-      console.log(`Order ${status}:`, orderId);
     } catch (error: any) {
       console.error(error);
       setError(error);
@@ -264,7 +261,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const downloadOrder = async (orderId: number) => {
     try {
       await PurchaseOrdersService.downloadOrder(orderId);
-      console.log("Order downloaded:", orderId);
     } catch (error: any) {
       setError(error);
     }
@@ -275,7 +271,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       await PurchaseOrdersService.editOrder(orderId, orderData); // Implement this method in your service
       fetchOrders();
       closeEditModal();
-      console.log("Order updated:", orderId, orderData);
     } catch (error: any) {
       setError(error);
     }

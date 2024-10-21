@@ -38,9 +38,9 @@ export default function SupplierForm({
     }
   }, [editingSupplier]);
 
-  console.log("IS_EDITING", IS_EDITING);
-  console.log({ formData });
-  console.log(editingSupplier);
+  // console.log("IS_EDITING", IS_EDITING);
+  // console.log({ formData });
+  // console.log(editingSupplier);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -51,7 +51,6 @@ export default function SupplierForm({
   };
 
   const handleEditSupplier = (supplier: EditSupplierType) => {
-    console.log(supplier);
     return editSupplier(supplier);
   };
 
@@ -72,7 +71,7 @@ export default function SupplierForm({
           }
         })
         .catch((error: any) => {
-          console.log(error);
+          console.error(error);
           alert("Error creating supplier");
         });
     } else {
@@ -86,7 +85,7 @@ export default function SupplierForm({
           }
         })
         .catch((error: any) => {
-          console.log(error);
+          console.error(error);
           alert("Error creating supplier");
         });
     }

@@ -97,8 +97,6 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [trackedProductsAddedToOrder, setTrackedProductsAddedToOrder] =
     useState<ProductInOrder[]>([]);
 
-  console.log(trackedProductsAddedToOrder);
-
   const [trackedProductsToAnalyze, setTrackedProductsToAnalyze] = useState<
     ProductInOrder[]
   >([]);
@@ -137,7 +135,6 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
           await TrackedProductsService.getTrackedProductsFromAnOrder(order_id);
 
         if (response.success) {
-          console.log(response);
           setTrackedProductsToAnalyze(response.data);
           return response.data;
         }

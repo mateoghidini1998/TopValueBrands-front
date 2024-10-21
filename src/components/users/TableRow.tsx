@@ -70,7 +70,6 @@ export default function TableRow({ users }: TableRowProps) {
     }));
   };
   const handleDelete = (email: string) => {
-    console.log("Deleting user with id:", email);
     setShowAlert(true);
   };
   const deleteUserHandler = (email: string) => {
@@ -102,7 +101,7 @@ export default function TableRow({ users }: TableRowProps) {
         "An error occurred while deleting the User.",
         true
       );
-      console.log(error);
+      console.error(error);
     }
   };
 

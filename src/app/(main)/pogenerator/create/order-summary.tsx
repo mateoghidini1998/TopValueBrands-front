@@ -22,7 +22,7 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
   const createOrder = async (orderProducts: any, notes: string) => {
     try {
       handleCreateOrder(orderProducts, notes).then((result: any) => {
-        console.log(result);
+        // console.log(result);
       });
     } catch (error) {
       console.log(error);
@@ -33,8 +33,6 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
   const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNotes(event.target.value);
   };
-
-  console.log(getTotalPrice(orderProducts));
 
   return (
     <>

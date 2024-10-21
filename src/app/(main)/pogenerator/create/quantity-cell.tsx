@@ -23,9 +23,6 @@ export default function QuantityCell({ row }: QuantityCellProps) {
       [key]: newValue,
     };
     updatedRow.total_amount = updatedRow.quantity * updatedRow.unit_price;
-
-    console.log(updatedRow);
-
     updateTrackedProductInOrder(updatedRow);
   };
 

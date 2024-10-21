@@ -6,9 +6,6 @@ import { DataTable } from "@/components/ui/data-table";
 
 export default function OrderPage() {
   const { orders } = useOrdersContext();
-
-  console.log(orders);
-
   return (
     <IndexPageContainer>
       <div className="w-full px-[1.3rem] py-10">

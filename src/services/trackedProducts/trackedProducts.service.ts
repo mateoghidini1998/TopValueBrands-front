@@ -54,7 +54,6 @@ export class TrackedProductsService {
           },
         }
       );
-      console.log(response.data);
       return response;
     } catch (error) {
       throw new Error("Error fetching data");
