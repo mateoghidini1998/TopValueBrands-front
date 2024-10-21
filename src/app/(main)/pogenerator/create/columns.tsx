@@ -21,7 +21,7 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "supplier_name",
     header: "Supplier",
     cell: ({ row }) => (
-      <span className="">{row.getValue("supplier_name") || "-"}</span>
+      <span className="">{row.getValue("supplier_name") || "N/A"}</span>
     ),
   },
   {
@@ -59,17 +59,45 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "product_cost",
     header: "Product Cost",
+    cell: ({ row }) => {
+      return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
+    },
   },
   {
     accessorKey: "lowest_fba_price",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="FBA Price" />;
     },
+    cell({ row }) {
+      return <span>{`$ ${row.getValue("lowest_fba_price") || "N/A"}`}</span>;
+    },
   },
   {
     accessorKey: "profit",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Profit" />;
+    },
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("profit"));
+
+      const getBadgeVariant = (amount: number) => {
+        if (amount >= 2) {
+          return "success";
+        }
+
+        if (amount <= 0) {
+          return "danger";
+        }
+
+        return "unknown";
+      };
+      console.log(amount);
+
+      return (
+        <Badge variant={getBadgeVariant(amount)}>
+          {isNaN(amount) ? "N/A" : `$ ${amount.toFixed(2)}`}
+        </Badge>
+      );
     },
   },
   {
@@ -84,7 +112,7 @@ export const columns: ColumnDef<any>[] = [
       return <DataTableColumnHeader column={column} title="ROI" />;
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("roi") || "0") || 0;
+      const amount = parseFloat(row.getValue("roi"));
 
       const getBadgeVariant = (amount: number) => {
         if (amount >= 2) {
@@ -95,12 +123,13 @@ export const columns: ColumnDef<any>[] = [
           return "danger";
         }
 
-        return "warning";
+        return "unknown";
       };
+      console.log(amount);
 
       return (
-        <Badge variant={getBadgeVariant(amount)} className={`cursor-pointer`}>
-          {amount.toFixed(2) || 0}
+        <Badge variant={getBadgeVariant(amount)}>
+          {isNaN(amount) ? "N/A" : amount.toFixed(2)}
         </Badge>
       );
     },

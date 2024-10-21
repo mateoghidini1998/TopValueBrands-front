@@ -25,6 +25,7 @@ const badgeVariants = cva(
         success: "bg-[#00952A] text-[#00952A]",
         warning: "bg-[#C26900] text-[#C26900]",
         danger: "bg-[#ef4444] text-[#ef4444]",
+        unknown: "bg-[#6C757D] text-[#6C757D]",
       },
     },
     defaultVariants: {
