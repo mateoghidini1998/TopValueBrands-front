@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import UnitPriceCell from "./unit-price-cell";
 import QuantityCell from "./quantity-cell";
 import RemoveFromOrderCell from "./remove-from-order-cell";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -78,12 +79,34 @@ export const columns: ColumnDef<any>[] = [
     },
   },
   {
-    id: "product_roi",
+    accessorKey: "roi",
+    id: "roi",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="ROI" />;
     },
     cell: ({ row }) => {
-      return <span>missing calc</span>;
+      const amount = parseFloat(row.getValue("roi")).toFixed(2);
+
+      const getBadgeVariant = (amount: number) => {
+        if (amount >= 2) {
+          return "success";
+        }
+
+        if (amount <= 0) {
+          return "danger";
+        }
+
+        return "warning";
+      };
+
+      return (
+        <Badge
+          variant={getBadgeVariant(parseFloat(amount))}
+          className={`cursor-pointer`}
+        >
+          {amount}
+        </Badge>
+      );
     },
   },
   {
