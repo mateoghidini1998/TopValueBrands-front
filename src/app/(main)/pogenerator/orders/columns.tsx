@@ -6,6 +6,7 @@ import { IPurchaseOrder } from "@/types/product.types";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionsCell from "./actions-cell";
 import StatusCell from "@/components/ui/data-table-status-cell";
+import DateCell from "@/components/ui/data-table-date-cell";
 
 export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
@@ -20,6 +21,9 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     accessorKey: "updatedStatusAt",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Date" />;
+    },
+    cell: ({ row }) => {
+      return <DateCell value={row.original.updatedAt} />;
     },
   },
 

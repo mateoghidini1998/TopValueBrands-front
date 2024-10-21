@@ -1,13 +1,13 @@
 "use client";
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
+import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { ColumnDef } from "@tanstack/react-table";
 import AddToOrderCell from "./add-to-order-cell";
-import { Input } from "@/components/ui/input";
-import UnitPriceCell from "./unit-price-cell";
 import QuantityCell from "./quantity-cell";
 import RemoveFromOrderCell from "./remove-from-order-cell";
-import { Badge } from "@/components/ui/badge";
+import UnitPriceCell from "./unit-price-cell";
+import DateCell from "@/components/ui/data-table-date-cell";
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -112,6 +112,9 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "updatedAt",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Last Updated" />;
+    },
+    cell: ({ row }) => {
+      return <DateCell value={row.original.updatedAt} />;
     },
   },
   {
