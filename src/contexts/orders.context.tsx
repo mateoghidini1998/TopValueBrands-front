@@ -17,7 +17,7 @@ type OrdersContextType = {
   loading: boolean;
   error: Error | null;
   updateOrderStatus: (orderId: number, status: string) => Promise<void>;
-  editOrder: (id: number, orderData: any) => Promise<void>;
+  editOrderNotes: (id: number, orderData: any) => Promise<void>;
   openEditModal: (order: IPurchaseOrder) => void;
   closeEditModal: () => void;
   downloadOrder: (id: number) => Promise<void>;
@@ -125,7 +125,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       );
 
       if (response) {
-        fetchOrders();
+        // fetchOrders();
       } else {
         throw new Error("Failed to update the purchase order products");
       }
@@ -264,8 +264,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       setError(error);
     }
   };
-
-  const editOrder = async (orderId: number, orderData: any) => {
+  const editOrderNotes = async (orderId: number, orderData: any) => {
     try {
       await PurchaseOrdersService.editOrder(orderId, orderData); // Implement this method in your service
       fetchOrders();
@@ -299,7 +298,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         purchaseOrderProductId,
         notes
       );
-      fetchOrders();
     } catch (error: any) {
       setError(error);
     }
@@ -321,7 +319,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     <OrdersContext.Provider
       value={{
         updateOrderStatus,
-        editOrder,
+        editOrderNotes,
         openEditModal,
         closeEditModal,
         downloadOrder,

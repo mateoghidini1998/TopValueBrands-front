@@ -2,11 +2,11 @@
 
 import { Badge } from "@/components/ui/badge"; // Puedes agregar estilos a tus badges
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import DateCell from "@/components/ui/data-table-date-cell";
+import StatusCell from "@/components/ui/data-table-status-cell";
 import { IPurchaseOrder } from "@/types/product.types";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionsCell from "./actions-cell";
-import StatusCell from "@/components/ui/data-table-status-cell";
-import DateCell from "@/components/ui/data-table-date-cell";
 
 export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
@@ -45,6 +45,11 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
   {
     accessorKey: "notes",
     header: "Notes",
+    cell: ({ row }) => (
+      <div className="max-w-xs overflow-hidden text-ellipsis">
+        {row.getValue("notes")}
+      </div>
+    ),
   },
   {
     accessorKey: "status",

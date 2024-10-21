@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import IndexPageContainer from "../../page.container";
 import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
+import { NoteCell } from "./text-area-cell";
 
 const columns: Column[] = [
   { key: "product_name", name: "Product", width: "20%" },
@@ -46,7 +47,7 @@ type OrderSummaryProps = {
 };
 
 export default function OrderSummary({ orderId }: OrderSummaryProps) {
-  const { orders, updatePOProducts } = useOrdersContext();
+  const { orders, updatePOProducts, editOrderNotes } = useOrdersContext();
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState<IPurchaseOrder | null>(null);
 
@@ -55,6 +56,12 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
   const [poProductUpdates, setPoProductUpdates] = useState<
     PurchaseOrderProductUpdates[]
   >([]);
+
+  const handleUpdatePurchaseOrder = () => {
+    updatePOProducts(orderId, poProductUpdates).then(() => {
+      editOrderNotes(orderId, editingOrder!);
+    });
+  };
 
   useEffect(() => {
     const order = orders.find((order) => order.id === orderId);
@@ -232,8 +239,22 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
 
                 {/* Notes */}
                 <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
-                  <h2>Notes</h2>
-                  <p>{editingOrder?.notes}</p>
+                  {/* <h2>Notes</h2>
+                  <p>{editingOrder?.notes}</p> */}
+
+                  <NoteCell
+                    title="Notes"
+                    value={editingOrder?.notes || ""}
+                    defaultValue={editingOrder?.notes || ""}
+                    placeholder="Notes"
+                    onChange={(value: string) => {
+                      // @ts-ignore
+                      setEditingOrder({
+                        ...editingOrder,
+                        notes: value,
+                      });
+                    }}
+                  />
                 </DialogDescription>
 
                 {/* Order Information */}
@@ -293,9 +314,9 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                     className="w-full"
                     type="submit"
                     variant={"tvb"}
-                    onClick={() =>
-                      updatePOProducts(editingOrder?.id!!, poProductUpdates!!)
-                    }
+                    onClick={handleUpdatePurchaseOrder}
+
+                    // updatePOProducts(editingOrder?.id!!, poProductUpdates!!)
                   >
                     Confirm
                   </Button>
