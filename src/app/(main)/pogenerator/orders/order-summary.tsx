@@ -50,6 +50,8 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState<IPurchaseOrder | null>(null);
 
+  console.log(editingOrder);
+
   const [poProductUpdates, setPoProductUpdates] = useState<
     PurchaseOrderProductUpdates[]
   >([]);
@@ -64,11 +66,13 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
   useEffect(() => {
     if (editingOrder) {
       setPoProductUpdates(
-        editingOrder.purchaseOrderProducts.map((product) => ({
-          purchaseOrderProductId: product.id,
-          quantityPurchased: product.quantity_purchased,
-          unit_price: product.unit_price,
-        }))
+        editingOrder.purchaseOrderProducts.map((product) => {
+          return {
+            purchaseOrderProductId: product.id,
+            quantityPurchased: product.quantity_purchased,
+            unit_price: product.unit_price,
+          };
+        })
       );
     }
   }, [editingOrder]);
@@ -160,9 +164,10 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                               <Input
                                 className="w-24 text-center"
                                 type="number"
+                                step="0.01" // Permite ingresar decimales
                                 value={purchaseOrderProduct?.unit_price}
                                 onChange={(e) => {
-                                  const value = parseInt(e.target.value, 10);
+                                  const value = parseFloat(e.target.value);
                                   purchaseOrderProduct!.unit_price = value;
                                   purchaseOrderProduct!.total_amount =
                                     value *
@@ -176,6 +181,7 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                                 }}
                               />
                             </li>
+
                             <li className="flex justify-between items-center">
                               Quantity Purchased:{" "}
                               <Input

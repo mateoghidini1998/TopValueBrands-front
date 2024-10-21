@@ -88,7 +88,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   useEffect(() => {
     fetchOrders();
   }, []);
-
   const deleteOrder = async (orderId: number): Promise<boolean> => {
     try {
       const response = await PurchaseOrdersService.deleteOrder(orderId);
