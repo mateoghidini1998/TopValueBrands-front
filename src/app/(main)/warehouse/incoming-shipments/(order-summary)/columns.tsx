@@ -1,34 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
-import { TrackedProductType } from "@/types/trackedProducts.types";
 import { ColumnDef } from "@tanstack/react-table";
-import NotesCell from "./notes-cell";
 import QuantityReceivedCell from "./quantity-received-cell";
 // import NotesCell from "./notes-cell";
 
-export const columns: ColumnDef<TrackedProductType>[] = [
-  // {
-  //   accessorKey: "order_number",
-  //   header: "Order Number",
-  // },
-  // {
-  //   accessorKey: "order_id",
-  //   header: "Order ID",
-  // },
-  {
-    accessorKey: "supplier_name",
-    header: ({ column }) => {
-      <span className="hidden"></span>;
-    },
-    cell: () => {
-      return <span className="hidden"></span>;
-    },
-  },
+interface IncomingShipmentsOrderSummaryProps {
+  product_name: string;
+  product_image: string;
+  ASIN: string;
+  seller_sku: string;
+  order_id: string;
+  order_number: string;
+  supplier_name: string;
+  quantity: number;
+  quantity_missing: number;
+}
+
+export const columns: ColumnDef<IncomingShipmentsOrderSummaryProps>[] = [
   {
     accessorKey: "product_name",
     header: "Product Name",
     cell: ({ row }) => {
-      // console.log(row.original);
-
       return (
         <div className="w-[200px] flex items-center gap-2">
           <img
@@ -61,17 +52,11 @@ export const columns: ColumnDef<TrackedProductType>[] = [
   {
     accessorKey: "quantity_missing",
     header: "Quantity Missing",
+    cell: ({ row }) => <span>{row.original.quantity_missing}</span>,
   },
   {
     accessorKey: "reason_id",
     header: "Reason",
-  },
-  {
-    accessorKey: "purchase_order_product_notes",
-    header: "Notes",
-    cell: ({ row }) => {
-      return <NotesCell row={row.original} />;
-    },
   },
   // {
   //   accessorKey: "actions",
