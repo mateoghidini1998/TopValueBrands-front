@@ -73,6 +73,19 @@ export const columns: ColumnDef<any>[] = [
     },
   },
   {
+    accessorKey: "FBA_available_inventory",
+    header: "FBA Inventory",
+  },
+  {
+    accessorKey: "reserved_quantity",
+    header: "Reserved Quantity",
+  },
+  {
+    accessorKey: "Inbound_to_FBA",
+    header: "Inbound to FBA",
+  },
+
+  {
     accessorKey: "profit",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Profit" />;

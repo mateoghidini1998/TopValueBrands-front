@@ -24,22 +24,148 @@ import IndexPageContainer from "../../page.container";
 import { TableComponent } from "../components/TableComponent";
 import { Column } from "../interfaces/ITableComponent";
 import { NoteCell } from "./text-area-cell";
+import { DataTable } from "../../../../components/ui/data-table";
+// import { columns } from "../create/columns";
+import { ColumnDef } from "@tanstack/react-table";
+import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { Badge } from "@/components/ui/badge";
+import DateCell from "@/components/ui/data-table-date-cell";
 
-const columns: Column[] = [
-  { key: "product_name", name: "Product", width: "20%" },
-  { key: "ASIN", name: "ASIN", width: "150px" },
-  { key: "seller_sku", name: "Amazon SKU", width: "150px" },
-  { key: "supplier_name", name: "Supplier Name", width: "150px" },
-  { key: "thirty_days_rank", name: "30 Day Rank", width: "150px" },
-  { key: "ninety_days_rank", name: "90 Day Rank", width: "150px" },
-  { key: "units_sold", name: "Units Sold", width: "150px" },
-  { key: "product_velocity", name: "Velocity", width: "150px" },
-  { key: "lowest_fba_price", name: "FBA Price ", width: "150px" },
-  { key: "fees", name: "Fees", width: "150px" },
-  { key: "product_cost", name: "Product Cost", width: "150px" },
-  { key: "profit", name: "Profit", width: "150px" },
-  { key: "roi", name: "ROI", width: "100px" },
-  { key: "updatedAt", name: "Last Update", width: "150px" },
+export const columns: ColumnDef<any>[] = [
+  {
+    accessorKey: "product_name",
+    header: "Product",
+    cell: ({ row }) => (
+      <ProductNameTableData product={row.original} width={250} />
+    ),
+  },
+  {
+    accessorKey: "supplier_name",
+    header: "Supplier",
+    cell: ({ row }) => (
+      <span className="">{row.getValue("supplier_name") || "N/A"}</span>
+    ),
+  },
+  {
+    accessorKey: "product_velocity",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Velocity" />;
+    },
+  },
+  {
+    accessorKey: "units_sold",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Units Sold" />;
+    },
+  },
+  {
+    accessorKey: "thirty_days_rank",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="30 Day Rank" />;
+    },
+  },
+  {
+    accessorKey: "ninety_days_rank",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="90 Day Rank" />;
+    },
+  },
+  {
+    accessorKey: "ASIN",
+    header: "ASIN",
+  },
+  {
+    accessorKey: "seller_sku",
+    header: "Seller SKU",
+  },
+  {
+    accessorKey: "product_cost",
+    header: "Product Cost",
+    cell: ({ row }) => {
+      return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
+    },
+  },
+  {
+    accessorKey: "lowest_fba_price",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="FBA Price" />;
+    },
+    cell({ row }) {
+      return <span>{`$ ${row.getValue("lowest_fba_price") || "N/A"}`}</span>;
+    },
+  },
+  {
+    accessorKey: "profit",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Profit" />;
+    },
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("profit"));
+
+      const getBadgeVariant = (amount: number) => {
+        if (amount >= 2) {
+          return "success";
+        }
+
+        if (amount <= 0) {
+          return "danger";
+        }
+
+        return "unknown";
+      };
+      console.log(amount);
+
+      return (
+        <Badge variant={getBadgeVariant(amount)}>
+          {isNaN(amount) ? "N/A" : `$ ${amount.toFixed(2)}`}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "fees",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Fees" />;
+    },
+  },
+  {
+    accessorKey: "roi",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="ROI" />;
+    },
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("roi"));
+
+      const getBadgeVariant = (amount: number) => {
+        if (amount >= 2) {
+          return "success";
+        }
+
+        if (amount <= 0) {
+          return "danger";
+        }
+
+        return "unknown";
+      };
+      console.log(amount);
+
+      return (
+        <Badge variant={getBadgeVariant(amount)}>
+          {isNaN(amount) ? "N/A" : amount.toFixed(2)}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Last Updated" />;
+    },
+    cell: ({ row }) => {
+      return <DateCell value={row.original.updatedAt} />;
+    },
+  },
 ];
 
 type OrderSummaryProps = {
@@ -47,11 +173,16 @@ type OrderSummaryProps = {
 };
 
 export default function OrderSummary({ orderId }: OrderSummaryProps) {
-  const { orders, updatePOProducts, editOrderNotes } = useOrdersContext();
+  const { orders, updatePOProducts, editOrderNotes, getPurchaseOrderSummary } =
+    useOrdersContext();
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState<IPurchaseOrder | null>(null);
+  const [trackedProductsData, setTrackedProductsData] = useState<
+    TrackedProductType[]
+  >([]);
 
   console.log(editingOrder);
+  console.log(trackedProductsData);
 
   const [poProductUpdates, setPoProductUpdates] = useState<
     PurchaseOrderProductUpdates[]
@@ -67,8 +198,12 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     const order = orders.find((order) => order.id === orderId);
     if (order) {
       setEditingOrder(order);
+      getPurchaseOrderSummary(order?.id).then((res) => {
+        // @ts-ignore
+        setTrackedProductsData(res.data.trackedProductsOfTheOrder);
+      });
     }
-  }, [orderId, orders]);
+  }, [getPurchaseOrderSummary, orderId, orders]);
 
   useEffect(() => {
     if (editingOrder) {
@@ -94,20 +229,11 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
           >
             <DialogContent
               className="flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%]
-            w-full max-w-[1200px] translate-x-[-50%] translate-y-[-50%]"
+            w-full max-w-[90vw] translate-x-[-50%] translate-y-[-50%]"
             >
               <DialogHeader className="flex flex-col items-center gap-4">
                 <IndexPageContainer>
-                  <TableComponent<TrackedProductType>
-                    hasOrderFilds={true}
-                    columns={columns}
-                    data={editingOrder?.trackedProducts!!}
-                    nextPage={() => {}}
-                    previousPage={() => {}}
-                    totalPages={1}
-                    setCurrentPage={() => {}}
-                    currentPage={1}
-                  />
+                  <DataTable columns={columns} data={trackedProductsData} />
                 </IndexPageContainer>
               </DialogHeader>
             </DialogContent>
