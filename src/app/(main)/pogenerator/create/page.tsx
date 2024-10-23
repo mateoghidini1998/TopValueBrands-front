@@ -28,13 +28,13 @@ const trackedProductsCol: Column[] = [
   { key: "seller_sku", name: "Amazon SKU", width: "120px" },
   { key: "product_cost", name: "Product Cost", width: "80px" },
   { key: "lowest_fba_price", name: "FBA Price ", width: "90px" },
+  { key: "FBA_available_inventory", name: "FBA Stock", width: "90px" },
+  { key: "reserved_quantity", name: "Reserved Stock", width: "90px" },
+  { key: "Inbound_to_FBA", name: "Inbound FBA", width: "90px" },
+  { key: "supplier_item_number", name: "Supplier item No", width: "90px" },
   { key: "profit", name: "Profit", width: "100px" },
   { key: "fees", name: "Fees", width: "75px" },
   { key: "roi", name: "ROI", width: "85px" },
-  // roi
-  // warehouse stock
-  // fba stock
-  // inbound stock
   { key: "updatedAt", name: "Last Update", width: "100px" },
 ];
 
