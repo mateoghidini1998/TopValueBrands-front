@@ -54,6 +54,7 @@ type OrdersContextType = {
   >;
   productsAddedToCreatePallet: any[];
   setProductsAddedToCreatePallet: React.Dispatch<React.SetStateAction<any[]>>;
+  createPallet: (data: any) => Promise<void>;
 };
 
 export type PurchaseOrderProductUpdates = {
@@ -355,6 +356,14 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
+  const createPallet = async (palletData: any) => {
+    try {
+      await PurchaseOrdersService.createPallet(palletData);
+    } catch (error: any) {
+      setError(error);
+    }
+  };
+
   //! No lo uso, pero lo dejo por si acaso
   const openEditModal = (order: IPurchaseOrder) => {
     setOrderToEdit(order);
@@ -396,6 +405,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         setProductsAvaliableToCreatePallet,
         productsAddedToCreatePallet,
         setProductsAddedToCreatePallet,
+        createPallet,
       }}
     >
       {children}

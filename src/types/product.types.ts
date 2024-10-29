@@ -96,6 +96,7 @@ interface IPurchaseOrderProduct {
 //* Get Purchase Order Summary => IPurchaseOrderSummary
 
 export interface IPurchaseOrderSummary {
+  id?: number;
   order_number?: string;
   purchaseOrder: IPurchaseOrder;
   trackedProductsOfTheOrder: ITrackedProduct[];

@@ -133,7 +133,6 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   };
 
   const createProduct = async (data: NewProductType) => {
-    console.log(data);
     try {
       const response = await InventoryService.createProduct(data);
       setProducts([...products, response.data]);

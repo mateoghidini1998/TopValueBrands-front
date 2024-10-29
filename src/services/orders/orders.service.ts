@@ -1,6 +1,7 @@
 import { getAuthToken } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
 import { PurchaseOrderProductUpdates } from "@/contexts/orders.context";
+import { headers } from "next/headers";
 
 export class PurchaseOrdersService {
   static async getTrackedProducts(supplier_id?: string) {
@@ -171,6 +172,19 @@ export class PurchaseOrdersService {
       return response;
     } catch (error) {
       throw new Error("Error adding expire date to PO product");
+    }
+  }
+
+  static async createPallet(pallet: any): Promise<any> {
+    // const token = getAuthToken();
+    try {
+      const response = await HttpAPI.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets`,
+        { ...pallet }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error creating pallet");
     }
   }
 

@@ -6,13 +6,23 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { IPurchaseOrderSummary } from "@/types/product.types";
-import { columns } from "./columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useOrdersContext } from "@/contexts/orders.context";
+import { IPurchaseOrderSummary } from "@/types/product.types";
+import { useEffect, useState } from "react";
+import { columns } from "./columns";
 import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
-import { useOrdersContext } from "@/contexts/orders.context";
-import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { set } from "date-fns";
+import classNames from "classnames";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
@@ -40,22 +50,64 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     }));
   };
 
+  const transformOrderDataProductsAvaliableToCreatePallet = (order: any) => {
+    return order.purchaseOrderProducts.map((product: any, index: number) => ({
+      order_id: order.id,
+      purchase_order_product_id: order.purchaseOrderProducts[index]?.id,
+      product_name:
+        order.trackedProducts[index]?.product_name || product.product_name,
+      product_image: order.trackedProducts[index]?.product_image || "N/A",
+      ASIN: order.trackedProducts[index]?.ASIN || "N/A",
+      seller_sku: order.trackedProducts[index]?.seller_sku || "N/A",
+      quantity_received: product.quantity_received,
+      quantity_avaliable: product.quantity_received,
+    }));
+  };
+
+  const [palletData, setPalletData] = useState<{
+    pallet_number: number;
+    warehouse_location_id: number;
+    purchase_order_id: number | null;
+    products: Array<{ purchaseorderproduct_id: string; quantity: number }>;
+  }>({
+    pallet_number: Math.floor(Math.random() * 1000000),
+    warehouse_location_id: 0,
+    purchase_order_id: order?.id || null,
+    products: [],
+  });
+
   const {
     productsAvaliableToCreatePallet,
     setProductsAvaliableToCreatePallet,
     productsAddedToCreatePallet,
-    setProductsAddedToCreatePallet,
+    createPallet,
   } = useOrdersContext();
 
   useEffect(() => {
-    // Solo se ejecuta si `order` está disponible
     if (order) {
-      const transformedProducts = transformOrderDataForSummary(order);
+      const transformedProducts =
+        transformOrderDataProductsAvaliableToCreatePallet(order);
       setProductsAvaliableToCreatePallet(transformedProducts);
     }
   }, [order, setProductsAvaliableToCreatePallet]);
 
-  console.log(productsAddedToCreatePallet);
+  useEffect(() => {
+    if (productsAddedToCreatePallet.length > 0) {
+      setPalletData((prevPalletData) => ({
+        ...prevPalletData,
+        products: productsAddedToCreatePallet.map((product: any) => ({
+          purchaseorderproduct_id: product.purchase_order_product_id,
+          quantity: product.quantity,
+        })),
+      }));
+    }
+  }, [productsAddedToCreatePallet]);
+
+  console.log({
+    productsAvaliableToCreatePallet,
+    productsAddedToCreatePallet,
+    palletData,
+  });
 
   return (
     <>
@@ -95,9 +147,44 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
                   dataLength={6}
                 />
               </DialogDescription>
+
+              <DialogDescription className="w-full flex justify-end gap-2">
+                <Button
+                  value="default"
+                  className="w-[100px]"
+                  onClick={() => createPallet(palletData)}
+                >
+                  Save
+                </Button>
+                <Select
+                  onValueChange={(value) => {
+                    setPalletData({
+                      ...palletData,
+                      warehouse_location_id: parseInt(value),
+                    });
+                  }}
+                >
+                  <SelectTrigger className="w-[250px]">
+                    <SelectValue placeholder="Select warehouse location" />
+                  </SelectTrigger>
+                  <SelectContent className="w-[200px]">
+                    <SelectItem value="1">A1</SelectItem>
+                    <SelectItem value="2">A2</SelectItem>
+                    <SelectItem value="3">B1</SelectItem>
+                    <SelectItem value="4">B2</SelectItem>
+                    <SelectItem value="5">C1</SelectItem>
+                    <SelectItem value="6">C2</SelectItem>
+                    <SelectItem value="7">D1</SelectItem>
+                    <SelectItem value="8">D2</SelectItem>
+                    <SelectItem value="9">E1</SelectItem>
+                    <SelectItem value="10">E2</SelectItem>
+                    <SelectItem value="11">Floor</SelectItem>
+                  </SelectContent>
+                </Select>
+              </DialogDescription>
             </TabsContent>
 
-            <TabsList className="grid w-[200px] ml-auto grid-cols-2">
+            <TabsList className="w-[350px] grid ml-auto grid-cols-2">
               <TabsTrigger value="summary">Summary</TabsTrigger>
               <TabsTrigger value="pallets">Pallets</TabsTrigger>
             </TabsList>

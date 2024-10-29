@@ -72,7 +72,7 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     setTrackedProductsAddedToOrder([]);
   };
