@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ColumnDef } from "@tanstack/react-table";
 import AddQuantityCell from "./add-quantity-cell";
+import { RemoveProductToPalletBtn } from "./remove-product-to-pallet-btn";
 // import NotesCell from "./notes-cell";
 
 interface CreatePalletProps {
@@ -9,6 +10,7 @@ interface CreatePalletProps {
   ASIN: string;
   seller_sku: string;
   quantity: number;
+  purchase_order_product_id: number;
 }
 
 export const columnsCreatePallet: ColumnDef<CreatePalletProps>[] = [
@@ -39,6 +41,16 @@ export const columnsCreatePallet: ColumnDef<CreatePalletProps>[] = [
   {
     accessorKey: "quantity",
     header: "Quantity",
-    cell: () => <AddQuantityCell />,
+    cell: ({ row }) => (
+      <AddQuantityCell
+        purchaseOrderProductId={row.original.purchase_order_product_id}
+      />
+    ),
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return <RemoveProductToPalletBtn row={row} />;
+    },
   },
 ];

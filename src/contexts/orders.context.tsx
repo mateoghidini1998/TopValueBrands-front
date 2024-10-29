@@ -48,6 +48,12 @@ type OrdersContextType = {
     purchaseOrderProductId: number,
     expire_date: string
   ) => Promise<void>;
+  productsAvaliableToCreatePallet: any[];
+  setProductsAvaliableToCreatePallet: React.Dispatch<
+    React.SetStateAction<any[]>
+  >;
+  productsAddedToCreatePallet: any[];
+  setProductsAddedToCreatePallet: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 export type PurchaseOrderProductUpdates = {
@@ -87,6 +93,12 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const [shippedOrders, setShippedOrders] = useState<IPurchaseOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
+  const [productsAvaliableToCreatePallet, setProductsAvaliableToCreatePallet] =
+    useState<any[]>([]);
+
+  const [productsAddedToCreatePallet, setProductsAddedToCreatePallet] =
+    useState<any[]>([]);
 
   //! No lo uso, pero lo dejo por si acaso
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -380,6 +392,10 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         addNotesToPOProduct,
         addReasonToPOProduct,
         addExpireDateToPOProduct,
+        productsAvaliableToCreatePallet,
+        setProductsAvaliableToCreatePallet,
+        productsAddedToCreatePallet,
+        setProductsAddedToCreatePallet,
       }}
     >
       {children}

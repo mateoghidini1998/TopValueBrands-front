@@ -30,8 +30,6 @@ type DatePickerCellProps = {
 export function DatePickerCell({ row, onChange }: DatePickerCellProps) {
   const { addExpireDateToPOProduct } = useOrdersContext();
 
-  console.log(row);
-
   // Convertimos `row.expire_date` a un objeto `Date` si ya tiene un valor
   const initialDate = row.expire_date ? parseISO(row.expire_date) : undefined;
   const [date, setDate] = React.useState<Date | undefined>(initialDate);
@@ -40,15 +38,13 @@ export function DatePickerCell({ row, onChange }: DatePickerCellProps) {
   const handleDateChange = (selectedDate: Date) => {
     setDate(selectedDate);
     const formattedDate = format(selectedDate, "yyyy-MM-dd HH:mm:ss");
-    console.log(formattedDate);
+
     addExpireDateToPOProduct(row.purchase_order_product_id, formattedDate);
 
     if (onChange) {
       onChange(formattedDate);
     }
   };
-
-  console.log(row);
 
   return (
     <Popover>

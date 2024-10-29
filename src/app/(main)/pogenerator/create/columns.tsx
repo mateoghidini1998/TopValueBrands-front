@@ -104,7 +104,6 @@ export const columns: ColumnDef<any>[] = [
 
         return "unknown";
       };
-      console.log(amount);
 
       return (
         <Badge variant={getBadgeVariant(amount)}>

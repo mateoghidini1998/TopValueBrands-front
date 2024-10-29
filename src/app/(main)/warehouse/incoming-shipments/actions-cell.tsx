@@ -2,7 +2,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +19,7 @@ import {
 import { useOrdersContext } from "@/contexts/orders.context";
 import { MoreHorizontal } from "lucide-react";
 import OrderSummary from "./(order-summary)/order-summary";
+import { useState } from "react";
 
 type ActionsCellProps = {
   row: any;
@@ -21,11 +27,17 @@ type ActionsCellProps = {
 
 const ActionsCell = ({ row }: ActionsCellProps) => {
   const { downloadOrder, deleteOrder } = useOrdersContext();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const incomingOrder = row.original;
+
+  const handleViewDetails = () => {
+    setIsDialogOpen(true);
+  };
+
   return (
     <div className="flex items-center justify-end gap-2">
-      <Dialog>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DropdownMenu key={incomingOrder.id}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -35,11 +47,9 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DialogTrigger asChild>
-              <DropdownMenuItem className="w-full">
-                View Details
-              </DropdownMenuItem>
-            </DialogTrigger>
+            <DropdownMenuItem onClick={handleViewDetails} className="w-full">
+              View Details
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => downloadOrder(incomingOrder.id)}>
               Download PDF
@@ -50,8 +60,10 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Dialog for View Details */}
-        <OrderSummary order={incomingOrder} />
+        <DialogContent aria-describedby="Order Summary">
+          <DialogTitle>Order Summary</DialogTitle>
+          <OrderSummary order={incomingOrder} />
+        </DialogContent>
       </Dialog>
     </div>
   );

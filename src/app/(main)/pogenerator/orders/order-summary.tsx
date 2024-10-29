@@ -114,7 +114,6 @@ export const columns: ColumnDef<any>[] = [
 
         return "unknown";
       };
-      console.log(amount);
 
       return (
         <Badge variant={getBadgeVariant(amount)}>
@@ -148,7 +147,6 @@ export const columns: ColumnDef<any>[] = [
 
         return "unknown";
       };
-      console.log(amount);
 
       return (
         <Badge variant={getBadgeVariant(amount)}>
@@ -180,9 +178,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
   const [trackedProductsData, setTrackedProductsData] = useState<
     TrackedProductType[]
   >([]);
-
-  console.log(editingOrder);
-  console.log(trackedProductsData);
 
   const [poProductUpdates, setPoProductUpdates] = useState<
     PurchaseOrderProductUpdates[]

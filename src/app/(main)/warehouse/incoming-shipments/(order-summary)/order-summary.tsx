@@ -1,3 +1,4 @@
+"use client";
 import { DataTable } from "@/components/ui/data-table";
 import {
   DialogContent,
@@ -10,6 +11,8 @@ import { columns } from "./columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
+import { useOrdersContext } from "@/contexts/orders.context";
+import { useEffect } from "react";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
@@ -29,12 +32,30 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
       quantity_purchased: product.quantity_purchased,
       quantity_received: product.quantity_received,
       quantity_missing: product.quantity_missing,
+      quantity_avaliable: product.quantity_received,
       reason_id: product.reason_id,
       purchase_order_product_notes: product.notes,
       notes: order.notes,
       expire_date: product.expire_date,
     }));
   };
+
+  const {
+    productsAvaliableToCreatePallet,
+    setProductsAvaliableToCreatePallet,
+    productsAddedToCreatePallet,
+    setProductsAddedToCreatePallet,
+  } = useOrdersContext();
+
+  useEffect(() => {
+    // Solo se ejecuta si `order` está disponible
+    if (order) {
+      const transformedProducts = transformOrderDataForSummary(order);
+      setProductsAvaliableToCreatePallet(transformedProducts);
+    }
+  }, [order, setProductsAvaliableToCreatePallet]);
+
+  console.log(productsAddedToCreatePallet);
 
   return (
     <>
@@ -63,14 +84,14 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
               <DialogDescription className="w-full">
                 <DataTable
                   columns={columnsAvaliablePallet}
-                  data={transformOrderDataForSummary(order)}
+                  data={productsAvaliableToCreatePallet} // Usamos el estado aquí
                   dataLength={6}
                 />
               </DialogDescription>
               <DialogDescription className="w-full">
                 <DataTable
                   columns={columnsCreatePallet}
-                  data={transformOrderDataForSummary(order)}
+                  data={productsAddedToCreatePallet} // Usamos el estado aquí también
                   dataLength={6}
                 />
               </DialogDescription>
