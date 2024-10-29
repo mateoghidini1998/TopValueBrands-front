@@ -8,13 +8,15 @@ import {
 import { IPurchaseOrderSummary } from "@/types/product.types";
 import { columns } from "./columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
+import { columnsCreatePallet } from "./columns-create-pallet";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
 };
 
 export default function OrderSummary({ order }: OrderSummaryProps) {
-  const transformOrderData = (order: any) => {
+  const transformOrderDataForSummary = (order: any) => {
     return order.purchaseOrderProducts.map((product: any, index: number) => ({
       purchase_order_product_id: order.purchaseOrderProducts[index]?.id,
       order_id: order?.id,
@@ -48,7 +50,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
               <DialogDescription className="w-full">
                 <DataTable
                   columns={columns}
-                  data={transformOrderData(order)}
+                  data={transformOrderDataForSummary(order)}
                   dataLength={6}
                 />
               </DialogDescription>
@@ -60,15 +62,15 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
               </DialogTitle>
               <DialogDescription className="w-full">
                 <DataTable
-                  columns={columns}
-                  data={transformOrderData(order)}
+                  columns={columnsAvaliablePallet}
+                  data={transformOrderDataForSummary(order)}
                   dataLength={6}
                 />
               </DialogDescription>
               <DialogDescription className="w-full">
                 <DataTable
-                  columns={columns}
-                  data={transformOrderData(order)}
+                  columns={columnsCreatePallet}
+                  data={transformOrderDataForSummary(order)}
                   dataLength={6}
                 />
               </DialogDescription>
