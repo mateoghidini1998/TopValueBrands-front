@@ -40,6 +40,10 @@ type OrdersContextType = {
     purchaseOrderProductId: number,
     notes: string
   ) => Promise<void>;
+  addReasonToPOProduct: (
+    purchaseOrderProductId: number,
+    reason_id: number
+  ) => Promise<void>;
 };
 
 export type PurchaseOrderProductUpdates = {
@@ -289,6 +293,20 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
+  const addReasonToPOProduct = async (
+    purchaseOrderProductId: number,
+    reason_id: number
+  ) => {
+    try {
+      await PurchaseOrdersService.addReasonToPOProduct(
+        purchaseOrderProductId,
+        reason_id
+      );
+    } catch (error: any) {
+      setError(error);
+    }
+  };
+
   const addNotesToPOProduct = async (
     purchaseOrderProductId: number,
     notes: string
@@ -338,6 +356,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         addQuantityReceived,
         updatePOProducts,
         addNotesToPOProduct,
+        addReasonToPOProduct,
       }}
     >
       {children}

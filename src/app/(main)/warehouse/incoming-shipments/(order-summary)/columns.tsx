@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { ColumnDef } from "@tanstack/react-table";
 import QuantityReceivedCell from "./quantity-received-cell";
+import { DatePickerCell } from "./date-picker-cell";
+import { SelectReasonCell } from "./select-reason-cell";
 // import NotesCell from "./notes-cell";
 
 interface IncomingShipmentsOrderSummaryProps {
@@ -57,11 +59,11 @@ export const columns: ColumnDef<IncomingShipmentsOrderSummaryProps>[] = [
   {
     accessorKey: "reason_id",
     header: "Reason",
+    cell: ({ row }) => <SelectReasonCell row={row.original} />,
   },
-  // {
-  //   accessorKey: "actions",
-  //   id: "actions",
-  //   header: () => <div className="text-right">Actions</div>,
-  //   cell: ({ row }) => <ActionsCell row={row} />,
-  // },
+  {
+    accessorKey: "expire_date",
+    header: "Expire Date",
+    cell: ({ row }) => <DatePickerCell row={row} />,
+  },
 ];

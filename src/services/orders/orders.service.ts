@@ -144,6 +144,21 @@ export class PurchaseOrdersService {
     }
   }
 
+  static async addReasonToPOProduct(
+    purchaseOrderProductId: number,
+    reason_id: number
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/reason/${purchaseOrderProductId}`,
+        { reason_id }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding reason to PO product");
+    }
+  }
+
   static async addNotesToPOProduct(
     purchaseOrderProductId: number,
     notes: string
