@@ -173,6 +173,39 @@ body::-webkit-scrollbar {
 }
 
 
+/* Personalización del scrollbar para navegadores WebKit */
+.custom_scroll::-webkit-scrollbar {
+  width: 8px;
+  /* Ancho del scrollbar vertical */
+}
+
+.custom_scroll::-webkit-scrollbar-track {
+  background: #262935;
+  /* Color de fondo del scrollbar */
+}
+
+.custom_scroll::-webkit-scrollbar-thumb {
+  background: #438EF3;
+  /* Color del pulgar del scrollbar */
+  border-radius: 8px;
+  /* Bordes redondeados del pulgar */
+  border: 2px solid #262935;
+  /* Espacio alrededor del pulgar */
+}
+
+.custom_scroll::-webkit-scrollbar-thumb:hover {
+  background: #3578e5;
+  /* Color del pulgar del scrollbar al pasar el ratón */
+}
+
+/* Firefox */
+.custom_scroll {
+  scrollbar-width: thin;
+  /* Grosor del scrollbar */
+  scrollbar-color: #438EF3 #262935;
+  /* Color del pulgar y del fondo */
+}
+
 /* Input Type Number */
 
 /* Estilos globales */

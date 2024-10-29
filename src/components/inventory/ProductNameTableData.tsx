@@ -29,7 +29,7 @@ export const ProductNameTableData = ({
   return (
     <div
       style={{ width: width }}
-      className={` text-xs font-medium text-left p-3 h-fit relative`}
+      className={` text-xs font-medium text-left  h-fit relative max-h-[35px] overflow-hidden`}
     >
       <div className="relative flex w-full h-full items-center justify-between text-left">
         <div className="h-8 gap-2 flex items-center justify-between mr-2">
@@ -52,7 +52,7 @@ export const ProductNameTableData = ({
                   src={product?.product_image}
                   alt="product_image"
                   loading="lazy"
-                  className="cover rounded-xl w-8 h-8"
+                  className="cover rounded-xl w-6 h-6"
                   style={{ objectFit: "cover", borderRadius: "8px" }}
                 />
               </Link>
@@ -64,7 +64,7 @@ export const ProductNameTableData = ({
           )}
           {product.in_seller_account !== undefined && (
             <div
-              className={`w-2 h-2 rounded-full ${
+              className={`w-[8px] h-[8px] rounded-full ${
                 product?.in_seller_account ? "bg-[#00952A]" : "bg-[#ef4444]"
               }`}
             ></div>

@@ -31,7 +31,7 @@ export default function Page() {
 
   return (
     <IndexPageContainer>
-      <div className="w-full px-[1.3rem] py-5">
+      <div className="w-full px-[1.3rem] py-0">
         <DataTable
           columns={columns}
           data={trackedProducts}
@@ -40,7 +40,11 @@ export default function Page() {
         />
       </div>
       <div
-        className={`${trackedProductsAddedToOrder.length > 0 ? "w-full px-[1.3rem]" : "hidden"}`}
+        className={`${
+          trackedProductsAddedToOrder.length > 0
+            ? "w-full px-[1.3rem]"
+            : "hidden"
+        }`}
       >
         <DataTable
           columns={POColumns}

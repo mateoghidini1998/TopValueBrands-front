@@ -9,7 +9,7 @@ export default function IncomingShipments() {
 
   return (
     <IndexPageContainer>
-      <div className="w-full px-[1.3rem] py-10">
+      <div className="w-full px-[1.3rem] py-0">
         <DataTable columns={columns} data={shippedOrders} />
       </div>
     </IndexPageContainer>
