@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { IPurchaseOrderSummary } from "@/types/product.types";
 import { columns } from "./columns";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
@@ -35,20 +36,48 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
   return (
     <>
       <DialogContent
-        className={`flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] translate-y-[-50%] translate-x-[-50%]`}
+        className={`max-h-[95dvh] overflow-auto custom_scroll flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] translate-y-[-50%] translate-x-[-50%]`}
       >
         <DialogHeader className="flex flex-col items-center gap-4">
-          <DialogTitle className="text-center">
-            Order Summary - {order.order_number}
-          </DialogTitle>
+          <Tabs defaultValue="summary" className="w-full">
+            <TabsContent value="summary">
+              <DialogTitle className="text-left">
+                Order Summary - {order.order_number}
+              </DialogTitle>
+              <DialogDescription className="w-full">
+                <DataTable
+                  columns={columns}
+                  data={transformOrderData(order)}
+                  dataLength={6}
+                />
+              </DialogDescription>
+            </TabsContent>
 
-          <DialogDescription className="w-full">
-            <DataTable
-              columns={columns}
-              data={transformOrderData(order)}
-              dataLength={6}
-            />
-          </DialogDescription>
+            <TabsContent value="pallets">
+              <DialogTitle className="text-left">
+                Create Pallets - {order.order_number}
+              </DialogTitle>
+              <DialogDescription className="w-full">
+                <DataTable
+                  columns={columns}
+                  data={transformOrderData(order)}
+                  dataLength={6}
+                />
+              </DialogDescription>
+              <DialogDescription className="w-full">
+                <DataTable
+                  columns={columns}
+                  data={transformOrderData(order)}
+                  dataLength={6}
+                />
+              </DialogDescription>
+            </TabsContent>
+
+            <TabsList className="grid w-[200px] ml-auto grid-cols-2">
+              <TabsTrigger value="summary">Summary</TabsTrigger>
+              <TabsTrigger value="pallets">Pallets</TabsTrigger>
+            </TabsList>
+          </Tabs>
         </DialogHeader>
       </DialogContent>
     </>
