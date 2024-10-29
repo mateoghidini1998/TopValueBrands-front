@@ -44,6 +44,10 @@ type OrdersContextType = {
     purchaseOrderProductId: number,
     reason_id: number
   ) => Promise<void>;
+  addExpireDateToPOProduct: (
+    purchaseOrderProductId: number,
+    expire_date: string
+  ) => Promise<void>;
 };
 
 export type PurchaseOrderProductUpdates = {
@@ -302,6 +306,24 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         purchaseOrderProductId,
         reason_id
       );
+
+      fetchOrders();
+    } catch (error: any) {
+      setError(error);
+    }
+  };
+
+  const addExpireDateToPOProduct = async (
+    purchaseOrderProductId: number,
+    expire_date: string
+  ) => {
+    try {
+      await PurchaseOrdersService.addExpirteDateToPOProduct(
+        purchaseOrderProductId,
+        expire_date
+      );
+
+      fetchOrders();
     } catch (error: any) {
       setError(error);
     }
@@ -357,6 +379,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         updatePOProducts,
         addNotesToPOProduct,
         addReasonToPOProduct,
+        addExpireDateToPOProduct,
       }}
     >
       {children}

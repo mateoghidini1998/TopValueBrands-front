@@ -15,6 +15,7 @@ interface IncomingShipmentsOrderSummaryProps {
   supplier_name: string;
   quantity: number;
   quantity_missing: number;
+  expire_date: string;
 }
 
 export const columns: ColumnDef<IncomingShipmentsOrderSummaryProps>[] = [
@@ -64,6 +65,6 @@ export const columns: ColumnDef<IncomingShipmentsOrderSummaryProps>[] = [
   {
     accessorKey: "expire_date",
     header: "Expire Date",
-    cell: ({ row }) => <DatePickerCell row={row} />,
+    cell: ({ row }) => <DatePickerCell row={row.original} />,
   },
 ];

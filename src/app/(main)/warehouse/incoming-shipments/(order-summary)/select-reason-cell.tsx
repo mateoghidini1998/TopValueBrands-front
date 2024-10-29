@@ -17,29 +17,9 @@ type SelectReasonCellProps = {
 
 export function SelectReasonCell({ row }: SelectReasonCellProps) {
   const { addReasonToPOProduct } = useOrdersContext();
-
-  console.log(row);
-
   const handleReasonChange = (value: string) => {
     // setReason(value);
     addReasonToPOProduct(row.purchase_order_product_id, parseInt(value));
-  };
-
-  const getDefaultValue = (row: any) => {
-    switch (row.reason_id) {
-      case 1:
-        return "Ok";
-      case 2:
-        return "Shortage";
-      case 3:
-        return "Broken Items";
-      case 4:
-        return "Not Shipped";
-      case 5:
-        return "Wrong Items";
-      default:
-        return "Ok";
-    }
   };
 
   return (
@@ -47,7 +27,6 @@ export function SelectReasonCell({ row }: SelectReasonCellProps) {
       defaultValue={row.reason_id?.toString() || "0"}
       onValueChange={(value) => {
         handleReasonChange(value);
-        console.log(value);
       }}
     >
       <SelectTrigger className="w-[180px]">

@@ -30,6 +30,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
       reason_id: product.reason_id,
       purchase_order_product_notes: product.notes,
       notes: order.notes,
+      expire_date: product.expire_date,
     }));
   };
 

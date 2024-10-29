@@ -6,7 +6,6 @@ import { DataTable } from "@/components/ui/data-table";
 
 export default function IncomingShipments() {
   const { shippedOrders } = useOrdersContext();
-
   return (
     <IndexPageContainer>
       <div className="w-full px-[1.3rem] py-0">

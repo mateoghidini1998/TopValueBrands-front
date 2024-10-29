@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { addDays, format } from "date-fns";
+import { addDays, format, parseISO } from "date-fns";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -19,17 +19,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useOrdersContext } from "@/contexts/orders.context";
 
 type DatePickerCellProps = {
   value?: Date;
-  onChange?: (value: Date) => void;
+  onChange?: (value: string) => void;
   row: any;
 };
 
-export function DatePickerCell({ row }: DatePickerCellProps) {
-  const [date, setDate] = React.useState<Date>();
+export function DatePickerCell({ row, onChange }: DatePickerCellProps) {
+  const { addExpireDateToPOProduct } = useOrdersContext();
 
-  console.log(date);
+  console.log(row);
+
+  // Convertimos `row.expire_date` a un objeto `Date` si ya tiene un valor
+  const initialDate = row.expire_date ? parseISO(row.expire_date) : undefined;
+  const [date, setDate] = React.useState<Date | undefined>(initialDate);
+
+  // Función para formatear la fecha antes de enviarla
+  const handleDateChange = (selectedDate: Date) => {
+    setDate(selectedDate);
+    const formattedDate = format(selectedDate, "yyyy-MM-dd HH:mm:ss");
+    console.log(formattedDate);
+    addExpireDateToPOProduct(row.purchase_order_product_id, formattedDate);
+
+    if (onChange) {
+      onChange(formattedDate);
+    }
+  };
+
+  console.log(row);
 
   return (
     <Popover>
@@ -37,7 +56,7 @@ export function DatePickerCell({ row }: DatePickerCellProps) {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-[240px] justify-start text-left font-normal gap-2",
             !date && "text-muted-foreground"
           )}
         >
@@ -50,8 +69,9 @@ export function DatePickerCell({ row }: DatePickerCellProps) {
         className="flex w-auto flex-col space-y-2 p-2"
       >
         <Select
+          defaultValue={date!!?.getDate().toString()}
           onValueChange={(value) =>
-            setDate(addDays(new Date(), parseInt(value)))
+            handleDateChange(addDays(new Date(), parseInt(value)))
           }
         >
           <SelectTrigger>
@@ -65,7 +85,11 @@ export function DatePickerCell({ row }: DatePickerCellProps) {
           </SelectContent>
         </Select>
         <div className="rounded-md border">
-          <Calendar mode="single" selected={date} onSelect={setDate} />
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(date) => date && handleDateChange(date)}
+          />
         </div>
       </PopoverContent>
     </Popover>

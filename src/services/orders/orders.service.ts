@@ -159,6 +159,21 @@ export class PurchaseOrdersService {
     }
   }
 
+  static async addExpirteDateToPOProduct(
+    purchaseOrderProductId: number,
+    expire_date: string
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/expiredate/${purchaseOrderProductId}`,
+        { expire_date }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding expire date to PO product");
+    }
+  }
+
   static async addNotesToPOProduct(
     purchaseOrderProductId: number,
     notes: string
