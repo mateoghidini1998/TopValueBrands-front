@@ -291,7 +291,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const editOrderNotes = async (orderId: number, orderData: any) => {
     try {
       await PurchaseOrdersService.editOrder(orderId, orderData); // Implement this method in your service
-      fetchOrders();
+      // fetchOrders();
       closeEditModal();
     } catch (error: any) {
       setError(error);
@@ -307,7 +307,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         purchaseOrderProductId,
         quantityReceived
       );
-      fetchOrders();
     } catch (error: any) {
       setError(error);
     }
@@ -322,8 +321,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         purchaseOrderProductId,
         reason_id
       );
-
-      fetchOrders();
+      // fetchOrders();
     } catch (error: any) {
       setError(error);
     }
@@ -339,7 +337,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         expire_date
       );
 
-      fetchOrders();
+      // fetchOrders();
     } catch (error: any) {
       setError(error);
     }
