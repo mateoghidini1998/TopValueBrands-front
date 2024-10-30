@@ -22,18 +22,29 @@ export default function AddQuantityToPalletCell({
     (product) => product.purchase_order_product_id === purchaseOrderProductId
   );
 
-  const [quantity, setQuantity] = useState(product?.quantity);
+  const availableProduct = productsAvaliableToCreatePallet.find(
+    (product) => product.purchase_order_product_id === purchaseOrderProductId
+  );
+
+  const [quantity, setQuantity] = useState(product?.quantity || 0);
+  const [initialAvailableQuantity, setInitialAvailableQuantity] = useState(
+    availableProduct?.quantity_available || 0
+  );
 
   useEffect(() => {
-    setQuantity(product?.quantity);
-  }, [product?.quantity, productsAddedToCreatePallet]);
+    setQuantity(product?.quantity || 0);
+    setInitialAvailableQuantity(availableProduct?.quantity_available || 0);
+  }, [product, availableProduct]);
 
   const handleQuantityChange = (event: any) => {
-    const quantity = parseInt(event.target.value);
+    const newQuantity = parseInt(event.target.value);
+
+    if (isNaN(newQuantity) || newQuantity < 0) return;
+
+    const quantityDifference = newQuantity - quantity;
 
     // Actualiza la cantidad en `productsAddedToCreatePallet`
     setProductsAddedToCreatePallet((prev) => {
-      // Si el producto ya existe, solo actualizamos su cantidad
       const productExists = prev.some(
         (product) =>
           product.purchase_order_product_id === purchaseOrderProductId
@@ -42,7 +53,7 @@ export default function AddQuantityToPalletCell({
       if (productExists) {
         return prev.map((product) => {
           if (product.purchase_order_product_id === purchaseOrderProductId) {
-            return { ...product, quantity };
+            return { ...product, quantity: newQuantity };
           }
           return product;
         });
@@ -51,18 +62,20 @@ export default function AddQuantityToPalletCell({
       return [...prev];
     });
 
-    // Actualiza `quantity_avaliable` en `productsAvaliableToCreatePallet`
+    // Actualiza `quantity_available` en `productsAvaliableToCreatePallet`
     setProductsAvaliableToCreatePallet((prev) => {
       return prev.map((product) => {
         if (product.purchase_order_product_id === purchaseOrderProductId) {
           return {
             ...product,
-            quantity_available: product.quantity_available - quantity,
+            quantity_available: product.quantity_available - quantityDifference,
           };
         }
         return product;
       });
     });
+
+    setQuantity(newQuantity);
   };
 
   return (
