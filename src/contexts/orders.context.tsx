@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 
 type OrdersContextType = {
   orders: IPurchaseOrder[];
@@ -54,7 +55,7 @@ type OrdersContextType = {
   >;
   productsAddedToCreatePallet: any[];
   setProductsAddedToCreatePallet: React.Dispatch<React.SetStateAction<any[]>>;
-  createPallet: (data: any) => Promise<void>;
+  createPallet: (data: any) => Promise<any>;
 };
 
 export type PurchaseOrderProductUpdates = {
@@ -95,14 +96,13 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  console.log(shippedOrders);
+
   const [productsAvaliableToCreatePallet, setProductsAvaliableToCreatePallet] =
     useState<any[]>([]);
 
   const [productsAddedToCreatePallet, setProductsAddedToCreatePallet] =
     useState<any[]>([]);
-
-  console.log(productsAddedToCreatePallet);
-  console.log(productsAvaliableToCreatePallet);
 
   //! No lo uso, pero lo dejo por si acaso
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -307,6 +307,28 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         purchaseOrderProductId,
         quantityReceived
       );
+
+      setShippedOrders((prevOrders) =>
+        prevOrders.map((order) => {
+          return {
+            ...order,
+            purchaseOrderProducts: order.purchaseOrderProducts.map(
+              (poProduct) => {
+                if (poProduct.id === purchaseOrderProductId) {
+                  const updatedQuantityMissing =
+                    poProduct.quantity_purchased - quantityReceived;
+                  return {
+                    ...poProduct,
+                    quantity_received: quantityReceived,
+                    quantity_missing: updatedQuantityMissing,
+                  };
+                }
+                return poProduct;
+              }
+            ),
+          };
+        })
+      );
     } catch (error: any) {
       setError(error);
     }
@@ -359,7 +381,20 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
 
   const createPallet = async (palletData: any) => {
     try {
+      // Validate data
+      if (!palletData.product_id) {
+        return toast.error("Product is required");
+      }
+      if (!palletData.pallet_quantity) {
+        return toast.error("Pallet quantity is required");
+      }
+
+      if (!palletData.warehouse_location_id) {
+        return toast.error("Warehouse location is required");
+      }
+
       await PurchaseOrdersService.createPallet(palletData);
+      toast.success("Pallet created successfully");
     } catch (error: any) {
       setError(error);
     }
