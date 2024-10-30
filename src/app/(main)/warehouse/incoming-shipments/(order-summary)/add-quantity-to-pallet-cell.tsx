@@ -28,8 +28,6 @@ export default function AddQuantityToPalletCell({
     setQuantity(product?.quantity);
   }, [product?.quantity, productsAddedToCreatePallet]);
 
-  console.log(product);
-
   const handleQuantityChange = (event: any) => {
     const quantity = parseInt(event.target.value);
 
