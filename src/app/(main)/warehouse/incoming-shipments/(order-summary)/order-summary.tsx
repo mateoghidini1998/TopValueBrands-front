@@ -1,19 +1,13 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useOrdersContext } from "@/contexts/orders.context";
-import { IPurchaseOrderSummary } from "@/types/product.types";
-import { useEffect, useState } from "react";
-import { columns } from "./columns";
-import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
-import { columnsCreatePallet } from "./columns-create-pallet";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -22,31 +16,44 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Dialog } from "@radix-ui/react-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useOrdersContext } from "@/contexts/orders.context";
+import { IPurchaseOrderSummary } from "@/types/product.types";
+import { useEffect, useState } from "react";
+import { columns } from "./columns";
+import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
+import { columnsCreatePallet } from "./columns-create-pallet";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
 };
 
-const initialPalletData = {
-  pallet_number: Math.floor(Math.random() * 1000000),
-  warehouse_location_id: 0,
-  purchase_order_id: null,
-  products: [],
-};
-
 export default function OrderSummary({ order }: OrderSummaryProps) {
-  const [open, setOpen] = useState(false);
+  const initialPalletData = {
+    pallet_number: Math.floor(Math.random() * 1000000),
+    warehouse_location_id: 0,
+    purchase_order_id: order.id!!,
+    products: [],
+  };
+
   const transformOrderDataForSummary = (order: any) => {
     return order.purchaseOrderProducts.map((product: any, index: number) => ({
-      purchase_order_product_id: order.purchaseOrderProducts[index]?.id,
+      purchase_order_product_id: product.id,
       order_id: order?.id,
       order_number: order?.order_number,
-      product_name:
-        order.trackedProducts[index]?.product_name || product.product_name,
-      product_image: order.trackedProducts[index]?.product_image || "N/A",
-      ASIN: order.trackedProducts[index]?.ASIN || "N/A",
-      seller_sku: order.trackedProducts[index]?.seller_sku || "N/A",
+      product_name: product.product_name,
+      product_image:
+        order.trackedProducts.find(
+          (p: any) => p.product_id === product.product_id
+        )?.product_image || "N/A",
+      ASIN:
+        order.trackedProducts.find(
+          (p: any) => p.product_id === product.product_id
+        )?.ASIN || "N/A",
+      seller_sku:
+        order.trackedProducts.find(
+          (p: any) => p.product_id === product.product_id
+        )?.seller_sku || "N/A",
       quantity_purchased: product.quantity_purchased,
       quantity_received: product.quantity_received,
       quantity_missing: product.quantity_missing,
@@ -61,12 +68,20 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
   const transformOrderDataProductsAvaliableToCreatePallet = (order: any) => {
     return order.purchaseOrderProducts.map((product: any, index: number) => ({
       order_id: order.id,
-      purchase_order_product_id: order.purchaseOrderProducts[index]?.id,
-      product_name:
-        order.trackedProducts[index]?.product_name || product.product_name,
-      product_image: order.trackedProducts[index]?.product_image || "N/A",
-      ASIN: order.trackedProducts[index]?.ASIN || "N/A",
-      seller_sku: order.trackedProducts[index]?.seller_sku || "N/A",
+      purchase_order_product_id: product.id,
+      product_name: product.product_name,
+      product_image:
+        order.trackedProducts.find(
+          (p: any) => p.product_id === product.product_id
+        )?.product_image || "N/A",
+      ASIN:
+        order.trackedProducts.find(
+          (p: any) => p.product_id === product.product_id
+        )?.ASIN || "N/A",
+      seller_sku:
+        order.trackedProducts.find(
+          (p: any) => p.product_id === product.product_id
+        )?.seller_sku || "N/A",
       quantity_received: product.quantity_received,
       quantity_avaliable: product.quantity_received,
     }));

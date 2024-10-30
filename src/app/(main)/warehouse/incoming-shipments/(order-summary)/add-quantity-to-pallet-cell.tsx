@@ -1,11 +1,14 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { useOrdersContext } from "@/contexts/orders.context";
+import { useEffect, useState } from "react";
 
 type AddQuantityCellProps = {
   purchaseOrderProductId: number;
 };
 
-export default function AddQuantityCell({
+export default function AddQuantityToPalletCell({
   purchaseOrderProductId,
 }: AddQuantityCellProps) {
   const {
@@ -14,6 +17,18 @@ export default function AddQuantityCell({
     productsAvaliableToCreatePallet,
     productsAddedToCreatePallet,
   } = useOrdersContext();
+
+  const product = productsAddedToCreatePallet.find(
+    (product) => product.purchase_order_product_id === purchaseOrderProductId
+  );
+
+  const [quantity, setQuantity] = useState(product?.quantity);
+
+  useEffect(() => {
+    setQuantity(product?.quantity);
+  }, [product?.quantity, productsAddedToCreatePallet]);
+
+  console.log(product);
 
   const handleQuantityChange = (event: any) => {
     const quantity = parseInt(event.target.value);
@@ -35,14 +50,7 @@ export default function AddQuantityCell({
         });
       }
 
-      // Si el producto no existe, lo añadimos con la cantidad especificada
-      return [
-        ...prev,
-        {
-          purchase_order_product_id: purchaseOrderProductId,
-          quantity,
-        },
-      ];
+      return [...prev];
     });
 
     // Actualiza `quantity_avaliable` en `productsAvaliableToCreatePallet`
@@ -65,6 +73,7 @@ export default function AddQuantityCell({
       type="number"
       min={0}
       onChange={handleQuantityChange}
+      value={quantity}
     />
   );
 }

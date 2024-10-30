@@ -101,6 +101,9 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const [productsAddedToCreatePallet, setProductsAddedToCreatePallet] =
     useState<any[]>([]);
 
+  console.log(productsAddedToCreatePallet);
+  console.log(productsAvaliableToCreatePallet);
+
   //! No lo uso, pero lo dejo por si acaso
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [orderToEdit, setOrderToEdit] = useState<IPurchaseOrder | null>(null);
