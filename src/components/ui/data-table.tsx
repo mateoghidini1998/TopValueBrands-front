@@ -170,7 +170,9 @@ export function DataTable<TData, TValue>({
 
       {/* Server Pagination */}
       {/* <PaginationComponentAPI /> */}
-      {pagination ? pagination : <PaginationComponent table={table} />}
+      {/* {pagination ? pagination : <PaginationComponent table={table} />} */}
+      {data.length > dataLength &&
+        (pagination ? pagination : <PaginationComponent table={table} />)}
     </div>
   );
 }

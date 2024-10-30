@@ -2,15 +2,18 @@
 
 import AddButton from "@/components/svgs/AddButton";
 import { useOrdersContext } from "@/contexts/orders.context";
+import classNames from "classnames";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export const AddProductToPalletBtn = ({ row }: any) => {
   const { setProductsAddedToCreatePallet } = useOrdersContext();
+  const [isAdded, setIsAdded] = useState(false);
 
   return (
     <button
       className="btn btn-primary"
-      onClick={() =>
+      onClick={() => {
         setProductsAddedToCreatePallet((prev) => {
           const product = prev.find(
             (p) =>
@@ -35,10 +38,17 @@ export const AddProductToPalletBtn = ({ row }: any) => {
             toast.error("Product already added to order");
             return prev;
           }
-        })
-      }
+        });
+        setIsAdded(!isAdded);
+      }}
     >
-      <AddButton />
+      {
+        <AddButton
+          className={classNames("h-4 w-4", {
+            "bg-emerald-500": isAdded,
+          })}
+        />
+      }
     </button>
   );
 };

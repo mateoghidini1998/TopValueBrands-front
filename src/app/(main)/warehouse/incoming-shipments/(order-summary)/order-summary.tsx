@@ -21,14 +21,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { set } from "date-fns";
-import classNames from "classnames";
+import { Separator } from "@/components/ui/separator";
+import { Dialog } from "@radix-ui/react-dialog";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
 };
 
+const initialPalletData = {
+  pallet_number: Math.floor(Math.random() * 1000000),
+  warehouse_location_id: 0,
+  purchase_order_id: null,
+  products: [],
+};
+
 export default function OrderSummary({ order }: OrderSummaryProps) {
+  const [open, setOpen] = useState(false);
   const transformOrderDataForSummary = (order: any) => {
     return order.purchaseOrderProducts.map((product: any, index: number) => ({
       purchase_order_product_id: order.purchaseOrderProducts[index]?.id,
@@ -64,24 +72,26 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     }));
   };
 
+  const {
+    productsAvaliableToCreatePallet,
+    setProductsAvaliableToCreatePallet,
+    productsAddedToCreatePallet,
+    setProductsAddedToCreatePallet,
+    createPallet,
+  } = useOrdersContext();
+
   const [palletData, setPalletData] = useState<{
     pallet_number: number;
     warehouse_location_id: number;
     purchase_order_id: number | null;
     products: Array<{ purchaseorderproduct_id: string; quantity: number }>;
-  }>({
-    pallet_number: Math.floor(Math.random() * 1000000),
-    warehouse_location_id: 0,
-    purchase_order_id: order?.id || null,
-    products: [],
-  });
+  }>(initialPalletData);
 
-  const {
-    productsAvaliableToCreatePallet,
-    setProductsAvaliableToCreatePallet,
-    productsAddedToCreatePallet,
-    createPallet,
-  } = useOrdersContext();
+  const resetStates = () => {
+    setPalletData({ ...initialPalletData });
+    setProductsAvaliableToCreatePallet([]);
+    setProductsAddedToCreatePallet([]);
+  };
 
   useEffect(() => {
     if (order) {
@@ -103,28 +113,22 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     }
   }, [productsAddedToCreatePallet]);
 
-  console.log({
-    productsAvaliableToCreatePallet,
-    productsAddedToCreatePallet,
-    palletData,
-  });
-
   return (
     <>
       <DialogContent
         className={`max-h-[95dvh] overflow-auto custom_scroll flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] translate-y-[-50%] translate-x-[-50%]`}
       >
         <DialogHeader className="flex flex-col items-center gap-4">
-          <Tabs defaultValue="summary" className="w-full">
+          <Tabs defaultValue="summary" className="w-full relative">
             <TabsContent value="summary">
               <DialogTitle className="text-left">
                 Order Summary - {order.order_number}
               </DialogTitle>
-              <DialogDescription className="w-full">
+              <DialogDescription className="w-full py-6">
                 <DataTable
                   columns={columns}
                   data={transformOrderDataForSummary(order)}
-                  dataLength={6}
+                  dataLength={10}
                 />
               </DialogDescription>
             </TabsContent>
@@ -137,50 +141,78 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
                 <DataTable
                   columns={columnsAvaliablePallet}
                   data={productsAvaliableToCreatePallet} // Usamos el estado aquí
-                  dataLength={6}
+                  dataLength={10}
                 />
               </DialogDescription>
               <DialogDescription className="w-full">
                 <DataTable
                   columns={columnsCreatePallet}
                   data={productsAddedToCreatePallet} // Usamos el estado aquí también
-                  dataLength={6}
+                  dataLength={10}
                 />
               </DialogDescription>
 
-              <DialogDescription className="w-full flex justify-end gap-2">
-                <Button
-                  value="default"
-                  className="w-[100px]"
-                  onClick={() => createPallet(palletData)}
-                >
-                  Save
-                </Button>
-                <Select
-                  onValueChange={(value) => {
-                    setPalletData({
-                      ...palletData,
-                      warehouse_location_id: parseInt(value),
-                    });
-                  }}
-                >
-                  <SelectTrigger className="w-[250px]">
-                    <SelectValue placeholder="Select warehouse location" />
-                  </SelectTrigger>
-                  <SelectContent className="w-[200px]">
-                    <SelectItem value="1">A1</SelectItem>
-                    <SelectItem value="2">A2</SelectItem>
-                    <SelectItem value="3">B1</SelectItem>
-                    <SelectItem value="4">B2</SelectItem>
-                    <SelectItem value="5">C1</SelectItem>
-                    <SelectItem value="6">C2</SelectItem>
-                    <SelectItem value="7">D1</SelectItem>
-                    <SelectItem value="8">D2</SelectItem>
-                    <SelectItem value="9">E1</SelectItem>
-                    <SelectItem value="10">E2</SelectItem>
-                    <SelectItem value="11">Floor</SelectItem>
-                  </SelectContent>
-                </Select>
+              <DialogDescription className="w-full flex flex-col justify-end gap-2 py-6">
+                <div className="flex flex-col gap-2 w-full">
+                  <p className="font-bold text-lg w-full">Pallet Summary</p>
+                  <Separator />
+                  <ul className="flex flex-col gap-2 w-full">
+                    <li className="">
+                      Pallet Number: {palletData.pallet_number}
+                    </li>
+                    <li className=" flex gap-2 items-center justify-start">
+                      Warehouse Location:
+                      <Select
+                        onValueChange={(value) => {
+                          setPalletData({
+                            ...palletData,
+                            warehouse_location_id: parseInt(value),
+                          });
+                        }}
+                      >
+                        <SelectTrigger className="w-[250px]">
+                          <SelectValue placeholder="Select warehouse location" />
+                        </SelectTrigger>
+                        <SelectContent className="w-[200px]">
+                          <SelectItem value="1">A1</SelectItem>
+                          <SelectItem value="2">A2</SelectItem>
+                          <SelectItem value="3">B1</SelectItem>
+                          <SelectItem value="4">B2</SelectItem>
+                          <SelectItem value="5">C1</SelectItem>
+                          <SelectItem value="6">C2</SelectItem>
+                          <SelectItem value="7">D1</SelectItem>
+                          <SelectItem value="8">D2</SelectItem>
+                          <SelectItem value="9">E1</SelectItem>
+                          <SelectItem value="10">E2</SelectItem>
+                          <SelectItem value="11">Floor</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </li>
+                    <li className="">
+                      Purchase Order Number: {order?.order_number}
+                    </li>
+
+                    <li>Date: {new Date().toLocaleDateString("en-US", {})}</li>
+
+                    <li className="">
+                      Total Quantity:{" "}
+                      {productsAddedToCreatePallet.reduce(
+                        (acc, product) => acc + product.quantity,
+                        0
+                      )}
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="flex gap-2 w-full absolute bottom-0 left-0">
+                  <Button
+                    value="default"
+                    className="w-[100px]"
+                    onClick={() => createPallet(palletData)}
+                  >
+                    Save
+                  </Button>
+                </div>
               </DialogDescription>
             </TabsContent>
 
