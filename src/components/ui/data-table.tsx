@@ -29,11 +29,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Settings2 } from "lucide-react";
 import React, { useState } from "react";
 import { PaginationComponent } from "./data-table-pagination";
-import PaginationComponentAPI from "./data-table-pagination-api";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -164,13 +162,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-
-      {/* Client Pagination */}
-      {/* <PaginationComponent table={table} /> */}
-
-      {/* Server Pagination */}
-      {/* <PaginationComponentAPI /> */}
-      {/* {pagination ? pagination : <PaginationComponent table={table} />} */}
       {data.length > dataLength &&
         (pagination ? pagination : <PaginationComponent table={table} />)}
     </div>
