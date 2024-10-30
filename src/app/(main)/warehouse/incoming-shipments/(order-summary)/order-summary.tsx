@@ -219,7 +219,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
                   </ul>
                 </div>
 
-                <div className="flex gap-2 w-full absolute bottom-0 left-0">
+                <div className="flex gap-2 w-[300px] absolute bottom-0 left-0">
                   <Button
                     value="default"
                     className="w-[100px]"
