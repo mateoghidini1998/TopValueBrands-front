@@ -376,21 +376,62 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
-  const createPallet = async (palletData: any) => {
+  // const createPallet = async (palletData: any) => {
+  //   try {
+  // if (!palletData.warehouse_location_id) {
+  //   return toast.error("Warehouse location is required");
+  // }
+
+  //     await PurchaseOrdersService.createPallet(palletData);
+  //     toast.success("Pallet created successfully");
+  //     setProductsAddedToCreatePallet([]);
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     setError(error);
+  //     return toast.error(error.message);
+  //   }
+  // };
+
+  //! No lo uso, pero lo dejo por si acaso
+  const createPallet = async (palletData: {
+    pallet_number: string;
+    warehouse_location_id: string;
+    purchase_order_id: string;
+    products: Array<{ purchaseorderproduct_id: string; quantity: number }>;
+  }) => {
     try {
       if (!palletData.warehouse_location_id) {
         return toast.error("Warehouse location is required");
       }
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(palletData),
+        }
+      );
 
-      await PurchaseOrdersService.createPallet(palletData);
-      toast.success("Pallet created successfully");
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData?.msg || "Unexpected error occurred";
+        // throw new Error(errorMessage);
+        return toast.error(errorMessage);
+      }
+
       setProductsAddedToCreatePallet([]);
+      const data = await response.json();
+
+      toast.success("Pallet created successfully");
+      return data;
     } catch (error: any) {
-      setError(error);
+      return toast.error(error.message || "Unexpected error occurred");
+      // throw new Error(error.message || "Unexpected error occurred");
     }
   };
 
-  //! No lo uso, pero lo dejo por si acaso
   const openEditModal = (order: IPurchaseOrder) => {
     setOrderToEdit(order);
     setIsEditModalOpen(true);
