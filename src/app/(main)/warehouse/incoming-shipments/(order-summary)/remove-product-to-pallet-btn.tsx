@@ -1,6 +1,7 @@
 "use client";
 
 import { DeleteButton } from "@/components/svgs/DeleteButton";
+import DeleteIcon from "@/components/svgs/DeleteIcon";
 import { useOrdersContext } from "@/contexts/orders.context";
 
 export const RemoveProductToPalletBtn = ({ row }: any) => {
@@ -39,7 +40,7 @@ export const RemoveProductToPalletBtn = ({ row }: any) => {
         });
       }}
     >
-      <DeleteButton color="white" />
+      <DeleteIcon />
     </button>
   );
 };
