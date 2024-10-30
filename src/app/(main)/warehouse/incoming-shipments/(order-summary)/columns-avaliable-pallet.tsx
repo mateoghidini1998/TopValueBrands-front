@@ -38,7 +38,7 @@ export const columnsAvaliablePallet: ColumnDef<AvaliablePalletProps>[] = [
     header: "Seller SKU",
   },
   {
-    accessorKey: "quantity_avaliable",
+    accessorKey: "quantity_available",
     header: "Quantity Avaliable",
   },
   {

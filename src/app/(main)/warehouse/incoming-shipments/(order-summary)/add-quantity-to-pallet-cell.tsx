@@ -57,7 +57,7 @@ export default function AddQuantityToPalletCell({
         if (product.purchase_order_product_id === purchaseOrderProductId) {
           return {
             ...product,
-            quantity_avaliable: product.quantity_received - quantity,
+            quantity_available: product.quantity_available - quantity,
           };
         }
         return product;

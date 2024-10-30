@@ -83,7 +83,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
           (p: any) => p.product_id === product.product_id
         )?.seller_sku || "N/A",
       quantity_received: product.quantity_received,
-      quantity_avaliable: product.quantity_received,
+      quantity_available: product.quantity_available,
     }));
   };
 
@@ -223,7 +223,13 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
                   <Button
                     value="default"
                     className="w-[100px]"
-                    onClick={() => createPallet(palletData)}
+                    onClick={() => {
+                      createPallet(palletData);
+                      setPalletData((prevPalletData) => ({
+                        ...prevPalletData,
+                        pallet_number: Math.floor(Math.random() * 1000000),
+                      }));
+                    }}
                   >
                     Save
                   </Button>

@@ -1,6 +1,5 @@
 "use client";
 
-import { DeleteButton } from "@/components/svgs/DeleteButton";
 import DeleteIcon from "@/components/svgs/DeleteIcon";
 import { useOrdersContext } from "@/contexts/orders.context";
 
@@ -31,8 +30,8 @@ export const RemoveProductToPalletBtn = ({ row }: any) => {
             ) {
               return {
                 ...p,
-                quantity_avaliable:
-                  p.quantity_avaliable + row.original.quantity,
+                quantity_available:
+                  p.quantity_available + row.original.quantity,
               };
             }
             return p;
