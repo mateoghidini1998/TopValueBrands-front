@@ -4,10 +4,12 @@ import { useState } from "react";
 
 type QuantityReceivedCellProps = {
   row: any;
+  setLocalData: any;
 };
 
 export default function QuantityReceivedCell({
   row,
+  setLocalData,
 }: QuantityReceivedCellProps) {
   const { addQuantityReceived } = useOrdersContext(); // Usamos el contexto para actualizar el pedido
   const [quantityReceived, setQuantityReceived] = useState(
@@ -35,6 +37,24 @@ export default function QuantityReceivedCell({
           row.original.purchase_order_product_id,
           parseInt(newQuantity)
         );
+
+        setLocalData((prev: any) => {
+          return prev.map((product: any) => {
+            if (
+              product.purchase_order_product_id ===
+              row.original.purchase_order_product_id
+            ) {
+              return {
+                ...product,
+                quantity_received: parseInt(newQuantity),
+                quantity_missing:
+                  product.quantity_purchased - parseInt(newQuantity),
+              };
+            }
+            return product;
+          });
+        });
+        setSearchTimeout(null);
       }, 500)
     );
   };

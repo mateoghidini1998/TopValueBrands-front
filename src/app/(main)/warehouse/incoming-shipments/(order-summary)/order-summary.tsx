@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -20,9 +19,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { IPurchaseOrderSummary } from "@/types/product.types";
 import { useEffect, useState } from "react";
-import { columns } from "./columns";
 import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
+import { OrderSummaryReceivedData } from "./order-summary-received-data";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
@@ -34,35 +33,6 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     warehouse_location_id: 0,
     purchase_order_id: order.id!!,
     products: [],
-  };
-
-  const transformOrderDataForSummary = (order: any) => {
-    return order.purchaseOrderProducts.map((product: any, index: number) => ({
-      purchase_order_product_id: product.id,
-      order_id: order?.id,
-      order_number: order?.order_number,
-      product_name: product.product_name,
-      product_image:
-        order.trackedProducts.find(
-          (p: any) => p.product_id === product.product_id
-        )?.product_image || "N/A",
-      ASIN:
-        order.trackedProducts.find(
-          (p: any) => p.product_id === product.product_id
-        )?.ASIN || "N/A",
-      seller_sku:
-        order.trackedProducts.find(
-          (p: any) => p.product_id === product.product_id
-        )?.seller_sku || "N/A",
-      quantity_purchased: product.quantity_purchased,
-      quantity_received: product.quantity_received,
-      quantity_missing: product.quantity_missing,
-      quantity_avaliable: product.quantity_received,
-      reason_id: product.reason_id,
-      purchase_order_product_notes: product.notes,
-      notes: order.notes,
-      expire_date: product.expire_date,
-    }));
   };
 
   const transformOrderDataProductsAvaliableToCreatePallet = (order: any) => {
@@ -102,12 +72,6 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     products: Array<{ purchaseorderproduct_id: string; quantity: number }>;
   }>(initialPalletData);
 
-  const resetStates = () => {
-    setPalletData({ ...initialPalletData });
-    setProductsAvaliableToCreatePallet([]);
-    setProductsAddedToCreatePallet([]);
-  };
-
   useEffect(() => {
     if (order) {
       const transformedProducts =
@@ -140,11 +104,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
                 Order Summary - {order.order_number}
               </DialogTitle>
               <DialogDescription className="w-full py-6">
-                <DataTable
-                  columns={columns}
-                  data={transformOrderDataForSummary(order)}
-                  dataLength={10}
-                />
+                <OrderSummaryReceivedData orderId={order.id!!} />
               </DialogDescription>
             </TabsContent>
 
@@ -152,10 +112,11 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
               <DialogTitle className="text-left">
                 Create Pallets - {order.order_number}
               </DialogTitle>
+
               <DialogDescription className="w-full">
                 <DataTable
                   columns={columnsAvaliablePallet}
-                  data={productsAvaliableToCreatePallet} // Usamos el estado aquí
+                  data={productsAvaliableToCreatePallet} // Usamos el estado aquí también
                   dataLength={10}
                 />
               </DialogDescription>

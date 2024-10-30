@@ -5,7 +5,7 @@ import { DatePickerCell } from "./date-picker-cell";
 import { SelectReasonCell } from "./select-reason-cell";
 // import NotesCell from "./notes-cell";
 
-interface IncomingShipmentsOrderSummaryProps {
+export interface IncomingShipmentsOrderSummaryProps {
   product_name: string;
   product_image: string;
   ASIN: string;
@@ -18,7 +18,9 @@ interface IncomingShipmentsOrderSummaryProps {
   expire_date: string;
 }
 
-export const columns: ColumnDef<IncomingShipmentsOrderSummaryProps>[] = [
+export const getColumns = (
+  setLocalData: any
+): ColumnDef<IncomingShipmentsOrderSummaryProps>[] => [
   {
     accessorKey: "product_name",
     header: "Product Name",
@@ -50,7 +52,9 @@ export const columns: ColumnDef<IncomingShipmentsOrderSummaryProps>[] = [
   {
     accessorKey: "quantity_received",
     header: "Quantity Received",
-    cell: ({ row }) => <QuantityReceivedCell row={row} />,
+    cell: ({ row }) => (
+      <QuantityReceivedCell row={row} setLocalData={setLocalData} />
+    ),
   },
   {
     accessorKey: "quantity_missing",
@@ -62,9 +66,9 @@ export const columns: ColumnDef<IncomingShipmentsOrderSummaryProps>[] = [
     header: "Reason",
     cell: ({ row }) => <SelectReasonCell row={row.original} />,
   },
-  {
-    accessorKey: "expire_date",
-    header: "Expire Date",
-    cell: ({ row }) => <DatePickerCell row={row.original} />,
-  },
+  // {
+  //   accessorKey: "expire_date",
+  //   header: "Expire Date",
+  //   cell: ({ row }) => <DatePickerCell row={row.original} />,
+  // },
 ];

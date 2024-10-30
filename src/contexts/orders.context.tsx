@@ -376,23 +376,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
-  // const createPallet = async (palletData: any) => {
-  //   try {
-  // if (!palletData.warehouse_location_id) {
-  //   return toast.error("Warehouse location is required");
-  // }
-
-  //     await PurchaseOrdersService.createPallet(palletData);
-  //     toast.success("Pallet created successfully");
-  //     setProductsAddedToCreatePallet([]);
-  //   } catch (error: any) {
-  //     console.log(error);
-  //     setError(error);
-  //     return toast.error(error.message);
-  //   }
-  // };
-
-  //! No lo uso, pero lo dejo por si acaso
   const createPallet = async (palletData: {
     pallet_number: string;
     warehouse_location_id: string;
@@ -432,6 +415,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
+  //! No lo uso, pero lo dejo por si acaso
   const openEditModal = (order: IPurchaseOrder) => {
     setOrderToEdit(order);
     setIsEditModalOpen(true);
