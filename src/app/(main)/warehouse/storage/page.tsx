@@ -1,8 +1,8 @@
 "use client";
 import { DataTable } from "@/components/ui/data-table";
-import { useStorageContext } from "@/contexts/storage.context";
 import IndexPageContainer from "../../page.container";
 import { columns } from "./columns";
+import { useStorageContext } from "@/contexts/storage.context";
 
 export default function StoragePage() {
   const { pallets } = useStorageContext();

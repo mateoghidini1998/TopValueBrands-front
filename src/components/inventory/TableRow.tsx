@@ -15,7 +15,7 @@ import CustomAlert, { CustomAlertOptions } from "../alerts/CustomAlerts";
 import SaveButton from "../svgs/SaveButton";
 import CancelButton from "../svgs/CancelButton";
 import useThemeContext from "@/contexts/theme.context";
-import { useSupplierContext } from "@/contexts/storage.context";
+import { useSupplierContext } from "@/contexts/suppliers.context";
 import { SupplierType } from "@/types/supplier.types";
 import EmptyImage from "../svgs/EmptyImage";
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { useProductContext } from "@/contexts/products.context";
 import { usePathname } from "next/navigation";
-import { useSupplierContext } from "@/contexts/storage.context";
+import { useSupplierContext } from "@/contexts/suppliers.context";
 
 const Placeholder = ({ showPlaceholder, keyword }: any) =>
   showPlaceholder &&
