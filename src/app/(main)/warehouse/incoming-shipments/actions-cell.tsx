@@ -26,7 +26,8 @@ type ActionsCellProps = {
 };
 
 const ActionsCell = ({ row }: ActionsCellProps) => {
-  const { downloadOrder, deleteOrder } = useOrdersContext();
+  const { downloadOrder, deleteOrder, setProductsAddedToCreatePallet } =
+    useOrdersContext(); // Función de limpieza en el contexto
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const incomingOrder = row.original;
@@ -35,9 +36,16 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     setIsDialogOpen(true);
   };
 
+  const handleDialogChange = (open: boolean) => {
+    setIsDialogOpen(open);
+    if (!open) {
+      setProductsAddedToCreatePallet([]); // Llama a la función de limpieza al cerrar el diálogo
+    }
+  };
+
   return (
     <div className="flex items-center justify-end gap-2">
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog open={isDialogOpen} onOpenChange={handleDialogChange}>
         <DropdownMenu key={incomingOrder.id}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
