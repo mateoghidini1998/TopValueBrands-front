@@ -22,6 +22,11 @@ export const AddProductToPalletBtn = ({ row }: any) => {
           );
 
           if (!product) {
+            if (row.original.quantity_available === 0) {
+              toast.error("Product out of stock");
+              return [...prev];
+            }
+
             return [
               ...prev,
               {
