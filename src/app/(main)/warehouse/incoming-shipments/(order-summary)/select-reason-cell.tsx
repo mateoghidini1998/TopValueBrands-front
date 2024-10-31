@@ -13,18 +13,35 @@ import { useOrdersContext } from "@/contexts/orders.context";
 
 type SelectReasonCellProps = {
   row: any;
+  setLocalData: (value: any) => any;
 };
 
-export function SelectReasonCell({ row }: SelectReasonCellProps) {
+export function SelectReasonCell({ row, setLocalData }: SelectReasonCellProps) {
   const { addReasonToPOProduct } = useOrdersContext();
   const handleReasonChange = (value: string) => {
-    // setReason(value);
-    addReasonToPOProduct(row.purchase_order_product_id, parseInt(value));
+    addReasonToPOProduct(
+      row.original.purchase_order_product_id,
+      parseInt(value)
+    );
+    setLocalData((prev: any) => {
+      return prev.map((product: any) => {
+        if (
+          product.purchase_order_product_id ===
+          row.original.purchase_order_product_id
+        ) {
+          return {
+            ...product,
+            reason_id: parseInt(value),
+          };
+        }
+        return product;
+      });
+    });
   };
 
   return (
     <Select
-      defaultValue={row.reason_id?.toString() || "0"}
+      defaultValue={row.original.reason_id?.toString() || "0"}
       onValueChange={(value) => {
         handleReasonChange(value);
       }}
