@@ -3,6 +3,7 @@ import { TrackedProductsProvider } from "../../../contexts/trackedProducts.conte
 import IndexPageContainer from "../page.container";
 import { OrdersProvider } from "@/contexts/orders.context";
 import { POGeneratorNavbar } from "../pogenerator/components/POGeneratorNavbar";
+import { StorageProvider } from "../../../contexts/storage.context";
 
 export const metadata: Metadata = {
   title: "Warehouse - TVB",
@@ -33,12 +34,14 @@ export default function POGeneratorLayout({
     <>
       <IndexPageContainer>
         <OrdersProvider>
-          <main className="flex w-full h-fit flex-col items-center mt-[56px] relative">
-            <TrackedProductsProvider>
-              <POGeneratorNavbar navLinks={navLinks} />
-              {children}
-            </TrackedProductsProvider>
-          </main>
+          <StorageProvider>
+            <main className="flex w-full h-fit flex-col items-center mt-[56px] relative">
+              <TrackedProductsProvider>
+                <POGeneratorNavbar navLinks={navLinks} />
+                {children}
+              </TrackedProductsProvider>
+            </main>
+          </StorageProvider>
         </OrdersProvider>
       </IndexPageContainer>
     </>

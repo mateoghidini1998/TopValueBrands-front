@@ -1,6 +1,6 @@
 "use client";
 import { useProductContext } from "@/contexts/products.context";
-import { useSupplierContext } from "@/contexts/suppliers.context";
+import { useSupplierContext } from "@/contexts/storage.context";
 import useThemeContext from "@/contexts/theme.context";
 import { SupplierType } from "@/types/supplier.types";
 import React, { ChangeEvent, useEffect, useState } from "react";

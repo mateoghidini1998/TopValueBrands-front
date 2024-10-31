@@ -1,5 +1,5 @@
 "use client";
-import { useSupplierContext } from "@/contexts/suppliers.context";
+import { useSupplierContext } from "@/contexts/storage.context";
 import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import SupplierForm from "./SupplierForm";
