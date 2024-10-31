@@ -64,11 +64,13 @@ export const getColumns = (
   {
     accessorKey: "reason_id",
     header: "Reason",
-    cell: ({ row }) => <SelectReasonCell row={row.original} />,
+    cell: ({ row }) => (
+      <SelectReasonCell row={row} setLocalData={setLocalData} />
+    ),
   },
-  // {
-  //   accessorKey: "expire_date",
-  //   header: "Expire Date",
-  //   cell: ({ row }) => <DatePickerCell row={row.original} />,
-  // },
+  {
+    accessorKey: "expire_date",
+    header: "Expire Date",
+    cell: ({ row }) => <DatePickerCell row={row.original} />,
+  },
 ];

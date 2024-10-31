@@ -18,7 +18,6 @@ export const OrderSummaryReceivedData = ({
     const { purchaseOrder, trackedProductsOfTheOrder } = data;
 
     return purchaseOrder.purchaseOrderProducts.map((product: any) => {
-      // Buscar el producto correspondiente en trackedProductsOfTheOrder
       const trackedProduct = trackedProductsOfTheOrder.find(
         (tp: any) => tp.product_id === product.product_id
       );
@@ -36,10 +35,11 @@ export const OrderSummaryReceivedData = ({
         supplier_name: trackedProduct
           ? trackedProduct.supplier_name
           : "Unknown Supplier",
+        reason_id: product.reason_id,
         quantity_purchased: product.quantity_purchased,
         quantity_missing: product.quantity_missing,
         quantity_received: product.quantity_received,
-        // expire_date: product.expire_date || "No Date",
+        expire_date: product.expire_date,
       };
     });
   };
@@ -50,12 +50,14 @@ export const OrderSummaryReceivedData = ({
 
   useEffect(() => {
     getPurchaseOrderSummary(orderId).then((res: any) => {
+      console.log(res.data);
+
       const transformedData = transformDataForDateTable(res.data);
       setData(transformedData);
     });
   }, [orderId, getPurchaseOrderSummary]);
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <DialogDescription className="w-full">
