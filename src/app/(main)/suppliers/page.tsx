@@ -1,12 +1,12 @@
 import SuppliersTable from "@/components/suppliers/SuppliersTable";
-import { StorageProvider } from "@/contexts/suppliers.context";
+import { SupplierProvider } from "@/contexts/suppliers.context";
 
 export default function SuppliersPage() {
   return (
-    <StorageProvider>
+    <SupplierProvider>
       <main className="flex w-full p-14 min-h-screen flex-col items-center dark:bg-dark">
         <SuppliersTable />
       </main>
-    </StorageProvider>
+    </SupplierProvider>
   );
 }
