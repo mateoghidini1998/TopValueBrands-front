@@ -20,17 +20,16 @@ import { IPurchaseOrder } from "@/types/product.types";
 import { TrackedProductType } from "@/types/trackedProducts.types";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
-import IndexPageContainer from "../../page.container";
-import { TableComponent } from "../components/TableComponent";
-import { Column } from "../interfaces/ITableComponent";
-import { NoteCell } from "./text-area-cell";
 import { DataTable } from "../../../../components/ui/data-table";
+import IndexPageContainer from "../../page.container";
+import { NoteCell } from "./text-area-cell";
 // import { columns } from "../create/columns";
-import { ColumnDef } from "@tanstack/react-table";
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
-import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import DateCell from "@/components/ui/data-table-date-cell";
+import { ColumnDef } from "@tanstack/react-table";
+import AnalyzeActionsCell from "./analyze-actions-cell";
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -164,6 +163,12 @@ export const columns: ColumnDef<any>[] = [
       return <DateCell value={row.original.updatedAt} />;
     },
   },
+
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => <AnalyzeActionsCell row={row.original} />,
+  },
 ];
 
 type OrderSummaryProps = {
@@ -223,8 +228,8 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
             onOpenChange={setIsAnalyticsModalOpen}
           >
             <DialogContent
-              className="flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%]
-            w-full max-w-[90vw] translate-x-[-50%] translate-y-[-50%]"
+              className="pt-8 flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%]
+            w-full max-w-[90vw] min-h-[60dvh] translate-x-[-50%] translate-y-[-50%]"
             >
               <DialogHeader className="flex flex-col items-center gap-4">
                 <IndexPageContainer>
