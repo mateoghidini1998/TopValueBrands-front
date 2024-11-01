@@ -11,14 +11,14 @@ export const columns: ColumnDef<PalletType>[] = [
     header: "Pallet Number",
   },
   {
-    accessorKey: "warehouse_location_id",
+    accessorKey: "warehouse_location",
     header: "Warehouse Location",
   },
   {
-    accessorKey: "purchase_order_id",
+    accessorKey: "purchase_order_number",
     header: "Purchase Order",
     cell: ({ row }) => {
-      return <span>{row.original.purchase_order_id}</span>;
+      return <span>{row.original.purchase_order_number}</span>;
     },
   },
 
