@@ -31,6 +31,7 @@ import DateCell from "@/components/ui/data-table-date-cell";
 import { ColumnDef } from "@tanstack/react-table";
 import AnalyzeActionsCell from "./analyze-actions-cell";
 import { set } from "date-fns";
+import UnitPriceCell from "../create/unit-price-cell";
 
 export const getColumns = (
   setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>,
@@ -80,6 +81,28 @@ export const getColumns = (
     header: "Product Cost",
     cell: ({ row }) => {
       return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
+    },
+  },
+  {
+    accessorKey: "unit_price",
+    header: "Unit Price",
+    cell: ({ row }) => {
+      return <span>{`$ ${row.getValue("unit_price") || "N/A"}`}</span>;
+    },
+  },
+
+  {
+    accessorKey: "quantity_purchased",
+    header: "Quantity",
+    cell: ({ row }) => {
+      return <span>{`${row.getValue("quantity_purchased") || "N/A"}`}</span>;
+    },
+  },
+  {
+    accessorKey: "total_amount",
+    header: "Total Amount",
+    cell: ({ row }) => {
+      return <span>{`$ ${row.getValue("total_amount") || "N/A"}`}</span>;
     },
   },
   {
@@ -229,6 +252,15 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
               purchase_order_product_id: matchingPurchaseOrderProduct
                 ? matchingPurchaseOrderProduct.id
                 : null,
+              unit_price: matchingPurchaseOrderProduct
+                ? matchingPurchaseOrderProduct.unit_price
+                : null,
+              total_amount: matchingPurchaseOrderProduct
+                ? matchingPurchaseOrderProduct.total_amount
+                : null,
+              quantity_purchased: matchingPurchaseOrderProduct
+                ? matchingPurchaseOrderProduct.quantity_purchased
+                : null,
             };
           }
         );
@@ -266,6 +298,9 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
             >
               <DialogHeader className="flex flex-col items-center gap-4">
                 <IndexPageContainer>
+                  <DialogTitle className="text-center">
+                    {editingOrder?.supplier_name}
+                  </DialogTitle>
                   <DataTable
                     columns={getColumns(
                       setTrackedProductsData,

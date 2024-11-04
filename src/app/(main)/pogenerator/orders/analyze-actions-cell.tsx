@@ -11,11 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useOrdersContext } from "@/contexts/orders.context";
-import { MoreHorizontal } from "lucide-react";
-import OrderSummary from "./order-summary";
-import { Dispatch, SetStateAction } from "react";
 import { TrackedProductType } from "@/types/trackedProducts.types";
+import { MoreHorizontal } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 
 type ActionsCellProps = {
   row: TrackedProductType;
