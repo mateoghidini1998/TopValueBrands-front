@@ -1,10 +1,9 @@
+import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/contexts/auth.context";
 import { ThemeProvider } from "@/contexts/theme.context";
-import "./globals.css";
 import { Suspense } from "react";
+import "./globals.css";
 import Loading from "./loading";
-import { Toaster } from "@/components/ui/sonner";
-import ScanButton from "@/components/utils/scan-button";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -18,12 +17,7 @@ export default function RootLayout({
       <ThemeProvider>
         <body className="flex bg-white dark:bg-dark">
           <Suspense fallback={<Loading />}>
-            <AuthProvider>
-              <>
-                {children}
-                <ScanButton />
-              </>
-            </AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
             <Toaster position="top-right" richColors />
           </Suspense>
         </body>

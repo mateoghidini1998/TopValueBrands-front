@@ -9,6 +9,7 @@ import { Inter } from "next/font/google";
 import IndexPageContainer from "./page.container";
 import AddProductBtn from "@/components/inventory/AddProductBtn";
 import FilterBySupplier from "@/components/inventory/FilterBySupplier";
+import ScanButton from "@/components/utils/scan-button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,6 +41,7 @@ export default function RootLayout({
                   </div>
                 </div>
                 {children}
+                <ScanButton />
               </StorageProvider>
             </ProductProvider>
           </div>

@@ -12,7 +12,7 @@ const ScanButton: React.FC = () => {
       // Abrir la cámara
       try {
         const mediaScan = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: { facingMode: "environment" }, // Especifica la cámara trasera
         });
         setScan(mediaScan);
         setVideoOpen(true);
@@ -40,10 +40,8 @@ const ScanButton: React.FC = () => {
         className="w-8 h-8 border-solid border-[#438EF3] border-2 rounded-md m-4 flex items-center justify-center bg-white dark:bg-dark dark:text-white"
         onClick={toggleCamera}
       >
-        {/* {videoOpen ? "Cerrar Cámara" : "Abrir Cámara"} */}
         <BsUpcScan />
       </button>
-      {/* {videoOpen && ( */}
       <video
         ref={videoRef}
         autoPlay
@@ -51,7 +49,6 @@ const ScanButton: React.FC = () => {
         width={videoOpen ? "100%" : 0}
         height={videoOpen ? "auto" : 0}
       />
-      {/* )} */}
     </div>
   );
 };
