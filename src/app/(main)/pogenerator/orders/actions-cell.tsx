@@ -14,6 +14,7 @@ import {
 import { useOrdersContext } from "@/contexts/orders.context";
 import { MoreHorizontal } from "lucide-react";
 import OrderSummary from "./order-summary";
+import CustomAlertDialog from "../../../../components/ui/custom-alert-dialog";
 
 type ActionsCellProps = {
   row: any;
@@ -44,9 +45,13 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
             <DropdownMenuItem onClick={() => downloadOrder(incomingOrder.id)}>
               Download PDF
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => deleteOrder(incomingOrder.id)}>
-              Delete Order
-            </DropdownMenuItem>
+            {/* <DropdownMenuItem> */}
+            <CustomAlertDialog
+              text="Delete Order"
+              confirmAction={() => deleteOrder(incomingOrder.id)}
+            />
+            {/* Delete Order */}
+            {/* </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
 
