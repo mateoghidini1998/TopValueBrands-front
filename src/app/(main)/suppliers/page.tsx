@@ -1,5 +1,5 @@
 import SuppliersTable from "@/components/suppliers/SuppliersTable";
-import { StorageProvider } from "@/contexts/suppliers.context";
+import { StorageProvider } from "@/contexts/storage.context";
 
 export default function SuppliersPage() {
   return (
