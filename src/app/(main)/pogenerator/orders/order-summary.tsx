@@ -218,14 +218,13 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     getPurchaseOrderSummary,
     deletePOProductFromAnOrder,
     updatePONumber,
+    setOrdersToCreate,
   } = useOrdersContext();
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState<IPurchaseOrder | null>(null);
   const [trackedProductsData, setTrackedProductsData] = useState<
     TrackedProductType[]
   >([]);
-
-  console.log(trackedProductsData);
 
   const [poProductUpdates, setPoProductUpdates] = useState<
     PurchaseOrderProductUpdates[]
@@ -236,6 +235,10 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
       editOrderNotes(orderId, editingOrder!);
       updatePONumber(orderId, editingOrder!.order_number);
     });
+
+    setOrdersToCreate((prev) =>
+      prev.map((order) => (order.id === orderId ? editingOrder! : order))
+    );
 
     // setEditingOrder(null);
     setPoProductUpdates([]);
@@ -299,8 +302,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     }
   }, [editingOrder]);
 
-  console.log(editingOrder);
-
   return (
     <>
       {/* Dialog para controlar la apertura/cierre */}
@@ -312,22 +313,29 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
           >
             <DialogContent
               className="pt-8 flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%]
-            w-full max-w-[90vw] min-h-[60dvh] translate-x-[-50%] translate-y-[-50%]"
+          w-full max-w-[90vw] min-h-[60dvh] translate-x-[-50%] translate-y-[-50%]"
             >
               <DialogHeader className="flex flex-col items-center gap-4">
-                <IndexPageContainer>
-                  <DialogTitle className="text-center">
-                    {editingOrder?.supplier_name}
-                  </DialogTitle>
-                  <DataTable
-                    columns={getColumns(
-                      setTrackedProductsData,
-                      deletePOProductFromAnOrder
-                    )}
-                    data={trackedProductsData}
-                    dataLength={100}
-                  />
-                </IndexPageContainer>
+                {/* <ScrollArea className="w-full whitespace-nowrap rounded-md border"> */}
+                <div className="w-full overflow-x-auto custom_scroll">
+                  <IndexPageContainer>
+                    <DialogTitle className="text-center">
+                      {editingOrder?.supplier_name}
+                    </DialogTitle>
+                    <div className="flex w-max space-x-4 p-4">
+                      <DataTable
+                        columns={getColumns(
+                          setTrackedProductsData,
+                          deletePOProductFromAnOrder
+                        )}
+                        data={trackedProductsData}
+                        dataLength={100}
+                      />
+                    </div>
+                  </IndexPageContainer>
+                </div>
+                {/* <ScrollBar orientation="horizontal" /> */}
+                {/* </ScrollArea> */}
               </DialogHeader>
             </DialogContent>
           </Dialog>

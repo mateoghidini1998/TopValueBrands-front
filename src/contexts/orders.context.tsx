@@ -1,6 +1,7 @@
 "use client";
 import { PurchaseOrdersService } from "@/services/orders/orders.service";
 import { IPurchaseOrder, IPurchaseOrderSummary } from "@/types/product.types";
+import { set } from "date-fns";
 import {
   createContext,
   FC,
@@ -13,6 +14,7 @@ import { toast } from "sonner";
 
 type OrdersContextType = {
   orders: IPurchaseOrder[];
+  setOrdersToCreate: React.Dispatch<React.SetStateAction<IPurchaseOrder[]>>;
   shippedOrders: IPurchaseOrder[];
   setShippedOrders: React.Dispatch<React.SetStateAction<IPurchaseOrder[]>>;
   loading: boolean;
@@ -146,7 +148,11 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   };
 
   const deletePOProductFromAnOrder = (purchaseOrderProductId: number) => {
-    PurchaseOrdersService.deletePOProductsFromAnOrder(purchaseOrderProductId);
+    try {
+      PurchaseOrdersService.deletePOProductsFromAnOrder(purchaseOrderProductId);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const updatePOProducts = async (
@@ -302,8 +308,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const editOrderNotes = async (orderId: number, orderData: any) => {
     try {
       await PurchaseOrdersService.editOrder(orderId, orderData); // Implement this method in your service
-      // fetchOrders();
-      closeEditModal();
     } catch (error: any) {
       setError(error);
     }
@@ -451,6 +455,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         downloadOrder,
         shippedOrders,
         orders: ordersToCreate,
+        setOrdersToCreate,
         setShippedOrders,
         loading,
         error,
