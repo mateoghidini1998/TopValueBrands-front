@@ -3,7 +3,7 @@
 import { useSupplierContext } from "@/contexts/suppliers.context";
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
 import { SupplierType } from "@/types/supplier.types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const FilterSupplier = () => {
   const { setSupplierId, supplierId, currentPage, setCurrentPage } =
