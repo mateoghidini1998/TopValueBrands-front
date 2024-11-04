@@ -54,6 +54,18 @@ export class PurchaseOrdersService {
     }
   }
 
+  // delete purchase order products
+  static async deletePOProductsFromAnOrder(purchaseOrderProductId: number) {
+    try {
+      const response = await HttpAPI.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/purchaseorderproduct/${purchaseOrderProductId}`
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error deleting order products");
+    }
+  }
+
   // Change the status of the order
   static async updateOrderStatus(orderId: number, status: number) {
     try {

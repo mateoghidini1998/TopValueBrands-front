@@ -14,15 +14,35 @@ import {
 import { useOrdersContext } from "@/contexts/orders.context";
 import { MoreHorizontal } from "lucide-react";
 import OrderSummary from "./order-summary";
+import { Dispatch, SetStateAction } from "react";
+import { TrackedProductType } from "@/types/trackedProducts.types";
 
 type ActionsCellProps = {
-  row: any;
+  row: TrackedProductType;
+  setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>;
+  deleteProductFromOrder: (purchaseOrderProductId: number) => void;
 };
 
-const AnalyzeActionsCell = ({ row }: ActionsCellProps) => {
-  const incomingOrder = row;
+const AnalyzeActionsCell = ({
+  row,
+  setTrackedProductsData,
+  deleteProductFromOrder,
+}: ActionsCellProps) => {
+  console.log(row);
 
-  console.log(incomingOrder);
+  const handleDeleteProductFromOrder = (purchaseOrderProductId: number) => {
+    try {
+      deleteProductFromOrder(purchaseOrderProductId);
+      setTrackedProductsData((prevData) =>
+        prevData.filter(
+          (product) =>
+            product.purchase_order_product_id !== purchaseOrderProductId
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="flex items-center justify-end gap-2">
@@ -45,8 +65,12 @@ const AnalyzeActionsCell = ({ row }: ActionsCellProps) => {
             <DropdownMenuItem onClick={() => console.log("clicked")}>
               Download PDF
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => console.log("clicked")}>
-              Delete Order
+            <DropdownMenuItem
+              onClick={() =>
+                handleDeleteProductFromOrder(row.purchase_order_product_id!!)
+              }
+            >
+              Delete Product
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

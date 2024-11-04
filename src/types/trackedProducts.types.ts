@@ -1,5 +1,6 @@
 export type TrackedProductType = {
-  purchase_order_product_id?: string | number | readonly string[] | undefined;
+  id: number;
+  purchase_order_product_id?: number;
   product_image?: string;
   product_name: string;
   // supplier_name?: string;

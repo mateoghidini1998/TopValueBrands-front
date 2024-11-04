@@ -56,6 +56,7 @@ type OrdersContextType = {
   productsAddedToCreatePallet: any[];
   setProductsAddedToCreatePallet: React.Dispatch<React.SetStateAction<any[]>>;
   createPallet: (data: any) => Promise<any>;
+  deletePOProductFromAnOrder: (purchaseOrderProductId: number) => void;
 };
 
 export type PurchaseOrderProductUpdates = {
@@ -133,6 +134,10 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const getPurchaseOrderSummary = (orderId: number) => {
     const orderSummary = PurchaseOrdersService.getPurchaseOrderSummary(orderId);
     return orderSummary;
+  };
+
+  const deletePOProductFromAnOrder = (purchaseOrderProductId: number) => {
+    PurchaseOrdersService.deletePOProductsFromAnOrder(purchaseOrderProductId);
   };
 
   const updatePOProducts = async (
@@ -457,6 +462,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         productsAddedToCreatePallet,
         setProductsAddedToCreatePallet,
         createPallet,
+        deletePOProductFromAnOrder,
       }}
     >
       {children}

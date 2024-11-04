@@ -19,7 +19,7 @@ import {
 import { IPurchaseOrder } from "@/types/product.types";
 import { TrackedProductType } from "@/types/trackedProducts.types";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { DataTable } from "../../../../components/ui/data-table";
 import IndexPageContainer from "../../page.container";
 import { NoteCell } from "./text-area-cell";
@@ -30,20 +30,17 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import DateCell from "@/components/ui/data-table-date-cell";
 import { ColumnDef } from "@tanstack/react-table";
 import AnalyzeActionsCell from "./analyze-actions-cell";
+import { set } from "date-fns";
 
-export const columns: ColumnDef<any>[] = [
+export const getColumns = (
+  setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>,
+  deletePOProductsFromAnOrder: (productId: number) => void
+): ColumnDef<any>[] => [
   {
     accessorKey: "product_name",
     header: "Product",
     cell: ({ row }) => (
       <ProductNameTableData product={row.original} width={250} />
-    ),
-  },
-  {
-    accessorKey: "supplier_name",
-    header: "Supplier",
-    cell: ({ row }) => (
-      <span className="">{row.getValue("supplier_name") || "N/A"}</span>
     ),
   },
   {
@@ -163,11 +160,16 @@ export const columns: ColumnDef<any>[] = [
       return <DateCell value={row.original.updatedAt} />;
     },
   },
-
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => <AnalyzeActionsCell row={row.original} />,
+    cell: ({ row }) => (
+      <AnalyzeActionsCell
+        row={row.original}
+        setTrackedProductsData={setTrackedProductsData}
+        deleteProductFromOrder={deletePOProductsFromAnOrder}
+      />
+    ),
   },
 ];
 
@@ -176,13 +178,20 @@ type OrderSummaryProps = {
 };
 
 export default function OrderSummary({ orderId }: OrderSummaryProps) {
-  const { orders, updatePOProducts, editOrderNotes, getPurchaseOrderSummary } =
-    useOrdersContext();
+  const {
+    orders,
+    updatePOProducts,
+    editOrderNotes,
+    getPurchaseOrderSummary,
+    deletePOProductFromAnOrder,
+  } = useOrdersContext();
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState<IPurchaseOrder | null>(null);
   const [trackedProductsData, setTrackedProductsData] = useState<
     TrackedProductType[]
   >([]);
+
+  console.log(trackedProductsData);
 
   const [poProductUpdates, setPoProductUpdates] = useState<
     PurchaseOrderProductUpdates[]
@@ -198,12 +207,36 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     const order = orders.find((order) => order.id === orderId);
     if (order) {
       setEditingOrder(order);
-      getPurchaseOrderSummary(order?.id).then((res) => {
+      getPurchaseOrderSummary(order.id).then((res) => {
         // @ts-ignore
-        setTrackedProductsData(res.data.trackedProductsOfTheOrder);
+        const data = res.data;
+        console.log(data);
+
+        // Filtra los trackedProductsOfTheOrder agregando el id de purchaseOrderProducts correspondiente
+        const trackedProductsWithPOId = data.trackedProductsOfTheOrder.map(
+          (trackedProduct: any) => {
+            // Encuentra el objeto de purchaseOrderProducts que tenga el mismo product_id
+            const matchingPurchaseOrderProduct =
+              data.purchaseOrder.purchaseOrderProducts.find(
+                (product: any) =>
+                  product.product_id === trackedProduct.product_id
+              );
+
+            // Retorna el trackedProduct junto con el id de purchaseOrderProducts (si existe)
+
+            return {
+              ...trackedProduct,
+              purchase_order_product_id: matchingPurchaseOrderProduct
+                ? matchingPurchaseOrderProduct.id
+                : null,
+            };
+          }
+        );
+
+        setTrackedProductsData(trackedProductsWithPOId);
       });
     }
-  }, [getPurchaseOrderSummary, orderId, orders]);
+  }, [orders, orderId, getPurchaseOrderSummary, updatePOProducts]);
 
   useEffect(() => {
     if (editingOrder) {
@@ -233,7 +266,14 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
             >
               <DialogHeader className="flex flex-col items-center gap-4">
                 <IndexPageContainer>
-                  <DataTable columns={columns} data={trackedProductsData} />
+                  <DataTable
+                    columns={getColumns(
+                      setTrackedProductsData,
+                      deletePOProductFromAnOrder
+                    )}
+                    data={trackedProductsData}
+                    dataLength={100}
+                  />
                 </IndexPageContainer>
               </DialogHeader>
             </DialogContent>
