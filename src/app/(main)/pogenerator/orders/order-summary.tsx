@@ -30,8 +30,6 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import DateCell from "@/components/ui/data-table-date-cell";
 import { ColumnDef } from "@tanstack/react-table";
 import AnalyzeActionsCell from "./analyze-actions-cell";
-import { set } from "date-fns";
-import UnitPriceCell from "../create/unit-price-cell";
 
 export const getColumns = (
   setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>,
@@ -207,6 +205,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     editOrderNotes,
     getPurchaseOrderSummary,
     deletePOProductFromAnOrder,
+    updatePONumber,
   } = useOrdersContext();
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState<IPurchaseOrder | null>(null);
@@ -223,7 +222,11 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
   const handleUpdatePurchaseOrder = () => {
     updatePOProducts(orderId, poProductUpdates).then(() => {
       editOrderNotes(orderId, editingOrder!);
+      updatePONumber(orderId, editingOrder!.order_number);
     });
+
+    // setEditingOrder(null);
+    setPoProductUpdates([]);
   };
 
   useEffect(() => {
@@ -283,6 +286,9 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
       );
     }
   }, [editingOrder]);
+
+  console.log(editingOrder);
+
   return (
     <>
       {/* Dialog para controlar la apertura/cierre */}
@@ -462,7 +468,18 @@ w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
                 <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
                   <div className="flex justify-between items-center">
                     <h2>Order Number</h2>
-                    <p>{editingOrder?.order_number}</p>
+                    <Input
+                      onChange={(e) => {
+                        // @ts-ignore
+                        setEditingOrder({
+                          ...editingOrder,
+                          order_number: e.target.value,
+                        });
+                      }}
+                      className="w-fit text-center"
+                      type="text"
+                      defaultValue={editingOrder?.order_number}
+                    />
                   </div>
 
                   <div className="flex justify-between items-center">

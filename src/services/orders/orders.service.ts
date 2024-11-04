@@ -66,6 +66,19 @@ export class PurchaseOrdersService {
     }
   }
 
+  static async updatePONumber(orderId: number, order_number: string) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/orderNumber/${orderId}`,
+        { order_number } // Enviar el estado en el cuerpo de la solicitud
+        // { headers: { Authorization: `Bearer ${token}` }} // Descomentar si es necesario el token
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error updating order number");
+    }
+  }
+
   // Change the status of the order
   static async updateOrderStatus(orderId: number, status: number) {
     try {
