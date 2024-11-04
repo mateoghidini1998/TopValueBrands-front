@@ -31,13 +31,15 @@ export default function Page() {
 
   return (
     <IndexPageContainer>
-      <div className="w-full px-[1.3rem] py-0">
-        <DataTable
-          columns={columns}
-          data={trackedProducts}
-          dataLength={10}
-          pagination={<PaginationComponentAPI {...paginationMethods} />}
-        />
+      <div className="w-full overflow-x-auto custom_scroll">
+        <div className="w-max px-[1.3rem] py-0 flex space-x-4 p-4">
+          <DataTable
+            columns={columns}
+            data={trackedProducts}
+            dataLength={10}
+            pagination={<PaginationComponentAPI {...paginationMethods} />}
+          />
+        </div>
       </div>
       <div
         className={`${

@@ -302,6 +302,8 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     }
   }, [editingOrder]);
 
+  console.log(editingOrder);
+
   return (
     <>
       {/* Dialog para controlar la apertura/cierre */}
