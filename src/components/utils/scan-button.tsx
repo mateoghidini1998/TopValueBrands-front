@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
+import { BsUpcScan } from "react-icons/bs";
 
 const ScanButton: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -36,10 +37,11 @@ const ScanButton: React.FC = () => {
   return (
     <div className="fixed bottom-5 right-5">
       <button
-        className="w-8 h-8 bg-red-500 rounded-md m-4"
+        className="w-8 h-8 border-solid border-[#438EF3] border-2 rounded-md m-4 flex items-center justify-center bg-white dark:bg-dark dark:text-white"
         onClick={toggleCamera}
       >
-        {videoOpen ? "Cerrar Cámara" : "Abrir Cámara"}
+        {/* {videoOpen ? "Cerrar Cámara" : "Abrir Cámara"} */}
+        <BsUpcScan />
       </button>
       {/* {videoOpen && ( */}
       <video

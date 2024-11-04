@@ -4,8 +4,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { Toaster } from "@/components/ui/sonner";
-import ScanButton from "@/components/util/scan-button";
-
+import ScanButton from "@/components/utils/scan-button";
 export default function RootLayout({
   children,
 }: Readonly<{
