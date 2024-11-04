@@ -71,19 +71,23 @@ export const getColumns = (
     header: "ASIN",
   },
   {
-    accessorKey: "seller_sku",
-    header: "Seller SKU",
+    accessorKey: "supplier_item_number",
+    header: "Item N",
   },
   {
     accessorKey: "product_cost",
-    header: "Product Cost",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Product Cost" />;
+    },
     cell: ({ row }) => {
       return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
     },
   },
   {
     accessorKey: "unit_price",
-    header: "Unit Price",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Unit Price" />;
+    },
     cell: ({ row }) => {
       return <span>{`$ ${row.getValue("unit_price") || "N/A"}`}</span>;
     },
@@ -91,14 +95,18 @@ export const getColumns = (
 
   {
     accessorKey: "quantity_purchased",
-    header: "Quantity",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Quantity" />;
+    },
     cell: ({ row }) => {
       return <span>{`${row.getValue("quantity_purchased") || "N/A"}`}</span>;
     },
   },
   {
     accessorKey: "total_amount",
-    header: "Total Amount",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Total Amount" />;
+    },
     cell: ({ row }) => {
       return <span>{`$ ${row.getValue("total_amount") || "N/A"}`}</span>;
     },
@@ -180,6 +188,10 @@ export const getColumns = (
     cell: ({ row }) => {
       return <DateCell value={row.original.updatedAt} />;
     },
+  },
+  {
+    accessorKey: "seller_sku",
+    header: "Seller SKU",
   },
   {
     id: "actions",
