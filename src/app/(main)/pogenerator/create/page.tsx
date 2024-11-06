@@ -51,7 +51,7 @@ export default function Page() {
         <DataTable
           columns={POColumns}
           data={trackedProductsAddedToOrder}
-          dataLength={10}
+          dataLength={50}
         />
 
         <div className="py-5 w-full">

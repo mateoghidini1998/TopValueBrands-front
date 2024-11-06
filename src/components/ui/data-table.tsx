@@ -162,8 +162,12 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {data.length > dataLength &&
-        (pagination ? pagination : <PaginationComponent table={table} />)}
+      {/* {data.length > dataLength && (pagination ? pagination : <PaginationComponent table={table} />)} */}
+      {pagination ? (
+        pagination
+      ) : data.length > dataLength ? (
+        <PaginationComponent table={table} />
+      ) : null}
     </div>
   );
 }

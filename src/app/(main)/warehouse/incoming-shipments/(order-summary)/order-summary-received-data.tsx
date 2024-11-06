@@ -50,7 +50,7 @@ export const OrderSummaryReceivedData = ({
 
   useEffect(() => {
     getPurchaseOrderSummary(orderId).then((res: any) => {
-      console.log(res.data);
+      // console.log(res.data);
 
       const transformedData = transformDataForDateTable(res.data);
       setData(transformedData);

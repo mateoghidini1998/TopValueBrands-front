@@ -10,6 +10,7 @@ import IndexPageContainer from "./page.container";
 import AddProductBtn from "@/components/inventory/AddProductBtn";
 import FilterBySupplier from "@/components/inventory/FilterBySupplier";
 import ScanButton from "@/components/utils/scan-button";
+import { SupplierProvider } from "../../contexts/suppliers.context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,15 +32,17 @@ export default function RootLayout({
           <div className="main_layout flex justify-end ">
             <ProductProvider>
               <StorageProvider>
-                <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark transition-colors duration-[0.6s] ease-in-out h-[115px]">
-                  <PageTitle />
-                  <div className="flex items-center gap-4">
-                    <AddProductBtn />
-                    <SearchInput />
-                    <FilterBySupplier />
-                    <UserMenu />
+                <SupplierProvider>
+                  <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark transition-colors duration-[0.6s] ease-in-out h-[115px]">
+                    <PageTitle />
+                    <div className="flex items-center gap-4">
+                      <AddProductBtn />
+                      <SearchInput />
+                      <FilterBySupplier />
+                      <UserMenu />
+                    </div>
                   </div>
-                </div>
+                </SupplierProvider>
                 {children}
                 <ScanButton />
               </StorageProvider>

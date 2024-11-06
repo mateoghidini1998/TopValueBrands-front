@@ -34,7 +34,7 @@ export const StorageProvider: FC<PropsWithChildren> = ({
     getPallets();
   }, []);
 
-  console.log(pallets);
+  // console.log(pallets);
 
   // Corrige la función getPallets para que retorne un arreglo de pallets
   const getPallets = async (): Promise<PalletType[]> => {
@@ -42,7 +42,7 @@ export const StorageProvider: FC<PropsWithChildren> = ({
       const response = await StorageService.getPallets();
       setPallets(response.pallets);
 
-      console.log(response);
+      // console.log(response);
 
       return response.pallets; // Retorna el arreglo de pallets
     } catch (error) {

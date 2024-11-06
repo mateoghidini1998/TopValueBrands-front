@@ -26,7 +26,7 @@ const AnalyzeActionsCell = ({
   setTrackedProductsData,
   deleteProductFromOrder,
 }: ActionsCellProps) => {
-  console.log(row);
+  // console.log(row);
 
   const handleDeleteProductFromOrder = (purchaseOrderProductId: number) => {
     try {
