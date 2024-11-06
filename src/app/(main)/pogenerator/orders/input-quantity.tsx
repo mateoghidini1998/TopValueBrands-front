@@ -12,20 +12,22 @@ const InputQuantity = ({
   // Debounced function to update the state
   const debouncedUpdate = useCallback(
     debounce((newValue: number) => {
-      // Actualiza poProductUpdates
-
+      // Lo seteo para poder enviar la informacion correcta
       setEditingOrder((prev: any) => {
+        console.log(prev);
+
         if (!prev) return prev;
         const index = prev.findIndex(
           (product: any) =>
             product.purchaseOrderProductId ===
             row.original.purchase_order_product_id
         );
+
         if (index !== -1) {
           const updatedProducts = [...prev];
           updatedProducts[index] = {
             ...updatedProducts[index],
-            quantity_purchased: newValue,
+            quantityPurchased: newValue,
           };
           return updatedProducts;
         }
@@ -33,7 +35,7 @@ const InputQuantity = ({
         return prev;
       });
 
-      // Actualiza trackedProductsData
+      // Lo seteo para mostrar la data en la tabla actualizada
       setTrackedProductsData((prev: any) => {
         if (!prev) return prev;
         const index = prev.findIndex(
