@@ -121,7 +121,7 @@ DataTableProps<TData, TValue>) {
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {column.id.split("_").join(" ")}
                   </DropdownMenuCheckboxItem>
                 );
               })}
