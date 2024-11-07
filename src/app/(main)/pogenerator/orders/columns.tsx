@@ -56,11 +56,11 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     header: "Status",
     cell: ({ row }) => {
       const availableStatuses = [
-        "PENDING",
-        "IN_TRANSIT",
-        "GOOD_TO_GO",
-        "REJECTED",
-        "WAITING_FOR_SUPPLIER_APPROVAL",
+        "Pending",
+        "In transit",
+        "Good to go",
+        "Rejected",
+        "Waiting for supplier approval",
       ];
       return <StatusCell row={row} avaliableStatuses={availableStatuses} />;
     },

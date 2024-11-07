@@ -69,14 +69,14 @@ export type PurchaseOrderProductUpdates = {
 
 // Enumeración de estados de la orden de compra
 export const PURCHASE_ORDER_STATUSES = {
-  REJECTED: 1,
-  PENDING: 2,
-  GOOD_TO_GO: 3,
+  Rejected: 1,
+  Pending: 2,
+  "Good to go": 3,
   CANCELLED: 4,
-  IN_TRANSIT: 5,
+  "In transit": 5,
   ARRIVED: 6,
   CLOSED: 7,
-  WAITING_FOR_SUPPLIER_APPROVAL: 8,
+  "Waiting for supplier approval": 8,
 };
 
 const OrdersContext = createContext<OrdersContextType | undefined>(undefined);
@@ -192,19 +192,19 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
 
       data.data.forEach((order: any) => {
         if (
-          order.status === "REJECTED" ||
-          order.status === "PENDING" ||
-          order.status === "GOOD_TO_GO" ||
-          order.status === "WAITING_FOR_SUPPLIER_APPROVAL"
+          order.status === "Rejected" ||
+          order.status === "Pending" ||
+          order.status === "Good to go" ||
+          order.status === "Wating for supplier approval"
         ) {
           if (!ordersToCreateList.some((o) => o.id === order.id)) {
             ordersToCreateList.push(order);
           }
         } else if (
-          order.status === "CANCELLED" ||
-          order.status === "IN_TRANSIT" ||
-          order.status === "ARRIVED" ||
-          order.status === "CLOSED"
+          order.status === "Cancelled" ||
+          order.status === "In transit" ||
+          order.status === "Arrived" ||
+          order.status === "Closed"
         ) {
           if (!shippedOrdersList.some((o) => o.id === order.id)) {
             shippedOrdersList.push(order);
@@ -224,28 +224,28 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const getOrderStatusId = async (status: string) => {
     let statusId;
     switch (status) {
-      case "PENDING":
+      case "Pending":
         statusId = 2;
         break;
-      case "REJECTED":
+      case "Rejected":
         statusId = 1;
         break;
-      case "WAITING_FOR_SUPPLIER_APPROVAL":
+      case "Wating for supplier approval":
         statusId = 8;
         break;
-      case "GOOD_TO_GO":
+      case "Good to go":
         statusId = 3;
         break;
-      case "IN_TRANSIT":
+      case "In transit":
         statusId = 5;
         break;
-      case "ARRIVED":
+      case "Arrived":
         statusId = 6;
         break;
-      case "CLOSED":
+      case "Closed":
         statusId = 7;
         break;
-      case "CANCELLED":
+      case "Cancelled":
         statusId = 4;
         break;
       default:

@@ -304,8 +304,8 @@ export const TableComponent = <T,>({
                               className="w-[120px] flex justify-between items-center"
                               // onClick={() => handlePendingOrderStatus(row.id)}
                             >
-                              <OrderTags status={"PENDING"} />
-                              {row.status.toUpperCase() === "PENDING" ? (
+                              <OrderTags status={"Pending"} />
+                              {row.status.toUpperCase() === "Pending" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -323,8 +323,8 @@ export const TableComponent = <T,>({
                               className="w-[120px] flex justify-between items-center"
                               // onClick={() => handleRejectOrderStatus(row.id)}
                             >
-                              <OrderTags status={"REJECTED"} />
-                              {row.status.toUpperCase() === "REJECTED" ? (
+                              <OrderTags status={"Rejected"} />
+                              {row.status.toUpperCase() === "Rejected" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -510,8 +510,8 @@ export const TableComponent = <T,>({
                             cellValue > 2
                               ? " bg-[#00952A] bg-opacity-10 font-bold  text-[#00952A]"
                               : cellValue < 2 && cellValue > 0
-                                ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] "
-                                : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
+                              ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] "
+                              : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
                           }
                           
                         }`}
@@ -555,19 +555,17 @@ export const TableComponent = <T,>({
                           ) >= 20
                             ? " bg-[#00952A] bg-opacity-10 font-bold  text-[#00952A]"
                             : Number(
-                                  (
-                                    (row.profit / row.product_cost) *
-                                    100
-                                  ).toFixed(2)
-                                ) < 20 &&
-                                Number(
-                                  (
-                                    (row.profit / row.product_cost) *
-                                    100
-                                  ).toFixed(2)
-                                ) > 19
-                              ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] "
-                              : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
+                                ((row.profit / row.product_cost) * 100).toFixed(
+                                  2
+                                )
+                              ) < 20 &&
+                              Number(
+                                ((row.profit / row.product_cost) * 100).toFixed(
+                                  2
+                                )
+                              ) > 19
+                            ? "bg-[#C26900] bg-opacity-10 font-bold text-[#C26900] "
+                            : "bg-[#ef4444] bg-opacity-10 font-bold text-[#ef4444]"
                         }
                           
                         }`}

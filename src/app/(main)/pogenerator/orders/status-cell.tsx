@@ -23,22 +23,22 @@ const StatusCell = ({ row, avaliableStatuses }: StatusCellProps) => {
   const currentStatus = row.getValue("status");
 
   const getBadgeVariant = (status: string) => {
-    if (status === "PENDING") {
-      return "pending";
-    } else if (status === "ARRIVED") {
-      return "arrived";
-    } else if (status === "CANCELLED") {
-      return "cancelled";
-    } else if (status === "REJECTED") {
-      return "rejected";
-    } else if (status === "IN_TRANSIT") {
-      return "in_transit";
-    } else if (status === "CLOSED") {
-      return "closed";
-    } else if (status === "WAITING_FOR_SUPPLIER_APPROVAL") {
-      return "waiting_for_supplier_approval";
-    } else if (status === "GOOD_TO_GO") {
-      return "good_to_go";
+    if (status === "Pending") {
+      return "Pending";
+    } else if (status === "Arrived") {
+      return "Arrived";
+    } else if (status === "Cancelled") {
+      return "Cancelled";
+    } else if (status === "Rejected") {
+      return "Rejected";
+    } else if (status === "In transit") {
+      return "In transit";
+    } else if (status === "Closed") {
+      return "Closed";
+    } else if (status === "Waiting for supplier approval") {
+      return "Waiting for supplier approval";
+    } else if (status === "Good to go") {
+      return "Good to go";
     } else {
       return "default";
     }

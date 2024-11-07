@@ -7,7 +7,7 @@ import ActionsCell from "./actions-cell";
 import StatusCell from "@/components/ui/data-table-status-cell";
 import DateCell from "@/components/ui/data-table-date-cell";
 
-const availableStatuses = ["IN_TRANSIT", "ARRIVED", "CANCELLED", "CLOSED"];
+const availableStatuses = ["In transit", "Arrived", "Cancelled", "Closed"];
 
 export const columns: ColumnDef<IPurchaseOrder>[] = [
   {

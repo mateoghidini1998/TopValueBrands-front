@@ -550,8 +550,8 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                             </SelectTrigger>
                             <SelectContent>
                               <SelectGroup>
-                                <SelectItem value="good_to_go">Good To Go</SelectItem>
-                                <SelectItem value="pending">Pending</SelectItem>
+                                <SelectItem value="Good to go">Good To Go</SelectItem>
+                                <SelectItem value="Pending">Pending</SelectItem>
                               </SelectGroup>
                             </SelectContent>
                           </Select>
