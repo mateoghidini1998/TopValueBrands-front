@@ -341,7 +341,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     <>
       {isAnalyticsModalOpen ? (
         <Dialog
-          modal={false}
+          modal={true}
           open={isAnalyticsModalOpen}
           onOpenChange={setIsAnalyticsModalOpen}
         >
@@ -352,7 +352,8 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
             <DialogHeader className="flex flex-col items-center gap-4">
               <div className="w-full overflow-x-auto custom_scroll">
                 <IndexPageContainer>
-                  <DialogTitle className="text-center">
+                  {/* center the absolute title */}
+                  <DialogTitle className="absolute left-[50%]  translate-x-[-50%] translate-y-[-50%]  ">
                     {editingOrder?.supplier_name}
                   </DialogTitle>
                   <div className="flex w-max space-x-4 p-4">
