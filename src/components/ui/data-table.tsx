@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Settings2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PaginationComponent } from "./data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
@@ -38,6 +38,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   dataLength?: number;
   pagination?: React.ReactElement;
+  onSort?: (sorting: SortingState) => any;
 }
 
 export function DataTable<TData, TValue>({
@@ -45,7 +46,9 @@ export function DataTable<TData, TValue>({
   data,
   dataLength = 10,
   pagination,
-}: DataTableProps<TData, TValue>) {
+  onSort,
+}: // setTableData,
+DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -72,7 +75,17 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
     },
+    manualSorting: onSort ? true : false,
   });
+
+  useEffect(() => {
+    if (onSort && sorting.length > 0) {
+      const fetchSortedData = async () => {
+        return await onSort(sorting);
+      };
+      fetchSortedData();
+    }
+  }, [sorting]);
 
   return (
     <div className="w-full">

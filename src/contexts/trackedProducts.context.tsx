@@ -50,6 +50,7 @@ export type TrackedProductsState = {
   handleSetKeyword: (keyword: string) => void;
   getTrackedProductsFromAnOrder: (order_id: number) => any;
   setTrackedProductsToAnalyze: (data: any) => void;
+  getFilteredTrackedProducts: (...args: any) => void;
 };
 
 export const TrackedProductContext = createContext<TrackedProductsState>({
@@ -75,6 +76,7 @@ export const TrackedProductContext = createContext<TrackedProductsState>({
   handleSetKeyword: () => {},
   getTrackedProductsFromAnOrder: () => {},
   setTrackedProductsToAnalyze: () => {},
+  getFilteredTrackedProducts: () => {},
 });
 
 export const TrackedProductsProvider: FC<PropsWithChildren> = ({
@@ -361,6 +363,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         handleSetKeyword,
         getTrackedProductsFromAnOrder,
         setTrackedProductsToAnalyze,
+        getFilteredTrackedProducts,
       }}
     >
       {children}
