@@ -230,7 +230,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       case "Rejected":
         statusId = 1;
         break;
-      case "Wating for supplier approval":
+      case "Waiting for supplier approval":
         statusId = 8;
         break;
       case "Good to go":
@@ -269,27 +269,23 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
           return updatedOrders;
         });
 
-        // Eliminarlo de shippedOrders si existe ahí
-        setShippedOrders((prevOrders) =>
-          prevOrders.filter((order) => order.id !== orderId)
-        );
+        // // Eliminarlo de shippedOrders si existe ahí
+        // setShippedOrders((prevOrders) =>
+        //   prevOrders.filter((order) => order.id !== orderId)
+        // );
       } else {
         // Si el estado no es 1, 2, 3 o 6, moverlo a shippedOrders
         setShippedOrders((prevOrders) => {
-          const updatedShippedOrders = prevOrders.filter(
-            (order) => order.id !== orderId
+          const updatedOrders = prevOrders.map((order) =>
+            order.id === orderId ? { ...order, status } : order
           );
-          const newOrder = ordersToCreate.find((order) => order.id === orderId);
-          if (newOrder) {
-            return [...updatedShippedOrders, { ...newOrder, status }];
-          }
-          return updatedShippedOrders;
+          return updatedOrders;
         });
 
         // Eliminarlo de ordersToCreate
-        setOrdersToCreate((prevOrders) =>
-          prevOrders.filter((order) => order.id !== orderId)
-        );
+        // setOrdersToCreate((prevOrders) =>
+        //   prevOrders.filter((order) => order.id !== orderId)
+        // );
       }
     } catch (error: any) {
       console.error(error);
