@@ -54,27 +54,17 @@ const AnalyzeActionsCell = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DialogTrigger asChild>
-              <DropdownMenuItem className="w-full">
-                View Details
-              </DropdownMenuItem>
-            </DialogTrigger>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => console.log("clicked")}>
-              Download PDF
-            </DropdownMenuItem>
             <DropdownMenuItem
+              className="text-red-500"
               onClick={() =>
                 handleDeleteProductFromOrder(row.purchase_order_product_id!!)
               }
             >
-              Delete Product
+              Remove Product
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
-        {/* Dialog for View Details */}
-        {/* <OrderSummary orderId={1} /> */}
       </Dialog>
     </div>
   );
