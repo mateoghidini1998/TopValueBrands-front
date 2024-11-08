@@ -143,12 +143,12 @@ export const getColumns = (
     },
   },
   {
-    accessorKey: "profit",
+    accessorKey: "purchase_order_product_profit",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Profit" />;
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("profit"));
+      const amount = parseFloat(row.getValue("purchase_order_product_profit"));
 
       const getBadgeVariant = (amount: number) => {
         if (amount >= 2) {
@@ -300,6 +300,9 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
 
             return {
               ...trackedProduct,
+              purchase_order_product_profit: matchingPurchaseOrderProduct
+                ? parseFloat(matchingPurchaseOrderProduct.profit)
+                : null,
               purchase_order_product_id: matchingPurchaseOrderProduct
                 ? matchingPurchaseOrderProduct.id
                 : null,
@@ -335,7 +338,9 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     }
   }, [editingOrder]);
 
-  console.log(editingOrder);
+  // console.log(editingOrder);
+
+  console.log(trackedProductsData);
 
   return (
     <>
