@@ -332,6 +332,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
             purchaseOrderProductId: product.id,
             quantityPurchased: product.quantity_purchased,
             unit_price: product.unit_price,
+            profit: product.profit,
           };
         })
       );

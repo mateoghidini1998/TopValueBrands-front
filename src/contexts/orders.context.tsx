@@ -65,6 +65,7 @@ export type PurchaseOrderProductUpdates = {
   purchaseOrderProductId: number;
   quantityPurchased: number;
   unit_price: number;
+  profit: number;
 };
 
 // Enumeración de estados de la orden de compra

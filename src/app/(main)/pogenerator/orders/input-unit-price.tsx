@@ -26,6 +26,8 @@ const InputUnitPrice = ({
           updatedProducts[index] = {
             ...updatedProducts[index],
             unit_price: newValue,
+            profit:
+              row.original.lowest_fba_price - row.original.fees - newValue,
           };
           return updatedProducts;
         }
@@ -47,6 +49,8 @@ const InputUnitPrice = ({
           updatedProducts[index] = {
             ...updatedProducts[index],
             unit_price: newValue,
+            purchase_order_product_profit:
+              row.original.lowest_fba_price - row.original.fees - newValue,
           };
           return updatedProducts;
         }

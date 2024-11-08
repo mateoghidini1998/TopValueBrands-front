@@ -91,6 +91,7 @@ interface IPurchaseOrderProduct {
   createdAt: string;
   updatedAt: string;
   product_name: string;
+  profit: number;
 }
 
 //* Get Purchase Order Summary => IPurchaseOrderSummary
