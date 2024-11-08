@@ -51,6 +51,10 @@ const InputUnitPrice = ({
             unit_price: newValue,
             purchase_order_product_profit:
               row.original.lowest_fba_price - row.original.fees - newValue,
+            roi:
+              ((row.original.lowest_fba_price - row.original.fees - newValue) /
+                newValue) *
+              100,
           };
           return updatedProducts;
         }

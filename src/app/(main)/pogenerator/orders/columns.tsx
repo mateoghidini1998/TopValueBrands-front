@@ -66,12 +66,12 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     },
   },
   {
-    accessorKey: "average_roi",
+    accessorKey: "avg_roi",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="AVG ROI" />;
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("average_roi")).toFixed(2);
+      const amount = parseFloat(row.getValue("avg_roi")).toFixed(2);
 
       const getBadgeVariant = (amount: number) => {
         if (amount >= 2) {

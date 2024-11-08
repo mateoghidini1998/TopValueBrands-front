@@ -199,7 +199,18 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
           order.status === "Wating for supplier approval"
         ) {
           if (!ordersToCreateList.some((o) => o.id === order.id)) {
-            ordersToCreateList.push(order);
+            ordersToCreateList.push({
+              ...order,
+              avg_roi:
+                order.purchaseOrderProducts.reduce(
+                  (acc: any, product: any) =>
+                    acc +
+                    (parseFloat(product.profit) /
+                      parseFloat(product.unit_price)) *
+                      100,
+                  0
+                ) / order.purchaseOrderProducts.length,
+            });
           }
         } else if (
           order.status === "Cancelled" ||

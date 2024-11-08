@@ -300,6 +300,10 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
 
             return {
               ...trackedProduct,
+              roi:
+                (parseFloat(matchingPurchaseOrderProduct.profit) /
+                  matchingPurchaseOrderProduct.unit_price) *
+                100,
               purchase_order_product_profit: matchingPurchaseOrderProduct
                 ? parseFloat(matchingPurchaseOrderProduct.profit)
                 : null,
@@ -341,7 +345,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
 
   // console.log(editingOrder);
 
-  console.log(trackedProductsData);
+  // console.log(trackedProductsData);
 
   return (
     <>
