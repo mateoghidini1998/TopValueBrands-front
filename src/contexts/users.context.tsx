@@ -82,7 +82,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
       setUsers([...users, response.user]);
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setRegisterError((error as Error).message);
       return error;
     }
@@ -94,7 +94,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
       setUsers(users.filter((user) => user.email !== email));
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return error;
     }
   };
@@ -105,7 +105,7 @@ export const UsersProvider: FC<PropsWithChildren> = ({
       setUsers(users.map((u) => (u.id === user.id ? user : u)));
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setRegisterError((error as Error).message);
       return error;
     }

@@ -25,6 +25,11 @@ export type Actions<T> = {
   edit?: ActionHandler<T>;
   download?: ActionHandler<T>;
   restart?: ActionHandler<T>;
+  cancel?: ActionHandler<T>;
+  inTransit?: ActionHandler<T>;
+  arrived?: ActionHandler<T>;
+  close?: ActionHandler<T>;
+  waitingForSupplierApproval?: ActionHandler<T>;
   none?: (order: any) => any;
 };
 
@@ -78,9 +83,14 @@ export const TableComponent = <T,>({
   const {
     editOrderAction,
     setEditOrderAction,
-    acceptOrder,
-    rejectOrder,
-    restartOrder,
+    // acceptOrder,
+    // rejectOrder,
+    // restartOrder,
+    // cancelOrder,
+    // inTransitOrder,
+    // arrivedOrder,
+    // closeOrder,
+    // waitingForSupplierApprovalOrder,
   } = useOrdersContext();
   const [showStatusDropdown, setShowStatusDropdown] = useState<string>("");
 
@@ -98,21 +108,46 @@ export const TableComponent = <T,>({
     updateTrackedProductInOrder(updatedRow);
   };
 
-  const handleApproveOrderStatus = (rowId: number) => {
-    acceptOrder(rowId);
-    setShowStatusDropdown("");
-    return;
-  };
+  // const handleApproveOrderStatus = (rowId: number) => {
+  //   acceptOrder(rowId);
+  //   setShowStatusDropdown("");
+  //   return;
+  // };
 
-  const handleRejectOrderStatus = (rowId: number) => {
-    rejectOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handleRejectOrderStatus = (rowId: number) => {
+  //   rejectOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
-  const handlePendingOrderStatus = (rowId: number) => {
-    restartOrder(rowId);
-    setShowStatusDropdown("");
-  };
+  // const handlePendingOrderStatus = (rowId: number) => {
+  //   restartOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
+
+  // const handleCancelOrderStatus = (rowId: number) => {
+  //   cancelOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
+
+  // const handleInTransitOrderStatus = (rowId: number) => {
+  //   inTransitOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
+
+  // const handleArrivedOrderStatus = (rowId: number) => {
+  //   arrivedOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
+
+  // const handleCloseOrderStatus = (rowId: number) => {
+  //   closeOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
+
+  // const handleWaitingForSupplierApprovalOrderStatus = (rowId: number) => {
+  //   waitingForSupplierApprovalOrder(rowId);
+  //   setShowStatusDropdown("");
+  // };
 
   return (
     <div className="scroll-container mt-8">
@@ -248,7 +283,7 @@ export const TableComponent = <T,>({
                           <div className=" py-2 pl-4 pr-2 flex flex-col absolute top-[50px] z-20 items-start justify-between gap-3 bg-white dark:bg-dark-2 rounded-md border-solid border-[1px] border-[#d0d7df] dark:border-dark-3">
                             <div
                               className="flex justify-between items-center w-[120px]"
-                              onClick={() => handleApproveOrderStatus(row.id)}
+                              // onClick={() => handleApproveOrderStatus(row.id)}
                             >
                               <OrderTags status={"GOOD TO GO"} />
                               {row.status.toUpperCase() === "GOOD TO GO" ? (
@@ -267,10 +302,10 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handlePendingOrderStatus(row.id)}
+                              // onClick={() => handlePendingOrderStatus(row.id)}
                             >
-                              <OrderTags status={"PENDING"} />
-                              {row.status.toUpperCase() === "PENDING" ? (
+                              <OrderTags status={"Pending"} />
+                              {row.status.toUpperCase() === "Pending" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -286,10 +321,10 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => handleRejectOrderStatus(row.id)}
+                              // onClick={() => handleRejectOrderStatus(row.id)}
                             >
-                              <OrderTags status={"REJECTED"} />
-                              {row.status.toUpperCase() === "REJECTED" ? (
+                              <OrderTags status={"Rejected"} />
+                              {row.status.toUpperCase() === "Rejected" ? (
                                 <span className="">
                                   <Image
                                     src={"/Done_round.svg"}
@@ -305,7 +340,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => console.log(row.id)}
+                              // onClick={() => handleInTransitOrderStatus(row.id)}
                             >
                               <OrderTags status={"IN TRANSIT"} />
                               {row.status.toUpperCase() === "IN TRANSIT" ? (
@@ -324,7 +359,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => console.log(row.id)}
+                              // onClick={() => handleArrivedOrderStatus(row.id)}
                             >
                               <OrderTags status={"ARRIVED"} />
                               {row.status.toUpperCase() === "ARRIVED" ? (
@@ -343,7 +378,11 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => console.log(row.id)}
+                              // onClick={() =>
+                              //   handleWaitingForSupplierApprovalOrderStatus(
+                              //     row.id
+                              //   )
+                              // }
                             >
                               <OrderTags
                                 status={"WAITING FOR SUPPLIER APPROVAL"}
@@ -365,7 +404,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => console.log(row.id)}
+                              // onClick={() => handleCloseOrderStatus(row.id)}
                             >
                               <OrderTags status={"CLOSED"} />
                               {row.status.toUpperCase() === "CLOSED" ? (
@@ -384,7 +423,7 @@ export const TableComponent = <T,>({
                             </div>
                             <div
                               className="w-[120px] flex justify-between items-center"
-                              onClick={() => console.log(row.id)}
+                              // onClick={() => handleCancelOrderStatus(row.id)}
                             >
                               <OrderTags status={"CANCELLED"} />
                               {row.status.toUpperCase() === "CANCELLED" ? (

@@ -1,5 +1,7 @@
 import { getAuthToken } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
+import { PurchaseOrderProductUpdates } from "@/contexts/orders.context";
+import { headers } from "next/headers";
 
 export class PurchaseOrdersService {
   static async getTrackedProducts(supplier_id?: string) {
@@ -19,42 +21,71 @@ export class PurchaseOrdersService {
     }
   }
 
+  static async getPurchaseOrderSummary(orderId: number) {
+    try {
+      const token = getAuthToken();
+      const response = await HttpAPI.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/summary/${orderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching data");
+    }
+  }
+
+  static async updatePOProducts(
+    orderId: number,
+    purchaseOrderProductsUpdates: PurchaseOrderProductUpdates[]
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/${orderId}/products`,
+        { purchaseOrderProductsUpdates } // Enviar el estado en el cuerpo de la solicitud
+        // { headers: { Authorization: `Bearer ${token}` }} // Descomentar si es necesario el token
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error updating order products");
+    }
+  }
+
+  // delete purchase order products
+  static async deletePOProductsFromAnOrder(purchaseOrderProductId: number) {
+    try {
+      const response = await HttpAPI.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/purchaseorderproduct/${purchaseOrderProductId}`
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error deleting order products");
+    }
+  }
+
+  static async updatePONumber(orderId: number, order_number: string) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/orderNumber/${orderId}`,
+        { order_number } // Enviar el estado en el cuerpo de la solicitud
+        // { headers: { Authorization: `Bearer ${token}` }} // Descomentar si es necesario el token
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error updating order number");
+    }
+  }
+
   // Change the status of the order
-  static async rejectOrderStatus(orderId: number) {
+  static async updateOrderStatus(orderId: number, status: number) {
     try {
-      // const token = getAuthToken();
       const response = await HttpAPI.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/reject/${orderId}`
-        // { status }
-        // { headers: { Authorization: `Bearer ${token}` }}
-      );
-      return response;
-    } catch (error) {
-      throw new Error("Error updating order status");
-    }
-  }
-
-  static async approveOrderStatus(orderId: number) {
-    try {
-      // const token = getAuthToken();
-      const response = await HttpAPI.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/approve/${orderId}`
-        // { status }
-        // { headers: { Authorization: `Bearer ${token}` }}
-      );
-      return response;
-    } catch (error) {
-      throw new Error("Error updating order status");
-    }
-  }
-
-  static async restartOrderStatus(orderId: number) {
-    try {
-      // const token = getAuthToken();
-      const response = await HttpAPI.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/restart/${orderId}`
-        // { status }
-        // { headers: { Authorization: `Bearer ${token}` }}
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/${orderId}/status`,
+        { status } // Enviar el estado en el cuerpo de la solicitud
+        // { headers: { Authorization: `Bearer ${token}` }} // Descomentar si es necesario el token
       );
       return response;
     } catch (error) {
@@ -114,14 +145,86 @@ export class PurchaseOrdersService {
   }
 
   static async deleteOrder(orderId: number) {
-    const response = await HttpAPI.delete(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/delete/${orderId}`
-    );
-
-    console.log(response);
-
-    if (!response.success) {
+    try {
+      const response = await HttpAPI.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/delete/${orderId}`
+      );
+      return response.success;
+    } catch (error) {
       throw new Error("Error deleting order");
+    }
+  }
+
+  static async addQuantityReceived(
+    purchaseOrderProductId: number,
+    quantityReceived: number
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/received/${purchaseOrderProductId}`,
+        { quantityReceived }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding quantity received");
+    }
+  }
+
+  static async addReasonToPOProduct(
+    purchaseOrderProductId: number,
+    reason_id: number
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/reason/${purchaseOrderProductId}`,
+        { reason_id }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding reason to PO product");
+    }
+  }
+
+  static async addExpirteDateToPOProduct(
+    purchaseOrderProductId: number,
+    expire_date: string
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/expiredate/${purchaseOrderProductId}`,
+        { expire_date }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding expire date to PO product");
+    }
+  }
+
+  static async createPallet(pallet: any): Promise<any> {
+    // const token = getAuthToken();
+    try {
+      const response = await HttpAPI.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets`,
+        { ...pallet }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error creating pallet");
+    }
+  }
+
+  static async addNotesToPOProduct(
+    purchaseOrderProductId: number,
+    notes: string
+  ) {
+    try {
+      const response = await HttpAPI.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/notes/${purchaseOrderProductId}`,
+        { notes }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding notes to PO product");
     }
   }
 }

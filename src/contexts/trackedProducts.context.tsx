@@ -11,18 +11,14 @@ import {
   useState,
 } from "react";
 import { useOrdersContext } from "./orders.context";
-import { data } from "../app/data/index";
-
-interface TrackedProductInOrder {
-  id: string;
-  supplier_id: string;
-}
+import { toast } from "sonner";
 
 export type ProductInOrder = {
   id: string;
   product_id: string;
   supplier_id: string;
   product_name: string;
+  product_image: string;
   ASIN: string;
   supplier_name: string;
   quantity: number;
@@ -54,6 +50,7 @@ export type TrackedProductsState = {
   handleSetKeyword: (keyword: string) => void;
   getTrackedProductsFromAnOrder: (order_id: number) => any;
   setTrackedProductsToAnalyze: (data: any) => void;
+  getFilteredTrackedProducts: (...args: any) => void;
 };
 
 export const TrackedProductContext = createContext<TrackedProductsState>({
@@ -79,6 +76,7 @@ export const TrackedProductContext = createContext<TrackedProductsState>({
   handleSetKeyword: () => {},
   getTrackedProductsFromAnOrder: () => {},
   setTrackedProductsToAnalyze: () => {},
+  getFilteredTrackedProducts: () => {},
 });
 
 export const TrackedProductsProvider: FC<PropsWithChildren> = ({
@@ -92,7 +90,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [orderBy, setOrderBy] = useState("");
   const [orderWay, setOrderWay] = useState<any>("");
 
-  const limit = 50;
+  const LIMIT = 50;
 
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
@@ -112,11 +110,11 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       supplierId,
       keyword,
       currentPage,
-      50,
+      LIMIT,
       orderBy,
       orderWay
     );
-  }, [supplierId, keyword, currentPage, limit, orderBy, orderWay]);
+  }, [supplierId, keyword, currentPage, LIMIT, orderBy, orderWay]);
 
   const handleSetKeyword = (keyword: string) => {
     if (searchTimeout) {
@@ -131,6 +129,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     );
   };
 
+  //! No lo quiero, pero lo dejo por si acaso
   const getTrackedProductsFromAnOrder = useCallback(
     async (order_id: number) => {
       try {
@@ -138,7 +137,6 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
           await TrackedProductsService.getTrackedProductsFromAnOrder(order_id);
 
         if (response.success) {
-          console.log(response);
           setTrackedProductsToAnalyze(response.data);
           return response.data;
         }
@@ -191,7 +189,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       supplierId,
       keyword,
       currentPage,
-      limit,
+      LIMIT,
       order,
       orderWay
     );
@@ -272,7 +270,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   };
 
   const addTrackedProductToOrder = (data: any) => {
-    console.log(data);
+    // console.log(data);
 
     if (data.supplier_id) {
       setSupplierId(data.supplier_id);
@@ -289,6 +287,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       const supplier_id = trackedProductsAddedToOrder[0]?.supplier_id;
       if (!hasTheSameSupplierId || supplier_id !== data.supplier_id) {
         // alert("Products must be from the same supplier");
+        toast.error("Products must be from the same supplier");
         return "Products must be from the same supplier";
       }
     }
@@ -296,12 +295,14 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     // Check that the product is not already in the order
     if (trackedProductsAddedToOrder.some((item: any) => item.id === data.id)) {
       // alert("Product already added to order");
+      toast.error("Product already added to order");
       return "Product already added to order";
     }
 
     // Check that the product has a supplier
     if (!data.supplier_id) {
       // alert("Please assign a supplier to the product before");
+      toast.error("Please assign a supplier to the product before");
       return "Please assign a supplier to the product before";
     }
 
@@ -311,6 +312,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       product_id: data.product_id,
       supplier_id: data.supplier_id,
       product_name: data.product_name,
+      product_image: data.product_image,
       ASIN: data.ASIN,
       supplier_name: data.supplier_name,
       quantity: 0,
@@ -324,6 +326,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       newProductInOrder,
     ]);
 
+    toast.success("Product added to order!");
+
     return newProductInOrder;
   };
 
@@ -331,6 +335,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     setTrackedProductsAddedToOrder((prevState) =>
       prevState.filter((item: any) => item.id !== data.id)
     );
+    toast.success("Product removed from order!");
   };
 
   return (
@@ -358,6 +363,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         handleSetKeyword,
         getTrackedProductsFromAnOrder,
         setTrackedProductsToAnalyze,
+        getFilteredTrackedProducts,
       }}
     >
       {children}

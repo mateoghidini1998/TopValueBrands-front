@@ -26,9 +26,7 @@ const EditOrderOptionActions: React.FC<EditOrderOptionActionsProps> = ({
   const [editColor, setEditColor] = useState(
     theme === "dark" ? "#ADB3CC" : "#393E4F"
   );
-  const [deleteColor, setDeleteColor] = useState(
-    theme === "dark" ? "#ADB3CC" : "#FF4C3F"
-  );
+  const [deleteColor, setDeleteColor] = useState("#FF4C3F");
 
   const ref = useRef(null);
 
@@ -38,7 +36,6 @@ const EditOrderOptionActions: React.FC<EditOrderOptionActionsProps> = ({
 
   useEffect(() => {
     setEditColor(theme === "dark" ? "#ADB3CC" : "#393E4F");
-    setDeleteColor(theme === "dark" ? "#ADB3CC" : "#FF4C3F");
   }, [theme]);
 
   return (
@@ -58,7 +55,7 @@ const EditOrderOptionActions: React.FC<EditOrderOptionActionsProps> = ({
           role="menuitem"
         >
           <EditButton color={editColor} />
-          Edit
+          View Details
         </button>
         <button
           onClick={() => actionHandlers.download!(row)}
@@ -66,15 +63,15 @@ const EditOrderOptionActions: React.FC<EditOrderOptionActionsProps> = ({
           role="menuitem"
         >
           <IoMdDownload />
-          Download
+          Download PDF
         </button>
         <button
           onClick={() => actionHandlers.remove!(row)}
-          className="w-full flex flex-start px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2"
+          className="w-full flex flex-start px-4 py-2 text-sm dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2 text-[#FF4C3F]"
           role="menuitem"
         >
-          <DeleteButton color={deleteColor} />
-          Delete
+          <DeleteButton color={"#FF4C3F"} />
+          Delete Order
         </button>
       </div>
     </div>

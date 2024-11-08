@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { InventoryService } from "@/services/inventory/inventory";
-import { ProductType } from "@/types/product.types";
+import { IProductType } from "@/types/product.types";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import ConfirmAlert from "../alerts/ConfirmAlert";
@@ -19,7 +20,7 @@ import { SupplierType } from "@/types/supplier.types";
 import EmptyImage from "../svgs/EmptyImage";
 
 type TableRowProps = {
-  products: ProductType[];
+  products: IProductType[];
 };
 
 export interface EditProductType {
@@ -51,7 +52,7 @@ const TableRow = ({ products }: TableRowProps) => {
   const [currentProduct, setCurrentProduct] = useState<{
     id: string;
   }>({ id: "" });
-  const [editData, setEditData] = useState<ProductType>({
+  const [editData, setEditData] = useState<IProductType>({
     id: "",
     product_name: "",
     ASIN: "",
@@ -75,9 +76,6 @@ const TableRow = ({ products }: TableRowProps) => {
     description: "",
     visible: false,
   });
-
-  console.log(products[0]);
-
   // Suppliers
   const { suppliers } = useSupplierContext();
 
@@ -167,7 +165,7 @@ const TableRow = ({ products }: TableRowProps) => {
     return () => clearTimeout(timer);
   }, [savedData, setCustomAlertProperties]);
 
-  const handleToggleActions = (id: string, product: ProductType) => {
+  const handleToggleActions = (id: string, product: IProductType) => {
     if (isActionsOpen === id) {
       setIsActionsOpen(null);
     } else {
@@ -187,7 +185,7 @@ const TableRow = ({ products }: TableRowProps) => {
       setFilterText("");
       return response;
     } catch (error) {
-      console.error("Error al actualizar el producto: ", error);
+      // console.error("Error al actualizar el producto: ", error);
     }
     setIsActionsOpen(null);
     setEditingRow({});
@@ -221,7 +219,7 @@ const TableRow = ({ products }: TableRowProps) => {
       handleDeleteProduct(currentProduct?.id || "");
       return response;
     } catch (error) {
-      console.error("Error al desactivar el producto: ", error);
+      // console.error("Error al desactivar el producto: ", error);
     }
   };
 

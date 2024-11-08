@@ -56,7 +56,7 @@ const Navbar = () => {
   return (
     <nav
       className={`
-      bg-white dark:bg-dark dark:text-white z-[1000]
+      bg-white dark:bg-dark dark:text-white z-50
       ${
         sidebarOpen
           ? "w-[16rem] duration-[0.6s] ease-in-out "

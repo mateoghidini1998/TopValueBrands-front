@@ -3,12 +3,14 @@ import Navbar from "@/components/layout/Navbar";
 import PageTitle from "@/components/layout/PageTitlte";
 import UserMenu from "@/components/layout/UserMenu";
 import { ProductProvider } from "@/contexts/products.context";
-import { SupplierProvider } from "@/contexts/suppliers.context";
+import { StorageProvider } from "@/contexts/storage.context";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import IndexPageContainer from "./page.container";
 import AddProductBtn from "@/components/inventory/AddProductBtn";
 import FilterBySupplier from "@/components/inventory/FilterBySupplier";
+import ScanButton from "@/components/utils/scan-button";
+import { SupplierProvider } from "../../contexts/suppliers.context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,18 +31,21 @@ export default function RootLayout({
           <Navbar />
           <div className="main_layout flex justify-end ">
             <ProductProvider>
-              <SupplierProvider>
-                <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark transition-colors duration-[0.6s] ease-in-out h-[115px]">
-                  <PageTitle />
-                  <div className="flex items-center gap-4">
-                    <AddProductBtn />
-                    <SearchInput />
-                    <FilterBySupplier />
-                    <UserMenu />
+              <StorageProvider>
+                <SupplierProvider>
+                  <div className="table_header py-10 px-[46px] flex justify-between items-center fixed top-0 z-40 bg-white text-black dark:bg-dark transition-colors duration-[0.6s] ease-in-out h-[115px]">
+                    <PageTitle />
+                    <div className="flex items-center gap-4">
+                      <AddProductBtn />
+                      <SearchInput />
+                      <FilterBySupplier />
+                      <UserMenu />
+                    </div>
                   </div>
-                </div>
-                {children}
-              </SupplierProvider>
+                  {children}
+                  <ScanButton />
+                </SupplierProvider>
+              </StorageProvider>
             </ProductProvider>
           </div>
         </IndexPageContainer>
