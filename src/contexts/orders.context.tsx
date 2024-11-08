@@ -283,9 +283,11 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         });
 
         // Eliminarlo de ordersToCreate
-        // setOrdersToCreate((prevOrders) =>
-        //   prevOrders.filter((order) => order.id !== orderId)
-        // );
+        if (statusId === 5) {
+          setOrdersToCreate((prevOrders) =>
+            prevOrders.filter((order) => order.id !== orderId)
+          );
+        }
       }
     } catch (error: any) {
       console.error(error);

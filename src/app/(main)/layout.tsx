@@ -42,9 +42,9 @@ export default function RootLayout({
                       <UserMenu />
                     </div>
                   </div>
+                  {children}
+                  <ScanButton />
                 </SupplierProvider>
-                {children}
-                <ScanButton />
               </StorageProvider>
             </ProductProvider>
           </div>
