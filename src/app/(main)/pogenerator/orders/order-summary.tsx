@@ -50,11 +50,19 @@ export const getColumns = (
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Velocity" />;
     },
+    cell: ({ row }: any) => {
+      return (
+        <span>{row.getValue("product_velocity").toFixed(3) || "N/A"}</span>
+      );
+    },
   },
   {
     accessorKey: "units_sold",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Units Sold" />;
+    },
+    cell: ({ row }: any) => {
+      return <span>{row.getValue("units_sold").toLocaleString() || 0}</span>;
     },
   },
   {
@@ -62,11 +70,25 @@ export const getColumns = (
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="30 Day Rank" />;
     },
+    cell: ({ row }: any) => {
+      return (
+        <span>
+          {row.getValue("thirty_days_rank").toLocaleString() || "N/A"}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "ninety_days_rank",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="90 Day Rank" />;
+    },
+    cell: ({ row }: any) => {
+      return (
+        <span>
+          {row.getValue("ninety_days_rank").toLocaleString() || "N/A"}
+        </span>
+      );
     },
   },
   {
@@ -75,7 +97,7 @@ export const getColumns = (
   },
   {
     accessorKey: "supplier_item_number",
-    header: "Item N",
+    header: "Item Number",
   },
   {
     accessorKey: "product_cost",
@@ -86,6 +108,92 @@ export const getColumns = (
       return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
     },
   },
+  {
+    accessorKey: "lowest_fba_price",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="FBA Price" />;
+    },
+    cell({ row }) {
+      return <span>{`$ ${row.getValue("lowest_fba_price") || "N/A"}`}</span>;
+    },
+  },
+  {
+    accessorKey: "fees",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Fees" />;
+    },
+    cell({ row }) {
+      return <span>{`$ ${row.getValue("fees") || "N/A"}`}</span>;
+    },
+  },
+  {
+    accessorKey: "purchase_order_product_profit",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Profit" />;
+    },
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("purchase_order_product_profit"));
+
+      const getBadgeVariant = (amount: number) => {
+        if (amount >= 2) {
+          return "success";
+        }
+
+        if (amount <= 0) {
+          return "danger";
+        }
+
+        return "unknown";
+      };
+
+      return (
+        <Badge variant={getBadgeVariant(amount)}>
+          {isNaN(amount) ? "N/A" : `$ ${amount.toFixed(2)}`}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "roi",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="ROI" />;
+    },
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("roi"));
+
+      const getBadgeVariant = (amount: number) => {
+        if (amount >= 2) {
+          return "success";
+        }
+
+        if (amount <= 0) {
+          return "danger";
+        }
+
+        return "unknown";
+      };
+
+      return (
+        <Badge variant={getBadgeVariant(amount)}>
+          {isNaN(amount) ? "N/A" : `${amount.toFixed(2)}%`}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Last Updated" />;
+    },
+    cell: ({ row }) => {
+      return <DateCell value={row.original.updatedAt} />;
+    },
+  },
+  {
+    accessorKey: "seller_sku",
+    header: "Seller SKU",
+  },
+
   {
     accessorKey: "unit_price",
     header: ({ column }) => {
@@ -125,95 +233,19 @@ export const getColumns = (
       return <DataTableColumnHeader column={column} title="Total Amount" />;
     },
     cell: ({ row }) => {
+      const unitPrice = parseFloat(row.getValue("unit_price"));
+      const quantity = parseFloat(row.getValue("quantity_purchased"));
+      const total = unitPrice * quantity;
+
       return (
         <span>{`$ ${
-          parseFloat(row.getValue("unit_price")) *
-            parseFloat(row.getValue("quantity_purchased")) || "N/A"
+          total.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }) || "N/A"
         }`}</span>
       );
     },
-  },
-  {
-    accessorKey: "lowest_fba_price",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="FBA Price" />;
-    },
-    cell({ row }) {
-      return <span>{`$ ${row.getValue("lowest_fba_price") || "N/A"}`}</span>;
-    },
-  },
-  {
-    accessorKey: "purchase_order_product_profit",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Profit" />;
-    },
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("purchase_order_product_profit"));
-
-      const getBadgeVariant = (amount: number) => {
-        if (amount >= 2) {
-          return "success";
-        }
-
-        if (amount <= 0) {
-          return "danger";
-        }
-
-        return "unknown";
-      };
-
-      return (
-        <Badge variant={getBadgeVariant(amount)}>
-          {isNaN(amount) ? "N/A" : `$ ${amount.toFixed(2)}`}
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "fees",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Fees" />;
-    },
-  },
-  {
-    accessorKey: "roi",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="ROI" />;
-    },
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("roi"));
-
-      const getBadgeVariant = (amount: number) => {
-        if (amount >= 2) {
-          return "success";
-        }
-
-        if (amount <= 0) {
-          return "danger";
-        }
-
-        return "unknown";
-      };
-
-      return (
-        <Badge variant={getBadgeVariant(amount)}>
-          {isNaN(amount) ? "N/A" : amount.toFixed(2)}
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "updatedAt",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Last Updated" />;
-    },
-    cell: ({ row }) => {
-      return <DateCell value={row.original.updatedAt} />;
-    },
-  },
-  {
-    accessorKey: "seller_sku",
-    header: "Seller SKU",
   },
   {
     id: "actions",
