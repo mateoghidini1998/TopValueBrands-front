@@ -29,11 +29,19 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Velocity" />;
     },
+    cell: ({ row }: any) => {
+      return (
+        <span>{row.getValue("product_velocity").toFixed(3) || "N/A"}</span>
+      );
+    },
   },
   {
     accessorKey: "units_sold",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Units Sold" />;
+    },
+    cell: ({ row }: any) => {
+      return <span>{row.getValue("units_sold").toLocaleString() || 0}</span>;
     },
   },
   {
@@ -41,11 +49,25 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="30 Day Rank" />;
     },
+    cell: ({ row }: any) => {
+      return (
+        <span>
+          {row.getValue("thirty_days_rank").toLocaleString() || "N/A"}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "ninety_days_rank",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="90 Day Rank" />;
+    },
+    cell: ({ row }: any) => {
+      return (
+        <span>
+          {row.getValue("ninety_days_rank").toLocaleString() || "N/A"}
+        </span>
+      );
     },
   },
   {
@@ -75,14 +97,43 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "FBA_available_inventory",
     header: "FBA Inventory",
+    cell: ({ row }: any) => {
+      return (
+        <span>
+          {row.getValue("FBA_available_inventory").toLocaleString() || "N/A"}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "reserved_quantity",
     header: "Reserved Quantity",
+    cell: ({ row }: any) => {
+      return (
+        <span>
+          {row.getValue("reserved_quantity").toLocaleString() || "N/A"}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "Inbound_to_FBA",
     header: "Inbound to FBA",
+    cell: ({ row }: any) => {
+      return (
+        <span>{row.getValue("Inbound_to_FBA").toLocaleString() || "N/A"}</span>
+      );
+    },
+  },
+
+  {
+    accessorKey: "fees",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Fees" />;
+    },
+    cell({ row }) {
+      return <span>{`$ ${row.getValue("fees") || "N/A"}`}</span>;
+    },
   },
 
   {
@@ -94,15 +145,15 @@ export const columns: ColumnDef<any>[] = [
       const amount = parseFloat(row.getValue("profit"));
 
       const getBadgeVariant = (amount: number) => {
-        if (amount >= 2) {
+        if (amount > 2) {
           return "success";
         }
 
-        if (amount <= 0) {
+        if (amount < 2) {
           return "danger";
         }
 
-        return "unknown";
+        return "warning";
       };
 
       return (
@@ -110,12 +161,6 @@ export const columns: ColumnDef<any>[] = [
           {isNaN(amount) ? "N/A" : `$ ${amount.toFixed(2)}`}
         </Badge>
       );
-    },
-  },
-  {
-    accessorKey: "fees",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Fees" />;
     },
   },
   {
@@ -127,20 +172,20 @@ export const columns: ColumnDef<any>[] = [
       const amount = parseFloat(row.getValue("roi"));
 
       const getBadgeVariant = (amount: number) => {
-        if (amount >= 2) {
+        if (amount > 2) {
           return "success";
         }
 
-        if (amount <= 0) {
+        if (amount < 2) {
           return "danger";
         }
 
-        return "unknown";
+        return "warning";
       };
 
       return (
         <Badge variant={getBadgeVariant(amount)}>
-          {isNaN(amount) ? "N/A" : amount.toFixed(2)}
+          {isNaN(amount) ? "N/A" : `${amount.toFixed(2)}%`}
         </Badge>
       );
     },
