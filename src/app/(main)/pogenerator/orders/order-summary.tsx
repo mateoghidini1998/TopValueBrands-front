@@ -135,15 +135,15 @@ export const getColumns = (
       const amount = parseFloat(row.getValue("purchase_order_product_profit"));
 
       const getBadgeVariant = (amount: number) => {
-        if (amount >= 2) {
+        if (amount > 2) {
           return "success";
         }
 
-        if (amount <= 0) {
+        if (amount < 2) {
           return "danger";
         }
 
-        return "unknown";
+        return "warning";
       };
 
       return (
@@ -162,15 +162,15 @@ export const getColumns = (
       const amount = parseFloat(row.getValue("roi"));
 
       const getBadgeVariant = (amount: number) => {
-        if (amount >= 2) {
+        if (amount > 2) {
           return "success";
         }
 
-        if (amount <= 0) {
+        if (amount < 2) {
           return "danger";
         }
 
-        return "unknown";
+        return "warning";
       };
 
       return (
