@@ -20,6 +20,8 @@ export default function Page() {
     getFilteredTrackedProducts,
     setOrderBy,
     setOrderWay,
+    supplierId,
+    keyword,
   } = useTrackedProductContext();
 
   const paginationMethods = {
@@ -34,8 +36,8 @@ export default function Page() {
     setOrderBy(sorting[0].id);
     setOrderWay(sorting[0].desc ? "desc" : "asc");
     getFilteredTrackedProducts(
-      "",
-      "",
+      supplierId,
+      keyword,
       1,
       50,
       sorting[0].id,
