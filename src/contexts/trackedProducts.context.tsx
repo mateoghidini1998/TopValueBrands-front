@@ -51,6 +51,8 @@ export type TrackedProductsState = {
   getTrackedProductsFromAnOrder: (order_id: number) => any;
   setTrackedProductsToAnalyze: (data: any) => void;
   getFilteredTrackedProducts: (...args: any) => void;
+  setOrderBy: (order: string) => void;
+  setOrderWay: (orderWay: string) => void;
 };
 
 export const TrackedProductContext = createContext<TrackedProductsState>({
@@ -77,6 +79,8 @@ export const TrackedProductContext = createContext<TrackedProductsState>({
   getTrackedProductsFromAnOrder: () => {},
   setTrackedProductsToAnalyze: () => {},
   getFilteredTrackedProducts: () => {},
+  setOrderBy: () => {},
+  setOrderWay: () => {},
 });
 
 export const TrackedProductsProvider: FC<PropsWithChildren> = ({
@@ -364,6 +368,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
         getTrackedProductsFromAnOrder,
         setTrackedProductsToAnalyze,
         getFilteredTrackedProducts,
+        setOrderBy,
+        setOrderWay,
       }}
     >
       {children}

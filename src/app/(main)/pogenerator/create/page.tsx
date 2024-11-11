@@ -18,6 +18,8 @@ export default function Page() {
     handlePreviousPage,
     setCurrentPage,
     getFilteredTrackedProducts,
+    setOrderBy,
+    setOrderWay,
   } = useTrackedProductContext();
 
   const paginationMethods = {
@@ -29,7 +31,9 @@ export default function Page() {
   };
   const handleSort = async (sorting: SortingState) => {
     console.log(sorting);
-    return getFilteredTrackedProducts(
+    setOrderBy(sorting[0].id);
+    setOrderWay(sorting[0].desc ? "desc" : "asc");
+    getFilteredTrackedProducts(
       "",
       "",
       1,
