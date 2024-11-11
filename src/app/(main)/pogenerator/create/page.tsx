@@ -45,6 +45,8 @@ export default function Page() {
     );
   };
 
+  console.log(trackedProductsAddedToOrder);
+
   return (
     <IndexPageContainer>
       <div className="w-full overflow-x-auto custom_scroll">

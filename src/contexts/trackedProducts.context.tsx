@@ -25,6 +25,8 @@ export type ProductInOrder = {
   unit_price: number;
   total_amount: number;
   units_sold: number;
+  fees: number;
+  lowest_fba_price: number;
 };
 
 export type TrackedProductsState = {
@@ -222,6 +224,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       product_id: product.product_id,
       unit_price: product.unit_price,
       quantity: product.quantity,
+      fees: product.fees,
+      lowest_fba_price: product.lowest_fba_price,
     }));
     // Generar un ID de pedido unico con el timestamp de 6 dígitos
     const PO_ID = new Date().getTime().toString().slice(-6);
@@ -323,6 +327,8 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       unit_price: data.product_cost,
       total_amount: 0,
       units_sold: data.units_sold,
+      fees: data.fees,
+      lowest_fba_price: data.lowest_fba_price,
     };
 
     setTrackedProductsAddedToOrder((prevState) => [
