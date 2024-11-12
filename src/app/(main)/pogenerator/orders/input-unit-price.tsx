@@ -2,12 +2,12 @@ import { Input } from "@/components/ui/input";
 import { useState, useCallback } from "react";
 import debounce from "lodash.debounce";
 
-const InputUnitPrice = ({
+const InputProductCost = ({
   row,
   setEditingOrder,
   setTrackedProductsData,
 }: any) => {
-  const [value, setValue] = useState(row.original?.unit_price);
+  const [value, setValue] = useState(row.original?.product_cost);
 
   // Debounced function to update the state
   const debouncedUpdate = useCallback(
@@ -25,7 +25,7 @@ const InputUnitPrice = ({
           const updatedProducts = [...prev];
           updatedProducts[index] = {
             ...updatedProducts[index],
-            unit_price: newValue,
+            product_cost: newValue,
             profit:
               row.original.lowest_fba_price - row.original.fees - newValue,
           };
@@ -48,7 +48,7 @@ const InputUnitPrice = ({
           const updatedProducts = [...prev];
           updatedProducts[index] = {
             ...updatedProducts[index],
-            unit_price: newValue,
+            product_cost: newValue,
             purchase_order_product_profit:
               row.original.lowest_fba_price - row.original.fees - newValue,
             roi:
@@ -74,7 +74,7 @@ const InputUnitPrice = ({
     setValue(newValue);
 
     // Update row values immediately for instant feedback
-    row.original.unit_price = newValue;
+    row.original.product_cost = newValue;
     row.original.total_amount = newValue * row.original.quantity_purchased;
 
     // Call debounced update function
@@ -92,4 +92,4 @@ const InputUnitPrice = ({
   );
 };
 
-export default InputUnitPrice;
+export default InputProductCost;

@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import AddToOrderCell from "./add-to-order-cell";
 import QuantityCell from "./quantity-cell";
 import RemoveFromOrderCell from "./remove-from-order-cell";
-import UnitPriceCell from "./unit-price-cell";
+import ProductCostCell from "./product-cost-cell";
 import DateCell from "@/components/ui/data-table-date-cell";
 
 export const columns: ColumnDef<any>[] = [
@@ -235,10 +235,10 @@ export const POColumns: ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: "unit_price",
+    accessorKey: "product_cost",
     header: "Product Cost",
     cell: ({ row }) => {
-      return <UnitPriceCell row={row.original} />;
+      return <ProductCostCell row={row.original} />;
     },
   },
   {

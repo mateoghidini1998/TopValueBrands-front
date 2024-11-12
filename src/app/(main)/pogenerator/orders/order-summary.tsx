@@ -30,7 +30,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import DateCell from "@/components/ui/data-table-date-cell";
 import { ColumnDef } from "@tanstack/react-table";
 import AnalyzeActionsCell from "./analyze-actions-cell";
-import InputUnitPrice from "./input-unit-price";
+import InputProductCost from "./input-unit-price";
 import InputQuantity from "./input-quantity";
 
 export const getColumns = (
@@ -99,13 +99,28 @@ export const getColumns = (
     accessorKey: "supplier_item_number",
     header: "Item Number",
   },
+  // {
+  //   accessorKey: "product_cost",
+  //   header: ({ column }) => {
+  //     return <DataTableColumnHeader column={column} title="Product Cost" />;
+  //   },
+  //   cell: ({ row }) => {
+  //     return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
+  //   },
+  // },
   {
     accessorKey: "product_cost",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Product Cost" />;
     },
     cell: ({ row }) => {
-      return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
+      return (
+        <InputProductCost
+          row={row}
+          setTrackedProductsData={setTrackedProductsData}
+          setEditingOrder={setEditingOrder}
+        />
+      );
     },
   },
   {
@@ -194,22 +209,22 @@ export const getColumns = (
     header: "Seller SKU",
   },
 
-  {
-    accessorKey: "unit_price",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Unit Price" />;
-    },
-    cell: ({ row }) => {
-      // return <span>{`$ ${row.getValue("unit_price") || "N/A"}`}</span>;
-      return (
-        <InputUnitPrice
-          row={row}
-          setTrackedProductsData={setTrackedProductsData}
-          setEditingOrder={setEditingOrder}
-        />
-      );
-    },
-  },
+  // {
+  //   accessorKey: "unit_price",
+  //   header: ({ column }) => {
+  //     return <DataTableColumnHeader column={column} title="Unit Price" />;
+  //   },
+  //   cell: ({ row }) => {
+  //     // return <span>{`$ ${row.getValue("unit_price") || "N/A"}`}</span>;
+  //     return (
+  //       <InputUnitPrice
+  //         row={row}
+  //         setTrackedProductsData={setTrackedProductsData}
+  //         setEditingOrder={setEditingOrder}
+  //       />
+  //     );
+  //   },
+  // },
 
   {
     accessorKey: "quantity_purchased",
@@ -233,9 +248,9 @@ export const getColumns = (
       return <DataTableColumnHeader column={column} title="Total Amount" />;
     },
     cell: ({ row }) => {
-      const unitPrice = parseFloat(row.getValue("unit_price"));
+      const productCost = parseFloat(row.getValue("product_cost"));
       const quantity = parseFloat(row.getValue("quantity_purchased"));
-      const total = unitPrice * quantity;
+      const total = productCost * quantity;
 
       return (
         <span>{`$ ${
@@ -320,7 +335,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
               ...trackedProduct,
               roi:
                 (parseFloat(matchingPurchaseOrderProduct.profit) /
-                  matchingPurchaseOrderProduct.unit_price) *
+                  matchingPurchaseOrderProduct.product_cost) *
                 100,
               purchase_order_product_profit: matchingPurchaseOrderProduct
                 ? parseFloat(matchingPurchaseOrderProduct.profit)
@@ -328,8 +343,8 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
               purchase_order_product_id: matchingPurchaseOrderProduct
                 ? matchingPurchaseOrderProduct.id
                 : null,
-              unit_price: matchingPurchaseOrderProduct
-                ? matchingPurchaseOrderProduct.unit_price
+              product_cost: matchingPurchaseOrderProduct
+                ? matchingPurchaseOrderProduct.product_cost
                 : null,
               total_amount: matchingPurchaseOrderProduct
                 ? matchingPurchaseOrderProduct.total_amount
@@ -353,7 +368,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
           return {
             purchaseOrderProductId: product.id,
             quantityPurchased: product.quantity_purchased,
-            unit_price: product.unit_price,
+            product_cost: product.product_cost,
             profit: product.profit,
           };
         })

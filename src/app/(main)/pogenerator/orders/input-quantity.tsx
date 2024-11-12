@@ -69,7 +69,7 @@ const InputQuantity = ({
 
     // Update row values immediately for instant feedback
     row.original.quantity_purchased = newValue;
-    row.original.total_amount = newValue * row.original.unit_price;
+    row.original.total_amount = newValue * row.original.product_cost;
 
     // Call debounced update function
     debouncedUpdate(newValue);

@@ -5,7 +5,7 @@ import {
 } from "@/contexts/trackedProducts.context";
 import { ChangeEvent } from "react";
 
-export default function UnitPriceCell({ row }: any) {
+export default function ProductCostCell({ row }: any) {
   const { updateTrackedProductInOrder } = useTrackedProductContext();
 
   const handleInputChange = (
@@ -18,7 +18,7 @@ export default function UnitPriceCell({ row }: any) {
       ...row,
       [key]: newValue,
     };
-    updatedRow.total_amount = updatedRow.quantity * updatedRow.unit_price;
+    updatedRow.total_amount = updatedRow.quantity * updatedRow.product_cost;
     updateTrackedProductInOrder(updatedRow);
   };
 
@@ -26,8 +26,8 @@ export default function UnitPriceCell({ row }: any) {
     <Input
       className="w-24 text-xs"
       type="number"
-      defaultValue={row.unit_price}
-      onChange={(event) => handleInputChange(event, row, "unit_price")}
+      defaultValue={row.product_cost}
+      onChange={(event) => handleInputChange(event, row, "product_cost")}
     />
   );
 }

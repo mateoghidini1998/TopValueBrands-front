@@ -79,10 +79,11 @@ interface IPurchaseOrderStatus {
 }
 
 interface IPurchaseOrderProduct {
+  product_cost: any;
   id: number;
   purchase_order_id: number;
   product_id: number;
-  unit_price: number;
+  // unit_price: number;
   total_amount: number;
   quantity_purchased: number;
   quantity_received: number;

@@ -22,7 +22,7 @@ export default function QuantityCell({ row }: QuantityCellProps) {
       ...row,
       [key]: newValue,
     };
-    updatedRow.total_amount = updatedRow.quantity * updatedRow.unit_price;
+    updatedRow.total_amount = updatedRow.quantity * updatedRow.product_cost;
     updateTrackedProductInOrder(updatedRow);
   };
 

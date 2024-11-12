@@ -64,7 +64,7 @@ type OrdersContextType = {
 export type PurchaseOrderProductUpdates = {
   purchaseOrderProductId: number;
   quantityPurchased: number;
-  unit_price: number;
+  product_cost: number;
   profit: number;
 };
 
@@ -206,7 +206,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
                   (acc: any, product: any) =>
                     acc +
                     (parseFloat(product.profit) /
-                      parseFloat(product.unit_price)) *
+                      parseFloat(product.product_cost)) *
                       100,
                   0
                 ) / order.purchaseOrderProducts.length,

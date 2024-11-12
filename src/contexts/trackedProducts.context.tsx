@@ -22,7 +22,7 @@ export type ProductInOrder = {
   ASIN: string;
   supplier_name: string;
   quantity: number;
-  unit_price: number;
+  product_cost: number;
   total_amount: number;
   units_sold: number;
   fees: number;
@@ -203,7 +203,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
   const updateTrackedProductInOrder = (updatedProduct: ProductInOrder) => {
     updatedProduct.total_amount =
-      updatedProduct.quantity * updatedProduct.unit_price;
+      updatedProduct.quantity * updatedProduct.product_cost;
     setTrackedProductsAddedToOrder((prevState) =>
       prevState.map((product) =>
         product.id === updatedProduct.id ? updatedProduct : product
@@ -214,7 +214,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const getTotalPrice = (orderProducts: any) => {
     let totalPrice = 0;
     orderProducts.map((item: any, i: number) => {
-      totalPrice += item.quantity * item.unit_price;
+      totalPrice += item.quantity * item.product_cost;
     });
     return totalPrice;
   };
@@ -222,7 +222,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const handleCreateOrder = async (orderProducts: any, notes: string) => {
     const transformedProducts = orderProducts.map((product: any) => ({
       product_id: product.product_id,
-      unit_price: product.unit_price,
+      product_cost: parseFloat(product.product_cost),
       quantity: product.quantity,
       fees: product.fees,
       lowest_fba_price: product.lowest_fba_price,
@@ -324,7 +324,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       ASIN: data.ASIN,
       supplier_name: data.supplier_name,
       quantity: 0,
-      unit_price: data.product_cost,
+      product_cost: data.product_cost,
       total_amount: 0,
       units_sold: data.units_sold,
       fees: data.fees,
