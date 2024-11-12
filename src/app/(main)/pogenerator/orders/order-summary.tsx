@@ -290,20 +290,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     await updatePOProducts(orderId, poProductUpdates);
     await editOrderNotes(orderId, editingOrder!);
     await updatePONumber(orderId, editingOrder!.order_number);
-
-    /* setOrdersToCreate((prev: IPurchaseOrder[]): IPurchaseOrder[] => {
-    //   return prev.map((order) => {
-    //     if (order.id === orderId) {
-    //       return {
-    //         ...order,
-    //         order_number: editingOrder!.order_number,
-    //         notes: editingOrder!.notes,
-    //       };
-    //     }
-    //     return order;
-    //   });
-    // });
-    */
     await fetchOrders();
 
     setPoProductUpdates([]);
@@ -421,110 +407,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
         >
           <DialogHeader className="flex flex-col items-center gap-4">
             <DialogTitle className="text-center">Order Summary</DialogTitle>
-
-            {/* <ScrollArea className="h-[400px] w-full rounded-md border p-4 dark:text-white">
-              {editingOrder?.trackedProducts?.map(
-                (product: any, index: number) => {
-                  // Encuentra el producto correspondiente en purchaseOrderProducts
-                  const purchaseOrderProduct =
-                    editingOrder?.purchaseOrderProducts.find(
-                      (p: any) => p.product_id === product.product_id
-                    );
-                  return (
-                    <ul
-                      key={index}
-                      className="flex flex-col gap-2 dark:text-white pr-1"
-                    >
-                      <li className="flex justify-between items-center">
-                        Product Name: <span>{product.product_name}</span>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        ASIN : <span>{product.ASIN}</span>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        Seller SKU: <span>{product.seller_sku}</span>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        Current Rank: <span>{product.current_rank}</span>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        30 Days Rank: <span>{product.thirty_days_rank}</span>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        90 Days Rank: <span>{product.ninety_days_rank}</span>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        Units Sold: <span>{product.units_sold}</span>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        Velocity: <span>{product.product_velocity}</span>
-                      </li>
-
-                      <li className="flex justify-between items-center">
-                        Product Cost: <span>{product.product_cost}</span>
-                      </li>
-
-                      <li className="flex justify-between items-center">
-                        Unit Price:{" "}
-                        <Input
-                          className="w-24 text-center"
-                          type="number"
-                          step="0.01" // Permite ingresar decimales
-                          value={purchaseOrderProduct?.unit_price}
-                          onChange={(e) => {
-                            const value = parseFloat(e.target.value);
-                            purchaseOrderProduct!.unit_price = value;
-                            purchaseOrderProduct!.total_amount =
-                              value * purchaseOrderProduct!.quantity_purchased;
-                            setEditingOrder({
-                              ...editingOrder,
-                              purchaseOrderProducts: [
-                                ...editingOrder?.purchaseOrderProducts,
-                              ],
-                            });
-                          }}
-                        />
-                      </li>
-
-                      <li className="flex justify-between items-center">
-                        Quantity Purchased:{" "}
-                        <Input
-                          className="w-24 text-center"
-                          type="number"
-                          value={purchaseOrderProduct?.quantity_purchased}
-                          onChange={(e) => {
-                            const value = parseInt(e.target.value, 10);
-                            purchaseOrderProduct!.quantity_purchased = value;
-                            purchaseOrderProduct!.total_amount =
-                              value * purchaseOrderProduct!.unit_price;
-
-                            setEditingOrder({
-                              ...editingOrder,
-                              purchaseOrderProducts: [
-                                ...editingOrder?.purchaseOrderProducts,
-                              ],
-                            });
-                          }}
-                        />
-                      </li>
-
-                      <li className="flex justify-between items-center">
-                        Total Amount:{" "}
-                        <Input
-                          className="w-24 text-center"
-                          type="text"
-                          disabled
-                          value={`$ ${purchaseOrderProduct?.total_amount}`}
-                        />
-                      </li>
-
-                      <Separator className="my-4" />
-                    </ul>
-                  );
-                }
-              )}
-            </ScrollArea> */}
-
             {/* Products List */}
 
             {/* Order Information */}
@@ -582,22 +464,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
             </DialogDescription>
 
             <Separator className="my-4" />
-
-            {/* Status */}
-            {/* <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
-                          <h2>Status</h2>
-                          <Select>
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select a state" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectItem value="Good to go">Good To Go</SelectItem>
-                                <SelectItem value="Pending">Pending</SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </DialogDescription> */}
           </DialogHeader>
 
           <DialogDescription className="w-full flex flex-col gap-4">
@@ -622,8 +488,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                 type="submit"
                 variant={"tvb"}
                 onClick={handleUpdatePurchaseOrder}
-
-                // updatePOProducts(editingOrder?.id!!, poProductUpdates!!)
               >
                 Confirm
               </Button>
