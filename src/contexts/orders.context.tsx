@@ -20,8 +20,8 @@ type OrdersContextType = {
   error: Error | null;
   updateOrderStatus: (orderId: number, status: string) => Promise<void>;
   editOrderNotes: (id: number, orderData: any) => Promise<void>;
-  openEditModal: (order: IPurchaseOrder) => void;
-  closeEditModal: () => void;
+  // openEditModal: (order: IPurchaseOrder) => void;
+  // closeEditModal: () => void;
   downloadOrder: (id: number) => Promise<void>;
   fetchOrders: () => Promise<void>;
   isEditModalOpen: boolean;
@@ -59,6 +59,7 @@ type OrdersContextType = {
   createPallet: (data: any) => Promise<any>;
   deletePOProductFromAnOrder: (purchaseOrderProductId: number) => void;
   updatePONumber: (orderId: number, poNumber: string) => Promise<void>;
+  addProductToPO: (orderId: number, data: ProductToOrder[]) => Promise<void>;
 };
 
 export type PurchaseOrderProductUpdates = {
@@ -66,6 +67,14 @@ export type PurchaseOrderProductUpdates = {
   quantityPurchased: number;
   product_cost: number;
   profit: number;
+};
+
+export type ProductToOrder = {
+  product_id: number;
+  product_cost: number;
+  quantity: number;
+  fees: number;
+  lowest_fba_price: number;
 };
 
 // Enumeración de estados de la orden de compra
@@ -442,25 +451,33 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
-  //! No lo uso, pero lo dejo por si acaso
-  const openEditModal = (order: IPurchaseOrder) => {
-    setOrderToEdit(order);
-    setIsEditModalOpen(true);
+  const addProductToPO = async (orderId: number, data: ProductToOrder[]) => {
+    try {
+      await PurchaseOrdersService.addProductToPO(orderId, data);
+    } catch (error: any) {
+      setError(error);
+    }
   };
 
   //! No lo uso, pero lo dejo por si acaso
-  const closeEditModal = () => {
-    setOrderToEdit(null);
-    setIsEditModalOpen(false);
-  };
+  // const openEditModal = (order: IPurchaseOrder) => {
+  //   setOrderToEdit(order);
+  //   setIsEditModalOpen(true);
+  // };
+
+  //! No lo uso, pero lo dejo por si acaso
+  // const closeEditModal = () => {
+  //   setOrderToEdit(null);
+  //   setIsEditModalOpen(false);
+  // };
 
   return (
     <OrdersContext.Provider
       value={{
         updateOrderStatus,
         editOrderNotes,
-        openEditModal,
-        closeEditModal,
+        // openEditModal,
+        // closeEditModal,
         downloadOrder,
         shippedOrders,
         orders: ordersToCreate,
@@ -487,6 +504,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         createPallet,
         deletePOProductFromAnOrder,
         updatePONumber,
+        addProductToPO,
       }}
     >
       {children}

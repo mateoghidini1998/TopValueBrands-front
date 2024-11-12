@@ -5,7 +5,7 @@ import PaginationComponentAPI from "@/components/ui/data-table-pagination-api";
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
 import { SortingState } from "@tanstack/react-table";
 import IndexPageContainer from "../../page.container";
-import { columns, POColumns } from "./columns";
+import { trackedProductsCol, POColumns } from "./columns";
 import { OrderSummary } from "./order-summary";
 
 export default function Page() {
@@ -52,7 +52,7 @@ export default function Page() {
       <div className="w-full overflow-x-auto custom_scroll">
         <div className="w-max px-[1.3rem] py-0 flex space-x-4 p-4">
           <DataTable
-            columns={columns}
+            columns={trackedProductsCol}
             data={trackedProducts}
             dataLength={10}
             pagination={<PaginationComponentAPI {...paginationMethods} />}

@@ -227,4 +227,16 @@ export class PurchaseOrdersService {
       throw new Error("Error adding notes to PO product");
     }
   }
+
+  static async addProductToPO(orderId: number, data: any) {
+    try {
+      const response = await HttpAPI.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/add-products/${orderId}`,
+        { products: data }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error adding product to PO");
+    }
+  }
 }
