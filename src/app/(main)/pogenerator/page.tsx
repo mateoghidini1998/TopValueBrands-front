@@ -1,10 +1,10 @@
 "use client";
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
 // import { data } from "../../data/index";
+import { TrackedProductType } from "@/types/trackedProducts.types";
 import IndexPageContainer from "../page.container";
 import { TableComponent } from "./components/TableComponent";
 import { Column } from "./interfaces/ITableComponent";
-import { TrackedProductType } from "@/types/trackedProducts.types";
 
 const columns: Column[] = [
   { key: "product_name", name: "Product", width: "20%" },
