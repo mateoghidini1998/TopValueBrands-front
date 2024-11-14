@@ -453,7 +453,11 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
 
   const addProductToPO = async (orderId: number, data: ProductToOrder[]) => {
     try {
-      await PurchaseOrdersService.addProductToPO(orderId, data);
+      const response = await PurchaseOrdersService.addProductToPO(
+        orderId,
+        data
+      );
+      return response;
     } catch (error: any) {
       setError(error);
     }

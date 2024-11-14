@@ -29,6 +29,7 @@ const InputProductCost = ({
             profit:
               row.original.lowest_fba_price - row.original.fees - newValue,
           };
+          console.log(updatedProducts);
           return updatedProducts;
         }
 

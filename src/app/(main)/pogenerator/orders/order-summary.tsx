@@ -18,11 +18,16 @@ import {
 import { IPurchaseOrder } from "@/types/product.types";
 import { TrackedProductType } from "@/types/trackedProducts.types";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { DataTable } from "../../../../components/ui/data-table";
 import IndexPageContainer from "../../page.container";
 import { NoteCell } from "./text-area-cell";
-// import { columns } from "../create/columns";
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
@@ -33,6 +38,7 @@ import { getTrackedProductsColAnalyze } from "../create/columns";
 import AnalyzeActionsCell from "./analyze-actions-cell";
 import InputQuantity from "./input-quantity";
 import InputProductCost from "./input-unit-price";
+import debounce from "lodash.debounce";
 
 export const getColumns = (
   setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>,
@@ -292,8 +298,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     fetchOrders,
   } = useOrdersContext();
 
-  const { getFilteredTrackedProducts, trackedProducts } =
-    useTrackedProductContext();
+  const { getFilteredTrackedProducts } = useTrackedProductContext();
 
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState<IPurchaseOrder | null>(null);
@@ -305,29 +310,49 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<TrackedProductType[]>([]);
 
-  const handleSearchProducts = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setTimeout(() => {
-      if (e.target.value === "") {
-        setSearchingProducts(false);
-      } else {
-        setSearchingProducts(true);
-        getFilteredTrackedProducts(
-          editingOrder?.supplier_id,
-          e.target.value,
-          1,
-          50,
-          "",
-          ""
-        );
-        setSearchResults(trackedProducts);
-      }
-    }, 500);
-  };
-
   const [poProductUpdates, setPoProductUpdates] = useState<
     PurchaseOrderProductUpdates[]
   >([]);
+
+  const handleSearchProducts = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchTerm(e.target.value);
+    if (e.target.value === "") {
+      setSearchResults([]);
+      setSearchingProducts(false);
+      const products = await getFilteredTrackedProducts(
+        null,
+        e.target.value,
+        1,
+        10,
+        "",
+        ""
+      );
+      console.log(products);
+      setSearchResults([...products]);
+    } else {
+      setSearchingProducts(true);
+      debouncedSearch(e.target.value);
+    }
+  };
+
+  // Usamos useCallback para que la función no se recree en cada renderizado
+  const debouncedSearch = useCallback(
+    debounce(async (searchTerm) => {
+      const products = await getFilteredTrackedProducts(
+        editingOrder?.supplier_id,
+        searchTerm,
+        1,
+        10,
+        "",
+        ""
+      );
+      console.log(products);
+      setSearchResults([...products]);
+    }, 500),
+    [searchTerm]
+  );
 
   const handleUpdatePurchaseOrder = async () => {
     await updatePOProducts(orderId, poProductUpdates);
@@ -396,6 +421,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
           return {
             purchaseOrderProductId: product.id,
             quantityPurchased: product.quantity_purchased,
+            unit_price: product.product_cost,
             product_cost: product.product_cost,
             profit: product.profit,
           };
@@ -403,6 +429,9 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
       );
     }
   }, [editingOrder]);
+
+  console.log(poProductUpdates);
+  console.log(editingOrder);
 
   return (
     <>
@@ -427,18 +456,23 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                     <Input
                       placeholder="Search products"
                       onChange={(e) => handleSearchProducts(e)}
+                      value={searchTerm}
                     />
                   </DialogTitle>
                   <div className="flex flex-col w-max space-x-4 p-4">
                     {searchingProducts && (
-                      <DataTable
-                        columns={getTrackedProductsColAnalyze(
-                          editingOrder!.id,
-                          setTrackedProductsData
-                        )}
-                        data={searchResults}
-                        dataLength={100}
-                      />
+                      <div className="flex flex-col w-max space-x-4 p-4 max-h-[400px] overflow-scroll">
+                        <DataTable
+                          columns={getTrackedProductsColAnalyze(
+                            editingOrder!,
+                            setEditingOrder,
+                            setTrackedProductsData,
+                            setPoProductUpdates
+                          )}
+                          data={searchResults}
+                          dataLength={10}
+                        />
+                      </div>
                     )}
                     <DataTable
                       columns={getColumns(

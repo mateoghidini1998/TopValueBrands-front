@@ -262,8 +262,10 @@ export const POColumns: ColumnDef<any>[] = [
 ];
 
 export const getTrackedProductsColAnalyze = (
-  purchaseOrderId: number,
-  setTrackedProductsData: any
+  editingOrder: any,
+  setEditingOrder: any,
+  setTrackedProductsData: any,
+  setPoProductUpdates: any
 ): ColumnDef<any>[] => [
   {
     accessorKey: "product_name",
@@ -460,7 +462,9 @@ export const getTrackedProductsColAnalyze = (
     cell: ({ row }) => (
       <AddProductToPOCell
         row={row}
-        purchaseOrderId={purchaseOrderId}
+        setPoProductUpdates={setPoProductUpdates}
+        editingOrder={editingOrder}
+        setEditingOrder={setEditingOrder}
         setTrackedProductsData={setTrackedProductsData}
       />
     ),

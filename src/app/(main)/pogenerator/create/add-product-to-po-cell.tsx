@@ -4,21 +4,27 @@ import { useOrdersContext } from "@/contexts/orders.context";
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
 type AddToOrderCellProps = {
   row: any;
-  purchaseOrderId: number;
+  editingOrder: any;
+  setEditingOrder: any;
   setTrackedProductsData: any;
+  setPoProductUpdates: any;
 };
 
 export default function AddProductToPOCell({
   row,
-  purchaseOrderId,
+  editingOrder,
+  setEditingOrder,
   setTrackedProductsData,
+  setPoProductUpdates,
 }: AddToOrderCellProps) {
   const { addProductToPO, getPurchaseOrderSummary } = useOrdersContext();
+
+  // console.log(row.original);
   return (
     <span
       className="flex items-right justify-end cursor-pointer"
-      onClick={() => {
-        addProductToPO(purchaseOrderId, [
+      onClick={async () => {
+        const response = await addProductToPO(editingOrder.id, [
           {
             product_id: row.original.product_id,
             quantity: 1,
@@ -27,7 +33,7 @@ export default function AddProductToPOCell({
             lowest_fba_price: row.original.lowest_fba_price,
           },
         ]);
-        getPurchaseOrderSummary(purchaseOrderId).then((res: any) => {
+        await getPurchaseOrderSummary(editingOrder.id).then((res: any) => {
           // @ts-ignore
           const data = res.data;
           // console.log(data);
@@ -71,6 +77,61 @@ export default function AddProductToPOCell({
 
           setTrackedProductsData(trackedProductsWithPOId);
         });
+
+        console.log(response);
+
+        await setEditingOrder((prev: any) => {
+          // Create a copy of the purchaseOrderProducts array
+          const updatedProducts = [...prev.purchaseOrderProducts];
+
+          // Push the new product object into the copied array
+          updatedProducts.push({
+            purchase_order_id: prev.id,
+            // @ts-ignore
+            id: response.data.purchaseOrderProducts.find((product: any) => {
+              return product.product_id === row.original.product_id;
+            }).id,
+            quantity_purchased: 1,
+            product_cost: row.original.product_cost,
+            profit:
+              row.original.lowest_fba_price -
+              row.original.fees -
+              row.original.product_cost,
+          });
+
+          // Return the updated state with the modified purchaseOrderProducts array
+          return {
+            ...prev,
+            purchaseOrderProducts: updatedProducts,
+          };
+        });
+
+        // if (editingOrder) {
+        //   await setPoProductUpdates(
+        //     editingOrder.purchaseOrderProducts.map((product: any) => {
+        //       return {
+        //         purchaseOrderProductId: product.id,
+        //         quantityPurchased: product.quantity_purchased,
+        //         product_cost: product.product_cost,
+        //         profit: product.profit,
+        //       };
+        //     })
+        //   );
+        // }
+        // await setPoProductUpdates((prev: any) => {
+        //   return [
+        //     ...prev,
+        //     {
+        //       purchaseOrderProductId: row.original.product_id,
+        //       quantityPurchased: 1,
+        //       product_cost: row.original.product_cost,
+        //       profit:
+        //         row.original.lowest_fba_price -
+        //         row.original.fees -
+        //         row.original.product_cost,
+        //     },
+        //   ];
+        // });
       }}
     >
       <AddButton />
