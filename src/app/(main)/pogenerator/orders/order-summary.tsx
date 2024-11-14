@@ -446,6 +446,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
               <div className="w-full overflow-x-auto custom_scroll">
                 <IndexPageContainer>
                   {/* center the absolute title */}
+
                   <DialogTitle className="absolute left-[50%]  translate-x-[-50%] translate-y-[-50%]  ">
                     {editingOrder?.supplier_name}
                   </DialogTitle>
@@ -456,20 +457,18 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                       value={searchTerm}
                     />
                   </DialogTitle>
-                  <div className="flex flex-col w-max space-x-4 p-4">
+                  <div className="flex flex-col w-max space-x-4 p-4 max-h-[80dvh]">
                     {searchingProducts && (
-                      <div className="flex flex-col w-max space-x-4 p-4 max-h-[400px] overflow-scroll">
-                        <DataTable
-                          columns={getTrackedProductsColAnalyze(
-                            editingOrder!,
-                            setEditingOrder,
-                            setTrackedProductsData,
-                            setPoProductUpdates
-                          )}
-                          data={searchResults}
-                          dataLength={10}
-                        />
-                      </div>
+                      <DataTable
+                        columns={getTrackedProductsColAnalyze(
+                          editingOrder!,
+                          setEditingOrder,
+                          setTrackedProductsData,
+                          setPoProductUpdates
+                        )}
+                        data={searchResults}
+                        dataLength={10}
+                      />
                     )}
                     <DataTable
                       columns={getColumns(
