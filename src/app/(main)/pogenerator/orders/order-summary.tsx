@@ -322,14 +322,14 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
       setSearchResults([]);
       setSearchingProducts(false);
       const products = await getFilteredTrackedProducts(
-        null,
+        editingOrder?.supplier_id,
         e.target.value,
         1,
         10,
         "",
         ""
       );
-      console.log(products);
+      // console.log(products);
       setSearchResults([...products]);
     } else {
       setSearchingProducts(true);
@@ -348,7 +348,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
         "",
         ""
       );
-      console.log(products);
+      // console.log(products);
       setSearchResults([...products]);
     }, 500),
     [searchTerm]
@@ -429,9 +429,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
       );
     }
   }, [editingOrder]);
-
-  console.log(poProductUpdates);
-  console.log(editingOrder);
 
   return (
     <>
