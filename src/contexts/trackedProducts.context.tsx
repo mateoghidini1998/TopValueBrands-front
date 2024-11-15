@@ -110,7 +110,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     ProductInOrder[]
   >([]);
 
-  const { fetchOrders } = useOrdersContext();
+  // const { fetchOrders } = useOrdersContext();
 
   useEffect(() => {
     getFilteredTrackedProducts(
@@ -262,8 +262,6 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
-      } else {
-        fetchOrders();
       }
 
       const responseData = await response.json();

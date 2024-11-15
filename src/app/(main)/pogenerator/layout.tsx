@@ -1,5 +1,4 @@
 import { OrdersProvider } from "@/contexts/orders.context";
-import { SupplierProvider } from "@/contexts/suppliers.context";
 import type { Metadata } from "next";
 import { TrackedProductsProvider } from "../../../contexts/trackedProducts.context";
 import IndexPageContainer from "../page.container";
@@ -29,14 +28,14 @@ export default function POGeneratorLayout({
   return (
     <>
       <IndexPageContainer>
-        <OrdersProvider>
-          <main className="flex w-full h-fit flex-col items-center mt-[56px] relative">
-            <TrackedProductsProvider>
+        <main className="flex w-full h-fit flex-col items-center mt-[56px] relative">
+          <TrackedProductsProvider>
+            <OrdersProvider>
               <POGeneratorNavbar navLinks={navLinks} />
               {children}
-            </TrackedProductsProvider>
-          </main>
-        </OrdersProvider>
+            </OrdersProvider>
+          </TrackedProductsProvider>
+        </main>
       </IndexPageContainer>
     </>
   );

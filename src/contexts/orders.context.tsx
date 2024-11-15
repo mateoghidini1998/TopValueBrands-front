@@ -5,6 +5,7 @@ import {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -184,7 +185,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -240,7 +241,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [setOrdersToCreate, setShippedOrders, setError, setLoading]); // Añade las dependencias necesarias.
 
   const getOrderStatusId = async (status: string) => {
     let statusId;

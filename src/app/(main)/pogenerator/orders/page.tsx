@@ -1,13 +1,16 @@
 "use client";
+import { DataTable } from "@/components/ui/data-table";
 import { useOrdersContext } from "@/contexts/orders.context";
 import IndexPageContainer from "../../page.container";
 import { columns } from "./columns";
-import { DataTable } from "@/components/ui/data-table";
+import { useEffect } from "react";
 
 export default function OrderPage() {
-  const { orders } = useOrdersContext();
+  const { orders, fetchOrders } = useOrdersContext();
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
-  console.log(orders);
   return (
     <IndexPageContainer>
       <div className="w-full px-[1.3rem] py-0">
