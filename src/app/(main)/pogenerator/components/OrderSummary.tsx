@@ -1,13 +1,9 @@
-import ConfirmAlert from "@/components/alerts/ConfirmAlert";
 import CustomAlert, {
   CustomAlertOptions,
 } from "@/components/alerts/CustomAlerts";
 import useThemeContext from "@/contexts/theme.context";
-import {
-  TrackedProductContext,
-  useTrackedProductContext,
-} from "@/contexts/trackedProducts.context";
-import { useEffect, useState } from "react";
+import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
+import { useState } from "react";
 
 type OrderProductType = {
   orderProducts: any[];
