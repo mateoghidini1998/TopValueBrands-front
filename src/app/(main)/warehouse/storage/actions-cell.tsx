@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
 type ActionsCellProps = {
   row: any;
 };
 
 const ActionsCell = ({ row }: ActionsCellProps) => {
   const { downloadOrder, deleteOrder } = useOrdersContext();
+  const router = useRouter();
 
   const incomingOrder = row.original;
   return (
@@ -34,7 +36,12 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DialogTrigger asChild>
-              <DropdownMenuItem className="w-full">
+              <DropdownMenuItem
+                className="w-full"
+                onClick={() => {
+                  router.push(`/warehouse/storage/${incomingOrder.id}`);
+                }}
+              >
                 View Details
               </DropdownMenuItem>
             </DialogTrigger>
