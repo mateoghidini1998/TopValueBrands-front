@@ -4,6 +4,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import DateCell from "@/components/ui/data-table-date-cell";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionsCell from "./actions-cell";
+import QrCodeCell from "./qr-code-cell";
 
 export const columns: ColumnDef<PalletType>[] = [
   {
@@ -29,6 +30,13 @@ export const columns: ColumnDef<PalletType>[] = [
     },
     cell: ({ row }) => {
       return <DateCell value={row.original.updatedAt} />;
+    },
+  },
+  {
+    id: "qrCode",
+    header: "QR Code",
+    cell: ({ row }) => {
+      return <QrCodeCell incomingOrder={row.original} />;
     },
   },
   {
