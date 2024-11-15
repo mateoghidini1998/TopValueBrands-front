@@ -32,10 +32,8 @@ export default function POGeneratorLayout({
         <OrdersProvider>
           <main className="flex w-full h-fit flex-col items-center mt-[56px] relative">
             <TrackedProductsProvider>
-              <SupplierProvider>
-                <POGeneratorNavbar navLinks={navLinks} />
-                {children}
-              </SupplierProvider>
+              <POGeneratorNavbar navLinks={navLinks} />
+              {children}
             </TrackedProductsProvider>
           </main>
         </OrdersProvider>
