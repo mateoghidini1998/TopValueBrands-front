@@ -25,7 +25,6 @@ type OrdersContextType = {
   // closeEditModal: () => void;
   downloadOrder: (id: number) => Promise<void>;
   fetchOrders: () => Promise<void>;
-  isEditModalOpen: boolean;
   orderToEdit: IPurchaseOrder | null;
   editOrderAction: any;
   setEditOrderAction: (data: any) => void;
@@ -115,8 +114,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
   const [productsAddedToCreatePallet, setProductsAddedToCreatePallet] =
     useState<any[]>([]);
 
-  //! No lo uso, pero lo dejo por si acaso
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [orderToEdit, setOrderToEdit] = useState<IPurchaseOrder | null>(null);
   const [editOrderAction, setEditOrderAction] = useState<any>(null);
 
@@ -464,18 +461,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
     }
   };
 
-  //! No lo uso, pero lo dejo por si acaso
-  // const openEditModal = (order: IPurchaseOrder) => {
-  //   setOrderToEdit(order);
-  //   setIsEditModalOpen(true);
-  // };
-
-  //! No lo uso, pero lo dejo por si acaso
-  // const closeEditModal = () => {
-  //   setOrderToEdit(null);
-  //   setIsEditModalOpen(false);
-  // };
-
   return (
     <OrdersContext.Provider
       value={{
@@ -491,7 +476,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         loading,
         error,
         fetchOrders,
-        isEditModalOpen,
         orderToEdit,
         editOrderAction,
         setEditOrderAction,
