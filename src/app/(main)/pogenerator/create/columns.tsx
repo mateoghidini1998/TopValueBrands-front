@@ -26,6 +26,13 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     ),
   },
   {
+    accessorKey: "supplier_item_number",
+    header: "Supplier Item No.",
+    cell: ({ row }) => (
+      <span className="">{row.getValue("supplier_item_number") || "N/A"}</span>
+    ),
+  },
+  {
     accessorKey: "product_velocity",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Velocity" />;
