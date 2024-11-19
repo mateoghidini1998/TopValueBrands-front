@@ -97,7 +97,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [orderBy, setOrderBy] = useState("");
   const [orderWay, setOrderWay] = useState<any>("");
 
-  const LIMIT = 50;
+  const LIMIT = 10;
 
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
