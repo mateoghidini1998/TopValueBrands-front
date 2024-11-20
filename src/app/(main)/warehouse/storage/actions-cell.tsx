@@ -46,12 +46,6 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
               </DropdownMenuItem>
             </DialogTrigger>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => downloadOrder(incomingOrder.id)}>
-              Download PDF
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => deleteOrder(incomingOrder.id)}>
-              Delete Order
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
