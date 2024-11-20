@@ -39,6 +39,7 @@ import AnalyzeActionsCell from "./analyze-actions-cell";
 import InputQuantity from "./input-quantity";
 import InputProductCost from "./input-unit-price";
 import debounce from "lodash.debounce";
+import { format } from "date-fns";
 
 export const getColumns = (
   setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>,
@@ -521,7 +522,14 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
 
               <div className="flex justify-between items-center">
                 <h2>Date</h2>
-                <p>{editingOrder?.createdAt}</p>
+                <p>
+                  {editingOrder?.createdAt
+                    ? format(
+                        new Date(editingOrder.createdAt),
+                        "MM/dd/yyyy HH:mm"
+                      )
+                    : "N/A"}
+                </p>
               </div>
 
               <div className="flex justify-between items-center">
