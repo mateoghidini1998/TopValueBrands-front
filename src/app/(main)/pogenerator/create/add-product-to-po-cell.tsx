@@ -57,9 +57,11 @@ export default function AddProductToPOCell({
                 return {
                   ...trackedProduct,
                   roi:
-                    (parseFloat(matchingPurchaseOrderProduct.profit) /
-                      matchingPurchaseOrderProduct.product_cost) *
-                    100,
+                    matchingPurchaseOrderProduct.product_cost > 0
+                      ? (parseFloat(matchingPurchaseOrderProduct.profit) /
+                          matchingPurchaseOrderProduct.product_cost) *
+                        100
+                      : 0,
                   purchase_order_product_profit: matchingPurchaseOrderProduct
                     ? parseFloat(matchingPurchaseOrderProduct.profit)
                     : null,
