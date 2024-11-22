@@ -11,7 +11,11 @@ export default function QuantityReceivedCell({
   row,
   setLocalData,
 }: QuantityReceivedCellProps) {
-  const { addQuantityReceived } = useOrdersContext(); // Usamos el contexto para actualizar el pedido
+  const {
+    addQuantityReceived,
+    setProductsAvaliableToCreatePallet,
+    productsAvaliableToCreatePallet,
+  } = useOrdersContext(); // Usamos el contexto para actualizar el pedido
   const [quantityReceived, setQuantityReceived] = useState(
     row.original.quantity_received
   );
@@ -19,6 +23,8 @@ export default function QuantityReceivedCell({
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
+
+  console.log(productsAvaliableToCreatePallet);
 
   const handleQuantityChange = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -54,6 +60,22 @@ export default function QuantityReceivedCell({
             return product;
           });
         });
+
+        setProductsAvaliableToCreatePallet((prev: any) => {
+          return prev.map((product: any) => {
+            if (
+              product.purchase_order_product_id ===
+              row.original.purchase_order_product_id
+            ) {
+              return {
+                ...product,
+                quantity_available: parseInt(newQuantity),
+              };
+            }
+            return product;
+          });
+        });
+
         setSearchTimeout(null);
       }, 500)
     );
