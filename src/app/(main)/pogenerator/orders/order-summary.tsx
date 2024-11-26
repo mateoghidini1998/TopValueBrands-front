@@ -10,14 +10,22 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
+import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
+import { Badge } from "@/components/ui/badge";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import DateCell from "@/components/ui/data-table-date-cell";
 import { Input } from "@/components/ui/input";
 import {
   PurchaseOrderProductUpdates,
   useOrdersContext,
 } from "@/contexts/orders.context";
+import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
 import { IPurchaseOrder } from "@/types/product.types";
 import { TrackedProductType } from "@/types/trackedProducts.types";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
+import debounce from "lodash.debounce";
 import {
   Dispatch,
   SetStateAction,
@@ -27,19 +35,11 @@ import {
 } from "react";
 import { DataTable } from "../../../../components/ui/data-table";
 import IndexPageContainer from "../../page.container";
-import { NoteCell } from "./text-area-cell";
-import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
-import { Badge } from "@/components/ui/badge";
-import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import DateCell from "@/components/ui/data-table-date-cell";
-import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
-import { ColumnDef } from "@tanstack/react-table";
 import { getTrackedProductsColAnalyze } from "../create/columns";
 import AnalyzeActionsCell from "./analyze-actions-cell";
 import InputQuantity from "./input-quantity";
 import InputProductCost from "./input-unit-price";
-import debounce from "lodash.debounce";
-import { format } from "date-fns";
+import { NoteCell } from "./text-area-cell";
 
 export const getColumns = (
   setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>,
@@ -108,12 +108,27 @@ export const getColumns = (
     header: "Item Number",
   },
   // {
-  //   accessorKey: "product_cost",
+  //   accessorKey: "unit_price",
   //   header: ({ column }) => {
-  //     return <DataTableColumnHeader column={column} title="Product Cost" />;
+  //     return <DataTableColumnHeader column={column} title="Unit Price" />;
   //   },
   //   cell: ({ row }) => {
-  //     return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
+  //     console.log(row);
+  //     console.log({
+  //       product_cost: row.getValue("product_cost"),
+  //       pack_type: row.original.pack_type,
+  //     });
+  //     // return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
+  //     return (
+  //       <span>
+  //         {`$ ${
+  //           (
+  //             parseFloat(row.getValue("product_cost")) /
+  //             (parseFloat(row.original.pack_type) || 1)
+  //           ).toFixed(2) || "N/A"
+  //         }`}
+  //       </span>
+  //     );
   //   },
   // },
   {
@@ -123,11 +138,22 @@ export const getColumns = (
     },
     cell: ({ row }) => {
       return (
-        <InputProductCost
-          row={row}
-          setTrackedProductsData={setTrackedProductsData}
-          setEditingOrder={setEditingOrder}
-        />
+        <div className="flex flex-col gap-2">
+          <InputProductCost
+            row={row}
+            setTrackedProductsData={setTrackedProductsData}
+            setEditingOrder={setEditingOrder}
+          />
+          <span className="text-xs text-yellow-500 text-left">
+            {`$ ${
+              (
+                parseFloat(row.getValue("product_cost")) /
+                (parseFloat(row.original.pack_type) || 1)
+              ).toFixed(2) || "N/A"
+              // } per unit (${row.original.pack_type})`}
+            } - pack (${row.original.pack_type || 1})`}
+          </span>
+        </div>
       );
     },
   },
@@ -216,37 +242,39 @@ export const getColumns = (
     accessorKey: "seller_sku",
     header: "Seller SKU",
   },
-
   // {
-  //   accessorKey: "unit_price",
-  //   header: ({ column }) => {
-  //     return <DataTableColumnHeader column={column} title="Unit Price" />;
-  //   },
+  //   id: "total_quantity",
+  //   header: "Purchased Quantity",
   //   cell: ({ row }) => {
-  //     // return <span>{`$ ${row.getValue("unit_price") || "N/A"}`}</span>;
   //     return (
-  //       <InputUnitPrice
-  //         row={row}
-  //         setTrackedProductsData={setTrackedProductsData}
-  //         setEditingOrder={setEditingOrder}
-  //       />
+  //       <span>{`${
+  //         parseInt(row.getValue("quantity_purchased")) *
+  //           (parseInt(row.original.pack_type) || 1) || "N/A"
+  //       }`}</span>
   //     );
   //   },
   // },
-
   {
     accessorKey: "quantity_purchased",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Quantity" />;
+      return (
+        <DataTableColumnHeader column={column} title="Sellable Quantity" />
+      );
     },
     cell: ({ row }) => {
       // return <span>{`${row.getValue("quantity_purchased") || "N/A"}`}</span>;
       return (
-        <InputQuantity
-          row={row}
-          setTrackedProductsData={setTrackedProductsData}
-          setEditingOrder={setEditingOrder}
-        />
+        <div className="flex flex-col gap-2">
+          <InputQuantity
+            row={row}
+            setTrackedProductsData={setTrackedProductsData}
+            setEditingOrder={setEditingOrder}
+          />
+          <span className="text-xs text-yellow-500 text-left">{`${
+            parseInt(row.getValue("quantity_purchased")) *
+              (parseInt(row.original.pack_type) || 1) || "N/A"
+          } - pack (${row.original.pack_type || 1})`}</span>
+        </div>
       );
     },
   },
@@ -371,7 +399,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
       getPurchaseOrderSummary(order.id).then((res: any) => {
         // @ts-ignore
         const data = res.data;
-        // console.log(data);
 
         // Filtra los trackedProductsOfTheOrder agregando el id de purchaseOrderProducts correspondiente
         const trackedProductsWithPOId = data.trackedProductsOfTheOrder.map(
@@ -432,6 +459,8 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
       );
     }
   }, [editingOrder]);
+
+  console.log(trackedProductsData);
 
   return (
     <>
@@ -540,9 +569,6 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
 
             {/* Notes */}
             <DialogDescription className="flex flex-col gap-2 w-full dark:text-white">
-              {/* <h2>Notes</h2>
-                          <p>{editingOrder?.notes}</p> */}
-
               <NoteCell
                 title="Notes"
                 value={editingOrder?.notes || ""}

@@ -512,8 +512,10 @@ const TableRow = ({ products }: TableRowProps) => {
                     value={editData.pack_type || ""}
                     onChange={(e) => onChange(e)}
                   />
+                ) : product?.pack_type ? (
+                  `${product?.pack_type} Pack`
                 ) : (
-                  product?.pack_type
+                  ""
                 )}
               </td>
               <td className="w-[8%] text-xs font-medium text-center">
