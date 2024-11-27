@@ -107,30 +107,6 @@ export const getColumns = (
     accessorKey: "supplier_item_number",
     header: "Item Number",
   },
-  // {
-  //   accessorKey: "unit_price",
-  //   header: ({ column }) => {
-  //     return <DataTableColumnHeader column={column} title="Unit Price" />;
-  //   },
-  //   cell: ({ row }) => {
-  //     console.log(row);
-  //     console.log({
-  //       product_cost: row.getValue("product_cost"),
-  //       pack_type: row.original.pack_type,
-  //     });
-  //     // return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
-  //     return (
-  //       <span>
-  //         {`$ ${
-  //           (
-  //             parseFloat(row.getValue("product_cost")) /
-  //             (parseFloat(row.original.pack_type) || 1)
-  //           ).toFixed(2) || "N/A"
-  //         }`}
-  //       </span>
-  //     );
-  //   },
-  // },
   {
     accessorKey: "product_cost",
     header: ({ column }) => {
