@@ -24,6 +24,8 @@ export class AuthService {
     );
     onUserLoaded(userResponse.data);
     document.cookie = "authenticated=true; path=/";
+    // Establecer el token como una cookie
+    document.cookie = `access-token=${response.token}; path=/; secure; samesite=strict`;
     return response;
   }
 
@@ -47,8 +49,10 @@ export class AuthService {
     localStorage.removeItem("access-token");
     function deleteCookie(name: string) {
       document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      document.cookie = `access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT; secure; samesite=strict`;
     }
     deleteCookie("authenticated");
+    deleteCookie("access-token");
 
     // window.location.replace("/login");
   }
