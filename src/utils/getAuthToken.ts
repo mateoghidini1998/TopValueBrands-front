@@ -1,16 +1,16 @@
-import { getAuthTokenFromClient } from "./client-auth";
-import { getAuthTokenFromServer } from "./server-auth";
+import { getAuthTokenCookiesFromClient } from "./client-auth";
+import { getAuthTokenCookiesFromServer } from "./server-auth";
 
-export const getAuthToken = () => {
-  const token = localStorage.getItem("access-token");
-  return token || undefined;
-};
+// export const getAuthTokenCookies = () => {
+//   const token = localStorage.getItem("access-token");
+//   return token || undefined;
+// };
 
 export const getAuthTokenCookies = async () => {
   if (typeof window !== "undefined") {
     // Cliente
-    return getAuthTokenFromClient();
+    return getAuthTokenCookiesFromClient();
   }
   // Servidor
-  return getAuthTokenFromServer();
+  return getAuthTokenCookiesFromServer();
 };

@@ -1,9 +1,7 @@
-import { headers } from "next/headers";
-import { HttpAPI } from "../common/http.service";
-import { getAuthToken } from "@/utils/getAuthToken";
-import { IProductType } from "@/types/product.types";
-import { EditProductType } from "@/components/inventory/TableRow";
 import { NewProductType } from "@/components/inventory/NewTableRow";
+import { IProductType } from "@/types/product.types";
+import { HttpAPI } from "../common/http.service";
+import { getAuthTokenCookies } from "@/utils/getAuthToken";
 
 export class InventoryService {
   static async getProducts(
@@ -15,7 +13,7 @@ export class InventoryService {
     orderWay: string = ""
   ) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}&supplier=${supplier}&orderBy=${orderBy}&orderWay=${orderWay}`,
         {
@@ -33,7 +31,7 @@ export class InventoryService {
   // get product by seller_sku
   static async getProductBySku(seller_sku: string) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/${seller_sku}`,
         {
@@ -51,7 +49,7 @@ export class InventoryService {
 
   static async createProduct(data: NewProductType) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       if (token) {
         const response = await HttpAPI.post(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/add`,
@@ -69,7 +67,7 @@ export class InventoryService {
 
   static async deactivateProduct(id: string) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       if (token) {
         const response = await HttpAPI.patch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/disable`,
@@ -88,7 +86,7 @@ export class InventoryService {
   static async updateProduct(data: IProductType) {
     // console.log(data)
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       if (token) {
         if (!data.id) {
           throw new Error("id is required");

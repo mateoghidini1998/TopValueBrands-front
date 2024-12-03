@@ -1,11 +1,11 @@
-import { getAuthToken } from "@/utils/getAuthToken";
+import { getAuthTokenCookies } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
 import { EditSupplierType } from "@/types/supplier.types";
 
 export class SuppliersService {
   static async getSuppliers() {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/suppliers`,
         {
@@ -22,7 +22,7 @@ export class SuppliersService {
 
   static async addSupplier(data: String) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       if (token) {
         const response = await HttpAPI.post(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/suppliers`,
@@ -40,7 +40,7 @@ export class SuppliersService {
 
   static async updateSupplier(data: EditSupplierType) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       if (token) {
         if (!data.id) {
           throw new Error("seller_sku is required");
@@ -62,7 +62,7 @@ export class SuppliersService {
 
   static async deleteSupplier(id: number) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       if (token) {
         const response = await HttpAPI.delete(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/suppliers/${id}`,

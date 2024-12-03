@@ -1,12 +1,11 @@
-import { getAuthToken } from "@/utils/getAuthToken";
-import { HttpAPI } from "../common/http.service";
 import { PurchaseOrderProductUpdates } from "@/contexts/orders.context";
-import { headers } from "next/headers";
+import { getAuthTokenCookies } from "@/utils/getAuthToken";
+import { HttpAPI } from "../common/http.service";
 
 export class PurchaseOrdersService {
   static async getTrackedProducts(supplier_id?: string) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/trackedproducts?supplier_id=${supplier_id}`,
         {
@@ -23,7 +22,7 @@ export class PurchaseOrdersService {
 
   static async getPurchaseOrderSummary(orderId: number) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/summary/${orderId}`,
         {
@@ -95,7 +94,7 @@ export class PurchaseOrdersService {
 
   static async downloadOrder(orderId: number) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/download/${orderId}`,
         {
@@ -124,7 +123,7 @@ export class PurchaseOrdersService {
   }
 
   static async editOrder(orderId: number, orderData: any) {
-    const token = getAuthToken();
+    const token = await getAuthTokenCookies();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchaseorders/${orderId}`,
       {
@@ -201,7 +200,7 @@ export class PurchaseOrdersService {
   }
 
   static async createPallet(pallet: any): Promise<any> {
-    // const token = getAuthToken();
+    // const token = await getAuthTokenCookies();
     try {
       const response = await HttpAPI.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets`,

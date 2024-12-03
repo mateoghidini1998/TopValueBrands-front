@@ -1,4 +1,4 @@
-import { getAuthToken } from "@/utils/getAuthToken";
+import { getAuthTokenCookies } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
 
 export class TrackedProductsService {
@@ -11,7 +11,7 @@ export class TrackedProductsService {
     orderWay: "ASC" | "DESC" = "ASC"
   ) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const params = new URLSearchParams();
 
       params.append("page", page.toString());
@@ -45,7 +45,7 @@ export class TrackedProductsService {
 
   static async getTrackedProductsFromAnOrder(order_id: number) {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/trackedproducts/order/${order_id}`,
         {

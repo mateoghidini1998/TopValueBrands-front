@@ -1,11 +1,11 @@
-import { getAuthToken } from "@/utils/getAuthToken";
+import { getAuthTokenCookies } from "@/utils/getAuthTokenCookies";
 import { HttpAPI } from "../common/http.service";
 import { UserType } from "@/types/user.types";
 
 export class UsersService {
   static async getUsers() {
     try {
-      const token = getAuthToken();
+      const token = getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users`,
         {
@@ -22,7 +22,7 @@ export class UsersService {
   }
 
   static async addUser(data: UserType) {
-    const token = getAuthToken();
+    const token = getAuthTokenCookies();
     if (!token) throw new Error("Token not found");
 
     const response = await HttpAPI.post(
@@ -34,7 +34,7 @@ export class UsersService {
   }
 
   static async deleteUser(email: string) {
-    const token = getAuthToken();
+    const token = getAuthTokenCookies();
 
     const users = await this.getUsers();
     const user = users.find((user: UserType) => user.email === email);
@@ -51,7 +51,7 @@ export class UsersService {
   }
 
   static async updateUser(data: UserType) {
-    const token = getAuthToken();
+    const token = getAuthTokenCookies();
 
     const users = await this.getUsers();
     const user = users.find((user: UserType) => user.id === data.id);

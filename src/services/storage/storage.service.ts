@@ -1,10 +1,10 @@
-import { getAuthToken, getAuthTokenCookies } from "@/utils/getAuthToken";
+import { getAuthTokenCookies } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
 
 export class StorageService {
   static async getPallets() {
     try {
-      const token = getAuthToken();
+      const token = await getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets`,
         {
@@ -21,7 +21,7 @@ export class StorageService {
 
   static async getPallet(id: number) {
     try {
-      const token = getAuthTokenCookies();
+      const token = await getAuthTokenCookies();
       const response = await HttpAPI.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets/${id}`,
         {
