@@ -21,8 +21,6 @@ type OrdersContextType = {
   error: Error | null;
   updateOrderStatus: (orderId: number, status: string) => Promise<void>;
   editOrderNotes: (id: number, orderData: any) => Promise<void>;
-  // openEditModal: (order: IPurchaseOrder) => void;
-  // closeEditModal: () => void;
   downloadOrder: (id: number) => Promise<void>;
   fetchOrders: () => Promise<void>;
   orderToEdit: IPurchaseOrder | null;
@@ -338,28 +336,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
         purchaseOrderProductId,
         quantityReceived
       );
-
-      // setShippedOrders((prevOrders) =>
-      //   prevOrders.map((order) => {
-      //     return {
-      //       ...order,
-      //       purchaseOrderProducts: order.purchaseOrderProducts.map(
-      //         (poProduct) => {
-      //           if (poProduct.id === purchaseOrderProductId) {
-      //             const updatedQuantityMissing =
-      //               poProduct.quantity_purchased - quantityReceived;
-      //             return {
-      //               ...poProduct,
-      //               quantity_received: quantityReceived,
-      //               quantity_missing: updatedQuantityMissing,
-      //             };
-      //           }
-      //           return poProduct;
-      //         }
-      //       ),
-      //     };
-      //   })
-      // );
     } catch (error: any) {
       setError(error);
     }
@@ -466,8 +442,6 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
       value={{
         updateOrderStatus,
         editOrderNotes,
-        // openEditModal,
-        // closeEditModal,
         downloadOrder,
         shippedOrders,
         orders: ordersToCreate,

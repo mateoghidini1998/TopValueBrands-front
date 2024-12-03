@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { useOrdersContext } from "@/contexts/orders.context";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type QuantityReceivedCellProps = {
   row: any;
@@ -20,11 +20,29 @@ export default function QuantityReceivedCell({
     row.original.quantity_received
   );
 
+  const [palletProductQuantity, setPalletProductQuantity] = useState(0);
+
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
 
-  console.log(productsAvaliableToCreatePallet);
+  console.log(row.original.purchase_order_product_id);
+
+  const getPalletProductQuantity = useCallback(async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets/${row.original.purchase_order_product_id}/palletproduct`;
+    console.log(url);
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  }, [row.original.purchase_order_product_id]);
+
+  useEffect(() => {
+    getPalletProductQuantity().then((data) => {
+      setPalletProductQuantity(parseInt(data.totalQuantity));
+    });
+  }, [getPalletProductQuantity]);
+
+  console.log(palletProductQuantity);
 
   const handleQuantityChange = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -69,7 +87,8 @@ export default function QuantityReceivedCell({
             ) {
               return {
                 ...product,
-                quantity_available: parseInt(newQuantity),
+                quantity_available:
+                  parseInt(newQuantity) - palletProductQuantity,
               };
             }
             return product;

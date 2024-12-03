@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import AddButton from "@/components/svgs/AddButton";
 import { ColumnDef } from "@tanstack/react-table";
 import { AddProductToPalletBtn } from "./add-product-to-pallet-btn";
 // import NotesCell from "./notes-cell";
