@@ -8,6 +8,7 @@ import { StorageProduct } from "./interfaces";
 import { getShipmentsCols } from "./shipment-columns";
 import { getStorageCols } from "./columns";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 export default function NewShipment() {
   const [storageProducts, setStorageProducts] = useState<StorageProduct[]>([]);
   const [shipmentProducts, setShipmentProducts] = useState<StorageProduct[]>(
@@ -115,6 +116,12 @@ export default function NewShipment() {
       };
       console.log(shipment);
 
+      if (shipment.palletproducts.length <= 0) {
+        return toast.error(
+          "You should add a product before saving a new shipment."
+        );
+      }
+
       // 4. Llamar a la API para crear el envío
       const response = await ShipmentsService.createShipment(shipment);
 
@@ -124,7 +131,9 @@ export default function NewShipment() {
       // Opcional: Reiniciar los estados
       setShipmentProducts([]);
       // Podrías también volver a cargar los productos del almacenamiento si es necesario.
+      toast.success("Shipement created successfully");
     } catch (error) {
+      toast.error("Error creating shipment");
       console.error("Error saving shipment:", error);
       // Mostrar un mensaje al usuario o manejar el error de forma adecuada
     }
