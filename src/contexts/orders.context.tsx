@@ -203,7 +203,7 @@ export const OrdersProvider: FC<OrdersProviderProps> = ({
           order.status === "Rejected" ||
           order.status === "Pending" ||
           order.status === "Good to go" ||
-          order.status === "Wating for supplier approval"
+          order.status === "Waiting for supplier approval"
         ) {
           if (!ordersToCreateList.some((o) => o.id === order.id)) {
             ordersToCreateList.push({
