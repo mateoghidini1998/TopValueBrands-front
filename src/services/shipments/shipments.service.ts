@@ -88,4 +88,21 @@ export class ShipmentsService {
       throw new Error("Error deleting shipment");
     }
   }
+
+  static async getStorageProducts() {
+    try {
+      const token = await getAuthTokenCookies();
+      const response = await HttpAPI.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets/products/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching data");
+    }
+  }
 }

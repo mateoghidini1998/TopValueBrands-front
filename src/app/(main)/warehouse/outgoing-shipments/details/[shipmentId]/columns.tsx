@@ -6,11 +6,6 @@ import ActionsCell from "./actions-cell";
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 
 export const columns: ColumnDef<PalletProduct>[] = [
-  // {
-  //   accessorKey: "order_number",
-  //   header: "Order Number",
-  // },
-
   {
     accessorKey: "product_name",
     header: "Product",
