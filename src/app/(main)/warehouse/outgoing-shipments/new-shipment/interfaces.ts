@@ -18,3 +18,8 @@ export interface Product {
   ASIN: string;
   in_seller_account: boolean;
 }
+
+export interface CreateShipmentProduct {
+  pallet_product_id: number;
+  quantity: number;
+}

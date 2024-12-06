@@ -3,8 +3,9 @@
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 import { ColumnDef } from "@tanstack/react-table";
 import { StorageProduct } from "./interfaces";
-import ActionsCell from "./actions-cell";
+import StorageActionsCell from "./storage-actions-cell";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import ShipmentsActionsCell from "./shipments-actions-cell";
 
 export const getShipmentsCols = (
   removeProductFromShipment: any
@@ -46,14 +47,14 @@ export const getShipmentsCols = (
       return <DataTableColumnHeader column={column} title="Quantity" />;
     },
   },
-  {
-    accessorKey: "available_quantity",
-    header: ({ column }) => {
-      return (
-        <DataTableColumnHeader column={column} title="Quantity Available" />
-      );
-    },
-  },
+  // {
+  //   accessorKey: "available_quantity",
+  //   header: ({ column }) => {
+  //     return (
+  //       <DataTableColumnHeader column={column} title="Quantity Available" />
+  //     );
+  //   },
+  // },
   // {
   //   accessorKey: "warehouse_location",
   //   header: "Warehouse Location",
@@ -63,7 +64,10 @@ export const getShipmentsCols = (
     id: "actions",
     header: "Actions",
     cell: ({ row }) => (
-      <ActionsCell row={row} addProductToShipment={removeProductFromShipment} />
+      <ShipmentsActionsCell
+        row={row}
+        addProductToShipment={removeProductFromShipment}
+      />
     ),
   },
 ];

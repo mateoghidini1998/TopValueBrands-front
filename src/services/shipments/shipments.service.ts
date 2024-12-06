@@ -1,3 +1,4 @@
+import { CreateShipmentProduct } from "@/app/(main)/warehouse/outgoing-shipments/new-shipment/interfaces";
 import { getAuthTokenCookies } from "@/utils/getAuthToken";
 import { HttpAPI } from "../common/http.service";
 
@@ -6,18 +7,20 @@ type Shipment = {
   pallet_id: string;
 };
 
+interface ShipmentToCreate {
+  shipment_number: string;
+  palletproducts: CreateShipmentProduct[];
+}
+
 export class ShipmentsService {
-  static async createShipment(shipment: Shipment) {
+  static async createShipment(shipment: ShipmentToCreate) {
     try {
       const token = await getAuthTokenCookies();
+      console.log(token);
       const response = await HttpAPI.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/shipments`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-        JSON.stringify(shipment)
+        shipment,
+        token
       );
       return response;
     } catch (error) {

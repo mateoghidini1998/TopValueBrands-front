@@ -3,7 +3,7 @@
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 import { ColumnDef } from "@tanstack/react-table";
 import { StorageProduct } from "./interfaces";
-import ActionsCell from "./actions-cell";
+import StorageActionsCell from "./storage-actions-cell";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 
 export const getStorageCols = (
@@ -23,6 +23,14 @@ export const getStorageCols = (
     cell: ({ row }) => `#${row.original.pallet_number}`,
   },
   {
+    accessorKey: "warehouse_location",
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader column={column} title="Warehouse Location" />
+      );
+    },
+  },
+  {
     accessorKey: "product_name",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Product" />;
@@ -33,8 +41,13 @@ export const getStorageCols = (
     ),
   },
   {
-    accessorKey: "product.ASIN",
-    header: "ASIN",
+    accessorKey: "product.seller_sku",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Seller SKU" />;
+    },
+    cell: ({ row }) => (
+      <p className="w-full">{row.original.product.seller_sku}</p>
+    ),
   },
   // {
   //   accessorKey: "product.seller_sku",
@@ -49,9 +62,7 @@ export const getStorageCols = (
   {
     accessorKey: "available_quantity",
     header: ({ column }) => {
-      return (
-        <DataTableColumnHeader column={column} title="Quantity Available" />
-      );
+      return <DataTableColumnHeader column={column} title="Available" />;
     },
   },
   // {
@@ -63,7 +74,10 @@ export const getStorageCols = (
     id: "actions",
     header: "Actions",
     cell: ({ row }) => (
-      <ActionsCell row={row} addProductToShipment={addProductToShipment} />
+      <StorageActionsCell
+        row={row}
+        addProductToShipment={addProductToShipment}
+      />
     ),
   },
 ];
