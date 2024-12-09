@@ -35,7 +35,6 @@ export default function ShipmentsActionsCell({
 
   const handleSubmit = () => {
     addProductToShipment(product, quantityAdded);
-    return toast.success("Successfully removed " + quantityAdded + " items");
   };
 
   return (

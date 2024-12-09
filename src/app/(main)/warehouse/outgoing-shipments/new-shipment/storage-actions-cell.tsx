@@ -36,7 +36,6 @@ export default function StorageActionsCell({
 
   const handleSubmit = () => {
     addProductToShipment(product, quantityAdded);
-    return toast.success("Successfully added " + quantityAdded + " items");
   };
 
   return (

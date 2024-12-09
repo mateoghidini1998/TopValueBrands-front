@@ -34,6 +34,14 @@ export default function NewShipment() {
     product: StorageProduct,
     quantity: number
   ) => {
+    if (product.available_quantity <= 0) {
+      return toast.error("Product out of stock");
+    }
+
+    if (quantity > product.available_quantity) {
+      return toast.error(`Available quantity: ${product.available_quantity}`);
+    }
+
     // add product to the shipmentProducts state with the quantity updated.
     setShipmentProducts((prev: any) => [...prev, { ...product, quantity }]);
 
@@ -55,6 +63,10 @@ export default function NewShipment() {
         })
       );
     }
+
+    return toast.success(
+      `Successfully added ${quantity} ${product.product.product_name} to the shipment`
+    );
   };
 
   const removeProductFromShipment = async (
