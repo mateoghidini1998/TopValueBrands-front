@@ -32,6 +32,7 @@ import {
 import { Settings2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { PaginationComponent } from "./data-table-pagination";
+import { Input } from "./input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,6 +41,7 @@ interface DataTableProps<TData, TValue> {
   pagination?: React.ReactElement;
   onSort?: (sorting: SortingState) => any;
   showHideColumns?: boolean;
+  searchInput?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -49,6 +51,7 @@ export function DataTable<TData, TValue>({
   pagination,
   onSort,
   showHideColumns = false,
+  searchInput = "",
 }: // setTableData,
 DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -92,16 +95,18 @@ DataTableProps<TData, TValue>) {
   return (
     <div className="w-full">
       <div className="flex items-center pb-4">
-        {/* <Input
-          placeholder="Filter by supplier..."
-          value={
-            (table.getColumn("supplier_name")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("supplier_name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm text-xs font-bold bg-light-2 dark:bg-dark-2 border border-[#EFF1F3] dark:border-[#393E4F] rounded-md"
-        /> */}
+        {searchInput !== "" && (
+          <Input
+            placeholder="Filter by Pallet Number..."
+            value={
+              (table.getColumn(searchInput)?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn(searchInput)?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm text-xs font-bold bg-light-2 dark:bg-dark-2 border border-[#EFF1F3] dark:border-[#393E4F] rounded-md"
+          />
+        )}
         {showHideColumns && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -151,10 +151,12 @@ export default function NewShipment() {
       </Button>
       <div className="w-full px-[1.3rem] py-0 flex items-start justify-between gap-8">
         <DataTable
+          searchInput={"pallet_number"}
           columns={getStorageCols(addProductToShipment)}
           data={storageProducts}
         />
         <DataTable
+          searchInput={"pallet_number"}
           columns={getShipmentsCols(removeProductFromShipment)}
           data={shipmentProducts}
         />
