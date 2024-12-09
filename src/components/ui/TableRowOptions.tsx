@@ -52,7 +52,7 @@ export default function TableRowOptions({
         </button>
         <button
           onClick={(id: any) => onDelete(id)}
-          className="w-full flex flex-start  px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2 "
+          className="w-full flex flex-start  px-4 py-2 text-sm text-[#EF4444] dark:text-white dark:hover:bg-dark-2 gap-2 items-center hover:bg-light-2 "
           role="menuitem"
         >
           <DeleteButton color={deleteColor} />

@@ -56,7 +56,7 @@ export default function RowActions({
         </button>
         <button
           onClick={onDelete}
-          className="w-full flex flex-start items-center gap-2 px-4 py-2 text-sm text-red-500 dark:text-white dark:hover:bg-dark-3 "
+          className="w-full flex flex-start items-center gap-2 px-4 py-2 text-sm text-[#EF4444] dark:text-white dark:hover:bg-dark-3 "
           role="menuitem"
         >
           <DeleteButton color={deleteColor} />
