@@ -40,6 +40,7 @@ import AnalyzeActionsCell from "./analyze-actions-cell";
 import InputQuantity from "./input-quantity";
 import InputProductCost from "./input-unit-price";
 import { NoteCell } from "./text-area-cell";
+import { BiArrowBack } from "react-icons/bi";
 
 export const getColumns = (
   setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>,
@@ -459,11 +460,17 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                     {editingOrder?.supplier_name}
                   </DialogTitle>
                   <DialogTitle className="absolute left-[3rem] translate-y-[-50%]  ">
-                    <Input
-                      placeholder="Search products"
-                      onChange={(e) => handleSearchProducts(e)}
-                      value={searchTerm}
-                    />
+                    <div className="flex items-center gap-4">
+                      <BiArrowBack
+                        className="cursor-pointer text-[26px]"
+                        onClick={() => setIsAnalyticsModalOpen(false)}
+                      />
+                      <Input
+                        placeholder="Search products"
+                        onChange={(e) => handleSearchProducts(e)}
+                        value={searchTerm}
+                      />
+                    </div>
                   </DialogTitle>
                   <div className="flex flex-col w-max space-x-4 p-4 max-h-[80dvh]">
                     {searchingProducts && (
