@@ -100,11 +100,11 @@ export default function OutgoingShipments() {
   if (isCreatingShipment) {
     return (
       <IndexPageContainer>
-        <div className="flex gap-4">
+        <div className="flex justify-start gap-4 w-full px-4 m-4">
           <Button variant="outline" onClick={handleSaveShipment}>
             Save Shipment
           </Button>
-          <Button variant="outline" onClick={handleCancel}>
+          <Button variant="destructive" onClick={handleCancel}>
             Cancel
           </Button>
         </div>
