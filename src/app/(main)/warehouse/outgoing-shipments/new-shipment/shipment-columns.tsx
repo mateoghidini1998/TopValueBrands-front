@@ -11,12 +11,6 @@ export const getShipmentsCols = (
   removeProductFromShipment: any
 ): ColumnDef<StorageProduct>[] => [
   {
-    accessorKey: "id",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="ID" />;
-    },
-  },
-  {
     accessorKey: "pallet_number",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Pallet Number" />;
