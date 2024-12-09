@@ -41,11 +41,8 @@ export default function NewShipment() {
     if (quantity > product.available_quantity) {
       return toast.error(`Available quantity: ${product.available_quantity}`);
     }
-
-    // add product to the shipmentProducts state with the quantity updated.
     setShipmentProducts((prev: any) => [...prev, { ...product, quantity }]);
 
-    // if quantity is == quantity_available, remove the product from the storageProducts state else sustract the quantity from the product
     if (quantity === product.available_quantity) {
       setStorageProducts((prev: any) =>
         prev.filter((p: StorageProduct) => p.id !== product.id)
@@ -73,7 +70,6 @@ export default function NewShipment() {
     product: StorageProduct,
     quantity: number
   ) => {
-    // Remove or update the product in the shipmentProducts state
     setShipmentProducts(
       (prev: any) =>
         prev
@@ -84,10 +80,9 @@ export default function NewShipment() {
             }
             return p;
           })
-          .filter((p: StorageProduct | null) => p !== null) // Remove products with quantity 0
+          .filter((p: StorageProduct | null) => p !== null)
     );
 
-    // Update the storageProducts state to restore the quantity
     setStorageProducts((prev: any) => {
       const productExists = prev.some(
         (p: StorageProduct) => p.id === product.id
@@ -104,7 +99,6 @@ export default function NewShipment() {
           return p;
         });
       } else {
-        // If the product doesn't exist in storageProducts, add it back
         return [...prev, { ...product, available_quantity: quantity }];
       }
     });
