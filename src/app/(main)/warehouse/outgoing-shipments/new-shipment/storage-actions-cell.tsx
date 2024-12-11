@@ -1,7 +1,7 @@
 "use client";
 import AddButton from "@/components/svgs/AddButton";
 import { Row } from "@tanstack/react-table";
-import { StorageProduct } from "./interfaces";
+import { Product } from "./interfaces";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,8 +20,8 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 interface ActionsCellProps {
-  row: Row<StorageProduct>;
-  addProductToShipment: (product: StorageProduct, quantity: number) => void;
+  row: Row<Product>;
+  addProductToShipment: (product: Product, quantity: number) => void;
 }
 
 export default function StorageActionsCell({

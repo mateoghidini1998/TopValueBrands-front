@@ -2,13 +2,13 @@
 
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 import { ColumnDef } from "@tanstack/react-table";
-import { StorageProduct } from "./interfaces";
+import { Product } from "./interfaces";
 import StorageActionsCell from "./storage-actions-cell";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 
 export const getStorageCols = (
   addProductToShipment: any
-): ColumnDef<StorageProduct>[] => [
+): ColumnDef<Product>[] => [
   {
     accessorKey: "pallet_number",
     header: ({ column }) => {
@@ -30,7 +30,7 @@ export const getStorageCols = (
       return <DataTableColumnHeader column={column} title="Product" />;
     },
     cell: ({ row }) => (
-      <ProductNameTableData product={row.original.product} width={250} />
+      <ProductNameTableData product={row.original} width={250} />
       // <p>{row.original.product.product_name}</p>
     ),
   },
@@ -39,9 +39,7 @@ export const getStorageCols = (
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Seller SKU" />;
     },
-    cell: ({ row }) => (
-      <p className="w-full">{row.original.product.seller_sku}</p>
-    ),
+    cell: ({ row }) => <p className="w-full">{row.original.seller_sku}</p>,
   },
   // {
   //   accessorKey: "product.seller_sku",

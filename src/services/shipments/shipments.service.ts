@@ -108,4 +108,42 @@ export class ShipmentsService {
       throw new Error("Error fetching data");
     }
   }
+
+  static async getPalletsByPurchaseOrder(purchaseOrderId: number) {
+    try {
+      // Obtener el token de autenticación desde las cookies
+      const token = await getAuthTokenCookies();
+
+      // Realizar la petición al backend
+      const response = await HttpAPI.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/shipments/pallets/${purchaseOrderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      console.error("Error fetching pallets by purchase order ID:", error);
+      throw new Error("Error fetching pallets by purchase order ID");
+    }
+  }
+
+  static async getPurchaseOrdersWithPallets() {
+    try {
+      const token = await getAuthTokenCookies();
+      const response = await HttpAPI.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/shipments/purchaseorders/pallets`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching data");
+    }
+  }
 }

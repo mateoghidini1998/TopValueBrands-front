@@ -2,34 +2,38 @@
 
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
 import { ColumnDef } from "@tanstack/react-table";
-import { StorageProduct } from "./interfaces";
+import { Product, StorageProduct } from "./interfaces";
 import StorageActionsCell from "./storage-actions-cell";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import ShipmentsActionsCell from "./shipments-actions-cell";
 
 export const getShipmentsCols = (
   removeProductFromShipment: any
-): ColumnDef<StorageProduct>[] => [
+): ColumnDef<Product>[] => [
   {
-    accessorKey: "pallet_number",
+    accessorKey: "seller_sku",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Pallet Number" />;
+      return <DataTableColumnHeader column={column} title="SKU" />;
     },
-    cell: ({ row }) => `#${row.original.pallet_number}`,
+    cell: ({ row }) => `${row.original.seller_sku}`,
   },
   {
     accessorKey: "product_name",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Product" />;
     },
-    cell: ({ row }) => (
-      <ProductNameTableData product={row.original.product} width={250} />
-      // <p>{row.original.product.product_name}</p>
-    ),
+    cell: ({ row }) => {
+      console.log(row.original);
+      return (
+        <ProductNameTableData product={row.original} width={250} />
+        // <p>{row.original.product.product_name}</p>
+      );
+    },
   },
   {
     accessorKey: "product.ASIN",
     header: "ASIN",
+    cell: ({ row }) => <p>{row.original.ASIN}</p>,
   },
   // {
   //   accessorKey: "product.seller_sku",

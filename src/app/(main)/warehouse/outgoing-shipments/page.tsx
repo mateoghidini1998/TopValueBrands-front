@@ -1,20 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { ShipmentsService } from "@/services/shipments/shipments.service";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import IndexPageContainer from "../../page.container";
 import { columns } from "./columns";
-import { Button } from "@/components/ui/button";
+import { NestedDataTable } from "./new-shipment/components/nested-data-table";
+import { Product, PurchaseOrderData } from "./new-shipment/interfaces";
 import { getShipmentsCols } from "./new-shipment/shipment-columns";
-import { getStorageCols } from "./new-shipment/columns";
-import { toast } from "sonner";
 
 export default function OutgoingShipments() {
   const [shipments, setShipments] = useState([]);
   const [isCreatingShipment, setIsCreatingShipment] = useState(false);
-  const [storageProducts, setStorageProducts] = useState([]);
-  const [shipmentProducts, setShipmentProducts] = useState([]);
+  const [shipmentProducts, setShipmentProducts] = useState<Product[]>([]);
+
+  const [poPalletProducts, setPoPalletProducts] = useState<PurchaseOrderData[]>(
+    []
+  );
+
+  console.log(poPalletProducts);
 
   useEffect(() => {
     const fetchShipments = async () => {
@@ -26,48 +32,143 @@ export default function OutgoingShipments() {
 
   useEffect(() => {
     if (isCreatingShipment) {
-      const fetchStorageProducts = async () => {
+      const fetchPoPalletProducts = async () => {
         try {
-          const response = await ShipmentsService.getStorageProducts();
-          setStorageProducts(response);
+          // Obtener los purchase orders con pallets
+          const purchaseOrdersWithPallets =
+            await ShipmentsService.getPurchaseOrdersWithPallets();
+
+          if (
+            !purchaseOrdersWithPallets ||
+            purchaseOrdersWithPallets.length === 0
+          ) {
+            console.warn("No purchase orders with pallets found.");
+            return;
+          }
+
+          // Crear un array para almacenar las respuestas
+          const allPoPalletProducts: PurchaseOrderData[] = [];
+
+          // Iterar sobre los purchase orders y obtener los pallets
+          for (const element of purchaseOrdersWithPallets) {
+            try {
+              const response = await ShipmentsService.getPalletsByPurchaseOrder(
+                element.id
+              );
+              allPoPalletProducts.push(response);
+            } catch (error) {
+              console.error(
+                `Error fetching pallets for purchase order ID: ${element.id}`,
+                error
+              );
+            }
+          }
+
+          console.log(allPoPalletProducts);
+
+          // Actualizar el estado con los datos obtenidos
+          setPoPalletProducts(allPoPalletProducts);
         } catch (error) {
-          console.error(error);
+          console.error("Error fetching purchase orders with pallets:", error);
         }
       };
-      fetchStorageProducts();
+
+      // Llamar a la función
+      fetchPoPalletProducts();
     }
   }, [isCreatingShipment]);
 
-  const addProductToShipment = (product, quantity) => {
+  const addPOPalletsProductsToShipment = (products: Product[]) => {
+    toast.info("Adding all PO products...");
+
+    setShipmentProducts((prev) => {
+      // Crear un mapa de los productos existentes en el envío
+      const shipmentMap = new Map(
+        prev.map((product) => [product.pallet_product_id, product])
+      );
+
+      // Iterar sobre los nuevos productos para agregarlos o actualizar cantidades
+      products.forEach((newProduct) => {
+        if (shipmentMap.has(newProduct.pallet_product_id)) {
+          // Si ya existe, actualiza la cantidad
+          const existingProduct = shipmentMap.get(newProduct.pallet_product_id);
+          if (existingProduct) {
+            // existingProduct.quantity += newProduct.quantity;
+            // shipmentMap.set(newProduct.pallet_product_id, existingProduct);
+
+            existingProduct.quantity += newProduct.quantity;
+          }
+        } else {
+          // Si no existe, agréguelo al mapa
+          shipmentMap.set(newProduct.pallet_product_id, { ...newProduct });
+        }
+      });
+
+      // Convertir el mapa nuevamente a un array
+      return Array.from(shipmentMap.values());
+    });
+
+    toast.success("All PO products added to shipment successfully!");
+  };
+
+  const addPalletsProductsToShipment = (products: Product[]) => {
+    toast.info("adding all PO Pallet products...");
+    setShipmentProducts((prev: Product[]) => [...prev, ...products]);
+  };
+
+  const addProductToShipment = (product: Product, quantity: number) => {
+    toast.info("Adding product...");
+
     if (quantity > product.available_quantity) {
       return toast.error(`Available quantity: ${product.available_quantity}`);
     }
+
+    // Agregar producto al envío
     setShipmentProducts((prev) => [...prev, { ...product, quantity }]);
-    setStorageProducts((prev) =>
-      prev.map((p) =>
-        p.id === product.id
-          ? { ...p, available_quantity: p.available_quantity - quantity }
-          : p
-      )
+
+    // Actualizar `poPalletProducts` adecuadamente
+    setPoPalletProducts((prev) =>
+      prev.map((po) => ({
+        ...po,
+        pallets: po.pallets.map((pallet) => ({
+          ...pallet,
+          products: pallet.products.map((p) =>
+            p.pallet_product_id === product.pallet_product_id
+              ? { ...p, available_quantity: p.available_quantity - quantity }
+              : p
+          ),
+        })),
+      }))
     );
+
+    toast.success("Product added to shipment successfully!");
   };
 
-  const removeProductFromShipment = (product, quantity) => {
+  const removeProductFromShipment = (product: Product, quantity: number) => {
+    // Eliminar o actualizar cantidad del producto en el envío
     setShipmentProducts((prev) =>
       prev
         .map((p) =>
-          p.id === product.id
+          p.pallet_product_id === product.pallet_product_id
             ? { ...p, quantity: p.quantity - quantity }
             : p
         )
         .filter((p) => p.quantity > 0)
     );
-    setStorageProducts((prev) =>
-      prev.map((p) =>
-        p.id === product.id
-          ? { ...p, available_quantity: p.available_quantity + quantity }
-          : p
-      )
+
+    // Restaurar la cantidad en `poPalletProducts`
+    setPoPalletProducts((prev) =>
+      prev.map((po) => ({
+        ...po,
+        pallets: po.pallets.map((pallet) => ({
+          ...pallet,
+          products: pallet.products.map((p) =>
+            p.pallet_product_id === product.pallet_product_id
+              ? { ...p, available_quantity: p.available_quantity + quantity }
+              : p
+          ),
+        })),
+      }))
     );
   };
 
@@ -75,7 +176,7 @@ export default function OutgoingShipments() {
     const shipmentNumber = `SHIPMENT_${Math.floor(Math.random() * 100000)}`;
     const shipment = {
       shipment_number: shipmentNumber,
-      palletproducts: shipmentProducts.map((p) => ({
+      palletproducts: shipmentProducts.map((p: any) => ({
         pallet_product_id: p.id,
         quantity: p.quantity,
       })),
@@ -109,13 +210,19 @@ export default function OutgoingShipments() {
           </Button>
         </div>
         <div className="w-full px-[1.3rem] py-0 flex items-start justify-between gap-8">
-          <DataTable
+          {/* <DataTable
             searchInput={"pallet_number"}
             columns={getStorageCols(addProductToShipment)}
             data={storageProducts}
+          /> */}
+          <NestedDataTable
+            data={poPalletProducts}
+            addProductToShipment={addProductToShipment}
+            addPalletProductToShipment={addPalletsProductsToShipment}
+            addPoPalletsProductsToShipment={addPOPalletsProductsToShipment}
           />
           <DataTable
-            searchInput={"pallet_number"}
+            // searchInput={"pallet_number"}
             columns={getShipmentsCols(removeProductFromShipment)}
             data={shipmentProducts}
           />
