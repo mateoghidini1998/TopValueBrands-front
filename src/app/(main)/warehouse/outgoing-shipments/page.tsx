@@ -76,9 +76,6 @@ export default function OutgoingShipments() {
     }
   }, [isCreatingShipment]);
 
-  console.log(shipmentProducts);
-  console.log(poPalletProducts);
-
   const addPOPalletsProductsToShipment = (products: Product[]) => {
     toast.info("Adding all PO products...");
 
@@ -145,8 +142,68 @@ export default function OutgoingShipments() {
   };
 
   const addPalletsProductsToShipment = (products: Product[]) => {
-    toast.info("adding all PO Pallet products...");
-    setShipmentProducts((prev: Product[]) => [...prev, ...products]);
+    toast.info("adding all Pallet products...");
+
+    setShipmentProducts((prev) => {
+      // Crear un mapa de los productos existentes en el envío
+      const shipmentMap = new Map(
+        prev.map((product) => [product.pallet_product_id, product])
+      );
+
+      // Iterar sobre los nuevos productos para agregar o actualizar cantidades
+      products.forEach((newProduct) => {
+        // Ignorar productos sin cantidad disponible
+        if (newProduct.available_quantity === 0) return;
+
+        if (shipmentMap.has(newProduct.pallet_product_id)) {
+          console.log("El producto ya existe");
+          // Si ya existe, actualizar la cantidad restante de `available_quantity`
+          const existingProduct = shipmentMap.get(newProduct.pallet_product_id);
+          if (existingProduct) {
+            const remainingQuantity =
+              newProduct.available_quantity +
+              existingProduct.quantity -
+              existingProduct.quantity;
+
+            if (remainingQuantity > 0) {
+              // existingProduct.quantity = remainingQuantity;
+              existingProduct.quantity = existingProduct.available_quantity;
+            }
+
+            shipmentMap.set(newProduct.pallet_product_id, existingProduct);
+          }
+        } else {
+          console.log("El producto no existe");
+          // Si no existe, agregar el producto con toda la `available_quantity`
+          shipmentMap.set(newProduct.pallet_product_id, {
+            ...newProduct,
+            quantity: newProduct.available_quantity,
+          });
+        }
+      });
+
+      // Convertir el mapa nuevamente a un array
+      return Array.from(shipmentMap.values());
+    });
+
+    // Actualizar `poPalletProducts` para establecer `available_quantity` a 0
+    setPoPalletProducts((prev) =>
+      prev.map((po) => ({
+        ...po,
+        pallets: po.pallets.map((pallet) => ({
+          ...pallet,
+          products: pallet.products.map((p) =>
+            products.some(
+              (prod) => prod.pallet_product_id === p.pallet_product_id
+            )
+              ? { ...p, available_quantity: 0 }
+              : p
+          ),
+        })),
+      }))
+    );
+
+    toast.success("All PO products added to shipment successfully!");
   };
 
   const addProductToShipment = (product: Product, quantity: number) => {

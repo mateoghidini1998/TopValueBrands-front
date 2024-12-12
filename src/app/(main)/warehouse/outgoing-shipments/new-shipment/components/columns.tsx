@@ -4,7 +4,6 @@ import { ProductNameTableData } from "@/components/inventory/ProductNameTableDat
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import AddButton from "../../../../../../components/svgs/AddButton";
 import { PalletsByPO, Product, PurchaseOrderData } from "../interfaces";
 import AddPOProductsToShipment from "./add-po-products-to-shipment";
 import StorageActionsCell from "../storage-actions-cell";
@@ -40,6 +39,7 @@ export const getPurchaseOrderColumns = (
     id: "actions",
     enableSorting: false,
     enableHiding: false,
+    header: "Add to Shipment",
     cell: ({ row }) => {
       const products = row.original.pallets
         .flatMap((pallet) => pallet.products)
@@ -60,10 +60,6 @@ export const getPalletColumns = (
   addPalletProductToShipment: any
 ): ColumnDef<PalletsByPO>[] => [
   {
-    accessorKey: "pallet_id",
-    header: "Pallet ID",
-  },
-  {
     accessorKey: "pallet_number",
     header: "Pallet Number",
     cell: ({ row }) => {
@@ -81,10 +77,20 @@ export const getPalletColumns = (
   },
   {
     id: "actions",
-    header: "Actions",
-
+    enableSorting: false,
+    enableHiding: false,
+    header: "Add to Shipment",
     cell: ({ row }) => {
-      return <p>hola</p>;
+      const products = row.original.products.flatMap((product) => product);
+
+      console.log(products);
+
+      return (
+        <AddPOProductsToShipment
+          products={products}
+          addProducts={addPalletProductToShipment}
+        />
+      );
     },
   },
 ];

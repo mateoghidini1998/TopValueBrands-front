@@ -198,7 +198,9 @@ function PalletTable({
     <Table>
       <TableHeader>
         <TableRow>
+          {/* Botón para expandir */}
           <TableHead className="w-[40px]"></TableHead>
+          {/* Renderizar encabezados de las columnas */}
           {getPalletColumns(addPalletProductToShipment).map((column, index) => (
             <TableHead key={index}>
               {column.header as React.ReactNode}
@@ -207,8 +209,10 @@ function PalletTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {pallets.map((pallet, index) => (
-          <React.Fragment key={index}>
+        {/* Renderizar filas */}
+        {pallets.map((pallet) => (
+          <React.Fragment key={pallet.pallet_id}>
+            {/* Fila principal */}
             <TableRow>
               <TableCell>
                 <Button
@@ -223,12 +227,27 @@ function PalletTable({
                   )}
                 </Button>
               </TableCell>
-              <TableCell>{pallet.pallet_id}</TableCell>
-              <TableCell>{pallet.products.length}</TableCell>
+              {getPalletColumns(addPalletProductToShipment).map(
+                (column, columnIndex) => (
+                  <TableCell key={columnIndex}>
+                    {flexRender(
+                      column.cell,
+                      // @ts-ignore
+                      { row: { original: pallet } }
+                    )}
+                  </TableCell>
+                )
+              )}
             </TableRow>
+
+            {/* Fila expandida */}
             {expandedRows[pallet.pallet_id.toString()] && (
               <TableRow>
-                <TableCell colSpan={getPalletColumns.length + 1}>
+                <TableCell
+                  colSpan={
+                    getPalletColumns(addPalletProductToShipment).length + 1
+                  }
+                >
                   <ProductTable
                     products={pallet.products}
                     addProductToShipment={addProductToShipment}
