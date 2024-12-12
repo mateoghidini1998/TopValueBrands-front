@@ -183,7 +183,7 @@ interface PalletTableProps {
   addProductToShipment: any;
 }
 
-function PalletTable({
+export function PalletTable({
   pallets,
   addPalletProductToShipment,
   addProductToShipment,
@@ -276,7 +276,10 @@ interface ProductTableProps {
   addProductToShipment: (product: any, quantity: number) => void;
 }
 
-function ProductTable({ products, addProductToShipment }: ProductTableProps) {
+export function ProductTable({
+  products,
+  addProductToShipment,
+}: ProductTableProps) {
   return (
     <Table className="bg-blue-50 dark:bg-dark">
       <TableHeader className="bg-blue-100 dark:bg-gray-500">

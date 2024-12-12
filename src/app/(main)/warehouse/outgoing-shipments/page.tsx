@@ -10,6 +10,7 @@ import { columns } from "./columns";
 import { NestedDataTable } from "./new-shipment/components/nested-data-table";
 import { Product, PurchaseOrderData } from "./new-shipment/interfaces";
 import { getShipmentsCols } from "./new-shipment/shipment-columns";
+import { TabbedDataTable } from "./new-shipment/components/tabbed-data-table";
 
 export default function OutgoingShipments() {
   const [shipments, setShipments] = useState([]);
@@ -307,17 +308,25 @@ export default function OutgoingShipments() {
             columns={getStorageCols(addProductToShipment)}
             data={storageProducts}
           /> */}
-          <NestedDataTable
+          {/* <NestedDataTable
             data={poPalletProducts}
             addProductToShipment={addProductToShipment}
             addPalletProductToShipment={addPalletsProductsToShipment}
             addPoPalletsProductsToShipment={addPOPalletsProductsToShipment}
-          />
-          <DataTable
-            // searchInput={"pallet_number"}
-            columns={getShipmentsCols(removeProductFromShipment)}
-            data={shipmentProducts}
-          />
+          /> */}
+          <div className="grid grid-cols-2 gap-4 w-full">
+            <TabbedDataTable
+              data={poPalletProducts}
+              addProductToShipment={addProductToShipment}
+              addPalletProductToShipment={addPalletsProductsToShipment}
+              addPoPalletsProductsToShipment={addPOPalletsProductsToShipment}
+            />
+            <DataTable
+              // searchInput={"pallet_number"}
+              columns={getShipmentsCols(removeProductFromShipment)}
+              data={shipmentProducts}
+            />
+          </div>
         </div>
       </IndexPageContainer>
     );
