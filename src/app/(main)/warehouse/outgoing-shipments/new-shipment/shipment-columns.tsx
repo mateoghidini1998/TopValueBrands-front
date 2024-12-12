@@ -23,7 +23,6 @@ export const getShipmentsCols = (
       return <DataTableColumnHeader column={column} title="Product" />;
     },
     cell: ({ row }) => {
-      console.log(row.original);
       return (
         <ProductNameTableData product={row.original} width={250} />
         // <p>{row.original.product.product_name}</p>
