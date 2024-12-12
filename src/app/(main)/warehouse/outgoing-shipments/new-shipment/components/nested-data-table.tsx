@@ -82,16 +82,16 @@ export function NestedDataTable({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full dark:bg-dark">
       <div className="rounded-md border">
-        <Table>
-          <TableHeader className="">
+        <Table className="bg-white dark:bg-dark">
+          <TableHeader className="bg-gray-100 dark:bg-dark-2">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="" key={headerGroup.id}>
-                <TableHead className="w-[40px]"></TableHead>
+              <TableRow className="w-full" key={headerGroup.id}>
+                <TableHead className=""></TableHead>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -108,12 +108,16 @@ export function NestedDataTable({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <React.Fragment key={row.id}>
-                  <TableRow data-state={row.getIsSelected() && "selected"}>
-                    <TableCell>
+                  <TableRow
+                    data-state={row.getIsSelected() && "selected"}
+                    className="border-b border-gray-200 dark:border-gray-700"
+                  >
+                    <TableCell className="dark:text-gray-300">
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleRowExpanded(row.id)}
+                        className="dark:text-gray-300 dark:hover:bg-dark-3"
                       >
                         {expandedRows[row.id] ? (
                           <ChevronDown className="h-4 w-4" />
@@ -123,7 +127,7 @@ export function NestedDataTable({
                       </Button>
                     </TableCell>
                     {row.getAllCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell className="dark:text-gray-300" key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -139,6 +143,7 @@ export function NestedDataTable({
                             addPoPalletsProductsToShipment
                           ).length + 1
                         }
+                        className="dark:text-gray-300"
                       >
                         <PalletTable
                           pallets={row.original.pallets}
@@ -159,7 +164,7 @@ export function NestedDataTable({
                     getPurchaseOrderColumns(addPoPalletsProductsToShipment)
                       .length + 1
                   }
-                  className="h-24 text-center"
+                  className="h-24 text-center dark:text-gray-300"
                 >
                   No results.
                 </TableCell>
@@ -195,30 +200,33 @@ function PalletTable({
   };
 
   return (
-    <Table>
-      <TableHeader>
+    <Table className="bg-gray-50 dark:bg-dark">
+      <TableHeader className="bg-gray-200 dark:bg-dark-3">
         <TableRow>
-          {/* Botón para expandir */}
           <TableHead className="w-[40px]"></TableHead>
-          {/* Renderizar encabezados de las columnas */}
           {getPalletColumns(addPalletProductToShipment).map((column, index) => (
-            <TableHead key={index}>
+            <TableHead
+              key={index}
+              className={`${column.header === "Actions" && "text-right"}`}
+            >
               {column.header as React.ReactNode}
             </TableHead>
           ))}
         </TableRow>
       </TableHeader>
+
       <TableBody>
         {/* Renderizar filas */}
         {pallets.map((pallet) => (
           <React.Fragment key={pallet.pallet_id}>
             {/* Fila principal */}
-            <TableRow>
-              <TableCell>
+            <TableRow className="border-b border-gray-100 dark:border-gray-700">
+              <TableCell className="dark:text-gray-300">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => toggleRowExpanded(pallet.pallet_id.toString())}
+                  className="dark:text-gray-300 dark:hover:bg-dark-3"
                 >
                   {expandedRows[pallet.pallet_id.toString()] ? (
                     <ChevronDown className="h-4 w-4" />
@@ -229,7 +237,7 @@ function PalletTable({
               </TableCell>
               {getPalletColumns(addPalletProductToShipment).map(
                 (column, columnIndex) => (
-                  <TableCell key={columnIndex}>
+                  <TableCell className="dark:text-gray-300" key={columnIndex}>
                     {flexRender(
                       column.cell,
                       // @ts-ignore
@@ -247,6 +255,7 @@ function PalletTable({
                   colSpan={
                     getPalletColumns(addPalletProductToShipment).length + 1
                   }
+                  className="dark:text-gray-300"
                 >
                   <ProductTable
                     products={pallet.products}
@@ -269,11 +278,14 @@ interface ProductTableProps {
 
 function ProductTable({ products, addProductToShipment }: ProductTableProps) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
+    <Table className="bg-blue-50 dark:bg-dark">
+      <TableHeader className="bg-blue-100 dark:bg-gray-500">
+        <TableRow className="">
           {getProductColumns(addProductToShipment).map((column, index) => (
-            <TableHead key={index}>
+            <TableHead
+              key={index}
+              className={`${column.header === "Actions" && "text-right"} `}
+            >
               {column.header as React.ReactNode}
             </TableHead>
           ))}
@@ -281,10 +293,13 @@ function ProductTable({ products, addProductToShipment }: ProductTableProps) {
       </TableHeader>
       <TableBody>
         {products.map((product) => (
-          <TableRow key={product.pallet_product_id}>
+          <TableRow
+            key={product.pallet_product_id}
+            className="border-b border-blue-100 dark:border-blue-800"
+          >
             {getProductColumns(addProductToShipment).map(
               (column: any, index: number) => (
-                <TableCell key={index}>
+                <TableCell className="dark:text-gray-300" key={index}>
                   {flexRender(column.cell, {
                     // @ts-ignore
                     row: { original: product },

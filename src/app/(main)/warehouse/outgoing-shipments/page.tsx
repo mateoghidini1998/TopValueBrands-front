@@ -77,8 +77,6 @@ export default function OutgoingShipments() {
   }, [isCreatingShipment]);
 
   const addPOPalletsProductsToShipment = (products: Product[]) => {
-    toast.info("Adding all PO products...");
-
     setShipmentProducts((prev) => {
       // Crear un mapa de los productos existentes en el envío
       const shipmentMap = new Map(
@@ -142,8 +140,6 @@ export default function OutgoingShipments() {
   };
 
   const addPalletsProductsToShipment = (products: Product[]) => {
-    toast.info("adding all Pallet products...");
-
     setShipmentProducts((prev) => {
       // Crear un mapa de los productos existentes en el envío
       const shipmentMap = new Map(
@@ -269,14 +265,17 @@ export default function OutgoingShipments() {
     const shipmentNumber = `SHIPMENT_${Math.floor(Math.random() * 100000)}`;
     const shipment = {
       shipment_number: shipmentNumber,
-      palletproducts: shipmentProducts.map((p: any) => ({
-        pallet_product_id: p.id,
+      palletproducts: shipmentProducts.map((p: Product) => ({
+        pallet_product_id: p.pallet_product_id,
         quantity: p.quantity,
       })),
     };
 
+    console.log(shipmentProducts);
+
     try {
       await ShipmentsService.createShipment(shipment);
+      console.log(shipment);
       toast.success("Shipment created successfully");
       setIsCreatingShipment(false);
       setShipmentProducts([]);

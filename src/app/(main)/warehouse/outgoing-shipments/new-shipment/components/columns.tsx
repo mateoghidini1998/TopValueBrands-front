@@ -17,7 +17,7 @@ export const getPurchaseOrderColumns = (
     header: ({ column }) => {
       return (
         <Button
-          className="text-xs"
+          className="pl-0 text-xs"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -32,24 +32,26 @@ export const getPurchaseOrderColumns = (
     header: "Pallet Count",
     cell: ({ row }) => {
       const palletCount = row.original.pallets.length;
-      return <div className="text-center">{palletCount}</div>;
+      return <div className="text-left">{palletCount}</div>;
     },
   },
   {
     id: "actions",
     enableSorting: false,
     enableHiding: false,
-    header: "Add to Shipment",
+    header: () => <div className="text-right">Actions</div>,
     cell: ({ row }) => {
       const products = row.original.pallets
         .flatMap((pallet) => pallet.products)
         .filter((product) => product.available_quantity > 0); // Filtra productos con cantidad > 0
 
       return (
-        <AddPOProductsToShipment
-          products={products}
-          addProducts={addPoPalletsProductsToShipment}
-        />
+        <div className="text-right">
+          <AddPOProductsToShipment
+            products={products}
+            addProducts={addPoPalletsProductsToShipment}
+          />
+        </div>
       );
     },
   },
@@ -63,7 +65,6 @@ export const getPalletColumns = (
     accessorKey: "pallet_number",
     header: "Pallet Number",
     cell: ({ row }) => {
-      console.log(row.original.pallet_number);
       return <p>{row.original.pallet_number}</p>;
     },
   },
@@ -72,24 +73,21 @@ export const getPalletColumns = (
     header: "Product Count",
     cell: ({ row }) => {
       const productCount = row.original.products.length;
-      return <div className="text-center">{productCount}</div>;
+      return <div className="text-left">{productCount}</div>;
     },
   },
   {
     id: "actions",
-    enableSorting: false,
-    enableHiding: false,
-    header: "Add to Shipment",
+    header: "Actions",
     cell: ({ row }) => {
       const products = row.original.products.flatMap((product) => product);
-
-      console.log(products);
-
       return (
-        <AddPOProductsToShipment
-          products={products}
-          addProducts={addPalletProductToShipment}
-        />
+        <div className="text-right">
+          <AddPOProductsToShipment
+            products={products}
+            addProducts={addPalletProductToShipment}
+          />
+        </div>
       );
     },
   },
@@ -123,14 +121,16 @@ export const getProductColumns = (
   },
   {
     id: "actions",
-    header: "Add to Shipment",
+    header: "Actions",
 
     cell: ({ row }) => {
       return (
-        <StorageActionsCell
-          row={row}
-          addProductToShipment={addProductToShipment}
-        />
+        <div className="text-right">
+          <StorageActionsCell
+            row={row}
+            addProductToShipment={addProductToShipment}
+          />
+        </div>
       );
     },
   },
