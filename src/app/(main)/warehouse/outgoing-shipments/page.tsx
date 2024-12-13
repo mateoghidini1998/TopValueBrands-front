@@ -11,6 +11,7 @@ import { NestedDataTable } from "./new-shipment/components/nested-data-table";
 import { Product, PurchaseOrderData } from "./new-shipment/interfaces";
 import { getShipmentsCols } from "./new-shipment/shipment-columns";
 import { TabbedDataTable } from "./new-shipment/components/tabbed-data-table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function OutgoingShipments() {
   const [shipments, setShipments] = useState([]);
@@ -294,39 +295,49 @@ export default function OutgoingShipments() {
   if (isCreatingShipment) {
     return (
       <IndexPageContainer>
-        <div className="flex justify-start gap-4 w-full px-4 m-4">
-          <Button variant="outline" onClick={handleSaveShipment}>
-            Save Shipment
-          </Button>
-          <Button variant="destructive" onClick={handleCancel}>
-            Cancel
-          </Button>
-        </div>
-        <div className="w-full px-[1.3rem] py-0 flex items-start justify-between gap-8">
-          {/* <DataTable
-            searchInput={"pallet_number"}
-            columns={getStorageCols(addProductToShipment)}
-            data={storageProducts}
-          /> */}
-          {/* <NestedDataTable
-            data={poPalletProducts}
-            addProductToShipment={addProductToShipment}
-            addPalletProductToShipment={addPalletsProductsToShipment}
-            addPoPalletsProductsToShipment={addPOPalletsProductsToShipment}
-          /> */}
-          <div className="grid grid-cols-2 gap-4 w-full">
-            <TabbedDataTable
-              data={poPalletProducts}
-              addProductToShipment={addProductToShipment}
-              addPalletProductToShipment={addPalletsProductsToShipment}
-              addPoPalletsProductsToShipment={addPOPalletsProductsToShipment}
-            />
-            <DataTable
-              // searchInput={"pallet_number"}
-              columns={getShipmentsCols(removeProductFromShipment)}
-              data={shipmentProducts}
-            />
-          </div>
+        <div className="min-h-[60vh] bg-transparent p-6 w-full">
+          <Card className="container mx-auto">
+            <CardHeader className="border-b">
+              <div className="flex items-center justify-between">
+                <CardTitle>Manage Shipment</CardTitle>
+                <div className="flex gap-3">
+                  <Button variant="outline" onClick={handleSaveShipment}>
+                    Save Shipment
+                  </Button>
+                  <Button variant="destructive" onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold">Available Products</h2>
+                  <div className="rounded-lg border bg-card">
+                    <TabbedDataTable
+                      data={poPalletProducts}
+                      addProductToShipment={addProductToShipment}
+                      addPalletProductToShipment={addPalletsProductsToShipment}
+                      addPoPalletsProductsToShipment={
+                        addPOPalletsProductsToShipment
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold">Selected Products</h2>
+                  <div className="rounded-lg border bg-card">
+                    <DataTable
+                      searchInput="ASIN"
+                      columns={getShipmentsCols(removeProductFromShipment)}
+                      data={shipmentProducts}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </IndexPageContainer>
     );

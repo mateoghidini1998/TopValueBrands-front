@@ -60,7 +60,7 @@ export function TabbedDataTable({
   }, [allProducts, productFilter]);
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab}>
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="relative">
       <TabsList className="mb-4">
         <TabsTrigger value="purchase-orders">Purchase Orders</TabsTrigger>
         <TabsTrigger value="pallets">Pallets</TabsTrigger>
@@ -72,7 +72,7 @@ export function TabbedDataTable({
           placeholder="Search by order number"
           value={poFilter}
           onChange={(e) => setPoFilter(e.target.value)}
-          className="mb-4 w-80"
+          className="mb-4 w-80 absolute top-0 right-0"
         />
         <NestedDataTable
           data={filteredPurchaseOrders}
@@ -87,7 +87,7 @@ export function TabbedDataTable({
           placeholder="Search by pallet number"
           value={palletFilter}
           onChange={(e) => setPalletFilter(e.target.value)}
-          className="mb-4 w-80"
+          className="mb-4 w-80 absolute top-0 right-0"
         />
         <PalletTable
           pallets={filteredPallets}
@@ -101,7 +101,7 @@ export function TabbedDataTable({
           placeholder="Search by ASIN, product name, or seller SKU"
           value={productFilter}
           onChange={(e) => setProductFilter(e.target.value)}
-          className="mb-4 w-80"
+          className="mb-4 w-80 absolute top-0 right-0"
         />
         <ProductTable
           products={filteredProducts}
