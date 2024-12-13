@@ -296,7 +296,7 @@ export default function OutgoingShipments() {
     return (
       <IndexPageContainer>
         <div className="min-h-[60vh] bg-transparent p-6 w-full">
-          <Card className="container mx-auto">
+          <Card className="w-full mx-auto">
             <CardHeader className="border-b">
               <div className="flex items-center justify-between">
                 <CardTitle>Manage Shipment</CardTitle>
