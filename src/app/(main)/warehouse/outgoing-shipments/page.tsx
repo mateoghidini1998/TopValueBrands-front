@@ -314,7 +314,7 @@ export default function OutgoingShipments() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <h2 className="text-lg font-semibold">Available Products</h2>
-                  <div className="rounded-lg border bg-card">
+                  <div className="rounded-lg border bg-card p-4">
                     <TabbedDataTable
                       data={poPalletProducts}
                       addProductToShipment={addProductToShipment}
@@ -327,7 +327,7 @@ export default function OutgoingShipments() {
                 </div>
                 <div className="space-y-4">
                   <h2 className="text-lg font-semibold">Selected Products</h2>
-                  <div className="rounded-lg border bg-card">
+                  <div className="rounded-lg border bg-card p-4">
                     <DataTable
                       searchInput="ASIN"
                       columns={getShipmentsCols(removeProductFromShipment)}
