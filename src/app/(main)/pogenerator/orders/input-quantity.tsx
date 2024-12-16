@@ -77,7 +77,7 @@ const InputQuantity = ({
 
   return (
     <Input
-      className="w-24 text-center text-xs"
+      className="w-20 h-8 text-center text-xs"
       type="number"
       step="0.01"
       value={value}
