@@ -472,7 +472,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                       />
                     </div>
                   </DialogTitle>
-                  <div className="flex flex-col w-max space-x-4 p-4 max-h-[80dvh]">
+                  <div className="flex flex-col space-x-4 p-4 w-full">
                     {searchingProducts && (
                       <DataTable
                         columns={getTrackedProductsColAnalyze(
