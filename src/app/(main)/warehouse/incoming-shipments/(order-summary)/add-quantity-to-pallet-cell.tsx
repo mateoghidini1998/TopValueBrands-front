@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type AddQuantityCellProps = {
   purchaseOrderProductId: number;
@@ -38,6 +39,10 @@ export default function AddQuantityToPalletCell({
 
   const handleQuantityChange = (event: any) => {
     const newQuantity = parseInt(event.target.value);
+
+    if (newQuantity > initialAvailableQuantity) {
+      return toast.error("Quantity cannot be greater than quantity available");
+    }
 
     if (isNaN(newQuantity) || newQuantity < 0) return;
 

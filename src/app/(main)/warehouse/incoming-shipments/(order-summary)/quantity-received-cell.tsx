@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type QuantityReceivedCellProps = {
   row: any;
@@ -48,6 +49,13 @@ export default function QuantityReceivedCell({
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newQuantity = e.target.value;
+
+    if (newQuantity > row.original.quantity_purchased) {
+      return toast.error(
+        "Quantity received cannot be greater than quantity purchased"
+      );
+    }
+
     setQuantityReceived(newQuantity);
 
     if (searchTimeout) {
@@ -100,6 +108,8 @@ export default function QuantityReceivedCell({
     );
   };
 
+  console.log(row.original.quantity_purchased);
+
   return (
     <Input
       type="number"
@@ -107,6 +117,7 @@ export default function QuantityReceivedCell({
       value={quantityReceived}
       onChange={handleQuantityChange}
       min={0} // Si quieres restringir a números positivos
+      max={row.original.quantity_purchased}
     />
   );
 }

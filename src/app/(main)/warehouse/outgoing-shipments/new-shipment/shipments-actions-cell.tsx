@@ -37,6 +37,15 @@ export default function ShipmentsActionsCell({
     addProductToShipment(product, quantityAdded);
   };
 
+  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (parseInt(event.target.value) > row.original.quantity) {
+      toast.error("Quantity cannot be greater than quantity available");
+      setQuantityAdded(0);
+    } else {
+      setQuantityAdded(parseInt(event.target.value, 10));
+    }
+  };
+
   return (
     // center the dialog into the center of the screen
     <Dialog>
@@ -61,7 +70,8 @@ export default function ShipmentsActionsCell({
               id="quantity"
               type="number"
               defaultValue={quantityAdded}
-              onChange={(e) => setQuantityAdded(parseInt(e.target.value))}
+              max={row.original.quantity}
+              onChange={handleQuantityChange}
             />
           </div>
         </div>
