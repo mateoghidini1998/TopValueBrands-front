@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
 import { OrderSummaryReceivedData } from "./order-summary-received-data";
+import { toast } from "sonner";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
@@ -92,119 +93,132 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     }
   }, [productsAddedToCreatePallet]);
 
+  const handleCreatePallet = () => {
+    // Validate that every product has a quantity greater than 0 and lower than the quantity available
+    productsAddedToCreatePallet.forEach((product) => {
+      if (
+        product.quantity <= 0 ||
+        product.quantity > product.quantity_available
+      ) {
+        console.log("Error: Invalid product quantity");
+        return toast.error("Error: Invalid product quantity");
+      }
+    });
+
+    createPallet(palletData);
+    setPalletData((prevPalletData) => ({
+      ...prevPalletData,
+      pallet_number: Math.floor(Math.random() * 1000000),
+    }));
+  };
+
   return (
-    <>
-      <DialogContent
-        className={`max-h-[95dvh] overflow-auto custom_scroll flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] translate-y-[-50%] translate-x-[-50%]`}
-      >
-        <DialogHeader className="flex flex-col items-center gap-4">
-          <Tabs defaultValue="summary" className="w-full relative">
-            <TabsContent value="summary">
-              <DialogTitle className="text-left">
-                Order Summary - {order.order_number}
-              </DialogTitle>
-              <DialogDescription className="w-full py-6">
-                <OrderSummaryReceivedData orderId={order.id!!} />
-              </DialogDescription>
-            </TabsContent>
+    <DialogContent
+      className={`max-h-[95dvh] overflow-auto custom_scroll flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] translate-y-[-50%] translate-x-[-50%]`}
+    >
+      <DialogHeader className="flex flex-col items-center gap-4">
+        <Tabs defaultValue="summary" className="w-full relative">
+          <TabsContent value="summary">
+            <DialogTitle className="text-left">
+              Order Summary - {order.order_number}
+            </DialogTitle>
+            <DialogDescription className="w-full py-6">
+              <OrderSummaryReceivedData orderId={order.id!!} />
+            </DialogDescription>
+          </TabsContent>
 
-            <TabsContent value="pallets">
-              <DialogTitle className="text-left">
-                Create Pallets - {order.order_number}
-              </DialogTitle>
+          <TabsContent value="pallets">
+            <DialogTitle className="text-left">
+              Create Pallets - {order.order_number}
+            </DialogTitle>
 
-              <DialogDescription className="w-full">
-                <DataTable
-                  columns={columnsAvaliablePallet}
-                  data={productsAvaliableToCreatePallet} // Usamos el estado aquí también
-                  dataLength={10}
-                />
-              </DialogDescription>
-              <DialogDescription className="w-full">
-                <DataTable
-                  columns={columnsCreatePallet}
-                  data={productsAddedToCreatePallet} // Usamos el estado aquí también
-                  dataLength={10}
-                />
-              </DialogDescription>
+            <DialogDescription className="w-full">
+              <DataTable
+                columns={columnsAvaliablePallet}
+                data={productsAvaliableToCreatePallet} // Usamos el estado aquí también
+                dataLength={10}
+              />
+            </DialogDescription>
+            <DialogDescription className="w-full">
+              <DataTable
+                columns={columnsCreatePallet}
+                data={productsAddedToCreatePallet} // Usamos el estado aquí también
+                dataLength={10}
+              />
+            </DialogDescription>
 
-              <DialogDescription className="w-full flex flex-col justify-end gap-2 py-6">
-                <div className="flex flex-col gap-2 w-full">
-                  <p className="font-bold text-lg w-full">Pallet Summary</p>
-                  <Separator />
-                  <ul className="flex flex-col gap-2 w-full">
-                    <li className="">
-                      Pallet Number: {palletData.pallet_number}
-                    </li>
-                    <li className=" flex gap-2 items-center justify-start">
-                      Warehouse Location:
-                      <Select
-                        onValueChange={(value) => {
-                          setPalletData({
-                            ...palletData,
-                            warehouse_location_id: parseInt(value),
-                          });
-                        }}
-                      >
-                        <SelectTrigger className="w-[250px]">
-                          <SelectValue placeholder="Select warehouse location" />
-                        </SelectTrigger>
-                        <SelectContent className="w-[200px]">
-                          <SelectItem value="1">A1</SelectItem>
-                          <SelectItem value="2">A2</SelectItem>
-                          <SelectItem value="3">B1</SelectItem>
-                          <SelectItem value="4">B2</SelectItem>
-                          <SelectItem value="5">C1</SelectItem>
-                          <SelectItem value="6">C2</SelectItem>
-                          <SelectItem value="7">D1</SelectItem>
-                          <SelectItem value="8">D2</SelectItem>
-                          <SelectItem value="9">E1</SelectItem>
-                          <SelectItem value="10">E2</SelectItem>
-                          <SelectItem value="11">Floor</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </li>
-                    <li className="">
-                      Purchase Order Number: {order?.order_number}
-                    </li>
+            <DialogDescription className="w-full flex flex-col justify-end gap-2 py-6">
+              <div className="flex flex-col gap-2 w-full">
+                <p className="font-bold text-lg w-full">Pallet Summary</p>
+                <Separator />
+                <ul className="flex flex-col gap-2 w-full">
+                  <li className="">
+                    Pallet Number: {palletData.pallet_number}
+                  </li>
+                  <li className=" flex gap-2 items-center justify-start">
+                    Warehouse Location:
+                    <Select
+                      onValueChange={(value) => {
+                        setPalletData({
+                          ...palletData,
+                          warehouse_location_id: parseInt(value),
+                        });
+                      }}
+                    >
+                      <SelectTrigger className="w-[250px]">
+                        <SelectValue placeholder="Select warehouse location" />
+                      </SelectTrigger>
+                      <SelectContent className="w-[200px]">
+                        <SelectItem value="1">A1</SelectItem>
+                        <SelectItem value="2">A2</SelectItem>
+                        <SelectItem value="3">B1</SelectItem>
+                        <SelectItem value="4">B2</SelectItem>
+                        <SelectItem value="5">C1</SelectItem>
+                        <SelectItem value="6">C2</SelectItem>
+                        <SelectItem value="7">D1</SelectItem>
+                        <SelectItem value="8">D2</SelectItem>
+                        <SelectItem value="9">E1</SelectItem>
+                        <SelectItem value="10">E2</SelectItem>
+                        <SelectItem value="11">Floor</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </li>
+                  <li className="">
+                    Purchase Order Number: {order?.order_number}
+                  </li>
 
-                    <li>Date: {new Date().toLocaleDateString("en-US", {})}</li>
+                  <li>Date: {new Date().toLocaleDateString("en-US", {})}</li>
 
-                    <li className="">
-                      Total Quantity:{" "}
-                      {productsAddedToCreatePallet.reduce(
-                        (acc, product) => acc + product.quantity,
-                        0
-                      )}
-                    </li>
-                  </ul>
-                </div>
+                  <li className="">
+                    Total Quantity:{" "}
+                    {productsAddedToCreatePallet.reduce(
+                      (acc, product) => acc + product.quantity,
+                      0
+                    )}
+                  </li>
+                </ul>
+              </div>
 
-                <div className="flex gap-2 w-[300px] absolute bottom-0 left-0">
-                  <Button
-                    value="default"
-                    className="w-[100px]"
-                    onClick={() => {
-                      createPallet(palletData);
-                      setPalletData((prevPalletData) => ({
-                        ...prevPalletData,
-                        pallet_number: Math.floor(Math.random() * 1000000),
-                      }));
-                    }}
-                  >
-                    Save
-                  </Button>
-                </div>
-              </DialogDescription>
-            </TabsContent>
+              <div className="flex gap-2 w-[300px] absolute bottom-0 left-0">
+                <Button
+                  value="default"
+                  className="w-[100px]"
+                  onClick={() => {
+                    handleCreatePallet();
+                  }}
+                >
+                  Save
+                </Button>
+              </div>
+            </DialogDescription>
+          </TabsContent>
 
-            <TabsList className="w-[350px] grid ml-auto grid-cols-2">
-              <TabsTrigger value="summary">Summary</TabsTrigger>
-              <TabsTrigger value="pallets">Pallets</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </DialogHeader>
-      </DialogContent>
-    </>
+          <TabsList className="w-[350px] grid ml-auto grid-cols-2">
+            <TabsTrigger value="summary">Summary</TabsTrigger>
+            <TabsTrigger value="pallets">Pallets</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </DialogHeader>
+    </DialogContent>
   );
 }

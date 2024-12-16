@@ -68,10 +68,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <DialogContent>
-          <DialogTitle>Order Summary</DialogTitle>
-          <OrderSummary order={incomingOrder} />
-        </DialogContent>
+        <OrderSummary order={incomingOrder} />
       </Dialog>
     </div>
   );

@@ -40,10 +40,6 @@ export default function AddQuantityToPalletCell({
   const handleQuantityChange = (event: any) => {
     const newQuantity = parseInt(event.target.value);
 
-    if (newQuantity > initialAvailableQuantity) {
-      return toast.error("Quantity cannot be greater than quantity available");
-    }
-
     if (isNaN(newQuantity) || newQuantity < 0) return;
 
     const quantityDifference = newQuantity - quantity;
