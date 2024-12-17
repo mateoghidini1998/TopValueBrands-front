@@ -46,6 +46,11 @@ export const MAIN_ROUTES = [
     icon: <Shop />,
   },
   { title: "Warehouse - Storage", href: "/warehouse/storage", icon: <Shop /> },
+  {
+    title: "Warehouse - Storage - Pallet",
+    href: "/warehouse/storage/:id",
+    icon: <Shop />,
+  },
   { title: "Users", href: "/users", icon: <Users /> },
   { title: "Suppliers", href: "/suppliers", icon: <Users /> },
 ];

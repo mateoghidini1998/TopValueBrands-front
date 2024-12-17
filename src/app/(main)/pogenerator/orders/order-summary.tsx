@@ -593,7 +593,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                 variant={"tvb"}
                 onClick={handleUpdatePurchaseOrder}
               >
-                Confirm
+                Save
               </Button>
             </DialogPrimitive.Close>
           </DialogFooter>
