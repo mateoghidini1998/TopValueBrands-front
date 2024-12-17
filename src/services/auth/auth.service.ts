@@ -1,4 +1,5 @@
 import { HttpAPI } from "../common/http.service";
+
 export class AuthService {
   static async login(
     email: string,
@@ -6,14 +7,17 @@ export class AuthService {
     onUserLoaded: (user: any) => void
   ) {
     const response = await HttpAPI.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login `,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
       {
         email,
         password,
       }
     );
-    localStorage.setItem("access-token", response.token);
 
+    // Configurar la cookie
+    document.cookie = `access-token=${response.token}; path=/; secure; samesite=strict;`;
+
+    // Obtener y cargar perfil de usuario
     const userResponse = await HttpAPI.get(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/me`,
       {
@@ -23,9 +27,7 @@ export class AuthService {
       }
     );
     onUserLoaded(userResponse.data);
-    document.cookie = "authenticated=true; path=/";
-    // Establecer el token como una cookie
-    document.cookie = `access-token=${response.token}; path=/; secure; samesite=strict`;
+
     return response;
   }
 
@@ -46,14 +48,10 @@ export class AuthService {
   }
 
   static async logout() {
-    localStorage.removeItem("access-token");
-    function deleteCookie(name: string) {
-      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-      document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT; secure; samesite=strict`;
-    }
-    deleteCookie("authenticated");
-    deleteCookie("access-token");
+    // Eliminar cookie
+    document.cookie = `access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict`;
 
-    // window.location.replace("/login");
+    // Redirigir al login
+    window.location.replace("/login");
   }
 }
