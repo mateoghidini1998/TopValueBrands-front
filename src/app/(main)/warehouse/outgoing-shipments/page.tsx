@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function OutgoingShipments() {
   const [shipments, setShipments] = useState([]);
   const [isCreatingShipment, setIsCreatingShipment] = useState(false);
+  const [shipmentCreated, setShipmentCreated] = useState(false);
   const [shipmentProducts, setShipmentProducts] = useState<Product[]>([]);
 
   const [poPalletProducts, setPoPalletProducts] = useState<PurchaseOrderData[]>(
@@ -28,7 +29,7 @@ export default function OutgoingShipments() {
       setShipments(response.shipments);
     };
     fetchShipments();
-  }, []);
+  }, [shipmentCreated]);
 
   useEffect(() => {
     if (isCreatingShipment) {
@@ -281,6 +282,7 @@ export default function OutgoingShipments() {
       toast.success("Shipment created successfully");
       setIsCreatingShipment(false);
       setShipmentProducts([]);
+      setShipmentCreated(!shipmentCreated);
     } catch (error) {
       toast.error("Error creating shipment");
       console.error(error);

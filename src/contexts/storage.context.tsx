@@ -30,12 +30,6 @@ export const StorageProvider: FC<PropsWithChildren> = ({
 }: PropsWithChildren) => {
   const [pallets, setPallets] = useState<PalletType[]>([]);
 
-  useEffect(() => {
-    getPallets();
-  }, []);
-
-  // console.log(pallets);
-
   // Corrige la función getPallets para que retorne un arreglo de pallets
   const getPallets = async (): Promise<PalletType[]> => {
     try {

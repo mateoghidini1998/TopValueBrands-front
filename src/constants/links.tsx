@@ -41,8 +41,8 @@ export const MAIN_ROUTES = [
     icon: <Shop />,
   },
   {
-    title: "Warehouse - New Shipmnennt",
-    href: "/warehouse/outgoing-shipments/new-shipment",
+    title: "Warehouse - Shipment Details",
+    href: "/warehouse/outgoing-shipments/details/:id",
     icon: <Shop />,
   },
   { title: "Warehouse - Storage", href: "/warehouse/storage", icon: <Shop /> },
