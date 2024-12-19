@@ -20,7 +20,7 @@ export class ShipmentsService {
       const response = await HttpAPI.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/shipments`,
         shipment,
-        token
+        token!!
       );
       return response;
     } catch (error) {
@@ -57,9 +57,11 @@ export class ShipmentsService {
           },
         }
       );
+      console.log(response);
       return response;
     } catch (error) {
-      throw new Error("Error fetching data");
+      // throw new Error("Error fetching data");
+      console.log(error);
     }
   }
 

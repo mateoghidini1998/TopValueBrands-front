@@ -20,6 +20,7 @@ export interface PalletsByPO {
   pallet_id: number;
   purchase_order_id: number;
   pallet_number: string;
+  purchase_order_number: string;
   products: Product[];
 }
 

@@ -15,24 +15,21 @@ export const getPurchaseOrderColumns = (
   {
     accessorKey: "order_number",
     header: ({ column }) => {
-      return (
-        <Button
-          className="pl-0 text-xs"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Order Number
-          <ArrowUpDown className="text-xs ml-2 h-4 w-4" />
-        </Button>
-      );
+      return <p className="text-center"> Order Number</p>;
+    },
+    cell: ({ row }) => {
+      console.log(row.original);
+      return <div className="text-center">{row.original.order_number}</div>;
     },
   },
   {
     accessorKey: "palletCount",
-    header: "Pallet Count",
+    header: ({ column }) => {
+      return <p className="text-center">Pallet Count</p>;
+    },
     cell: ({ row }) => {
       const palletCount = row.original.pallets.length;
-      return <div className="text-left">{palletCount}</div>;
+      return <div className="text-center">{palletCount}</div>;
     },
   },
   {
@@ -63,17 +60,35 @@ export const getPalletColumns = (
 ): ColumnDef<PalletsByPO>[] => [
   {
     accessorKey: "pallet_number",
-    header: "Pallet Number",
+    header: ({ column }) => {
+      return <p className="text-center">Pallet Number</p>;
+    },
     cell: ({ row }) => {
-      return <p>{row.original.pallet_number}</p>;
+      return <p className="text-center">{row.original.pallet_number}</p>;
+    },
+  },
+  {
+    accessorKey: "Order Number",
+    header: ({ column }) => {
+      return <p className="text-center">Order Number</p>;
+    },
+    cell: ({ row }) => {
+      console.log(row.original);
+      return (
+        <p className="text-center">
+          {row.original?.purchase_order_number || ""}
+        </p>
+      );
     },
   },
   {
     accessorKey: "productCount",
-    header: "Product Count",
+    header: ({ column }) => {
+      return <p className="text-center">Product Count</p>;
+    },
     cell: ({ row }) => {
       const productCount = row.original.products.length;
-      return <div className="text-left">{productCount}</div>;
+      return <div className="text-center">{productCount}</div>;
     },
   },
   {
@@ -105,19 +120,36 @@ export const getProductColumns = (
     },
   },
   {
+    accessorKey: "pallet_number",
+    header: ({ column }) => {
+      return <p className="text-center">Pallet Number</p>;
+    },
+    cell: ({ row }) => (
+      <p className="text-center"># {row.original.pallet_number}</p>
+    ),
+  },
+  {
     accessorKey: "available_quantity",
-    header: "Available Quantity",
-    cell: ({ row }) => <p>{row.original.available_quantity}</p>,
+    header: ({ column }) => {
+      return <p className="text-center">Available Quantity</p>;
+    },
+    cell: ({ row }) => (
+      <p className="text-center">{row.original.available_quantity}</p>
+    ),
   },
   {
     accessorKey: "seller_sku",
-    header: "Seller SKU",
-    cell: ({ row }) => <p>{row.original.seller_sku}</p>,
+    header: ({ column }) => {
+      return <p className="text-center">Seller SKU</p>;
+    },
+    cell: ({ row }) => <p className="text-center">{row.original.seller_sku}</p>,
   },
   {
     accessorKey: "ASIN",
-    header: "ASIN",
-    cell: ({ row }) => <p>{row.original.ASIN}</p>,
+    header: ({ column }) => {
+      return <p className="text-center">ASIN</p>;
+    },
+    cell: ({ row }) => <p className="text-center">{row.original.ASIN}</p>,
   },
   {
     id: "actions",

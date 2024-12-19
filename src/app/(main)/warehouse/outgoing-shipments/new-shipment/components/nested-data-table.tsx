@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Column,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -88,7 +89,7 @@ export function NestedDataTable({
           <TableHeader className="bg-gray-100 dark:bg-dark-2">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="w-full" key={headerGroup.id}>
-                <TableHead className=""></TableHead>
+                <TableHead className="">Show Pallets</TableHead>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id} className="">
@@ -203,13 +204,22 @@ export function PalletTable({
     <Table className="bg-gray-50 dark:bg-dark">
       <TableHeader className="bg-gray-200 dark:bg-dark-3">
         <TableRow>
-          <TableHead className="w-[40px]"></TableHead>
+          <TableHead className="w-[40px]">Show Products</TableHead>
           {getPalletColumns(addPalletProductToShipment).map((column, index) => (
             <TableHead
               key={index}
-              className={`${column.header === "Actions" && "text-right"}`}
+              className={`${
+                typeof column.header === "string"
+                  ? column.header === "Actions" && "text-right"
+                  : ""
+              }`}
             >
-              {column.header as React.ReactNode}
+              {typeof column.header === "function"
+                ? // @ts-ignore
+                  column.header({
+                    column: column as unknown as Column<PalletsByPO, unknown>,
+                  })
+                : column.header}
             </TableHead>
           ))}
         </TableRow>
@@ -287,9 +297,18 @@ export function ProductTable({
           {getProductColumns(addProductToShipment).map((column, index) => (
             <TableHead
               key={index}
-              className={`${column.header === "Actions" && "text-right"} `}
+              className={`${
+                typeof column.header === "string"
+                  ? column.header === "Actions" && "text-right"
+                  : ""
+              }`}
             >
-              {column.header as React.ReactNode}
+              {typeof column.header === "function"
+                ? // @ts-ignore
+                  column.header({
+                    column: column as unknown as Column<Product, unknown>,
+                  })
+                : column.header}
             </TableHead>
           ))}
         </TableRow>
