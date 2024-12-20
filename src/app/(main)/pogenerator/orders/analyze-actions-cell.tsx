@@ -56,7 +56,7 @@ const AnalyzeActionsCell = ({
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-red-500"
+              className="text-[#EF4444]"
               onClick={() =>
                 handleDeleteProductFromOrder(row.purchase_order_product_id!!)
               }

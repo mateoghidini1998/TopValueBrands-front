@@ -1,5 +1,6 @@
 import { useTrackedProductContext } from "@/contexts/trackedProducts.context";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type OrderProductType = {
   orderProducts: any[];
@@ -24,6 +25,7 @@ export const OrderSummary = ({ orderProducts }: OrderProductType) => {
       handleCreateOrder(orderProducts, notes).then((result: any) => {
         // console.log(result);
       });
+      toast.success("Order created successfully");
     } catch (error) {
       console.error(error);
     }

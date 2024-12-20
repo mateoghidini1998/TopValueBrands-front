@@ -26,8 +26,12 @@ type ActionsCellProps = {
 };
 
 const ActionsCell = ({ row }: ActionsCellProps) => {
-  const { downloadOrder, deleteOrder, setProductsAddedToCreatePallet } =
-    useOrdersContext(); // Función de limpieza en el contexto
+  const {
+    downloadOrder,
+    deleteOrder,
+    setProductsAddedToCreatePallet,
+    setProductsAvaliableToCreatePallet,
+  } = useOrdersContext(); // Función de limpieza en el contexto
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const incomingOrder = row.original;
@@ -38,8 +42,10 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
 
   const handleDialogChange = (open: boolean) => {
     setIsDialogOpen(open);
+    console.log(open);
     if (!open) {
       setProductsAddedToCreatePallet([]); // Llama a la función de limpieza al cerrar el diálogo
+      setProductsAvaliableToCreatePallet([]); // Llama a la función de limpieza al cerrar el diálogo
     }
   };
 
@@ -68,10 +74,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <DialogContent aria-describedby="Order Summary">
-          <DialogTitle>Order Summary</DialogTitle>
-          <OrderSummary order={incomingOrder} />
-        </DialogContent>
+        <OrderSummary order={incomingOrder} />
       </Dialog>
     </div>
   );

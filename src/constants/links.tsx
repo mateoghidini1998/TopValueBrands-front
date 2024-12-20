@@ -20,11 +20,37 @@ export const LINKS = [
 
 export const MAIN_ROUTES = [
   { title: "Inventory Management", href: "/", icon: <Search /> },
-  { title: "PO Generator", href: "/pogenerator/create", icon: <Package /> },
-  { title: "PO Generator", href: "/pogenerator/orders", icon: <Package /> },
-  { title: "Warehouse", href: "/warehouse/incoming-shipments", icon: <Shop /> },
-  { title: "Warehouse", href: "/warehouse/outgoing-shipments", icon: <Shop /> },
-  { title: "Warehouse", href: "/warehouse/storage", icon: <Shop /> },
+  {
+    title: "PO Generator - Create",
+    href: "/pogenerator/create",
+    icon: <Package />,
+  },
+  {
+    title: "PO Generator - Orders",
+    href: "/pogenerator/orders",
+    icon: <Package />,
+  },
+  {
+    title: "Warehouse - Incoming Shipments",
+    href: "/warehouse/incoming-shipments",
+    icon: <Shop />,
+  },
+  {
+    title: "Warehouse - Outgoing Shipments",
+    href: "/warehouse/outgoing-shipments",
+    icon: <Shop />,
+  },
+  {
+    title: "Warehouse - Shipment Details",
+    href: "/warehouse/outgoing-shipments/details/:id",
+    icon: <Shop />,
+  },
+  { title: "Warehouse - Storage", href: "/warehouse/storage", icon: <Shop /> },
+  {
+    title: "Warehouse - Storage - Pallet",
+    href: "/warehouse/storage/:id",
+    icon: <Shop />,
+  },
   { title: "Users", href: "/users", icon: <Users /> },
   { title: "Suppliers", href: "/suppliers", icon: <Users /> },
 ];

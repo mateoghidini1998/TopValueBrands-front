@@ -40,6 +40,7 @@ import AnalyzeActionsCell from "./analyze-actions-cell";
 import InputQuantity from "./input-quantity";
 import InputProductCost from "./input-unit-price";
 import { NoteCell } from "./text-area-cell";
+import { BiArrowBack } from "react-icons/bi";
 
 export const getColumns = (
   setTrackedProductsData: Dispatch<SetStateAction<TrackedProductType[]>>,
@@ -107,30 +108,6 @@ export const getColumns = (
     accessorKey: "supplier_item_number",
     header: "Item Number",
   },
-  // {
-  //   accessorKey: "unit_price",
-  //   header: ({ column }) => {
-  //     return <DataTableColumnHeader column={column} title="Unit Price" />;
-  //   },
-  //   cell: ({ row }) => {
-  //     console.log(row);
-  //     console.log({
-  //       product_cost: row.getValue("product_cost"),
-  //       pack_type: row.original.pack_type,
-  //     });
-  //     // return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
-  //     return (
-  //       <span>
-  //         {`$ ${
-  //           (
-  //             parseFloat(row.getValue("product_cost")) /
-  //             (parseFloat(row.original.pack_type) || 1)
-  //           ).toFixed(2) || "N/A"
-  //         }`}
-  //       </span>
-  //     );
-  //   },
-  // },
   {
     accessorKey: "product_cost",
     header: ({ column }) => {
@@ -138,13 +115,13 @@ export const getColumns = (
     },
     cell: ({ row }) => {
       return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 relative">
           <InputProductCost
             row={row}
             setTrackedProductsData={setTrackedProductsData}
             setEditingOrder={setEditingOrder}
           />
-          <span className="text-xs text-yellow-500 text-left">
+          <span className="text-xs text-yellow-500 text-left absolute bottom-[-20px] left-0">
             {`$ ${
               (
                 parseFloat(row.getValue("product_cost")) /
@@ -264,13 +241,13 @@ export const getColumns = (
     cell: ({ row }) => {
       // return <span>{`${row.getValue("quantity_purchased") || "N/A"}`}</span>;
       return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 relative justify-center h-16">
           <InputQuantity
             row={row}
             setTrackedProductsData={setTrackedProductsData}
             setEditingOrder={setEditingOrder}
           />
-          <span className="text-xs text-yellow-500 text-left">{`${
+          <span className="text-xs text-yellow-500 text-left absolute bottom-[-4px] left-0">{`${
             parseInt(row.getValue("quantity_purchased")) *
               (parseInt(row.original.pack_type) || 1) || "N/A"
           } - pack (${row.original.pack_type || 1})`}</span>
@@ -460,7 +437,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     }
   }, [editingOrder]);
 
-  console.log(trackedProductsData);
+  // console.log(trackedProductsData);
 
   return (
     <>
@@ -483,13 +460,19 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                     {editingOrder?.supplier_name}
                   </DialogTitle>
                   <DialogTitle className="absolute left-[3rem] translate-y-[-50%]  ">
-                    <Input
-                      placeholder="Search products"
-                      onChange={(e) => handleSearchProducts(e)}
-                      value={searchTerm}
-                    />
+                    <div className="flex items-center gap-4">
+                      <BiArrowBack
+                        className="cursor-pointer text-[26px]"
+                        onClick={() => setIsAnalyticsModalOpen(false)}
+                      />
+                      <Input
+                        placeholder="Search products"
+                        onChange={(e) => handleSearchProducts(e)}
+                        value={searchTerm}
+                      />
+                    </div>
                   </DialogTitle>
-                  <div className="flex flex-col w-max space-x-4 p-4 max-h-[80dvh]">
+                  <div className="flex flex-col space-x-4 p-4 w-full">
                     {searchingProducts && (
                       <DataTable
                         columns={getTrackedProductsColAnalyze(
@@ -610,7 +593,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
                 variant={"tvb"}
                 onClick={handleUpdatePurchaseOrder}
               >
-                Confirm
+                Save
               </Button>
             </DialogPrimitive.Close>
           </DialogFooter>

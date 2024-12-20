@@ -32,6 +32,7 @@ import {
 import { Settings2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { PaginationComponent } from "./data-table-pagination";
+import { Input } from "./input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -39,6 +40,8 @@ interface DataTableProps<TData, TValue> {
   dataLength?: number;
   pagination?: React.ReactElement;
   onSort?: (sorting: SortingState) => any;
+  showHideColumns?: boolean;
+  searchInput?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -47,6 +50,8 @@ export function DataTable<TData, TValue>({
   dataLength = 10,
   pagination,
   onSort,
+  showHideColumns = false,
+  searchInput = "",
 }: // setTableData,
 DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -89,44 +94,48 @@ DataTableProps<TData, TValue>) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center pb-4">
-        {/* <Input
-          placeholder="Filter by supplier..."
-          value={
-            (table.getColumn("supplier_name")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("supplier_name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm text-xs font-bold bg-light-2 dark:bg-dark-2 border border-[#EFF1F3] dark:border-[#393E4F] rounded-md"
-        /> */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              {/* <SlidersHorizontal /> */}
-              <Settings2 className="h-[16px] w-[16px]" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id.split("_").join(" ")}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex items-center justify-end pb-2">
+        {searchInput !== "" && (
+          <Input
+            placeholder="Filter by Pallet Number..."
+            value={
+              (table.getColumn(searchInput)?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn(searchInput)?.setFilterValue(event.target.value)
+            }
+            className="mb-4 w-80"
+          />
+        )}
+        {showHideColumns && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                {/* <SlidersHorizontal /> */}
+                <Settings2 className="h-[16px] w-[16px]" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id.split("_").join(" ")}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import QuantityReceivedCell from "./quantity-received-cell";
 import { DatePickerCell } from "./date-picker-cell";
 import { SelectReasonCell } from "./select-reason-cell";
+import { Input } from "@/components/ui/input";
 // import NotesCell from "./notes-cell";
 
 export interface IncomingShipmentsOrderSummaryProps {
@@ -44,6 +45,11 @@ export const getColumns = (
   {
     accessorKey: "seller_sku",
     header: "Seller SKU",
+  },
+  {
+    accessorKey: "UPC",
+    header: "UPC",
+    cell: ({ row }) => <Input placeholder="missing UPC" />,
   },
   {
     accessorKey: "quantity_purchased",
