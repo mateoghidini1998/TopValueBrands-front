@@ -50,7 +50,7 @@ export class UsersService {
 
       const response = await HttpAPI.delete(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.id}`,
-        token
+        token!!
       );
 
       return response;
