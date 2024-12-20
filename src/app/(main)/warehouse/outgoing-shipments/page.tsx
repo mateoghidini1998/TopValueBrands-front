@@ -274,11 +274,11 @@ export default function OutgoingShipments() {
       })),
     };
 
-    console.log(shipmentProducts);
+    // console.log(shipmentProducts);
 
     try {
       await ShipmentsService.createShipment(shipment);
-      console.log(shipment);
+      // console.log(shipment);
       toast.success("Shipment created successfully");
       setIsCreatingShipment(false);
       setShipmentProducts([]);

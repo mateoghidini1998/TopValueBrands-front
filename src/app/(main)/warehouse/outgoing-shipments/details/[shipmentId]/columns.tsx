@@ -29,7 +29,7 @@ export const columns: ColumnDef<PalletProduct>[] = [
     accessorKey: "OutgoingShipmentProduct.quantity",
     header: "Outgoing Shipment Quantity",
     cell: ({ row }) => {
-      console.log(row.original);
+      // console.log(row.original);
       return (
         <div>
           {row.original.OutgoingShipmentProduct?.quantity || "no existe"}

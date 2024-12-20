@@ -18,7 +18,7 @@ export const getPurchaseOrderColumns = (
       return <p className="text-center"> Order Number</p>;
     },
     cell: ({ row }) => {
-      console.log(row.original);
+      // console.log(row.original);
       return <div className="text-center">{row.original.order_number}</div>;
     },
   },
@@ -73,7 +73,7 @@ export const getPalletColumns = (
       return <p className="text-center">Order Number</p>;
     },
     cell: ({ row }) => {
-      console.log(row.original);
+      // console.log(row.original);
       return (
         <p className="text-center">
           {row.original?.purchase_order_number || ""}

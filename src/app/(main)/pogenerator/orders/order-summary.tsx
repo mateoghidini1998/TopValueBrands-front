@@ -437,7 +437,7 @@ export default function OrderSummary({ orderId }: OrderSummaryProps) {
     }
   }, [editingOrder]);
 
-  console.log(trackedProductsData);
+  // console.log(trackedProductsData);
 
   return (
     <>

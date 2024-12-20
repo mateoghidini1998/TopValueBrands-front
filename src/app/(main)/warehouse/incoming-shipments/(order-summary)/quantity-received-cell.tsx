@@ -27,11 +27,11 @@ export default function QuantityReceivedCell({
     null
   );
 
-  console.log(row.original.purchase_order_product_id);
+  // console.log(row.original.purchase_order_product_id);
 
   const getPalletProductQuantity = useCallback(async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets/${row.original.purchase_order_product_id}/palletproduct`;
-    console.log(url);
+    // console.log(url);
     const response = await fetch(url);
     const data = await response.json();
     return data;
@@ -43,7 +43,7 @@ export default function QuantityReceivedCell({
     });
   }, [getPalletProductQuantity]);
 
-  console.log(palletProductQuantity);
+  // console.log(palletProductQuantity);
 
   const handleQuantityChange = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -108,7 +108,7 @@ export default function QuantityReceivedCell({
     );
   };
 
-  console.log(row.original.quantity_purchased);
+  // console.log(row.original.quantity_purchased);
 
   return (
     <Input

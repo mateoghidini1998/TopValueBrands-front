@@ -23,6 +23,7 @@ import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
 import { OrderSummaryReceivedData } from "./order-summary-received-data";
 import { toast } from "sonner";
+import { add } from "date-fns";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
@@ -72,14 +73,11 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     purchase_order_id: number | null;
     products: Array<{ purchaseorderproduct_id: string; quantity: number }>;
   }>(initialPalletData);
-
-  useEffect(() => {
-    if (order) {
-      const transformedProducts =
-        transformOrderDataProductsAvaliableToCreatePallet(order);
-      setProductsAvaliableToCreatePallet(transformedProducts);
-    }
-  }, [order, setProductsAvaliableToCreatePallet]);
+  const addProductsPallets = () => {
+    const transformedProducts =
+      transformOrderDataProductsAvaliableToCreatePallet(order);
+    setProductsAvaliableToCreatePallet(transformedProducts);
+  };
 
   useEffect(() => {
     if (productsAddedToCreatePallet.length > 0) {
@@ -117,7 +115,15 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
       className={`max-h-[95dvh] overflow-auto custom_scroll flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] translate-y-[-50%] translate-x-[-50%]`}
     >
       <DialogHeader className="flex flex-col items-center gap-4">
-        <Tabs defaultValue="summary" className="w-full relative">
+        <Tabs
+          defaultValue="summary"
+          className="w-full relative"
+          onValueChange={(value) => {
+            if (value === "pallets") {
+              addProductsPallets();
+            }
+          }}
+        >
           <TabsContent value="summary">
             <DialogTitle className="text-left">
               Order Summary - {order.order_number}

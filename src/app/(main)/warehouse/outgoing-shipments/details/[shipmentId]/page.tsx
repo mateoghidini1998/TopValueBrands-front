@@ -11,7 +11,7 @@ export default function OutgoingShipmentDetails({
 }: {
   params: { shipmentId: string };
 }) {
-  console.log(params.shipmentId);
+  // console.log(params.shipmentId);
 
   const [palletProducts, setPalletProducts] = useState<PalletProduct[]>([]);
 
@@ -31,7 +31,7 @@ export default function OutgoingShipmentDetails({
     fetchPalletProducts();
   }, [params.shipmentId]);
 
-  console.log(palletProducts);
+  // console.log(palletProducts);
 
   return (
     <div className="w-full px-[1.3rem] py-0">

@@ -8,7 +8,7 @@ type PalletInformationProps = {
 };
 
 const PalletInformation = ({ pallet }: PalletInformationProps) => {
-  console.log(pallet);
+  // console.log(pallet);
 
   return (
     <Card className="dark:bg-dark">
