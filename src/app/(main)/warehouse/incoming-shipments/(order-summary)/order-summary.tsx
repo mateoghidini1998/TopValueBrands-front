@@ -19,14 +19,37 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { IPurchaseOrderSummary } from "@/types/product.types";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
 import { OrderSummaryReceivedData } from "./order-summary-received-data";
-import { toast } from "sonner";
-import { add } from "date-fns";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
+};
+
+export const transformOrderDataProductsAvaliableToCreatePallet = (
+  order: any
+) => {
+  return order.purchaseOrderProducts.map((product: any, index: number) => ({
+    order_id: order.id,
+    purchase_order_product_id: product.id,
+    product_name: product.product_name,
+    product_image:
+      order.trackedProducts.find(
+        (p: any) => p.product_id === product.product_id
+      )?.product_image || "N/A",
+    ASIN:
+      order.trackedProducts.find(
+        (p: any) => p.product_id === product.product_id
+      )?.ASIN || "N/A",
+    seller_sku:
+      order.trackedProducts.find(
+        (p: any) => p.product_id === product.product_id
+      )?.seller_sku || "N/A",
+    quantity_received: product.quantity_received,
+    quantity_available: product.quantity_available,
+  }));
 };
 
 export default function OrderSummary({ order }: OrderSummaryProps) {
@@ -35,28 +58,6 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     warehouse_location_id: 0,
     purchase_order_id: order.id!!,
     products: [],
-  };
-
-  const transformOrderDataProductsAvaliableToCreatePallet = (order: any) => {
-    return order.purchaseOrderProducts.map((product: any, index: number) => ({
-      order_id: order.id,
-      purchase_order_product_id: product.id,
-      product_name: product.product_name,
-      product_image:
-        order.trackedProducts.find(
-          (p: any) => p.product_id === product.product_id
-        )?.product_image || "N/A",
-      ASIN:
-        order.trackedProducts.find(
-          (p: any) => p.product_id === product.product_id
-        )?.ASIN || "N/A",
-      seller_sku:
-        order.trackedProducts.find(
-          (p: any) => p.product_id === product.product_id
-        )?.seller_sku || "N/A",
-      quantity_received: product.quantity_received,
-      quantity_available: product.quantity_available,
-    }));
   };
 
   const {
@@ -73,6 +74,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     purchase_order_id: number | null;
     products: Array<{ purchaseorderproduct_id: string; quantity: number }>;
   }>(initialPalletData);
+
   const addProductsPallets = () => {
     const transformedProducts =
       transformOrderDataProductsAvaliableToCreatePallet(order);
@@ -118,11 +120,11 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
         <Tabs
           defaultValue="summary"
           className="w-full relative"
-          onValueChange={(value) => {
-            if (value === "pallets") {
-              addProductsPallets();
-            }
-          }}
+          // onValueChange={(value) => {
+          //   if (value === "pallets") {
+          //     addProductsPallets();
+          //   }
+          // }}
         >
           <TabsContent value="summary">
             <DialogTitle className="text-left">

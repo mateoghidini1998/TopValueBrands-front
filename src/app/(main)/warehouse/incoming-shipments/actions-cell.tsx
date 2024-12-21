@@ -18,7 +18,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { MoreHorizontal } from "lucide-react";
-import OrderSummary from "./(order-summary)/order-summary";
+import OrderSummary, {
+  transformOrderDataProductsAvaliableToCreatePallet,
+} from "./(order-summary)/order-summary";
 import { useState } from "react";
 
 type ActionsCellProps = {
@@ -36,8 +38,15 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
 
   const incomingOrder = row.original;
 
-  const handleViewDetails = () => {
+  const addProductsPallets = (order: any) => {
+    const transformedProducts =
+      transformOrderDataProductsAvaliableToCreatePallet(order);
+    setProductsAvaliableToCreatePallet(transformedProducts);
+  };
+
+  const handleViewDetails = (order: any) => {
     setIsDialogOpen(true);
+    addProductsPallets(order);
   };
 
   const handleDialogChange = (open: boolean) => {
@@ -61,7 +70,10 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={handleViewDetails} className="w-full">
+            <DropdownMenuItem
+              onClick={() => handleViewDetails(incomingOrder)}
+              className="w-full"
+            >
               View Details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
