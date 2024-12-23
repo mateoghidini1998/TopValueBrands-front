@@ -5,6 +5,7 @@ import { DatePickerCell } from "./date-picker-cell";
 import { SelectReasonCell } from "./select-reason-cell";
 import { Input } from "@/components/ui/input";
 import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
+import AddUPCCell from "./add-upc-cell";
 // import NotesCell from "./notes-cell";
 
 export interface IncomingShipmentsOrderSummaryProps {
@@ -51,7 +52,7 @@ export const getColumns = (
   {
     accessorKey: "UPC",
     header: "UPC",
-    cell: ({ row }) => <Input placeholder="missing UPC" />,
+    cell: ({ row }) => <AddUPCCell row={row} />,
   },
   {
     accessorKey: "quantity_purchased",
