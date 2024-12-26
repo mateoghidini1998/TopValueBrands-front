@@ -19,6 +19,10 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     header: "Supplier",
   },
   {
+    accessorKey: "fba_shipment_id",
+    header: "FBA Shipment ID",
+  },
+  {
     accessorKey: "createdAt",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Date" />;
@@ -33,6 +37,13 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     cell: ({ row }) => (
       <StatusCell avaliableStatuses={availableStatuses} row={row} />
     ),
+  },
+  {
+    accessorKey: "updatedAt",
+    header: "Last Updated",
+    cell: ({ row }) => {
+      return <DateCell value={row.original.updatedAt} />;
+    },
   },
   {
     accessorKey: "actions",
