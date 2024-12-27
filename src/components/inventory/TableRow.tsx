@@ -518,6 +518,21 @@ const TableRow = ({ products }: TableRowProps) => {
                   ""
                 )}
               </td>
+              <td className="w-[12%] text-xs font-medium text-center">
+                {product?.warehouse_stock}
+
+                {/* {editingRow[product?.id] ? (
+                  <input
+                    name="FBA_available_inventory"
+                    type="text"
+                    className="w-2/3 p-1 rounded-lg text-center text-black bg-[#F8FAFC] dark:text-white dark:bg-[#262935] border-[1px] border-solid dark:border-dark-3 border-[#EFF1F3]"
+                    value={editData.FBA_available_inventory || ""}
+                    onChange={(e) => onChange(e)}
+                  />
+                ) : (
+                  product?.FBA_available_inventory
+                )} */}
+              </td>
               <td className="w-[8%] text-xs font-medium text-center">
                 {product?.FBA_available_inventory}
 
