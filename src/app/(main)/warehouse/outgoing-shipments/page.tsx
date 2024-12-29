@@ -1,23 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import { ShipmentsService } from "@/services/shipments/shipments.service";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import IndexPageContainer from "../../page.container";
 import { columns } from "./columns";
-import { NestedDataTable } from "./new-shipment/components/nested-data-table";
+import { TabbedDataTable } from "./new-shipment/components/tabbed-data-table";
 import { Product, PurchaseOrderData } from "./new-shipment/interfaces";
 import { getShipmentsCols } from "./new-shipment/shipment-columns";
-import { TabbedDataTable } from "./new-shipment/components/tabbed-data-table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2Icon } from "lucide-react";
 
 export default function OutgoingShipments() {
   const [shipments, setShipments] = useState([]);
   const [isCreatingShipment, setIsCreatingShipment] = useState(false);
   const [shipmentCreated, setShipmentCreated] = useState(false);
   const [shipmentProducts, setShipmentProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const [poPalletProducts, setPoPalletProducts] = useState<PurchaseOrderData[]>(
     []
@@ -25,8 +26,10 @@ export default function OutgoingShipments() {
 
   useEffect(() => {
     const fetchShipments = async () => {
+      setLoading(true);
       const response = await ShipmentsService.getShipments();
       setShipments(response.shipments);
+      setLoading(false);
     };
     fetchShipments();
   }, [shipmentCreated]);
@@ -342,6 +345,14 @@ export default function OutgoingShipments() {
           </Card>
         </div>
       </IndexPageContainer>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="h-[calc(100vh-20rem)] w-full flex items-center justify-center">
+        <Loader2Icon className="h-8 w-8 animate-spin" />
+      </div>
     );
   }
 
