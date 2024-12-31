@@ -93,6 +93,11 @@ export const trackedProductsCol: ColumnDef<any>[] = [
       return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
     },
   },
+
+  {
+    accessorKey: "warehouse_stock",
+    header: "Warehouse Stock",
+  },
   {
     accessorKey: "lowest_fba_price",
     header: ({ column }) => {

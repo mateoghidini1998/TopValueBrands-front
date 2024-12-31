@@ -112,7 +112,8 @@ export class ShipmentsService {
     try {
       const token = await getAuthTokenCookies();
       const response = await HttpAPI.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/shipments/${id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/shipments/${id}`,
+        token!!
       );
       return response;
     } catch (error) {

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ShipmentsService } from "@/services/shipments/shipments.service";
 import { Row } from "@tanstack/react-table";
-import { Download, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { Download, Eye, Loader2, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Shipment } from "./interfaces";
 interface ActionsCellProps {
@@ -30,6 +30,14 @@ export default function ActionsCell({ row }: ActionsCellProps) {
     }
   };
 
+  const handleDeleteShipment = async (id: number) => {
+    try {
+      await ShipmentsService.deleteShipment(id.toString());
+      router.refresh();
+    } catch (error) {
+      console.error("Error deleting shipment:", error);
+    }
+  };
   return (
     <div className="text-right">
       <DropdownMenu>
@@ -66,7 +74,7 @@ export default function ActionsCell({ row }: ActionsCellProps) {
             <Download className="mr-2 h-4 w-4" />
             Download 2D Workflow
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => console.log("Delete", row.original)}>
+          <DropdownMenuItem onClick={() => handleDeleteShipment(shipment.id)}>
             <Trash className="mr-2 h-4 w-4" />
             Delete
           </DropdownMenuItem>
