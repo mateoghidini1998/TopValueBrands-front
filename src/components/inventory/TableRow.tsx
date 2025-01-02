@@ -456,7 +456,10 @@ const TableRow = ({ products }: TableRowProps) => {
                     onChange={(e) => onChange(e)}
                   />
                 ) : (
-                  `$ ${product?.product_cost}`
+                  `$ ${product?.product_cost || "0.00"}`.replace(
+                    /\B(?=(\d{3})+(?!\d))/g,
+                    ","
+                  )
                 )}
               </td>
               <td className="w-[15%] text-xs font-medium text-center flex justify-center">
