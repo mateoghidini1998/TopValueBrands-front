@@ -51,10 +51,10 @@ export default function ActionsCell({ row }: ActionsCellProps) {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() =>
-              navigator.clipboard.writeText(row.getValue("order_number"))
+              navigator.clipboard.writeText(row.getValue("shipment_number"))
             }
           >
-            Copy order number
+            Copy shipment number
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

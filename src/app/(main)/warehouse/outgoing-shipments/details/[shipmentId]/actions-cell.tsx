@@ -29,13 +29,6 @@ export default function ActionsCell({ row }: ActionsCellProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() =>
-              navigator.clipboard.writeText(row.getValue("order_number"))
-            }
-          >
-            Copy order number
-          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => console.log("Edit", row.original)}>
             <Edit className="mr-2 h-4 w-4" />
