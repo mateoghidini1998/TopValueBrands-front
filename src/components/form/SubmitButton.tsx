@@ -3,12 +3,11 @@ import { Loader2 } from "lucide-react";
 import { FieldValues, useFormContext } from "react-hook-form";
 
 type SubmitButtonProps<T extends FieldValues> = {
-  loading: boolean;
+  loading?: boolean;
   styles?: string;
   label: string;
   onSubmit: (data: T) => void;
 };
-
 const SubmitButton = <T extends FieldValues>({
   label,
   styles,
