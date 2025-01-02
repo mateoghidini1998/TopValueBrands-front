@@ -14,7 +14,7 @@ type FormData = {
 };
 
 const LoginForm = () => {
-  const { authToken, user } = useAuthContext();
+  const { loading, authToken, user } = useAuthContext();
   const router = useRouter();
   const methods = useForm<FormData>({
     resolver: yupResolver(LoginScheme),
@@ -92,7 +92,11 @@ const LoginForm = () => {
               />
             </div>
           </div>
-          <SubmitButton label={"CONTINUE"} onSubmit={onSubmit} />
+          <SubmitButton
+            label={"CONTINUE"}
+            onSubmit={onSubmit}
+            loading={loading}
+          />
         </form>
       </FormProvider>
     </div>
