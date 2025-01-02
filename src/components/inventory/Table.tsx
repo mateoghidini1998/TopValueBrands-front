@@ -1,12 +1,13 @@
 "use client";
 
-import { FC } from "react";
-import TableRow from "./TableRow";
-import Pagination from "./Pagination";
 import { useProductContext } from "@/contexts/products.context";
 import useThemeContext from "@/contexts/theme.context";
+import { Loader2 } from "lucide-react";
+import { FC } from "react";
 import NewTableRow from "./NewTableRow";
 import { OrderByComponent } from "./OrderByStock";
+import Pagination from "./Pagination";
+import TableRow from "./TableRow";
 
 const Table: FC = () => {
   const {
@@ -17,7 +18,7 @@ const Table: FC = () => {
     totalPages,
     setCurrentPage,
     addingProduct,
-    orderBy,
+    loading,
   } = useProductContext();
 
   const { sidebarOpen } = useThemeContext();
@@ -80,7 +81,15 @@ const Table: FC = () => {
 
         {/* Table Body */}
         {addingProduct && <NewTableRow />}
-        <TableRow products={products} />
+        {loading ? (
+          <tr>
+            <td colSpan={12} className="text-center">
+              <Loader2 className="w-6 h-6 animate-spin"></Loader2>
+            </td>
+          </tr>
+        ) : (
+          <TableRow products={products} />
+        )}
       </table>
       {totalPages > 0 && (
         <Pagination

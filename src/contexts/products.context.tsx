@@ -16,6 +16,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { IProductType } from "@/types/product.types";
 
 export type ProductState = {
+  loading: boolean;
   addingProduct: boolean;
   setAddingProduct: React.Dispatch<React.SetStateAction<boolean>>;
   products: IProductType[];
@@ -37,6 +38,7 @@ export type ProductState = {
 };
 
 export const ProductContext = createContext<ProductState>({
+  loading: false,
   addingProduct: false,
   setAddingProduct: () => {},
   products: [],
@@ -78,6 +80,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   const [supplier, setSupplier] = useState("");
   const [orderBy, setOrderBy] = useState("");
   const [orderWay, setOrderWay] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const route = usePathname();
 
@@ -106,6 +109,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({
     orderWay?: string
   ) => {
     try {
+      setLoading(true);
       const response = await InventoryService.getProducts(
         page,
         limit,
@@ -116,18 +120,23 @@ export const ProductProvider: FC<PropsWithChildren> = ({
       );
       setProducts(response.data);
       setTotalPages(response.pages);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
   // get product by seller_sku
   const getProductBySku = async (seller_sku: string) => {
     try {
+      setLoading(true);
       const response = await InventoryService.getProductBySku(seller_sku);
+      setLoading(false);
       return response;
     } catch (error) {
       console.error(error);
+      setLoading(false);
       // throw new Error("Error fetching data");
     }
   };
@@ -200,6 +209,7 @@ export const ProductProvider: FC<PropsWithChildren> = ({
   return (
     <ProductContext.Provider
       value={{
+        loading,
         createProduct,
         addingProduct,
         setAddingProduct,
