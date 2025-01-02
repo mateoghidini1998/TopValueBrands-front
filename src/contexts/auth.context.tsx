@@ -12,6 +12,7 @@ import {
 } from "react";
 
 export type AuthState = {
+  loading: boolean;
   authToken: string | null;
   user: UserType | null;
   authError: string | null;
@@ -24,6 +25,7 @@ export const AuthContext = createContext<AuthState | undefined>(undefined);
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<UserType | null>(null);
 
   useEffect(() => {
@@ -45,16 +47,19 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
+      setLoading(true);
       await AuthService.login(email, password, (userData) => {
         setUser(userData);
         const token = getAuthTokenCookies();
         setAuthToken(token ?? null);
       });
       setAuthError(null);
+      setLoading(false);
     } catch (err) {
       if (err instanceof Error) {
         setAuthError(err.message);
       }
+      setLoading(false);
     }
   };
 
@@ -65,7 +70,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, user, login, logout, authError }}>
+    <AuthContext.Provider
+      value={{ loading, authToken, user, login, logout, authError }}
+    >
       {children}
     </AuthContext.Provider>
   );
