@@ -1,3 +1,4 @@
+import { Product } from "../../../outgoing-shipments/new-shipment/interfaces";
 export type Props = {
   params: { id: string };
 };
@@ -12,6 +13,15 @@ export type PalletProduct = {
   available_quantity: number;
   createdAt: string;
   updatedAt: string;
+  purchaseOrderProduct: {
+    id: number;
+    Product: {
+      product_name: string;
+      product_image: string;
+      seller_sku: string;
+      in_seller_account: boolean;
+    };
+  };
 };
 
 export type Pallet = {

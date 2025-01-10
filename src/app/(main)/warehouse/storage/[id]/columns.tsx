@@ -11,9 +11,14 @@ export const columns: ColumnDef<PalletProduct>[] = [
   {
     accessorKey: "product_name",
     header: "Product",
-    cell: ({ row }) => (
-      <ProductNameTableData product={row.original} width={250} />
-    ),
+    cell: ({ row }) => {
+      return (
+        <ProductNameTableData
+          product={row.original.purchaseOrderProduct.Product}
+          width={250}
+        />
+      );
+    },
   },
   {
     accessorKey: "quantity",
