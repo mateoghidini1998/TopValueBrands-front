@@ -22,14 +22,14 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     accessorKey: "supplier_name",
     header: "Supplier",
     cell: ({ row }) => (
-      <span className="">{row.getValue("supplier_name") || "N/A"}</span>
+      <span className="">{row.getValue("supplier_name") || "-"}</span>
     ),
   },
   {
     accessorKey: "supplier_item_number",
     header: "Supplier Item No.",
     cell: ({ row }) => (
-      <span className="">{row.getValue("supplier_item_number") || "N/A"}</span>
+      <span className="">{row.getValue("supplier_item_number") || "-"}</span>
     ),
   },
   {
@@ -39,7 +39,7 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     },
     cell: ({ row }: any) => {
       return (
-        <span>{row.getValue("product_velocity").toFixed(3) || "N/A"}</span>
+        <span>{row.getValue("product_velocity").toFixed(3) || "-"}</span>
       );
     },
   },
@@ -60,7 +60,7 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     cell: ({ row }: any) => {
       return (
         <span>
-          {row.getValue("thirty_days_rank").toLocaleString() || "N/A"}
+          {row.getValue("thirty_days_rank").toLocaleString() || "-"}
         </span>
       );
     },
@@ -73,7 +73,7 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     cell: ({ row }: any) => {
       return (
         <span>
-          {row.getValue("ninety_days_rank").toLocaleString() || "N/A"}
+          {row.getValue("ninety_days_rank").toLocaleString() || "-"}
         </span>
       );
     },
@@ -90,8 +90,16 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     accessorKey: "product_cost",
     header: "Product Cost",
     cell: ({ row }) => {
-      return <span>{`$ ${row.getValue("product_cost") || "N/A"}`}</span>;
+      return <span>{`$ ${row.getValue("product_cost") || "-"}`}</span>;
     },
+  },
+
+  {
+    accessorKey: "warehouse_stock",
+    header: "Warehouse Stock",
+    cell: ({ row }) => {
+      return <span>{row.getValue("warehouse_stock") || 0}</span>;
+    }
   },
   {
     accessorKey: "lowest_fba_price",
@@ -99,7 +107,7 @@ export const trackedProductsCol: ColumnDef<any>[] = [
       return <DataTableColumnHeader column={column} title="FBA Price" />;
     },
     cell({ row }) {
-      return <span>{`$ ${row.getValue("lowest_fba_price") || "N/A"}`}</span>;
+      return <span>{`$ ${row.getValue("lowest_fba_price") || '-'}`}</span>;
     },
   },
   {
@@ -108,7 +116,7 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     cell: ({ row }: any) => {
       return (
         <span>
-          {row.getValue("FBA_available_inventory").toLocaleString() || "N/A"}
+          {row.getValue("FBA_available_inventory").toLocaleString() || 0}
         </span>
       );
     },
@@ -119,7 +127,7 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     cell: ({ row }: any) => {
       return (
         <span>
-          {row.getValue("reserved_quantity").toLocaleString() || "N/A"}
+          {row.getValue("reserved_quantity").toLocaleString() || 0}
         </span>
       );
     },
@@ -129,21 +137,20 @@ export const trackedProductsCol: ColumnDef<any>[] = [
     header: "Inbound to FBA",
     cell: ({ row }: any) => {
       return (
-        <span>{row.getValue("Inbound_to_FBA").toLocaleString() || "N/A"}</span>
+        <span>{row.getValue("Inbound_to_FBA").toLocaleString() || 0}</span>
       );
     },
   },
-
   {
     accessorKey: "fees",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Fees" />;
     },
     cell({ row }) {
-      return <span>{`$ ${row.getValue("fees") || "N/A"}`}</span>;
+      const fees = row.getValue("fees");
+      return <span>{fees ? `$ ${fees}` : "-"}</span>;
     },
   },
-
   {
     accessorKey: "profit",
     header: ({ column }) => {
@@ -166,7 +173,7 @@ export const trackedProductsCol: ColumnDef<any>[] = [
 
       return (
         <Badge variant={getBadgeVariant(amount)}>
-          {isNaN(amount) ? "N/A" : `$ ${amount.toFixed(2)}`}
+          {isNaN(amount) ? "-" : `$ ${amount.toFixed(2)}`}
         </Badge>
       );
     },
@@ -193,7 +200,7 @@ export const trackedProductsCol: ColumnDef<any>[] = [
 
       return (
         <Badge variant={getBadgeVariant(amount)}>
-          {isNaN(amount) ? "N/A" : `${amount.toFixed(2)}%`}
+          {isNaN(amount) ? "-" : `${amount.toFixed(2)}%`}
         </Badge>
       );
     },
