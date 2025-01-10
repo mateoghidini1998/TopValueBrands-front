@@ -12,6 +12,10 @@ export const columns: ColumnDef<Shipment>[] = [
     header: "Shipment Number",
   },
   {
+    accessorKey: "fba_shipment_id",
+    header: "FBA Shipment ID",
+  },
+  {
     accessorKey: "status",
     header: "Status",
   },
