@@ -54,7 +54,7 @@ export default function ActionsCell({ row }: ActionsCellProps) {
               navigator.clipboard.writeText(row.getValue("shipment_number"))
             }
           >
-            Copy shipment number
+            Copy Shipment number
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
