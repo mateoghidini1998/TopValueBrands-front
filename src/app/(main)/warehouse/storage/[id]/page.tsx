@@ -16,7 +16,7 @@ export default async function StoragePage({ params }: Props) {
 
   const data: Pallet = await res.json();
 
-  // console.log(data);
+  console.log(data);
 
   return (
     <div className="w-full p-6">
