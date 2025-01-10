@@ -1,55 +1,79 @@
 "use client";
+
 import React, { useRef, useState } from "react";
 import { BsUpcScan } from "react-icons/bs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const ScanButton: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [scan, setScan] = useState<MediaStream | null>(null);
-  const [videoOpen, setVideoOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleCamera = async () => {
-    if (!videoOpen) {
-      // Abrir la cámara
+    if (!scan) {
       try {
         const mediaScan = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" }, // Especifica la cámara trasera
+          video: { facingMode: "environment" },
         });
         setScan(mediaScan);
-        setVideoOpen(true);
-
         if (videoRef.current) {
           videoRef.current.srcObject = mediaScan;
         }
       } catch (error) {
         console.error("Error opening camera", error);
-        setVideoOpen(false);
       }
     } else {
-      // Cerrar la cámara
+      scan.getTracks().forEach((track) => track.stop());
+      setScan(null);
+    }
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (open) {
+      toggleCamera();
+    } else {
       if (scan) {
         scan.getTracks().forEach((track) => track.stop());
         setScan(null);
-        setVideoOpen(false);
       }
     }
   };
 
   return (
-    <div className="fixed bottom-5 right-5">
-      <button
-        className="w-8 h-8 border-solid border-[#438EF3] border-2 rounded-md m-4 flex items-center justify-center bg-white dark:bg-dark dark:text-white"
-        onClick={toggleCamera}
-      >
-        <BsUpcScan />
-      </button>
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        width={videoOpen ? "100%" : 0}
-        height={videoOpen ? "auto" : 0}
-      />
-    </div>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="fixed bottom-24 left-[9.5px] z-50 w-10 h-10 rounded-full bg-white dark:bg-gray-800 border-2 border-blue-500 shadow-lg hover:bg-blue-100 dark:hover:bg-gray-700"
+        >
+          <BsUpcScan className="w-6 h-6 text-blue-500" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] w-[450px] h-[450px] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
+        <DialogHeader>
+          <DialogTitle>Scan UPC or QR Code</DialogTitle>
+        </DialogHeader>
+        <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 border-2 border-white opacity-50 pointer-events-none"></div>
+        </div>
+        <Button onClick={() => handleOpenChange(false)}>Close</Button>
+      </DialogContent>
+    </Dialog>
   );
 };
 

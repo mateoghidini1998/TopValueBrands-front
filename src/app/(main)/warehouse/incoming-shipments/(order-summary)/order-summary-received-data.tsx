@@ -23,6 +23,8 @@ export const OrderSummaryReceivedData = ({
       );
 
       return {
+        product_id: product.product_id,
+        upc: trackedProduct.upc,
         purchase_order_product_id: product.id,
         product_name: trackedProduct
           ? trackedProduct.product_name

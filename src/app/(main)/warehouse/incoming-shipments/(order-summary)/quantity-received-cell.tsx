@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type QuantityReceivedCellProps = {
   row: any;
@@ -26,11 +27,11 @@ export default function QuantityReceivedCell({
     null
   );
 
-  console.log(row.original.purchase_order_product_id);
+  // console.log(row.original.purchase_order_product_id);
 
   const getPalletProductQuantity = useCallback(async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets/${row.original.purchase_order_product_id}/palletproduct`;
-    console.log(url);
+    // console.log(url);
     const response = await fetch(url);
     const data = await response.json();
     return data;
@@ -42,12 +43,19 @@ export default function QuantityReceivedCell({
     });
   }, [getPalletProductQuantity]);
 
-  console.log(palletProductQuantity);
+  // console.log(palletProductQuantity);
 
   const handleQuantityChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newQuantity = e.target.value;
+
+    if (newQuantity > row.original.quantity_purchased) {
+      return toast.error(
+        "Quantity received cannot be greater than quantity purchased"
+      );
+    }
+
     setQuantityReceived(newQuantity);
 
     if (searchTimeout) {
@@ -100,6 +108,8 @@ export default function QuantityReceivedCell({
     );
   };
 
+  // console.log(row.original.quantity_purchased);
+
   return (
     <Input
       type="number"
@@ -107,6 +117,7 @@ export default function QuantityReceivedCell({
       value={quantityReceived}
       onChange={handleQuantityChange}
       min={0} // Si quieres restringir a números positivos
+      max={row.original.quantity_purchased}
     />
   );
 }

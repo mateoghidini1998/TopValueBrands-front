@@ -3,6 +3,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import QuantityReceivedCell from "./quantity-received-cell";
 import { DatePickerCell } from "./date-picker-cell";
 import { SelectReasonCell } from "./select-reason-cell";
+import { Input } from "@/components/ui/input";
+import { ProductNameTableData } from "@/components/inventory/ProductNameTableData";
+import AddUPCCell from "./add-upc-cell";
 // import NotesCell from "./notes-cell";
 
 export interface IncomingShipmentsOrderSummaryProps {
@@ -26,14 +29,15 @@ export const getColumns = (
     header: "Product Name",
     cell: ({ row }) => {
       return (
-        <div className="w-[200px] flex items-center gap-2">
-          <img
-            className="h-10 w-10 rounded-md"
-            src={row.original.product_image}
-            alt={row.original.product_name}
-          />
-          {row.original.product_name}
-        </div>
+        // <div className="w-[200px] flex items-center gap-2">
+        //   <img
+        //     className="h-10 w-10 rounded-md"
+        //     src={row.original.product_image}
+        //     alt={row.original.product_name}
+        //   />
+        //   {row.original.product_name}
+        // </div>
+        <ProductNameTableData product={row.original} width={200} />
       );
     },
   },
@@ -44,6 +48,11 @@ export const getColumns = (
   {
     accessorKey: "seller_sku",
     header: "Seller SKU",
+  },
+  {
+    accessorKey: "UPC",
+    header: "UPC",
+    cell: ({ row }) => <AddUPCCell row={row} />,
   },
   {
     accessorKey: "quantity_purchased",

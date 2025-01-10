@@ -12,6 +12,7 @@ import {
 } from "react";
 
 export type AuthState = {
+  loading: boolean;
   authToken: string | null;
   user: UserType | null;
   authError: string | null;
@@ -21,15 +22,14 @@ export type AuthState = {
 
 export const AuthContext = createContext<AuthState | undefined>(undefined);
 
-export const AuthProvider: FC<PropsWithChildren> = ({
-  children,
-}: PropsWithChildren) => {
+export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<UserType | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("access-token");
+    const token = getAuthTokenCookies();
     if (token) {
       setAuthToken(token);
       AuthService.getUserProfile(token)
@@ -40,52 +40,26 @@ export const AuthProvider: FC<PropsWithChildren> = ({
           console.error("Error al obtener el perfil del usuario:", error);
         });
     } else {
-      // logout()
       setAuthToken(null);
       setUser(null);
     }
-
-    const handleStorageChange = () => {
-      const token = localStorage.getItem("access-token");
-      if (token) {
-        setAuthToken(token);
-
-        AuthService.getUserProfile(token)
-          .then((userData) => {
-            setUser(userData);
-          })
-          .catch((error) => {
-            console.error("Error al obtener el perfil del usuario:", error);
-          });
-      } else {
-        setAuthToken(null);
-        setUser(null);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await AuthService.login(
-        email,
-        password,
-        async (userData) => {
-          setUser(userData);
-          const token = await getAuthTokenCookies();
-          setAuthToken(token ?? null);
-        }
-      );
+      setLoading(true);
+      await AuthService.login(email, password, (userData) => {
+        setUser(userData);
+        const token = getAuthTokenCookies();
+        setAuthToken(token ?? null);
+      });
       setAuthError(null);
-      return response;
+      setLoading(false);
     } catch (err) {
       if (err instanceof Error) {
         setAuthError(err.message);
       }
+      setLoading(false);
     }
   };
 
@@ -96,7 +70,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, user, login, logout, authError }}>
+    <AuthContext.Provider
+      value={{ loading, authToken, user, login, logout, authError }}
+    >
       {children}
     </AuthContext.Provider>
   );

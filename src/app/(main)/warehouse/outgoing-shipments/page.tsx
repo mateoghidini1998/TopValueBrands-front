@@ -1,21 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import { ShipmentsService } from "@/services/shipments/shipments.service";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import IndexPageContainer from "../../page.container";
 import { columns } from "./columns";
-import { NestedDataTable } from "./new-shipment/components/nested-data-table";
+import { TabbedDataTable } from "./new-shipment/components/tabbed-data-table";
 import { Product, PurchaseOrderData } from "./new-shipment/interfaces";
 import { getShipmentsCols } from "./new-shipment/shipment-columns";
-import { TabbedDataTable } from "./new-shipment/components/tabbed-data-table";
+import { Loader2Icon } from "lucide-react";
 
 export default function OutgoingShipments() {
   const [shipments, setShipments] = useState([]);
   const [isCreatingShipment, setIsCreatingShipment] = useState(false);
+  const [shipmentCreated, setShipmentCreated] = useState(false);
   const [shipmentProducts, setShipmentProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const [poPalletProducts, setPoPalletProducts] = useState<PurchaseOrderData[]>(
     []
@@ -23,11 +26,13 @@ export default function OutgoingShipments() {
 
   useEffect(() => {
     const fetchShipments = async () => {
+      setLoading(true);
       const response = await ShipmentsService.getShipments();
       setShipments(response.shipments);
+      setLoading(false);
     };
     fetchShipments();
-  }, []);
+  }, [shipmentCreated]);
 
   useEffect(() => {
     if (isCreatingShipment) {
@@ -263,7 +268,7 @@ export default function OutgoingShipments() {
   };
 
   const handleSaveShipment = async () => {
-    const shipmentNumber = `SHIPMENT_${Math.floor(Math.random() * 100000)}`;
+    const shipmentNumber = `TV-USA-${Math.floor(Math.random() * 100000)}`;
     const shipment = {
       shipment_number: shipmentNumber,
       palletproducts: shipmentProducts.map((p: Product) => ({
@@ -272,14 +277,15 @@ export default function OutgoingShipments() {
       })),
     };
 
-    console.log(shipmentProducts);
+    // console.log(shipmentProducts);
 
     try {
       await ShipmentsService.createShipment(shipment);
-      console.log(shipment);
+      // console.log(shipment);
       toast.success("Shipment created successfully");
       setIsCreatingShipment(false);
       setShipmentProducts([]);
+      setShipmentCreated(!shipmentCreated);
     } catch (error) {
       toast.error("Error creating shipment");
       console.error(error);
@@ -294,41 +300,59 @@ export default function OutgoingShipments() {
   if (isCreatingShipment) {
     return (
       <IndexPageContainer>
-        <div className="flex justify-start gap-4 w-full px-4 m-4">
-          <Button variant="outline" onClick={handleSaveShipment}>
-            Save Shipment
-          </Button>
-          <Button variant="destructive" onClick={handleCancel}>
-            Cancel
-          </Button>
-        </div>
-        <div className="w-full px-[1.3rem] py-0 flex items-start justify-between gap-8">
-          {/* <DataTable
-            searchInput={"pallet_number"}
-            columns={getStorageCols(addProductToShipment)}
-            data={storageProducts}
-          /> */}
-          {/* <NestedDataTable
-            data={poPalletProducts}
-            addProductToShipment={addProductToShipment}
-            addPalletProductToShipment={addPalletsProductsToShipment}
-            addPoPalletsProductsToShipment={addPOPalletsProductsToShipment}
-          /> */}
-          <div className="grid grid-cols-2 gap-4 w-full">
-            <TabbedDataTable
-              data={poPalletProducts}
-              addProductToShipment={addProductToShipment}
-              addPalletProductToShipment={addPalletsProductsToShipment}
-              addPoPalletsProductsToShipment={addPOPalletsProductsToShipment}
-            />
-            <DataTable
-              // searchInput={"pallet_number"}
-              columns={getShipmentsCols(removeProductFromShipment)}
-              data={shipmentProducts}
-            />
-          </div>
+        <div className="min-h-[60vh] bg-transparent p-6 w-full">
+          <Card className="w-full mx-auto">
+            <CardHeader className="border-b">
+              <div className="flex items-center justify-between">
+                <CardTitle>Manage Shipment</CardTitle>
+                <div className="flex gap-3">
+                  <Button variant="outline" onClick={handleSaveShipment}>
+                    Save Shipment
+                  </Button>
+                  <Button variant="destructive" onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold">Available Products</h2>
+                  <div className="rounded-lg border bg-card p-4">
+                    <TabbedDataTable
+                      data={poPalletProducts}
+                      addProductToShipment={addProductToShipment}
+                      addPalletProductToShipment={addPalletsProductsToShipment}
+                      addPoPalletsProductsToShipment={
+                        addPOPalletsProductsToShipment
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold">Selected Products</h2>
+                  <div className="rounded-lg border bg-card p-4">
+                    <DataTable
+                      searchInput="ASIN"
+                      columns={getShipmentsCols(removeProductFromShipment)}
+                      data={shipmentProducts}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </IndexPageContainer>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="h-[calc(100vh-20rem)] w-full flex items-center justify-center">
+        <Loader2Icon className="h-8 w-8 animate-spin" />
+      </div>
     );
   }
 

@@ -18,7 +18,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { MoreHorizontal } from "lucide-react";
-import OrderSummary from "./(order-summary)/order-summary";
+import OrderSummary, {
+  transformOrderDataProductsAvaliableToCreatePallet,
+} from "./(order-summary)/order-summary";
 import { useState } from "react";
 
 type ActionsCellProps = {
@@ -26,20 +28,33 @@ type ActionsCellProps = {
 };
 
 const ActionsCell = ({ row }: ActionsCellProps) => {
-  const { downloadOrder, deleteOrder, setProductsAddedToCreatePallet } =
-    useOrdersContext(); // Función de limpieza en el contexto
+  const {
+    downloadOrder,
+    deleteOrder,
+    setProductsAddedToCreatePallet,
+    setProductsAvaliableToCreatePallet,
+  } = useOrdersContext(); // Función de limpieza en el contexto
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const incomingOrder = row.original;
 
-  const handleViewDetails = () => {
+  const addProductsPallets = (order: any) => {
+    const transformedProducts =
+      transformOrderDataProductsAvaliableToCreatePallet(order);
+    setProductsAvaliableToCreatePallet(transformedProducts);
+  };
+
+  const handleViewDetails = (order: any) => {
     setIsDialogOpen(true);
+    addProductsPallets(order);
   };
 
   const handleDialogChange = (open: boolean) => {
     setIsDialogOpen(open);
+    console.log(open);
     if (!open) {
       setProductsAddedToCreatePallet([]); // Llama a la función de limpieza al cerrar el diálogo
+      setProductsAvaliableToCreatePallet([]); // Llama a la función de limpieza al cerrar el diálogo
     }
   };
 
@@ -55,7 +70,10 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={handleViewDetails} className="w-full">
+            <DropdownMenuItem
+              onClick={() => handleViewDetails(incomingOrder)}
+              className="w-full"
+            >
               View Details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -68,10 +86,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <DialogContent aria-describedby="Order Summary">
-          <DialogTitle>Order Summary</DialogTitle>
-          <OrderSummary order={incomingOrder} />
-        </DialogContent>
+        <OrderSummary order={incomingOrder} />
       </Dialog>
     </div>
   );

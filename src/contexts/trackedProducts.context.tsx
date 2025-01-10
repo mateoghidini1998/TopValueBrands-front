@@ -30,6 +30,7 @@ export type ProductInOrder = {
 };
 
 export type TrackedProductsState = {
+  loading: boolean;
   trackedProducts: TrackedProductType[];
   currentPage: number;
   totalPages: number;
@@ -58,6 +59,7 @@ export type TrackedProductsState = {
 };
 
 export const TrackedProductContext = createContext<TrackedProductsState>({
+  loading: false,
   trackedProducts: [],
   currentPage: 1,
   totalPages: 0,
@@ -96,6 +98,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [orderBy, setOrderBy] = useState("");
   const [orderWay, setOrderWay] = useState<any>("");
+  const [loading, setLoading] = useState(false);
 
   const LIMIT = 10;
 
@@ -164,6 +167,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
     orderWay?: any
   ) => {
     try {
+      setLoading(true);
       const response = await TrackedProductsService.getTrackedProducts(
         page,
         limit,
@@ -176,6 +180,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
       // console.log(response);
       setTrackedProducts(response.data);
       setTotalPages(response.pages);
+      setLoading(false);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -351,6 +356,7 @@ export const TrackedProductsProvider: FC<PropsWithChildren> = ({
   return (
     <TrackedProductContext.Provider
       value={{
+        loading,
         orderBy,
         trackedProducts,
         supplierId,

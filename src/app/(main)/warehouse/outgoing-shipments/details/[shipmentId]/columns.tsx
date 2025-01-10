@@ -26,10 +26,15 @@ export const columns: ColumnDef<PalletProduct>[] = [
     header: "Available Quantity",
   },
   {
-    accessorKey: "outgoing_shipment_quantity",
+    accessorKey: "OutgoingShipmentProduct.quantity",
     header: "Outgoing Shipment Quantity",
     cell: ({ row }) => {
-      return <div>{row.original.OutgoingShipmentProduct.quantity}</div>;
+      // console.log(row.original);
+      return (
+        <div>
+          {row.original.OutgoingShipmentProduct?.quantity || "no existe"}
+        </div>
+      );
     },
   },
   {

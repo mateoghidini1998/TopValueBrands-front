@@ -94,7 +94,7 @@ DataTableProps<TData, TValue>) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center pb-4">
+      <div className="flex items-center justify-end pb-2">
         {searchInput !== "" && (
           <Input
             placeholder="Filter by Pallet Number..."
@@ -104,7 +104,7 @@ DataTableProps<TData, TValue>) {
             onChange={(event) =>
               table.getColumn(searchInput)?.setFilterValue(event.target.value)
             }
-            className="max-w-sm text-xs font-bold bg-light-2 dark:bg-dark-2 border border-[#EFF1F3] dark:border-[#393E4F] rounded-md"
+            className="mb-4 w-80"
           />
         )}
         {showHideColumns && (

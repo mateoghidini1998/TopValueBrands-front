@@ -28,21 +28,6 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     },
   },
   {
-    accessorKey: "total_price",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Total" />;
-    },
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("total_price"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="">{formatted}</div>;
-    },
-  },
-  {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
@@ -50,8 +35,11 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     ),
   },
   {
-    accessorKey: "notes",
-    header: "Notes",
+    accessorKey: "updatedAt",
+    header: "Last Updated",
+    cell: ({ row }) => {
+      return <DateCell value={row.original.updatedAt} />;
+    },
   },
   {
     accessorKey: "actions",

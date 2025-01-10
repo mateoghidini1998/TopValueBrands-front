@@ -7,6 +7,7 @@ import { SortingState } from "@tanstack/react-table";
 import IndexPageContainer from "../../page.container";
 import { trackedProductsCol, POColumns } from "./columns";
 import { OrderSummary } from "./order-summary";
+import { Loader2Icon } from "lucide-react";
 
 export default function Page() {
   const {
@@ -22,6 +23,7 @@ export default function Page() {
     setOrderWay,
     supplierId,
     keyword,
+    loading,
   } = useTrackedProductContext();
 
   const paginationMethods = {
@@ -45,7 +47,13 @@ export default function Page() {
     );
   };
 
-  console.log(trackedProductsAddedToOrder);
+  if (loading) {
+    return (
+      <div className="h-[calc(100vh-20rem)] w-full flex items-center justify-center">
+        <Loader2Icon className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <IndexPageContainer>
