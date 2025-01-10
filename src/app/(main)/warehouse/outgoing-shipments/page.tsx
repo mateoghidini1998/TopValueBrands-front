@@ -268,7 +268,7 @@ export default function OutgoingShipments() {
   };
 
   const handleSaveShipment = async () => {
-    const shipmentNumber = `SHIPMENT_${Math.floor(Math.random() * 100000)}`;
+    const shipmentNumber = `TV-USA-${Math.floor(Math.random() * 100000)}`;
     const shipment = {
       shipment_number: shipmentNumber,
       palletproducts: shipmentProducts.map((p: Product) => ({

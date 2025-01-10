@@ -19,10 +19,6 @@ export const columns: ColumnDef<IPurchaseOrder>[] = [
     header: "Supplier",
   },
   {
-    accessorKey: "fba_shipment_id",
-    header: "FBA Shipment ID",
-  },
-  {
     accessorKey: "createdAt",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Date" />;
