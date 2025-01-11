@@ -1,6 +1,5 @@
 "use client";
 
-import { Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,26 +11,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import QRCode from "qrcode";
-import Image from "next/image";
 import jsPDF from "jspdf";
+import Image from "next/image";
+import QRCode from "qrcode";
+import { useCallback, useEffect, useState } from "react";
 
 type QrCodeDialogProps = {
   palletNumber: string;
   palletId: number;
+  open?: boolean;
+  orderNumber: string;
 };
 
-export function QrCodeDialog({ palletNumber, palletId }: QrCodeDialogProps) {
+export function QrCodeDialog({
+  palletNumber,
+  palletId,
+  open = false,
+  orderNumber,
+}: QrCodeDialogProps) {
   const [src, setSrc] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(open ?? false);
 
-  const generateQrCode = async () => {
+  const generateQrCode = useCallback(async () => {
     await QRCode.toDataURL(
-      `http://localhost:3000/warehouse/storage/${palletId}`
+      `${process.env.NEXT_PUBLIC_FRONT_URL}/warehouse/storage/${palletId}`
     ).then(setSrc);
-  };
+  }, [palletId]);
 
   const downloadQrCode = () => {
     const link = document.createElement("a");
@@ -51,8 +56,15 @@ export function QrCodeDialog({ palletNumber, palletId }: QrCodeDialogProps) {
     return doc;
   };
 
+  // Generar el QR automáticamente si el diálogo está abierto
+  useEffect(() => {
+    if (isOpen) {
+      generateQrCode();
+    }
+  }, [isOpen, generateQrCode]);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <span
           className="text-[#438EF3] hover:underline cursor-pointer"
@@ -64,6 +76,7 @@ export function QrCodeDialog({ palletNumber, palletId }: QrCodeDialogProps) {
       <DialogContent className="sm:max-w-md mx-auto fixed inset-0 flex flex-col items-center justify-between max-h-[500px] transform translate-y-[40%] ">
         <DialogHeader>
           <DialogTitle>Pallet {palletNumber}</DialogTitle>
+          <span>Purchase Order Number: {orderNumber}</span>
           <DialogDescription>
             Anyone who has this QR code will be able to view this.
           </DialogDescription>

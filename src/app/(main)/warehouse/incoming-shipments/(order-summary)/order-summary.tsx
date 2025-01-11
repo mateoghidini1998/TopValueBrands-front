@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
 import { OrderSummaryReceivedData } from "./order-summary-received-data";
+import Link from "next/link";
 
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
@@ -93,7 +94,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     }
   }, [productsAddedToCreatePallet]);
 
-  const handleCreatePallet = () => {
+  const handleCreatePallet = async () => {
     // Validate that every product has a quantity greater than 0 and lower than the quantity available
     productsAddedToCreatePallet.forEach((product) => {
       if (
@@ -105,11 +106,27 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
       }
     });
 
-    createPallet(palletData);
-    setPalletData((prevPalletData) => ({
-      ...prevPalletData,
-      pallet_number: Math.floor(Math.random() * 1000000),
-    }));
+    return await createPallet(palletData).then((res) => {
+      console.log(res.pallet);
+
+      if (!res) {
+        console.log("Error: Failed to create pallet");
+        return toast.error("Error: Failed to create pallet");
+      }
+
+      setPalletData((prevPalletData) => ({
+        ...prevPalletData,
+        pallet_number: Math.floor(Math.random() * 1000000),
+      }));
+
+      setTimeout(() => {
+        window.open(
+          `/warehouse/storage/${res.pallet.id}`,
+          "_blank",
+          "noopener,noreferrer"
+        );
+      }, 1000);
+    });
   };
 
   return (
