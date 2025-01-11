@@ -52,7 +52,7 @@ export function SelectReasonCell({ row, setLocalData }: SelectReasonCellProps) {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Reasons</SelectLabel>
-          {/* <SelectItem value="6">None</SelectItem> */}
+          <SelectItem value="0">-</SelectItem>
           <SelectItem value="1">Ok</SelectItem>
           <SelectItem value="2">Shortage</SelectItem>
           <SelectItem value="3">Broken Items</SelectItem>
