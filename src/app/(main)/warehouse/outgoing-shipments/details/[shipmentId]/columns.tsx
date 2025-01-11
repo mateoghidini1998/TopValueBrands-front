@@ -18,12 +18,12 @@ export const columns: ColumnDef<PalletProduct>[] = [
     header: "Seller SKU",
   },
   {
-    accessorKey: "quantity",
-    header: "Quantity",
+    accessorKey: "pallet_number",
+    header: "Pallet",
   },
   {
-    accessorKey: "available_quantity",
-    header: "Available Quantity",
+    accessorKey: "quantity",
+    header: "Quantity",
   },
   {
     accessorKey: "OutgoingShipmentProduct.quantity",
