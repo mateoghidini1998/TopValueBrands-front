@@ -12,6 +12,7 @@ import { TabbedDataTable } from "./new-shipment/components/tabbed-data-table";
 import { Product, PurchaseOrderData } from "./new-shipment/interfaces";
 import { getShipmentsCols } from "./new-shipment/shipment-columns";
 import { Loader2Icon } from "lucide-react";
+import classNames from "classnames";
 
 export default function OutgoingShipments() {
   const [shipments, setShipments] = useState([]);
@@ -358,8 +359,12 @@ export default function OutgoingShipments() {
 
   return (
     <IndexPageContainer>
-      <div className="w-full px-[1.3rem] py-0">
-        <Button variant="outline" onClick={() => setIsCreatingShipment(true)}>
+      <div className="w-full px-[1.3rem] py-0 relative">
+        <Button
+          className="absolute top-[-50px] right-[21px] z-50 bg-[#438EF3] text-white hover:bg-[#6daaf8]"
+          variant="tvb"
+          onClick={() => setIsCreatingShipment(true)}
+        >
           New Shipment
         </Button>
         <DataTable columns={columns} data={shipments} />
