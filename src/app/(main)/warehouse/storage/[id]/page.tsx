@@ -42,9 +42,9 @@ export default async function StoragePage({ params }: Props) {
   return (
     <div className="w-full p-6">
       <div className="grid gap-6 md:grid-cols-1">
-        <QrCode data={data} />
         <PalletInformation pallet={data} />
         <PalletProducts palletProducts={data.PalletProducts} />
+        <QrCode data={data} />
       </div>
     </div>
   );

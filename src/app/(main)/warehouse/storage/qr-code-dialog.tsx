@@ -15,12 +15,14 @@ import jsPDF from "jspdf";
 import Image from "next/image";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useState } from "react";
+import classNames from "classnames";
 
 type QrCodeDialogProps = {
   palletNumber: string;
   palletId: number;
   open?: boolean;
   orderNumber: string;
+  classNames?: string;
 };
 
 export function QrCodeDialog({
@@ -28,6 +30,7 @@ export function QrCodeDialog({
   palletId,
   open = false,
   orderNumber,
+  classNames,
 }: QrCodeDialogProps) {
   const [src, setSrc] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(open ?? false);
@@ -67,7 +70,11 @@ export function QrCodeDialog({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <span
-          className="text-[#438EF3] hover:underline cursor-pointer"
+          className={
+            classNames
+              ? classNames
+              : "text-[#438EF3] hover:underline cursor-pointer"
+          }
           onClick={generateQrCode}
         >
           View QR
