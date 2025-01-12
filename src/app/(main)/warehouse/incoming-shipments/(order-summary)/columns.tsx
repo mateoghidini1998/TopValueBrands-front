@@ -18,6 +18,7 @@ export interface IncomingShipmentsOrderSummaryProps {
   supplier_name: string;
   quantity: number;
   quantity_missing: number;
+  quantity_purchased: number;
   expire_date: string;
 }
 
@@ -26,60 +27,133 @@ export const getColumns = (
 ): ColumnDef<IncomingShipmentsOrderSummaryProps>[] => [
   {
     accessorKey: "product_name",
-    header: "Product Name",
-    cell: ({ row }) => {
+    header: () => {
       return (
-        // <div className="w-[200px] flex items-center gap-2">
-        //   <img
-        //     className="h-10 w-10 rounded-md"
-        //     src={row.original.product_image}
-        //     alt={row.original.product_name}
-        //   />
-        //   {row.original.product_name}
-        // </div>
-        <ProductNameTableData product={row.original} width={200} />
+        <span className="flex items-center justify-center w-full">
+          Product Name
+        </span>
       );
+    },
+    cell: ({ row }) => {
+      return <ProductNameTableData product={row.original} width={200} />;
     },
   },
   {
     accessorKey: "ASIN",
-    header: "ASIN",
+    header: () => {
+      return (
+        <span className="flex items-center justify-center w-full">ASIN</span>
+      );
+    },
+    cell: ({ row }) => (
+      <span className=" flex items-center justify-center w-full">
+        {row.original.ASIN}
+      </span>
+    ),
   },
   {
     accessorKey: "seller_sku",
-    header: "Seller SKU",
+    header: () => {
+      return (
+        <span className="flex items-center justify-center w-full">
+          Seller SKU
+        </span>
+      );
+    },
+    cell: ({ row }) => (
+      <span className=" flex items-center justify-center w-full">
+        {row.original.seller_sku}
+      </span>
+    ),
   },
   {
     accessorKey: "UPC",
-    header: "UPC",
-    cell: ({ row }) => <AddUPCCell row={row} />,
+    header: () => {
+      return (
+        <span className="flex items-center justify-center w-full">UPC</span>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <span className=" flex items-center justify-center w-full">
+          <AddUPCCell row={row} />
+        </span>
+      );
+    },
   },
   {
     accessorKey: "quantity_purchased",
-    header: "Quantity Purchased",
+    header: () => {
+      return (
+        <span className="flex items-center justify-center w-full">
+          Quantity Purchased
+        </span>
+      );
+    },
+    cell: ({ row }) => (
+      <span className=" flex items-center justify-center w-full">
+        {row.original.quantity_purchased}
+      </span>
+    ),
   },
   {
     accessorKey: "quantity_received",
-    header: "Quantity Received",
+    header: () => {
+      return (
+        <span className="flex items-center justify-center w-full">
+          Quantity Received
+        </span>
+      );
+    },
     cell: ({ row }) => (
-      <QuantityReceivedCell row={row} setLocalData={setLocalData} />
+      <span className=" flex items-center justify-center w-full">
+        <QuantityReceivedCell row={row} setLocalData={setLocalData} />
+      </span>
     ),
   },
   {
     accessorKey: "quantity_missing",
-    header: "Quantity Missing",
-    cell: ({ row }) => <span>{row.original.quantity_missing}</span>,
+    header: () => {
+      return (
+        <span className="flex items-center justify-center w-full">
+          Quantity Missing
+        </span>
+      );
+    },
+    cell: ({ row }) => (
+      <span className=" flex items-center justify-center w-full">
+        {row.original.quantity_missing}
+      </span>
+    ),
   },
   {
     accessorKey: "reason_id",
-    header: "Reason",
+    header: () => {
+      return (
+        <span className="flex items-center justify-center w-full">Reason</span>
+      );
+    },
     cell: ({ row }) => (
-      <SelectReasonCell row={row} setLocalData={setLocalData} />
+      <span className=" flex items-center justify-center w-full">
+        <SelectReasonCell row={row} setLocalData={setLocalData} />
+      </span>
     ),
   },
   {
     accessorKey: "expire_date",
-    header: "Expire Date",
-    cell: ({ row }) => <DatePickerCell row={row.original} />,
+    header: () => {
+      return (
+        <span className="flex items-center justify-center w-full">
+          Expire Date
+        </span>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <span className=" flex items-center justify-center w-full">
+          <DatePickerCell row={row.original} />
+        </span>
+      );
+    },
   },
 ];

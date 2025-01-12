@@ -1,6 +1,5 @@
 "use client";
 
-import { Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,32 +11,89 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import QRCode from "qrcode";
-import Image from "next/image";
 import jsPDF from "jspdf";
+import Image from "next/image";
+import QRCode from "qrcode";
+import { useCallback, useEffect, useState } from "react";
 
 type QrCodeDialogProps = {
   palletNumber: string;
   palletId: number;
+  open?: boolean;
+  orderNumber: string;
+  classNames?: string;
 };
 
-export function QrCodeDialog({ palletNumber, palletId }: QrCodeDialogProps) {
+export function QrCodeDialog({
+  palletNumber,
+  palletId,
+  open = false,
+  orderNumber,
+  classNames,
+}: QrCodeDialogProps) {
   const [src, setSrc] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(open ?? false);
 
-  const generateQrCode = async () => {
+  const generateQrCode = useCallback(async () => {
     await QRCode.toDataURL(
-      `http://localhost:3000/warehouse/storage/${palletId}`
+      `${process.env.NEXT_PUBLIC_FRONT_URL}/warehouse/storage/${palletId}`
     ).then(setSrc);
-  };
+  }, [palletId]);
 
   const downloadQrCode = () => {
     const link = document.createElement("a");
     link.download = `pallet-${palletNumber}.png`;
     link.href = src;
     link.click();
+  };
+
+  const printQrCode = (palletNumber: string, orderNumber: string) => {
+    const printWindow = window.open("", "_blank", "width=600,height=600");
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Pallet #${palletNumber}</title>
+            <style>
+              body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin: 0;
+                height: 100vh;
+                background-color: white;
+
+                font-family: Arial, sans-serif;
+              }
+
+              .data-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+              }
+            </style>
+          </head>
+          <body>
+          <div class="data-container">
+          <h2>Pallet Number: ${palletNumber}</h2>
+          <h3>Order Number: ${orderNumber}</h3>
+          </div>
+            <img src="${src}" alt="QR Code" style="width: 350px; height: 350px;" />
+            <script>
+              window.onload = function () {
+                window.print();
+                window.close();
+              };
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
   };
 
   // to download as PDF with details just return it and the we can doc.save();
@@ -51,11 +107,22 @@ export function QrCodeDialog({ palletNumber, palletId }: QrCodeDialogProps) {
     return doc;
   };
 
+  // Generar el QR automáticamente si el diálogo está abierto
+  useEffect(() => {
+    if (isOpen) {
+      generateQrCode();
+    }
+  }, [isOpen, generateQrCode]);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <span
-          className="text-[#438EF3] hover:underline cursor-pointer"
+          className={
+            classNames
+              ? classNames
+              : "text-[#438EF3] hover:underline cursor-pointer"
+          }
           onClick={generateQrCode}
         >
           View QR
@@ -64,6 +131,7 @@ export function QrCodeDialog({ palletNumber, palletId }: QrCodeDialogProps) {
       <DialogContent className="sm:max-w-md mx-auto fixed inset-0 flex flex-col items-center justify-between max-h-[500px] transform translate-y-[40%] ">
         <DialogHeader>
           <DialogTitle>Pallet {palletNumber}</DialogTitle>
+          <span>Purchase Order Number: {orderNumber}</span>
           <DialogDescription>
             Anyone who has this QR code will be able to view this.
           </DialogDescription>
@@ -72,16 +140,26 @@ export function QrCodeDialog({ palletNumber, palletId }: QrCodeDialogProps) {
           <Image src={src} width={250} height={250} alt="QR Code" />
         </div>
         <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
+          <div className="w-full h-fit py-4 flex flex-col items-center justify-center gap-4">
+            <DialogClose asChild>
+              <Button
+                className="w-[250px]"
+                type="button"
+                variant="outline"
+                onClick={downloadQrCode}
+              >
+                Download QR
+              </Button>
+            </DialogClose>
             <Button
-              className="w-[250px]"
+              className="w-[250px] ml-2"
               type="button"
               variant="outline"
-              onClick={downloadQrCode}
+              onClick={() => printQrCode(palletNumber, orderNumber)}
             >
-              Download QR
+              Print QR
             </Button>
-          </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

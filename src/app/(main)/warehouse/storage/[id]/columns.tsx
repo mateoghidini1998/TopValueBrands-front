@@ -11,9 +11,15 @@ export const columns: ColumnDef<PalletProduct>[] = [
   {
     accessorKey: "product_name",
     header: "Product",
-    cell: ({ row }) => (
-      <ProductNameTableData product={row.original} width={250} />
-    ),
+    cell: ({ row }) => {
+      console.log(row.original);
+      return (
+        <ProductNameTableData
+          product={row.original.purchaseOrderProduct.Product}
+          width={250}
+        />
+      );
+    },
   },
   {
     accessorKey: "quantity",
@@ -28,6 +34,11 @@ export const columns: ColumnDef<PalletProduct>[] = [
   {
     accessorKey: "seller_sku",
     header: "Seller SKU",
+    cell: ({ row }) => {
+      return (
+        <span>{row.original.purchaseOrderProduct.Product.seller_sku}</span>
+      );
+    },
   },
 
   {

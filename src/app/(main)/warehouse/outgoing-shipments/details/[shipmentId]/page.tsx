@@ -7,16 +7,34 @@ import { PalletProduct } from "../../interfaces";
 import { columns } from "./columns";
 import { Loader2Icon } from "lucide-react";
 
+interface ShipmentData {
+  id: number;
+  shipment_number: string;
+  status: string;
+  fba_shipment_id: string;
+  createdAt: string;
+  updatedAt: string;
+  PalletProducts: PalletProduct[];
+}
+
 export default function OutgoingShipmentDetails({
   params,
 }: {
   params: { shipmentId: string };
 }) {
-  // console.log(params.shipmentId);
-
   const [palletProducts, setPalletProducts] = useState<PalletProduct[]>([]);
 
   const [loading, setLoading] = useState(false);
+
+  const [shipmentData, setShipmentData] = useState<ShipmentData>({
+    id: 0,
+    shipment_number: "",
+    status: "",
+    fba_shipment_id: "",
+    createdAt: "",
+    updatedAt: "",
+    PalletProducts: [],
+  });
 
   useEffect(() => {
     const fetchPalletProducts = async () => {
@@ -27,6 +45,7 @@ export default function OutgoingShipmentDetails({
         );
         const data = await response.json();
         setPalletProducts(data.PalletProducts);
+        setShipmentData(data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -47,8 +66,17 @@ export default function OutgoingShipmentDetails({
   }
 
   return (
-    <div className="w-full px-[1.3rem] py-0">
-      <GoBackButton />
+    <div className="w-full px-[1.3rem] py-0 flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl font-bold">
+          Work Order #: MANIFEST-{shipmentData?.shipment_number}
+        </h2>
+        <span className="font-semibold">
+          Date Work Order Issued:{" "}
+          {new Date(shipmentData?.createdAt).toDateString()}{" "}
+        </span>
+      </div>
+
       <DataTable columns={columns} data={palletProducts} />
     </div>
   );

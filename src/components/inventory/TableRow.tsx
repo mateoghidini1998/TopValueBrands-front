@@ -490,7 +490,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 ) : (
                   suppliers.find(
                     (supplier) => supplier.id === product?.supplier_id
-                  )?.supplier_name
+                  )?.supplier_name ?? "No supplier listed"
                 )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center flex justify-center">
@@ -503,7 +503,7 @@ const TableRow = ({ products }: TableRowProps) => {
                     onChange={(e) => onChange(e)}
                   />
                 ) : (
-                  product?.supplier_item_number
+                  product?.supplier_item_number ?? "-"
                 )}
               </td>
               <td className="w-[10%] text-xs font-medium text-center flex justify-center">
@@ -518,7 +518,7 @@ const TableRow = ({ products }: TableRowProps) => {
                 ) : product?.pack_type ? (
                   `${product?.pack_type} Pack`
                 ) : (
-                  ""
+                  "-"
                 )}
               </td>
               <td className="w-[12%] text-xs font-medium text-center">

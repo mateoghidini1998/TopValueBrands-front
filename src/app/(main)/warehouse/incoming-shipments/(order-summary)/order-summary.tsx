@@ -18,12 +18,12 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { IPurchaseOrderSummary } from "@/types/product.types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
 import { OrderSummaryReceivedData } from "./order-summary-received-data";
-
+import QRCode from "qrcode";
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
 };
@@ -75,6 +75,72 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     products: Array<{ purchaseorderproduct_id: string; quantity: number }>;
   }>(initialPalletData);
 
+  // const [src, setSrc] = useState<string>("");
+
+  const generateQrCode = async (palletId: number) => {
+    try {
+      return await QRCode.toDataURL(
+        `${process.env.NEXT_PUBLIC_FRONT_URL}/warehouse/storage/${palletId}`
+      );
+    } catch (error) {
+      console.error("Error generando QR:", error);
+      toast.error("Error generando el código QR.");
+    }
+  };
+
+  const printQrCode = (
+    palletNumber: string,
+    orderNumber: string,
+    src: string
+  ) => {
+    const printWindow = window.open("", "_blank", "width=600,height=600");
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Pallet #${palletNumber}</title>
+            <style>
+              body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin: 0;
+                height: 100vh;
+                background-color: white;
+
+                font-family: Arial, sans-serif;
+              }
+
+              .data-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+              }
+            </style>
+          </head>
+          <body>
+          <div class="data-container">
+          <h2>Pallet Number: ${palletNumber}</h2>
+          <h3>Order Number: ${orderNumber}</h3>
+          </div>
+            <img src="${src}" alt="QR Code" style="width: 350px; height: 350px;" />
+            <script>
+              window.onload = function () {
+                window.print();
+                window.close();
+              };
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
+  };
+
   const addProductsPallets = () => {
     const transformedProducts =
       transformOrderDataProductsAvaliableToCreatePallet(order);
@@ -93,7 +159,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     }
   }, [productsAddedToCreatePallet]);
 
-  const handleCreatePallet = () => {
+  const handleCreatePallet = async () => {
     // Validate that every product has a quantity greater than 0 and lower than the quantity available
     productsAddedToCreatePallet.forEach((product) => {
       if (
@@ -105,13 +171,36 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
       }
     });
 
-    createPallet(palletData);
-    setPalletData((prevPalletData) => ({
-      ...prevPalletData,
-      pallet_number: Math.floor(Math.random() * 1000000),
-    }));
-  };
+    return await createPallet(palletData).then((res) => {
+      console.log(res.pallet);
 
+      if (!res) {
+        console.log("Error: Failed to create pallet");
+        return toast.error("Error: Failed to create pallet");
+      }
+
+      setPalletData((prevPalletData) => ({
+        ...prevPalletData,
+        pallet_number: Math.floor(Math.random() * 1000000),
+      }));
+
+      setTimeout(async () => {
+        // window.open(
+        //   `/warehouse/storage/${res.pallet.id}`,
+        //   "_blank",
+        //   "noopener,noreferrer"
+        // );
+
+        let qrSrc = await generateQrCode(res.pallet.id);
+        console.log(qrSrc);
+        if (qrSrc) {
+          printQrCode(res.pallet.pallet_number, order.order_number!!, qrSrc);
+        } else {
+          toast.error("Error: QR Code no generado.");
+        }
+      }, 1000);
+    });
+  };
   return (
     <DialogContent
       className={`max-h-[95dvh] overflow-auto custom_scroll flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] translate-y-[-50%] translate-x-[-50%]`}

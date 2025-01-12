@@ -64,7 +64,7 @@ export default function AddUPCCell({ row }: AddUPCCellProps) {
     <Input
       defaultValue={row.original.upc || ""}
       type="text"
-      className={`border p-1 w-20 dark:bg-dark-2 dark:text-light-2 border-dark-3 
+      className={`border p-1 min-w-20 w-fit dark:bg-dark-2 dark:text-light-2 border-dark-3 
         dark:border-light-3 rounded-md text-xs text-center
         ${isUpdating ? "opacity-50" : ""}`}
       value={upc}

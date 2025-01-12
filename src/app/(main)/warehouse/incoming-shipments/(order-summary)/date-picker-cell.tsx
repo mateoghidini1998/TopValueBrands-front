@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { addDays, format, parseISO } from "date-fns";
+import { format, parseISO, parse } from "date-fns";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -12,13 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { useOrdersContext } from "@/contexts/orders.context";
 
 type DatePickerCellProps = {
@@ -30,19 +24,49 @@ type DatePickerCellProps = {
 export function DatePickerCell({ row, onChange }: DatePickerCellProps) {
   const { addExpireDateToPOProduct } = useOrdersContext();
 
-  // Convertimos `row.expire_date` a un objeto `Date` si ya tiene un valor
   const initialDate = row.expire_date ? parseISO(row.expire_date) : undefined;
   const [date, setDate] = React.useState<Date | undefined>(initialDate);
+  const [inputValue, setInputValue] = React.useState(
+    date ? format(date, "MM/dd/yyyy") : ""
+  );
 
-  // Función para formatear la fecha antes de enviarla
   const handleDateChange = (selectedDate: Date) => {
     setDate(selectedDate);
+    setInputValue(format(selectedDate, "MM/dd/yyyy"));
     const formattedDate = format(selectedDate, "yyyy-MM-dd HH:mm:ss");
 
     addExpireDateToPOProduct(row.purchase_order_product_id, formattedDate);
 
     if (onChange) {
       onChange(formattedDate);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    // Remove any non-digit characters
+    value = value.replace(/\D/g, "");
+
+    // Add slashes automatically
+    if (value.length > 2 && value.length <= 4) {
+      value = value.slice(0, 2) + "/" + value.slice(2);
+    } else if (value.length > 4) {
+      value =
+        value.slice(0, 2) + "/" + value.slice(2, 4) + "/" + value.slice(4, 8);
+    }
+
+    setInputValue(value);
+
+    if (value.length === 10) {
+      try {
+        const parsedDate = parse(value, "MM/dd/yyyy", new Date());
+        if (parsedDate instanceof Date && !isNaN(parsedDate.getTime())) {
+          handleDateChange(parsedDate);
+        }
+      } catch (error) {
+        // Invalid date format, do nothing
+      }
     }
   };
 
@@ -64,22 +88,13 @@ export function DatePickerCell({ row, onChange }: DatePickerCellProps) {
         align="start"
         className="flex w-auto flex-col space-y-2 p-2"
       >
-        <Select
-          defaultValue={date!!?.getDate().toString()}
-          onValueChange={(value) =>
-            handleDateChange(addDays(new Date(), parseInt(value)))
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select" />
-          </SelectTrigger>
-          <SelectContent position="popper">
-            <SelectItem value="0">Today</SelectItem>
-            <SelectItem value="1">Tomorrow</SelectItem>
-            <SelectItem value="3">In 3 days</SelectItem>
-            <SelectItem value="7">In a week</SelectItem>
-          </SelectContent>
-        </Select>
+        <Input
+          type="text"
+          placeholder="MM/DD/YYYY"
+          value={inputValue}
+          onChange={handleInputChange}
+          maxLength={10}
+        />
         <div className="rounded-md border">
           <Calendar
             mode="single"
