@@ -66,7 +66,7 @@ export const OrderSummaryReceivedData = ({
       <DataTable
         columns={getColumns(setData)}
         data={data} // Usa los datos transformados
-        dataLength={10}
+        dataLength={50}
       />
     </DialogDescription>
   );
