@@ -67,7 +67,6 @@ export default function OutgoingShipmentDetails({
 
   return (
     <div className="w-full px-[1.3rem] py-0 flex flex-col gap-6">
-      <GoBackButton />
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">
           Work Order #: MANIFEST-{shipmentData?.shipment_number}

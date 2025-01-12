@@ -22,12 +22,8 @@ export const columns: ColumnDef<PalletProduct>[] = [
     header: "Pallet",
   },
   {
-    accessorKey: "quantity",
-    header: "Quantity",
-  },
-  {
     accessorKey: "OutgoingShipmentProduct.quantity",
-    header: "Outgoing Shipment Quantity",
+    header: "Quantity",
     cell: ({ row }) => {
       // console.log(row.original);
       return (
