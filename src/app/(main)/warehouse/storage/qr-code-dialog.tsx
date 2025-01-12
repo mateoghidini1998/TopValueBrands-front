@@ -15,7 +15,6 @@ import jsPDF from "jspdf";
 import Image from "next/image";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useState } from "react";
-import classNames from "classnames";
 
 type QrCodeDialogProps = {
   palletNumber: string;
@@ -46,6 +45,55 @@ export function QrCodeDialog({
     link.download = `pallet-${palletNumber}.png`;
     link.href = src;
     link.click();
+  };
+
+  const printQrCode = (palletNumber: string, orderNumber: string) => {
+    const printWindow = window.open("", "_blank", "width=600,height=600");
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Pallet #${palletNumber}</title>
+            <style>
+              body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin: 0;
+                height: 100vh;
+                background-color: white;
+
+                font-family: Arial, sans-serif;
+              }
+
+              .data-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+              }
+            </style>
+          </head>
+          <body>
+          <div class="data-container">
+          <h2>Pallet Number: ${palletNumber}</h2>
+          <h3>Order Number: ${orderNumber}</h3>
+          </div>
+            <img src="${src}" alt="QR Code" style="width: 350px; height: 350px;" />
+            <script>
+              window.onload = function () {
+                window.print();
+                window.close();
+              };
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
   };
 
   // to download as PDF with details just return it and the we can doc.save();
@@ -92,16 +140,26 @@ export function QrCodeDialog({
           <Image src={src} width={250} height={250} alt="QR Code" />
         </div>
         <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
+          <div className="w-full h-fit py-4 flex flex-col items-center justify-center gap-4">
+            <DialogClose asChild>
+              <Button
+                className="w-[250px]"
+                type="button"
+                variant="outline"
+                onClick={downloadQrCode}
+              >
+                Download QR
+              </Button>
+            </DialogClose>
             <Button
-              className="w-[250px]"
+              className="w-[250px] ml-2"
               type="button"
               variant="outline"
-              onClick={downloadQrCode}
+              onClick={() => printQrCode(palletNumber, orderNumber)}
             >
-              Download QR
+              Print QR
             </Button>
-          </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
