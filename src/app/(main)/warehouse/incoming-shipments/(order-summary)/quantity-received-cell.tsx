@@ -30,16 +30,27 @@ export default function QuantityReceivedCell({
   // console.log(row.original.purchase_order_product_id);
 
   const getPalletProductQuantity = useCallback(async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets/${row.original.purchase_order_product_id}/palletproduct`;
-    // console.log(url);
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    try {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets/${row.original.purchase_order_product_id}/palletproduct`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        console.error(`Error: ${response.status} - ${response.statusText}`);
+        return null; // o algún valor por defecto
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching pallet product quantity:", error);
+      return null;
+    }
   }, [row.original.purchase_order_product_id]);
 
   useEffect(() => {
     getPalletProductQuantity().then((data) => {
-      setPalletProductQuantity(parseInt(data.totalQuantity));
+      if (data) {
+        setPalletProductQuantity(data.totalQuantity);
+      } else {
+        setPalletProductQuantity(0);
+      }
     });
   }, [getPalletProductQuantity]);
 
