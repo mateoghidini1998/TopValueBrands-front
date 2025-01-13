@@ -184,21 +184,21 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
         pallet_number: Math.floor(Math.random() * 1000000),
       }));
 
-      // setTimeout(async () => {
-      //   // window.open(
-      //   //   `/warehouse/storage/${res.pallet.id}`,
-      //   //   "_blank",
-      //   //   "noopener,noreferrer"
-      //   // );
+      setTimeout(async () => {
+        // window.open(
+        //   `/warehouse/storage/${res.pallet.id}`,
+        //   "_blank",
+        //   "noopener,noreferrer"
+        // );
 
-      //   let qrSrc = await generateQrCode(res.pallet.id);
-      //   console.log(qrSrc);
-      //   if (qrSrc) {
-      //     printQrCode(res.pallet.pallet_number, order.order_number!!, qrSrc);
-      //   } else {
-      //     toast.error("Error: QR Code no generado.");
-      //   }
-      // }, 1000);
+        let qrSrc = await generateQrCode(res.pallet.id);
+        console.log(qrSrc);
+        if (qrSrc) {
+          printQrCode(res.pallet.pallet_number, order.order_number!!, qrSrc);
+        } else {
+          toast.error("Error: QR Code no generado.");
+        }
+      }, 1000);
     });
   };
   return (
