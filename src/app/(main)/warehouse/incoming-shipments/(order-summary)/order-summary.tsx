@@ -197,7 +197,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
       }
     } catch (error) {
       console.error("Error en handleCreatePallet:", error);
-      toast.error(error.message || "Unexpected error occurred");
+      toast.error((error as any).message || "Unexpected error occurred");
     }
   };
   
