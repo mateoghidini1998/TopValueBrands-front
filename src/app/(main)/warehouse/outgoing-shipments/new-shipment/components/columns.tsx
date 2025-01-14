@@ -67,20 +67,20 @@ export const getPalletColumns = (
       return <p className="text-center">{row.original.pallet_number}</p>;
     },
   },
-  {
-    accessorKey: "Order Number",
-    header: ({ column }) => {
-      return <p className="text-center">Order Number</p>;
-    },
-    cell: ({ row }) => {
-      // console.log(row.original);
-      return (
-        <p className="text-center">
-          {row.original?.purchase_order_number || ""}
-        </p>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "Order Number",
+  //   header: ({ column }) => {
+  //     return <p className="text-center">Order Number</p>;
+  //   },
+  //   cell: ({ row }) => {
+  //     // console.log(row.original);
+  //     return (
+  //       <p className="text-center">
+  //         {row.original?.purchase_order_number || ""}
+  //       </p>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "productCount",
     header: ({ column }) => {
@@ -119,14 +119,24 @@ export const getProductColumns = (
       return <ProductNameTableData product={row.original} width={250} />;
     },
   },
+  // {
+  //   accessorKey: "pallet_number",
+  //   header: ({ column }) => {
+  //     return <p className="text-center">Pallet Number</p>;
+  //   },
+  //   cell: ({ row }) => (
+  //     <p className="text-center"># {row.original.pallet_number}</p>
+  //   ),
+  // },
   {
-    accessorKey: "pallet_number",
+    accessorKey: "upc",
     header: ({ column }) => {
-      return <p className="text-center">Pallet Number</p>;
+      return <p className="text-center">UPC</p>;
     },
-    cell: ({ row }) => (
-      <p className="text-center"># {row.original.pallet_number}</p>
-    ),
+    cell: ({ row }) => {
+      // console.log(row.original);
+      return <p className="text-center">{row.original.upc ?? "-"}</p>;
+    },
   },
   {
     accessorKey: "available_quantity",
@@ -137,13 +147,13 @@ export const getProductColumns = (
       <p className="text-center">{row.original.available_quantity}</p>
     ),
   },
-  {
-    accessorKey: "seller_sku",
-    header: ({ column }) => {
-      return <p className="text-center">Seller SKU</p>;
-    },
-    cell: ({ row }) => <p className="text-center">{row.original.seller_sku}</p>,
-  },
+  // {
+  //   accessorKey: "seller_sku",
+  //   header: ({ column }) => {
+  //     return <p className="text-center">Seller SKU</p>;
+  //   },
+  //   cell: ({ row }) => <p className="text-center">{row.original.seller_sku}</p>,
+  // },
   {
     accessorKey: "ASIN",
     header: ({ column }) => {

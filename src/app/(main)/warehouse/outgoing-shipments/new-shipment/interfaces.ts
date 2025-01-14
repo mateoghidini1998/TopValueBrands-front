@@ -35,6 +35,7 @@ export interface Product {
   available_quantity: number;
   pallet_number: string;
   in_seller_account?: boolean;
+  upc: string;
 }
 
 export interface PurchaseOrderData {
