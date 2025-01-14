@@ -160,47 +160,48 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
   }, [productsAddedToCreatePallet]);
 
   const handleCreatePallet = async () => {
-    // Validate that every product has a quantity greater than 0 and lower than the quantity available
-    productsAddedToCreatePallet.forEach((product) => {
-      if (
-        product.quantity <= 0 ||
-        product.quantity > product.quantity_available
-      ) {
-        console.log("Error: Invalid product quantity");
-        return toast.error("Error: Invalid product quantity");
+    try {
+      const invalidProduct = productsAddedToCreatePallet.find(
+        (product) =>
+          product.quantity <= 0 || product.quantity > product.quantity_available
+      );
+  
+      if (invalidProduct) {
+        toast.error("Error: Invalid product quantity");
+        console.error("Error: Invalid product quantity", invalidProduct);
+        return;
       }
-    });
-
-    return await createPallet(palletData).then((res) => {
-      console.log(res.pallet);
-
-      if (!res) {
-        console.log("Error: Failed to create pallet");
-        return toast.error("Error: Failed to create pallet");
+      
+      console.log("Pallet Data: ", palletData)
+      const res = await createPallet(palletData);
+  
+      if (!res || !res.pallet) {
+        toast.error("Error: Failed to create pallet");
+        console.error("Error: Failed to create pallet");
+        return;
       }
-
+  
+      console.log("Pallet created:", res.pallet);
+  
       setPalletData((prevPalletData) => ({
         ...prevPalletData,
         pallet_number: Math.floor(Math.random() * 1000000),
       }));
-
-      /* setTimeout(async () => {
-        // window.open(
-        //   `/warehouse/storage/${res.pallet.id}`,
-        //   "_blank",
-        //   "noopener,noreferrer"
-        // );
-
-        let qrSrc = await generateQrCode(res.pallet.id);
-        console.log(qrSrc);
-        if (qrSrc) {
-          printQrCode(res.pallet.pallet_number, order.order_number!!, qrSrc);
-        } else {
-          toast.error("Error: QR Code no generado.");
-        }
-      }, 1000); */
-    });
+  
+      // Generar y mostrar el código QR
+      const qrSrc = await generateQrCode(res.pallet.id);
+      if (qrSrc) {
+        printQrCode(res.pallet.pallet_number, order.order_number!!, qrSrc);
+      } else {
+        toast.error("Error: QR Code no generado.");
+      }
+    } catch (error) {
+      console.error("Error en handleCreatePallet:", error);
+      toast.error(error.message || "Unexpected error occurred");
+    }
   };
+  
+
   return (
     <DialogContent
       className={`max-h-[95dvh] overflow-auto custom_scroll flex flex-col gap-4 item-center justify-between dark:bg-dark fixed left-[50%] top-[50%] min-w-[85%] max-w-[70%] translate-y-[-50%] translate-x-[-50%]`}
