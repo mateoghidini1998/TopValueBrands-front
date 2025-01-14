@@ -184,7 +184,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
         pallet_number: Math.floor(Math.random() * 1000000),
       }));
 
-      setTimeout(async () => {
+      /* setTimeout(async () => {
         // window.open(
         //   `/warehouse/storage/${res.pallet.id}`,
         //   "_blank",
@@ -198,7 +198,7 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
         } else {
           toast.error("Error: QR Code no generado.");
         }
-      }, 1000);
+      }, 1000); */
     });
   };
   return (
