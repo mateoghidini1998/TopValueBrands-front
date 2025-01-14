@@ -18,12 +18,12 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useOrdersContext } from "@/contexts/orders.context";
 import { IPurchaseOrderSummary } from "@/types/product.types";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { columnsAvaliablePallet } from "./columns-avaliable-pallet";
 import { columnsCreatePallet } from "./columns-create-pallet";
 import { OrderSummaryReceivedData } from "./order-summary-received-data";
-import QRCode from "qrcode";
+
 type OrderSummaryProps = {
   order: IPurchaseOrderSummary;
 };
@@ -75,72 +75,6 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     products: Array<{ purchaseorderproduct_id: string; quantity: number }>;
   }>(initialPalletData);
 
-  // const [src, setSrc] = useState<string>("");
-
-  const generateQrCode = async (palletId: number) => {
-    try {
-      return await QRCode.toDataURL(
-        `${process.env.NEXT_PUBLIC_FRONT_URL}/warehouse/storage/${palletId}`
-      );
-    } catch (error) {
-      console.error("Error generando QR:", error);
-      toast.error("Error generando el código QR.");
-    }
-  };
-
-  const printQrCode = (
-    palletNumber: string,
-    orderNumber: string,
-    src: string
-  ) => {
-    const printWindow = window.open("", "_blank", "width=600,height=600");
-    if (printWindow) {
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Pallet #${palletNumber}</title>
-            <style>
-              body {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 10px;
-                margin: 0;
-                height: 100vh;
-                background-color: white;
-
-                font-family: Arial, sans-serif;
-              }
-
-              .data-container {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 5px;
-              }
-            </style>
-          </head>
-          <body>
-          <div class="data-container">
-          <h2>Pallet Number: ${palletNumber}</h2>
-          <h3>Order Number: ${orderNumber}</h3>
-          </div>
-            <img src="${src}" alt="QR Code" style="width: 350px; height: 350px;" />
-            <script>
-              window.onload = function () {
-                window.print();
-                window.close();
-              };
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-    }
-  };
-
   const addProductsPallets = () => {
     const transformedProducts =
       transformOrderDataProductsAvaliableToCreatePallet(order);
@@ -159,48 +93,24 @@ export default function OrderSummary({ order }: OrderSummaryProps) {
     }
   }, [productsAddedToCreatePallet]);
 
-  const handleCreatePallet = async () => {
-    try {
-      const invalidProduct = productsAddedToCreatePallet.find(
-        (product) =>
-          product.quantity <= 0 || product.quantity > product.quantity_available
-      );
-  
-      if (invalidProduct) {
-        toast.error("Error: Invalid product quantity");
-        console.error("Error: Invalid product quantity", invalidProduct);
-        return;
+  const handleCreatePallet = () => {
+    // Validate that every product has a quantity greater than 0 and lower than the quantity available
+    productsAddedToCreatePallet.forEach((product) => {
+      if (
+        product.quantity <= 0 ||
+        product.quantity > product.quantity_available
+      ) {
+        console.log("Error: Invalid product quantity");
+        return toast.error("Error: Invalid product quantity");
       }
-      
-      console.log("Pallet Data: ", palletData)
-      const res = await createPallet(palletData);
-  
-      if (!res || !res.pallet) {
-        toast.error("Error: Failed to create pallet");
-        console.error("Error: Failed to create pallet");
-        return;
-      }
-  
-      console.log("Pallet created:", res.pallet);
-  
-      setPalletData((prevPalletData) => ({
-        ...prevPalletData,
-        pallet_number: Math.floor(Math.random() * 1000000),
-      }));
-  
-      // Generar y mostrar el código QR
-      const qrSrc = await generateQrCode(res.pallet.id);
-      if (qrSrc) {
-        printQrCode(res.pallet.pallet_number, order.order_number!!, qrSrc);
-      } else {
-        toast.error("Error: QR Code no generado.");
-      }
-    } catch (error) {
-      console.error("Error en handleCreatePallet:", error);
-      toast.error((error as any).message || "Unexpected error occurred");
-    }
+    });
+
+    createPallet(palletData);
+    setPalletData((prevPalletData) => ({
+      ...prevPalletData,
+      pallet_number: Math.floor(Math.random() * 1000000),
+    }));
   };
-  
 
   return (
     <DialogContent
