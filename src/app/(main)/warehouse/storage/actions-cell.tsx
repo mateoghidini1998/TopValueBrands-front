@@ -11,16 +11,39 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useOrdersContext } from "@/contexts/orders.context";
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 type ActionsCellProps = {
   row: any;
 };
 
 const ActionsCell = ({ row }: ActionsCellProps) => {
-  const { downloadOrder, deleteOrder } = useOrdersContext();
   const router = useRouter();
+
+  const handleDeletePallet = async (id: number) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pallets/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to delete pallet");
+      } else {
+        toast.success("Pallet deleted successfully");
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error("Error deleting pallet");
+      console.error("Error deleting pallet:", error);
+    }
+  };
 
   const incomingOrder = row.original;
   return (
@@ -46,6 +69,11 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
               </DropdownMenuItem>
             </DialogTrigger>
             <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => handleDeletePallet(incomingOrder.id)}
+            >
+              Delete Pallet
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
